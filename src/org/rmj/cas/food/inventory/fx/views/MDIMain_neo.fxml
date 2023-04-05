@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" fx:id="mnuMain" onKeyPressed="#mnuMain_KeyPressed" prefHeight="768.0" prefWidth="1366.0" stylesheets="@../styles/MainController.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox layoutY="26.0" prefHeight="25.0" prefWidth="1010.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <MenuBar fx:id="mnuBar" prefHeight="25.0" prefWidth="811.0" HBox.hgrow="ALWAYS">
+               <menus>
+                  <Menu fx:id="mnuFiles" mnemonicParsing="false" text="File">
+                     <items>
+                        <MenuItem fx:id="mnuInventory" mnemonicParsing="false" onAction="#mnuInventory_Click" text="Items Management">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="LIST" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic></MenuItem>
+                        <MenuItem fx:id="mnuSerialUpload" mnemonicParsing="false" onAction="#mnuSerialUpload_Click" text="Serial Upload">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="MONEY" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem fx:id="mnuStocks" mnemonicParsing="false" onAction="#mnuStocks" text="Stocks" visible="true">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="MONEY" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic></MenuItem>
+                        <Menu mnemonicParsing="false" text="Parameters">
+                           <items>
+                              <MenuItem fx:id="mnuBrand" mnemonicParsing="false" onAction="#mnuBrand_Click" text="Brand">
+                                 <graphic>
+                                    <Button mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SEND" size="11" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic></MenuItem>
+                              <MenuItem fx:id="mnuCategory" mnemonicParsing="false" onAction="#mnuCategory_Click" text="Category">
+                                 <graphic>
+                                    <Button mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SEND" size="11" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic></MenuItem>
+                              <MenuItem fx:id="mnuCategory2" mnemonicParsing="false" onAction="#mnuCategory2_Click" text="Category 2">
+                                 <graphic>
+                                    <Button mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SEND" size="11" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic></MenuItem>
+                              <MenuItem fx:id="mnuCategory3" mnemonicParsing="false" onAction="#mnuCategory3_Click" text="Category 3">
+                                 <graphic>
+                                    <Button mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SEND" size="11" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic></MenuItem>
+                              <MenuItem fx:id="mnuCategory4" mnemonicParsing="false" onAction="#mnuCategory4_Click" text="Category 4">
+                                 <graphic>
+                                    <Button mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SEND" size="11" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic></MenuItem>
+                              <MenuItem fx:id="mnuColor" mnemonicParsing="false" onAction="#mnuColor_Click" text="Color" visible="false">
+                                 <graphic>
+                                    <Button mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SEND" size="11" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic></MenuItem>
+                              <MenuItem fx:id="mnuCompany" mnemonicParsing="false" onAction="#mnuCompany_Click" text="Company">
+                                 <graphic>
+                                    <Button mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SEND" size="11" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic></MenuItem>
+                              <MenuItem fx:id="mnuDiscounts" mnemonicParsing="false" onAction="#mnuDiscounts_Click" text="Discounts">
+                                 <graphic>
+                                    <Button mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SEND" size="11" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem fx:id="mnuInvLocation" mnemonicParsing="false" onAction="#mnuInvLocation_Click" text="Inventory Location">
+                                 <graphic>
+                                    <Button mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SEND" size="11" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic></MenuItem>
+                              <MenuItem fx:id="mnuInvType" mnemonicParsing="false" onAction="#mnuInvType_Click" text="Inventory Type">
+                                 <graphic>
+                                    <Button mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SEND" size="11" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic></MenuItem>
+                              <MenuItem fx:id="mnuMeasure" mnemonicParsing="false" onAction="#mnuMeasure_Click" text="Measure">
+                                 <graphic>
+                                    <Button mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SEND" size="11" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem fx:id="mnuModel" mnemonicParsing="false" onAction="#mnuModel_Click" text="Model" visible="false">
+                                 <graphic>
+                                    <Button mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SEND" size="11" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic></MenuItem>
+                              <MenuItem fx:id="mnuSupplier" mnemonicParsing="false" onAction="#mnuSupplier_Click" text="Supplier">
+                                 <graphic>
+                                    <Button mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SEND" size="11" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic></MenuItem>
+                              <MenuItem fx:id="mnuTerm" mnemonicParsing="false" onAction="#mnuTerm_Click" text="Term">
+                                 <graphic>
+                                    <Button mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SEND" size="12" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic></MenuItem>
+                           </items>
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="INDENT" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic>
+                        </Menu>
+                        <MenuItem fx:id="mnuClose" mnemonicParsing="false" onAction="#mnuClose_Click" text="Exit">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="POWER_OFF" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic></MenuItem>
+                     </items>
+                     <graphic>
+                        <FontAwesomeIconView fx:id="file" glyphName="FOLDER_OPEN" size="14" />
+                     </graphic>
+                  </Menu>
+                  <Menu fx:id="mnuTransactions" mnemonicParsing="false" text="Transactions" visible="true">
+                     <items>
+                        <Menu mnemonicParsing="false" text="Purchasing">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="TAG" size="14" />
+                           </graphic>
+                           <items>
+                              <MenuItem fx:id="mnuPurchaseOrder" mnemonicParsing="false" onAction="#mnuPurchaseOrder" text="Purchase Order">
+                                 <graphic>
+                                    <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="TAG" size="14" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem fx:id="mnuPOReceiving" mnemonicParsing="false" onAction="#mnuPOReceiving" text="PO Receiving">
+                                 <graphic>
+                                    <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="TAG" size="14" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem fx:id="mnuPOReturn" mnemonicParsing="false" onAction="#mnuPOReturn" text="PO Return">
+                                 <graphic>
+                                    <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="TAG" size="14" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic>
+                              </MenuItem>
+                           </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Daily Production">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="TAG" size="14" />
+                           </graphic>
+                           <items>
+                              <MenuItem fx:id="mnuDailyProductionFG" mnemonicParsing="false" onAction="#mnuDailyProductionFG" text="Finished Goods">
+                                 <graphic>
+                                    <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="TAG" size="14" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem fx:id="mnuDailyProductionRM" mnemonicParsing="false" onAction="#mnuDailyProductionRM" text="Raw Materials">
+                                 <graphic>
+                                    <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="TAG" size="14" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic>
+                              </MenuItem>
+                           </items>
+                        </Menu>
+                        <MenuItem fx:id="mnu_StockRequest" mnemonicParsing="false" onAction="#mnu_StockRequestClick" text="Stock Request">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="TAG" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem fx:id="mnu_InventoryTransfer" mnemonicParsing="false" onAction="#mnu_InventoryTransferClick" text="Inventory Transfer">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="TAG" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic></MenuItem>
+                        <MenuItem fx:id="mnu_inventoryCount" mnemonicParsing="false" onAction="#mnu_inventoryCountClick" text="Inventory Count">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="TAG" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic></MenuItem>
+                        <MenuItem fx:id="menu_TransferPosting" mnemonicParsing="false" onAction="#menu_TransferPostingClick" text="Inventory Transfer Posting">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="TAG" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic></MenuItem>
+                        <MenuItem fx:id="menu_InvAdjustment" mnemonicParsing="false" onAction="#menu_InvAdjustment_Click" text="Inventory Adjustment">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="TAG" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem fx:id="mnuWasteInventory" mnemonicParsing="false" onAction="#mnuWasteInventory" text="Waste Inventory">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="TAG" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic>
+                        </MenuItem>
+                     </items>
+                     <graphic>
+                        <FontAwesomeIconView fx:id="transaction" glyphName="CREDIT_CARD" size="14" />
+                     </graphic>
+                  </Menu>
+                  <Menu fx:id="mnuUtilities" mnemonicParsing="false" text="Utilities" visible="true">
+                     <graphic>
+                        <FontAwesomeIconView fx:id="utilities" glyphName="GEAR" size="14" />
+                     </graphic>
+                     <items>
+                        <MenuItem fx:id="menuNotif" mnemonicParsing="false" onAction="#menuNotif_Click" text="Notification" visible="false">
+                           <graphic>
+                              <Button mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="SEND" size="12" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic>
+                        </MenuItem>
+                     </items></Menu>
+                  <Menu fx:id="mnuReports" mnemonicParsing="false" text="Reports">
+                     <graphic>
+                        <FontAwesomeIconView fx:id="reports" glyphName="LINE_CHART" size="14" />
+                     </graphic>
+                     <items>
+                        <MenuItem fx:id="mnuStandard" mnemonicParsing="false" onAction="#mnuStandard_Click" text="Standard">
+                           <graphic>
+                              <Button mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="SELLSY" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem fx:id="mnuBIRrep" mnemonicParsing="false" onAction="#mnuBIRrep_Click" text="BIR Reports">
+                           <graphic>
+                              <Button mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="SIGNAL" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic>
+                        </MenuItem>
+                     </items></Menu>
+                  <Menu fx:id="mnuHistory" mnemonicParsing="false" text="History" visible="true">
+                    <items>
+                        <Menu mnemonicParsing="false" text="Purchasing">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="SLIDERS" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic>
+                           <items>
+                              <MenuItem fx:id="mnu_PurchaseOrderReg" mnemonicParsing="false" onAction="#mnu_PurchaseOrderReg" text="Purchase Order">
+                                 <graphic>
+                                    <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SLIDERS" size="14" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic>
+                              </MenuItem>
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                            <MenuItem fx:id="mnu_POReceivingReg" mnemonicParsing="false" onAction="#mnu_POReceivingRegClick" text="PO Receiving">
+                                 <graphic>
+                                    <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SLIDERS" size="14" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic>
+                              </MenuItem>
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem fx:id="mnu_POReturnReg" mnemonicParsing="false" onAction="#mnu_POReturnReg" text="PO Return">
+                                 <graphic>
+                                    <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="SLIDERS" size="14" />
+                                       </graphic>
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic>
+                              </MenuItem>
+                           </items>
+                        </Menu>
+                        <MenuItem fx:id="mnu_InvDailyProdReg" mnemonicParsing="false" onAction="#mnu_InvDailyProdRegClick" text="Daily Production">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="SLIDERS" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic></MenuItem>
+                        <MenuItem fx:id="mnu_InvTransReg" mnemonicParsing="false" onAction="#mnu_InvTransRegClick" text="Inventory Transfer">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="SLIDERS" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic></MenuItem>
+                        <MenuItem fx:id="mnu_InvWasteReg" mnemonicParsing="false" onAction="#mnu_InvWasteReg" text="Waste Inventory">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="SLIDERS" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem fx:id="mnu_InvAdjustmentReg" mnemonicParsing="false" onAction="#mnu_InvAdjustmentReg_Click" text="Inventory Adjustment">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="SLIDERS" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem fx:id="mnu_InvCountReg" mnemonicParsing="false" onAction="#mnu_InvCountRegClick" text="Inventory Count Reg" visible="true">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="SLIDERS" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic></MenuItem>
+                    </items>
+                     <graphic>
+                        <FontAwesomeIconView fx:id="history" glyphName="NEWSPAPER_ALT" size="14" />
+                     </graphic>
+                  </Menu>
+                  <Menu fx:id="mnuSettings" mnemonicParsing="false" text="Settings">
+                    <items>
+                        <CheckMenuItem fx:id="chkLight" mnemonicParsing="false" onAction="#chkLight_Click" text="Light Theme" visible="true" />
+                        <MenuItem fx:id="mnuResetPOS" mnemonicParsing="false" onAction="#mnuResetPOS_Click" text="Reset Point-of-Sales" />
+                    </items>
+                     <graphic>
+                        <FontAwesomeIconView fx:id="settings" glyphName="GEARS" size="14" />
+                     </graphic>
+                  </Menu>
+               </menus>
+            </MenuBar>
+         </children>
+      </HBox>
+      <AnchorPane layoutY="474.0" prefHeight="25.0" prefWidth="500.0" style="-fx-background-color: #F37024;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label fx:id="lblDate" layoutY="6.0" prefHeight="17.0" prefWidth="489.0" text="October 02, 2018 " textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.0">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblCompany" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="4.0" prefHeight="17.0" prefWidth="489.0" text="Guanzon Merchandising" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblUser" alignment="CENTER_RIGHT" layoutX="400.0" layoutY="4.0" prefHeight="17.0" prefWidth="489.0" text="Cuison, Michael Torres." textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="5.0">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </Label>
+            <Separator prefWidth="200.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="0.001953125" prefHeight="25.0" prefWidth="1010.0" style="-fx-background-color: BLACK;" AnchorPane.leftAnchor="0.001953125" AnchorPane.rightAnchor="0.0">
+         <children>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="5.0">
+               <image>
+                  <Image url="@../images/ic_launcher1.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="lblFormTitle" alignment="TOP_LEFT" layoutX="30.0" layoutY="3.0" prefHeight="15.0" prefWidth="470.0" text="General Inventory and Purchasing v1.0 " textFill="WHITE" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="0.0">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnExit" minHeight="16.0" minWidth="16.0" mnemonicParsing="false" onAction="#btnExit_Clicke" prefHeight="16.0" prefWidth="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0">
+                <graphic>
+                  <FontAwesomeIconView glyphName="CLOSE" size="14" />
+               </graphic>
+            </Button>
+            <Button fx:id="btnMinimize" layoutX="922.0" minHeight="16.0" minWidth="16.0" mnemonicParsing="false" onAction="#btnMinimize_Click" prefHeight="14.0" prefWidth="16.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="4.0">
+               <graphic>
+                  <FontAwesomeIconView glyphName="MINUS" size="14" />
+               </graphic>
+            </Button>
+            <ToggleButton fx:id="btnRestoreDown" layoutX="956.0" mnemonicParsing="false" onAction="#btnRestoreDown_Clicke" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="0.0">
+               <graphic>
+                  <FontAwesomeIconView fx:id="cmdRestore" glyphName="COMPRESS" size="14" />
+               </graphic>
+            </ToggleButton>
+            <Separator layoutY="22.0" prefWidth="200.0" style="-fx-background-color: ORANGE;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="rootPane" layoutY="51.0" prefHeight="423.0" prefWidth="1010.0" style="-fx-background-color: #4d5656;" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="53.0">
+         <children>
+            <StackPane layoutX="143.0" layoutY="78.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <SplitPane fx:id="splPane" dividerPositions="0.6818181818181818">
+                    <items>
+                      <AnchorPane fx:id="spLeft" minHeight="0.0" minWidth="0.0" prefHeight="621.0" prefWidth="715.0" SplitPane.resizableWithParent="false" />
+                      <AnchorPane fx:id="spRight" minHeight="0.0" minWidth="0.0" prefHeight="621.0" prefWidth="719.0" SplitPane.resizableWithParent="false">
+                           <children>
+                              <StackPane prefHeight="621.0" prefWidth="539.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <ScrollPane prefHeight="689.0" prefWidth="582.0">
+                                       <content>
+                                          <TabPane prefHeight="671.0" prefWidth="573.0" tabClosingPolicy="UNAVAILABLE">
+                                             <tabs>
+                                                <Tab closable="false" text="Inventory Expiration">
+                                                   <content>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="617.0" prefWidth="543.0">
+                                                         <children>
+                                                            <TableView fx:id="table" layoutX="9.0" layoutY="10.0" prefHeight="628.0" prefWidth="561.0" stylesheets="@../styles/Tables.css" AnchorPane.bottomAnchor="4.0" AnchorPane.topAnchor="10.0">
+                                                               <columns>
+                                                                  <TableColumn fx:id="index01" editable="false" prefWidth="52.0" resizable="false" sortable="false" text="No" />
+                                                                  <TableColumn fx:id="index02" editable="false" prefWidth="110.0" resizable="false" sortable="false" text="Barcode" />
+                                                                  <TableColumn fx:id="index03" editable="false" prefWidth="153.0" resizable="false" sortable="false" text="Description" />
+                                                                  <TableColumn fx:id="index04" editable="false" prefWidth="102.0" resizable="false" sortable="false" text="Expiration" />
+                                                                  <TableColumn fx:id="index05" editable="false" prefWidth="94.0" resizable="false" sortable="false" text="Unit" />
+                                                                  <TableColumn fx:id="index06" editable="false" prefWidth="43.0" resizable="false" sortable="false" text="Qty" />
+                                                               </columns>
+                                                            </TableView>
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </content>
+                                                </Tab>
+                                                <Tab text="Expired Inventory">
+                                                   <content>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="561.0" prefWidth="628.0">
+                                                         <children>
+                                                            <TableView fx:id="table01" layoutX="9.0" layoutY="15.0" prefHeight="632.0" prefWidth="561.0" stylesheets="@../styles/Tables.css" AnchorPane.bottomAnchor="4.0" AnchorPane.topAnchor="10.0">
+                                                               <columns>
+                                                                  <TableColumn fx:id="index07" editable="false" prefWidth="52.0" resizable="false" sortable="false" text="No" />
+                                                                  <TableColumn fx:id="index08" editable="false" prefWidth="110.0" resizable="false" sortable="false" text="Barcode" />
+                                                                  <TableColumn fx:id="index09" editable="false" prefWidth="153.0" resizable="false" sortable="false" text="Description" />
+                                                                  <TableColumn fx:id="index10" editable="false" prefWidth="102.0" resizable="false" sortable="false" text="Expiration" />
+                                                                  <TableColumn fx:id="index11" editable="false" prefWidth="94.0" resizable="false" sortable="false" text="Unit" />
+                                                                  <TableColumn fx:id="index12" editable="false" prefWidth="43.0" resizable="false" sortable="false" text="Qty" />
+                                                               </columns>
+                                                            </TableView>
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </content>
+                                                </Tab>
+                                             </tabs>
+                                          </TabPane>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </SplitPane>
+               </children></StackPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

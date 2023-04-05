@@ -1,0 +1,60 @@
+.button{
+    -fx-border-width: 0px 0px 0px 5px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-background-color: transparent;
+    -fx-fill: white;
+}
+#btnExit, #btnMinimize, #btnRestoreDown{
+    -fx-border-width: 0px 0px 0px 5px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-background-color: transparent;
+    -fx-fill: white;
+}
+
+#btnHome .glyph-icon{
+    -fx-fill: #f37021; 
+}
+
+.button .glyph-icon{
+    -fx-fill: black; 
+}
+
+#btnHome{
+    -fx-border-width: 0px 0px 0px 5px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-background-color: transparent;
+}
+
+#btnExit:hover .glyph-icon, #btnMinimize:hover .glyph-icon,
+#btnRestoreDown:hover .glyph-icon{
+    -fx-fill: red;
+}
+
+#btnHome:hover .glyph-icon{
+    -fx-fill: #000000;
+}
+
+#btnMinimize .glyph-icon, #btnExit .glyph-icon, #btnRestoreDown .glyph-icon{
+    -fx-fill: #ffffff;
+}
+
+.glyph-icon{
+    -fx-fill: black;
+}
+.glyph-icon:hover{
+    -fx-fill: white;
+}
+
+.button:hover .glyph-icon{
+    -fx-fill: #ffffff;
+}
+
+.split-pane-divider {
+    -fx-border-style: solid;
+    -fx-border-width: .5px;
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 0 0;
+}
