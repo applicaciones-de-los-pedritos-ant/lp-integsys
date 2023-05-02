@@ -17,6 +17,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -310,6 +312,18 @@
                            </graphic>
                         </MenuItem>
                         <MenuItem fx:id="mnu_StockRequest" mnemonicParsing="false" onAction="#mnu_StockRequestClick" text="Stock Request">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="TAG" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem fx:id="mnu_ProductionRequest" mnemonicParsing="false" onAction="#mnu_ProductionRequestClick" text="Product Request">
                            <graphic>
                               <Button graphicTextGap="2.0" mnemonicParsing="false">
                                  <graphic>
@@ -657,6 +671,21 @@
                                                                   <TableColumn fx:id="index12" editable="false" prefWidth="43.0" resizable="false" sortable="false" text="Qty" />
                                                                </columns>
                                                             </TableView>
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </content>
+                                                </Tab>
+                                                <Tab text="Product Request">
+                                                   <content>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="561.0" prefWidth="628.0">
+                                                         <children>
+                                                            <TreeTableView fx:id="ProductTable" layoutX="32.0" layoutY="95.0" prefHeight="200.0" stylesheets="@../styles/Tables.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                                              <columns>
+                                                                <TreeTableColumn fx:id="indexmaster01" editable="false" maxWidth="300.0" minWidth="85.0" prefWidth="150.0" resizable="false" sortable="false" text="TRANSACTION" />
+                                                                <TreeTableColumn fx:id="indexmaster02" maxWidth="300.0" minWidth="85.0" prefWidth="119.0" resizable="false" text="DATE" />
+                                                                  <TreeTableColumn fx:id="indexmaster03" maxWidth="230.0" minWidth="85.0" prefWidth="200.0" resizable="false" text="REMARKS" />
+                                                              </columns>
+                                                            </TreeTableView>
                                                          </children>
                                                       </AnchorPane>
                                                    </content>

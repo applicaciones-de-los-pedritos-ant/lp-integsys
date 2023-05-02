@@ -512,8 +512,11 @@ public class InvTransferController implements Initializable {
                         break;
                     case 18: /*sOrderNox */
                         if (poTrans.SearchMaster(lnIndex, txtField.getText(), false)){
+                            txtField.setText(poTrans.getMaster(18).toString());
+                           loadDetail(); 
+                            
                             CommonUtils.SetNextFocus(txtField); 
-                        }else txtField.setText("");
+                        }else txtField.setText(poTrans.getMaster(18).toString());
                         break;
                     case 50: /*sTransNox*/
                         if(poTrans.BrowseRecord(lsValue, true)==true){
@@ -868,7 +871,7 @@ public class InvTransferController implements Initializable {
                                     "",
                                     ""));
         }
-    
+        initGrid();
         /*FOCUS ON FIRST ROW*/
         if (!data.isEmpty()){
             table.getSelectionModel().select(lnRow -1);

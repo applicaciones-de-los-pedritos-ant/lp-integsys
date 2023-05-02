@@ -16,8 +16,11 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,6 +44,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -49,6 +55,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.apache.commons.lang3.time.DateUtils;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.MiscUtil;
@@ -62,7 +69,7 @@ import org.rmj.appdriver.agentfx.ui.showFXDialog;
 import org.rmj.appdriver.constants.UserRight;
 import org.rmj.cas.food.reports.classes.FoodReports;
 import org.rmj.cas.parameter.fx.ParameterFX;
-import org.rmj.cas.pos.reports.BIRReports;
+//import org.rmj.cas.pos.reports.BIRReports;
 
 public class MDIMainController implements Initializable {
     
@@ -148,13 +155,18 @@ public class MDIMainController implements Initializable {
     @FXML private SplitPane splPane;
     @FXML private AnchorPane spLeft;
     @FXML private AnchorPane spRight;
+    @FXML private TreeTableView ProductTable;
+    @FXML private TreeTableColumn indexmaster01,indexmaster02,indexmaster03;
+    
     
     Node vertiCalPane;
     /**
      * For handling of Collections coming from data table
      */
     private ObservableList<TableModel> data = FXCollections.observableArrayList();
-    private ObservableList<TableModel> data01 = FXCollections.observableArrayList();    
+    private ObservableList<TableModel> data01 = FXCollections.observableArrayList();
+    private ObservableList<TableModel> data02 = FXCollections.observableArrayList(); 
+    private ObservableList<TableModel> data03 = FXCollections.observableArrayList();     
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -229,10 +241,12 @@ public class MDIMainController implements Initializable {
          * implement timer to reload sysmonitor ever 30 seconds that user is idling
          */
         p_nLocation = MouseInfo.getPointerInfo().getLocation();
+        
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
           @Override
           public void run() {
+              Platform.runLater(() -> {
             Point lpLocation =  MouseInfo.getPointerInfo().getLocation();
             if(!p_nLocation.equals(lpLocation)){
                 if(p_bRunning) p_bRunning = false;
@@ -240,11 +254,13 @@ public class MDIMainController implements Initializable {
                 p_dIdleTIme = java.util.Calendar.getInstance().getTime();
             }else {
                 if(!p_bRunning && (((java.util.Calendar.getInstance().getTime().getTime() - p_dIdleTIme.getTime()) / DateUtils.MILLIS_PER_SECOND) > 30)){
+                    ProductTable.getSelectionModel().clearSelection();
                     loadGrid(); 
                     p_bRunning = true;
                 }
             }
-          }
+          });
+                      }
         }, 0, 1000);
         /**
          * @author jovan
@@ -259,11 +275,15 @@ public class MDIMainController implements Initializable {
      * function to call when loading grid information
      */
     private void loadGrid(){
+
         data.clear();
         data01.clear();
-        
+        data02.clear();
+        data03.clear();
+
         loadDetail2Grid();
         loadExpiredInv();
+        loadProduct2Grid();
     }
     
     public void loadRecord(){
@@ -392,30 +412,46 @@ public class MDIMainController implements Initializable {
 //    }
     
     public Parent loadScene(String foURL)throws IOException{
-        
+//         AnchorPane root;
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource(foURL));
        
         Object fxObj = getContoller(foURL);
         fxmlLoader.setController(fxObj);
-        
+         try {
+//        root = (AnchorPane) fxmlLoader.load();
         Parent root = fxmlLoader.load();
         spLeft.getChildren().clear();
 
         StackPane stack = new StackPane();
         stack.getChildren().add(root);
-
-            stack.translateXProperty()
-                    .bind(spLeft.widthProperty().subtract(stack.widthProperty())
-                            .divide(2));
-
-            stack.translateYProperty()
-                    .bind(spLeft.heightProperty().subtract(stack.heightProperty())
-                            .divide(2));
+//
+//            stack.translateXProperty()
+//                    .bind(spLeft.widthProperty().subtract(stack.widthProperty())
+//                            .divide(2));
+//
+//            stack.translateYProperty()
+//                    .bind(spLeft.heightProperty().subtract(stack.heightProperty())
+//                            .divide(2));
         spLeft.getChildren().add(stack);
-//        dragNode(stack);
-        
-        return root;
+////        dragNode(stack);
+
+
+ 
+            
+            FadeTransition ft = new FadeTransition(Duration.millis(1500));
+            ft.setNode(root);
+            ft.setFromValue(1);
+            ft.setToValue(1);
+            ft.setCycleCount(1);
+            ft.setAutoReverse(false);
+            ft.play();
+
+            return root;
+        } catch (IOException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return null;
     }
     
     class Delta { double x, y; }
@@ -579,6 +615,12 @@ public class MDIMainController implements Initializable {
                 
                 return loNotif;
                 
+            case FoodInventoryFX.pxeInvProdRequest:
+                InvProdRequestController loProdRequestObj = new InvProdRequestController();
+                loProdRequestObj.setGRider(poGRider);
+                
+                return loProdRequestObj;
+                
             default:
                 return null;
         }
@@ -624,6 +666,12 @@ public class MDIMainController implements Initializable {
     private void mnu_StockRequestClick(ActionEvent event) throws IOException{
 //         setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransfer));
          loadScene(FoodInventoryFX.pxeInvStockRequest);
+
+    }
+    @FXML
+    private void mnu_ProductionRequestClick(ActionEvent event) throws IOException{
+//         setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransfer));
+         loadScene(FoodInventoryFX.pxeInvProdRequest);
 
     }
     
@@ -759,15 +807,15 @@ public class MDIMainController implements Initializable {
 
     @FXML
     private void mnuBIRrep_Click(ActionEvent event) {
-        BIRReports instance = new BIRReports();
-        instance.setGRider(poGRider);
-        
-        if (instance.getParam()){
-            if (!instance.processReport()){
-                ShowMessageFX.Warning(instance.getMessage(), "Warning", "Unable to generate report.");
-            }
-        } else 
-            ShowMessageFX.Information(instance.getMessage(), "Notice", "Report generation cancelled.");
+//        BIRReports instance = new BIRReports();
+//        instance.setGRider(poGRider);
+//        
+//        if (instance.getParam()){
+//            if (!instance.processReport()){
+//                ShowMessageFX.Warning(instance.getMessage(), "Warning", "Unable to generate report.");
+//            }
+//        } else 
+//            ShowMessageFX.Information(instance.getMessage(), "Notice", "Report generation cancelled.");
     }
 
     @FXML
@@ -1077,7 +1125,7 @@ public class MDIMainController implements Initializable {
         index10.setStyle("-fx-alignment: CENTER;");
         index11.setStyle("-fx-alignment: CENTER;");
         index12.setStyle("-fx-alignment: CENTER;");
-     
+        
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index03"));
@@ -1093,7 +1141,27 @@ public class MDIMainController implements Initializable {
         index12.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
         
         table.setItems(data);
-        table01.setItems(data01);
+        table01.setItems(data01); 
+        
+        //set data product request list ito
+        indexmaster01.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<TableModel, String>, ObservableValue<String>>() {
+     @Override
+     public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<TableModel, String> p) {
+         return p.getValue().getValue().index02Property();
+     }
+  });
+        indexmaster02.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<TableModel, String>, ObservableValue<String>>() {
+     @Override
+     public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<TableModel, String> p) {
+         return p.getValue().getValue().index03Property();
+     }
+  });
+        indexmaster03.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<TableModel, String>, ObservableValue<String>>() {
+     @Override
+     public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<TableModel, String> p) {
+         return p.getValue().getValue().index04Property();
+     }
+  });
     }
     
     /**
@@ -1259,6 +1327,147 @@ public class MDIMainController implements Initializable {
             Logger.getLogger(MDIMainController.class.getName()).log(Level.SEVERE, null, ex);
             return;
         }
+    }
+    
+    public void loadProduct2Grid() {
+        ResultSet poRS = null;
+        ResultSet poRSDetail = null;
+        data02.clear();  
+             TreeItem<TableModel>  ColumnDetail = new TreeItem<>(new TableModel("","BARCODE","DESCRIPT","QTY",
+             "","","","","",""));
+        
+        poRS = poGRider.executeQuery(getSQLProductMaster());
+        poRSDetail = poGRider.executeQuery(getSQLProductMaster());
+        if (MiscUtil.RecordCount(poRS) <= 0){
+            data02.add(new TableModel(String.valueOf(1), 
+                                    "",
+                                     "",
+                                     "",
+                                     "",
+                                     "",
+                                     "",
+                                     "",
+                                     "",
+                                     ""));
+        
+             return;
+        }
+        try {
+            poRS.first();
+            for (int lnCtr = 1; lnCtr <= MiscUtil.RecordCount(poRS); lnCtr++){
+                    poRS.absolute(lnCtr);
+//                    TableModel rowData = new TableModel();
+                    data02.add(new TableModel(String.valueOf(lnCtr), 
+                                            poRS.getString("sTransNox"),
+                                            poRS.getString("dTransact"),
+                                            poRS.getString("sRemarksx"),
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            ""));
+            }
+            
+            
+            
+            
+
+//            list master's
+            //dummy
+            TreeItem<TableModel> rootMaster = new TreeItem<>();
+            
+            //list master
+//            TreeItem<TableModel> childItem1 = new TreeItem<>();
+            
+            for (TableModel rowDataMaster : data02) {
+            TreeItem<TableModel>  item = new TreeItem<>(rowDataMaster);
+            rootMaster.getChildren().add(item);
+            
+            //listing detail
+            //clear to refresh data03 each loop
+            data03.clear();
+                    
+            poRSDetail = poGRider.executeQuery(getSQLProductDetail(rowDataMaster.getIndex02().toString()));
+            poRSDetail.first();
+            for (int lnCtr = 1; lnCtr <= MiscUtil.RecordCount(poRSDetail); lnCtr++){
+                    poRSDetail.absolute(lnCtr);
+//                    TableModel rowData = new TableModel();
+                    data03.add(new TableModel(String.valueOf(lnCtr), 
+                                            poRSDetail.getString("sBarCodex"),
+                                            poRSDetail.getString("sDescript"),
+                                            poRSDetail.getString("nQuantity"),
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            ""));
+            }
+            if (!data03.isEmpty()){
+            item.getChildren().add(ColumnDetail);
+            }
+            for (TableModel rowDataDetail : data03) {
+            TreeItem<TableModel>  item1= new TreeItem<>(rowDataDetail);
+             
+            item.getChildren().add(item1);
+            
+            }
+            if(item.isExpanded());{
+                item.setExpanded(false);
+            }
+            }
+        
+  
+            
+        //display
+        ProductTable.setRoot(rootMaster);
+        ProductTable.setShowRoot(false);
+//            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MDIMainController.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
+    }
+    private String getSQLProductMaster(){
+        return "SELECT " + 
+                " a.sTransNox" +
+                ", a.dTransact" +
+                ", a.nEntryNox" + 
+                ", a.sRemarksx" +
+                ", a.cTranStat" +
+                " FROM Product_Request_Master a";
+                
+    }
+    private String getSQLProductDetail(String sTransnox){
+        
+        return 
+                "SELECT " + 
+                " a.sTransNox" +
+                ", a.sStockIDx" +
+                ", a.nQuantity" +
+                ", a.nEntryNox" +
+                ", b.sBarCodex" +
+                ", b.sDescript" + 
+                ", IFNULL(c.sDescript,'') xBrandNme" + 
+                ", IFNULL(d.sDescript,'') xModelNme" + 
+                ", IFNULL(e.sDescript,'') xInvTypNm" + 
+                ", f.sMeasurNm " +
+                " FROM Product_Request_Detail a " +
+                " LEFT JOIN Inventory b " + 
+                "   ON a.sStockIDx = b.sStockIDx " +
+                " LEFT JOIN Brand c" + 
+                    " ON b.sBrandCde = c.sBrandCde" + 
+                " LEFT JOIN Model d" + 
+                    " ON b.sModelCde = d.sModelCde" + 
+                " LEFT JOIN Inv_Type e" + 
+                    " ON b.sInvTypCd = e.sInvTypCd" +
+                " LEFT JOIN Measure f" + 
+                    " ON b.sMeasurID = f.sMeasurID " +
+                " WHERE a.sTransNox = " + SQLUtil.toSQL(sTransnox);
+        
+        
+      
     }
     
 }

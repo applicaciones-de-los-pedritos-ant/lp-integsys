@@ -1,18 +1,19 @@
 package org.rmj.cas.food.inventory.fx.views;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class TableModel {  
-    private SimpleStringProperty index01;
-    private SimpleStringProperty index02;        
-    private SimpleStringProperty index03;     
-    private SimpleStringProperty index04;     
-    private SimpleStringProperty index05;
-    private SimpleStringProperty index06;
-    private SimpleStringProperty index07;
-    private SimpleStringProperty index08;
-    private SimpleStringProperty index09;
-    private SimpleStringProperty index10;
+    private StringProperty index01;
+    private StringProperty index02;        
+    private StringProperty index03;     
+    private StringProperty index04;     
+    private StringProperty index05;
+    private StringProperty index06;
+    private StringProperty index07;
+    private StringProperty index08;
+    private StringProperty index09;
+    private StringProperty index10;
     
     public TableModel(){
         this.index01 = new SimpleStringProperty("");
@@ -70,4 +71,28 @@ public class TableModel {
     
     public String getIndex10(){return index10.get();}
     public void setIndex10(String index10){this.index10.set(index10);}
+    
+    public StringProperty index01Property() {
+        return index01;
+    }
+    
+    public StringProperty index02Property() {
+        return index02;
+    }
+    
+    public StringProperty index03Property() {
+        return index03;
+    }
+    
+    public StringProperty index04Property() {
+        return index04;
+    }    
+    public StringProperty index05Property() {
+        return index05;
+    }
+    
+    public StringProperty index06Property() {
+        return index06;
+    }
+    
 }

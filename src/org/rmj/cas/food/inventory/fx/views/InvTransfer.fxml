@@ -56,7 +56,7 @@
             <Label alignment="CENTER_RIGHT" layoutY="147.0" prefHeight="17.0" prefWidth="90.0" text="Destination*" textAlignment="RIGHT" />
             <TextField fx:id="txtField04" layoutX="97.0" layoutY="143.0" prefHeight="27.0" prefWidth="262.0" promptText="Press F3 to search" />
             <Label alignment="CENTER_RIGHT" layoutY="175.0" prefHeight="17.0" prefWidth="90.0" text="Order No." textAlignment="RIGHT" />
-            <TextField fx:id="txtField18" disable="true" layoutX="97.0" layoutY="171.0" prefHeight="27.0" prefWidth="149.0" promptText="Press F3 to search" />
+            <TextField fx:id="txtField18" layoutX="97.0" layoutY="171.0" prefHeight="27.0" prefWidth="149.0" promptText="Press F3 to search" />
             <Label alignment="CENTER_RIGHT" layoutY="203.0" prefHeight="17.0" prefWidth="90.0" text="Vehicle ID" textAlignment="RIGHT" />
             <TextField fx:id="txtField06" disable="true" layoutX="97.0" layoutY="199.0" prefHeight="27.0" prefWidth="149.0" promptText="Press F3 to search" />
             <Label alignment="CENTER_RIGHT" layoutY="231.0" prefHeight="17.0" prefWidth="90.0" text="Freight Charge" />
