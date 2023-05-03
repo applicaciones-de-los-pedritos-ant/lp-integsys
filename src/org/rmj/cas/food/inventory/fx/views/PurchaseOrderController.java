@@ -62,7 +62,7 @@ public class PurchaseOrderController implements Initializable {
     @FXML private TextField txtDetail03;
     @FXML private TextField txtDetail80;
     @FXML private TextField txtDetail04;
-    @FXML private TextField txtDetail05;
+    @FXML private TextField txtDetail05,txtDetail06;
     @FXML private TableView table;
     @FXML private Button btnNew;
     @FXML private Button btnSave;
@@ -112,6 +112,7 @@ public class PurchaseOrderController implements Initializable {
         txtDetail03.focusedProperty().addListener(txtDetail_Focus);
         txtDetail04.focusedProperty().addListener(txtDetail_Focus);
         txtDetail05.focusedProperty().addListener(txtDetail_Focus);
+        txtDetail06.focusedProperty().addListener(txtDetail_Focus);
         txtDetail80.focusedProperty().addListener(txtDetail_Focus);
                 
         /*Add keypress event for field with search*/
@@ -167,11 +168,13 @@ public class PurchaseOrderController implements Initializable {
             
             txtDetail04.setText(String.valueOf(poTrans.getDetail(pnRow, 4))); /*Quantity*/
             txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, 5))); /*Quantity*/
+            txtDetail06.setText(String.valueOf(poTrans.getDetail(pnRow, 9))); /*Quantity*/
         } else{
             txtDetail03.setText("");
             txtDetail80.setText("");
             txtDetail04.setText("0.00");
             txtDetail05.setText("0.00");
+            txtDetail06.setText("0.00");
         }
     }
     
@@ -456,6 +459,7 @@ public class PurchaseOrderController implements Initializable {
         
         txtDetail03.setText("");
         txtDetail04.setText("0.00");
+        txtDetail06.setText("0.00");
         txtDetail05.setText("0.00");
         txtDetail80.setText("");
         
