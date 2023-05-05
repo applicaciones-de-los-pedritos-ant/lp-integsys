@@ -566,7 +566,7 @@ public class PurchaseOrderController implements Initializable {
                 if (lnIndex == 3){
                     lsValue = txtDetail.getText();
                     
-                    if (lsValue == null || lsValue.isEmpty()) return;
+//                    if (lsValue == null || lsValue.isEmpty()) return;
                     
 //                    
 //                    if (lsValue != null) {
@@ -575,7 +575,7 @@ public class PurchaseOrderController implements Initializable {
 //                        return;
 //                    }
 
-                    loJSON = poTrans.SearchDetail(pnRow, 3, lsValue, true, true);
+                    loJSON = poTrans.SearchDetail(pnRow, 3, lsValue + "%", true, true);
                     
                     if (loJSON != null){
                         psBarCodex = (String) loJSON.get("sBarCodex");
@@ -588,7 +588,7 @@ public class PurchaseOrderController implements Initializable {
                     if (lsValue == null || lsValue.isEmpty()) return;
 //                    if (lsValue.isEmpty()) return;
                     
-                    loJSON = poTrans.SearchDetail(pnRow, 3, lsValue, false, false);
+                    loJSON = poTrans.SearchDetail(pnRow, 3, lsValue  + "%", true, false);
                     if (loJSON != null){
                         psBarCodex = (String) loJSON.get("sBarCodex");
                         psDescript = (String) loJSON.get("sDescript");

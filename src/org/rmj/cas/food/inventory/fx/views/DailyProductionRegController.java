@@ -187,7 +187,7 @@ public class DailyProductionRegController implements Initializable {
             case "btnBrowse":
                 switch(pnIndex){
                     case 50: /*sTransNox*/
-                        if(poTrans.BrowseRecord(txtField50.getText(), true)==true){
+                        if(poTrans.BrowseRecord(txtField50.getText(), false) == true){
                             loadRecord(); 
                             pnEditMode = poTrans.getEditMode();
                             break;
