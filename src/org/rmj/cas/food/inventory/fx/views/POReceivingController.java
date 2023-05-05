@@ -672,7 +672,7 @@ public class POReceivingController implements Initializable {
             if (lsValue.isEmpty()) return;
             switch (lnIndex){
                 case 3:                    
-                    loJSON = poTrans.SearchDetail(pnRow, 3, lsValue, false, false);                  
+                    loJSON = poTrans.SearchDetail(pnRow, 3, lsValue + "%", false, false);                  
                     if (loJSON != null){
                         txtDetail03.setText((String) loJSON.get("sTransNox"));
                     }
