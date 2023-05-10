@@ -814,7 +814,7 @@ public class DailyProductionController implements Initializable {
             rawData.add(new RawTable(String.valueOf(lnCtr + 1), 
                         (String) poTrans.getInvOthers(lnCtr, "sBarCodex"), 
                         (String) poTrans.getInvOthers(lnCtr, "sDescript"), 
-                        (String) poTrans.getInvOthers(lnCtr, "sMeasurNm"), 
+                        (String) poTrans.getInvOthers(lnCtr, "sMeasurNm"), //update qty onhand
                         String.valueOf(poTrans.getInv(lnCtr, "nQtyReqrd")),
                         String.valueOf(poTrans.getInv(lnCtr, "nQtyUsedx"))
                         ));
@@ -886,7 +886,7 @@ public class DailyProductionController implements Initializable {
             }
         });
         
-        TableColumn<RawTable, String> index04 = new TableColumn<RawTable, String>("M.");
+        TableColumn<RawTable, String> index04 = new TableColumn<RawTable, String>("OnHQty");
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index04"));
         index04.setCellFactory(TextFieldTableCell.forTableColumn());
         index04.setOnEditCommit(new EventHandler<CellEditEvent<RawTable, String>>() {

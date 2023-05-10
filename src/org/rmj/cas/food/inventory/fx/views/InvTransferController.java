@@ -613,11 +613,12 @@ public class InvTransferController implements Initializable {
                         if (!printTransfer()) return;
                         
                         if (poTrans.closeTransaction(psOldRec)){
-                            //ShowMessageFX.Information(null, pxeModuleName, "Transaction PRINTED successfully.");
+                            
                             clearFields();
                             initGrid();
                             pnEditMode = EditMode.UNKNOWN;
                             initButton(pnEditMode);
+                            ShowMessageFX.Information(null, pxeModuleName, "Transaction Posted successfully.");
                         }
                     }
                     

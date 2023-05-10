@@ -424,22 +424,22 @@ public class POReceivingController implements Initializable {
                         psOldRec = (String) poTrans.getMaster("sTransNox");
                         
                         if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transasction?")== true){
-                        if (poTrans.closeRecord(psOldRec)){
                             ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
-                            if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
-                                poTrans.printRecord();
-                            }
-                            
-                            clearFields();
                             initGrid();
                             pnEditMode = EditMode.UNKNOWN;
                             initButton(pnEditMode);
+                        if (poTrans.closeRecord(psOldRec)){
+                            if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                                poTrans.printRecord();
+                            }
+                            clearFields();
                         }
                     }
                     } else {
                         clearFields();
                         initGrid();
                         pnEditMode = EditMode.UNKNOWN;
+                        initButton(pnEditMode);
                     }
                     
                     initButton(pnEditMode);
