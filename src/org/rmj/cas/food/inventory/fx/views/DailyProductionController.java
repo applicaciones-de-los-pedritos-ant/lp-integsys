@@ -58,7 +58,7 @@ public class DailyProductionController implements Initializable {
     @FXML private TextField txtDetail03;
     @FXML private TextField txtDetail80;
     @FXML private TextField txtDetail05;
-    @FXML private TextField txtDetail04,txtDetail07;
+    @FXML private TextField txtDetail04;
     @FXML private TableView table;
     @FXML private ImageView imgTranStat;
     @FXML private Button btnNew;
@@ -75,7 +75,7 @@ public class DailyProductionController implements Initializable {
     @FXML private TableView table1;
     @FXML private AnchorPane dataPane;
     @FXML private TextField txtDetail06;
-//    @FXML private TextField txtDetail07;
+    @FXML private TextField txtDetail07;
     @FXML private TableView tableData;
 
     @Override
@@ -583,7 +583,7 @@ public class DailyProductionController implements Initializable {
         txtDetail04.setText("0");
         txtDetail05.setText("0");
         txtDetail80.setText("");
-//        txtDetail07.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
+        txtDetail07.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
         
         pnRow = -1;
         pnOldRow = -1;
@@ -1060,8 +1060,8 @@ public class DailyProductionController implements Initializable {
         }
         
 //        if(!poTrans.getInv(pnRawdata, "sStockIDx").equals("")){
-//            txtDetail07.setText(CommonUtils.xsDateMedium((Date) poTrans.getInv(pnRawdata, "dExpiryDt")));
-//        }else{
+            txtDetail07.setText(CommonUtils.xsDateMedium((Date) poTrans.getInv(pnRawdata, "dExpiryDt")));
+////        }else{
 //            txtDetail07.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
 //        }
     }

@@ -10,6 +10,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -261,6 +262,7 @@ public class InvTransferController implements Initializable {
         txtDetail04.setText("");
         txtDetail05.setText("");
         txtDetail07.setText("0.00");
+        txtDetail08.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
         txtDetail06.setText("0");
         txtDetail80.setText("");
         Label12.setText("0.00");
@@ -443,7 +445,7 @@ public class InvTransferController implements Initializable {
                         txtDetail06.setText(poTrans.getDetail(pnRow, "nQuantity").toString());
                         txtDetail07.setText(poTrans.getDetail(pnRow, "nInvCostx").toString());
                         txtOther02.setText(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString());
-//                        txtDetail08.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
+                        txtDetail08.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
                         tableDetail.setItems(loadInitData(pnRow));
                     } else {
                         txtDetail03.setText("");
@@ -894,7 +896,7 @@ public class InvTransferController implements Initializable {
             txtDetail80.setText((String) poTrans.getDetailOthers(fnRow, "sDescript"));
             txtDetail04.setText((String) poTrans.getDetailOthers(fnRow, "sOrigCode"));
             txtDetail07.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(fnRow, "nInvCostx").toString()), "0.00"));
-//            txtDetail08.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(fnRow, "dExpiryDt")));
+            txtDetail08.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(fnRow, "dExpiryDt")));
             txtDetail06.setText(String.valueOf(poTrans.getDetail(fnRow, "nQuantity")));
             txtDetail10.setText(String.valueOf(poTrans.getDetail(fnRow, "sNotesxxx")));
             txtOther02.setText(String.valueOf(poTrans.getDetailOthers(fnRow, "nQtyOnHnd")));
@@ -1281,13 +1283,13 @@ public class InvTransferController implements Initializable {
 //                        poTrans.setDetail(pnRow, "sOrderNox", psOrderNox);
                     }                           
                     loadDetail();
-//                    if (!txtDetail03.getText().isEmpty()){
-//                        txtDetail08.requestFocus();
-//                        txtDetail08.selectAll();
-//                    } else{
-//                        txtDetail05.requestFocus();
-//                        txtDetail05.selectAll();
-//                    }
+                    if (!txtDetail03.getText().isEmpty()){
+                        txtDetail08.requestFocus();
+                        txtDetail08.selectAll();
+                    } else{
+                        txtDetail05.requestFocus();
+                        txtDetail05.selectAll();
+                    }
                     break;
                 case 7:
                     txtDetail07.setText(CommonUtils.NumberFormat((Double)poTrans.getDetail(pnRow,"nInvCostx"), "0.00")); 
