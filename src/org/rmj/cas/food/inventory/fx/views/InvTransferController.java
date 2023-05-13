@@ -227,7 +227,7 @@ public class InvTransferController implements Initializable {
         txtField03.setDisable(!lbShow);
         txtField04.setDisable(!lbShow);
         txtField05.setDisable(!lbShow);
-        //txtField06.setDisable(!lbShow);
+//        txtField06.setDisable(!lbShow);
         txtField07.setDisable(!lbShow);
         txtField13.setDisable(!lbShow);
         //txtField18.setDisable(!lbShow);
@@ -238,6 +238,7 @@ public class InvTransferController implements Initializable {
         txtDetail06.setDisable(!lbShow);
         txtDetail10.setDisable(!lbShow);
         txtDetail80.setDisable(!lbShow);
+        txtDetail08.setDisable(!lbShow);
         
         if (lbShow)
             txtField03.requestFocus();
