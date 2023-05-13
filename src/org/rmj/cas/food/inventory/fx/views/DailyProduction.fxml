@@ -103,6 +103,8 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
+            <Label alignment="CENTER_RIGHT" layoutX="546.0" layoutY="91.0" prefHeight="17.0" prefWidth="103.0" text="Exp. Date" />
+            <TextField fx:id="txtDetail061" layoutX="657.0" layoutY="86.0" prefHeight="25.0" prefWidth="149.0" />
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="599.0" prefWidth="90.0" style="-fx-background-color: #686868;" AnchorPane.topAnchor="30.0">

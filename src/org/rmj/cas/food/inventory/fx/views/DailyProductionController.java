@@ -58,7 +58,7 @@ public class DailyProductionController implements Initializable {
     @FXML private TextField txtDetail03;
     @FXML private TextField txtDetail80;
     @FXML private TextField txtDetail05;
-    @FXML private TextField txtDetail04;
+    @FXML private TextField txtDetail04,txtDetail07;
     @FXML private TableView table;
     @FXML private ImageView imgTranStat;
     @FXML private Button btnNew;
@@ -104,7 +104,7 @@ public class DailyProductionController implements Initializable {
         txtDetail04.focusedProperty().addListener(txtDetail_Focus);
         txtDetail05.focusedProperty().addListener(txtDetail_Focus);
         txtDetail06.focusedProperty().addListener(txtDetail_Focus);
-//        txtDetail07.focusedProperty().addListener(txtDetail_Focus);
+        txtDetail07.focusedProperty().addListener(txtDetail_Focus);
         txtDetail80.focusedProperty().addListener(txtDetail_Focus);
         
         txtField01.setOnKeyPressed(this::txtField_KeyPressed);
@@ -117,7 +117,7 @@ public class DailyProductionController implements Initializable {
         txtDetail04.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail05.setOnKeyPressed(this::txtDetail_KeyPressed); 
         txtDetail06.setOnKeyPressed(this::txtDetail_KeyPressed); 
-//        txtDetail07.setOnKeyPressed(this::txtDetail_KeyPressed); 
+        txtDetail07.setOnKeyPressed(this::txtDetail_KeyPressed); 
         txtDetail80.setOnKeyPressed(this::txtDetail_KeyPressed);    
         
         pnEditMode = EditMode.UNKNOWN;    

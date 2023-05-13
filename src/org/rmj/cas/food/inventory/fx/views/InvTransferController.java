@@ -165,7 +165,7 @@ public class InvTransferController implements Initializable {
         txtDetail05.focusedProperty().addListener(txtDetail_Focus);
         txtDetail06.focusedProperty().addListener(txtDetail_Focus);
         txtDetail07.focusedProperty().addListener(txtDetail_Focus);
-//        txtDetail08.focusedProperty().addListener(txtDetail_Focus);
+        txtDetail08.focusedProperty().addListener(txtDetail_Focus);
         txtDetail10.focusedProperty().addListener(txtDetailArea_Focus);
         txtDetail80.focusedProperty().addListener(txtDetail_Focus);
                 
@@ -186,7 +186,7 @@ public class InvTransferController implements Initializable {
         txtDetail05.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail06.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail07.setOnKeyPressed(this::txtDetail_KeyPressed);
-//        txtDetail08.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail08.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail10.setOnKeyPressed(this::txtDetailArea_KeyPressed);
         txtDetail80.setOnKeyPressed(this::txtDetail_KeyPressed);
         
@@ -414,7 +414,7 @@ public class InvTransferController implements Initializable {
                         txtDetail80.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
                         txtDetail06.setText(poTrans.getDetail(pnRow, "nQuantity").toString());
                         txtDetail07.setText(poTrans.getDetail(pnRow, "nInvCostx").toString());
-//                        txtDetail08.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
+                        txtDetail08.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
                         txtOther02.setText(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString());
                         tableDetail.setItems(loadInitData(pnRow));
                     } else {
@@ -422,7 +422,7 @@ public class InvTransferController implements Initializable {
                         txtDetail80.setText("");
                         txtDetail06.setText("");
                         txtDetail07.setText("");
-//                        txtDetail08.setText("");
+                        txtDetail08.setText("");
                         txtOther02.setText("0");
                         tableDetail.setItems(loadEmptyData());
                     }
@@ -588,7 +588,7 @@ public class InvTransferController implements Initializable {
                     
                 } else ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
                 break;
-            case "btnClose":
+            
             case "btnConfirm":
                 if (!psOldRec.equals("")){
                     if(!poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)){
@@ -618,13 +618,14 @@ public class InvTransferController implements Initializable {
                             initGrid();
                             pnEditMode = EditMode.UNKNOWN;
                             initButton(pnEditMode);
-                            ShowMessageFX.Information(null, pxeModuleName, "Transaction Posted successfully.");
+                            ShowMessageFX.Information(null, pxeModuleName, "Transaction Confirmed successfully.");
                         }
                     }
                     
                 } else ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to confirm!");
                 break;
             case "btnExit":
+            case "btnClose":
                 unloadForm();
                 return;
                 
@@ -705,7 +706,7 @@ public class InvTransferController implements Initializable {
         
         //TODO:
         // Order No. and Truck
-        txtField18.setText("");
+//        txtField18.setText("");
         txtField06.setText("");
         
         txtField03.setText(CommonUtils.xsDateMedium((Date) poTrans.getMaster("dTransact")));
@@ -714,7 +715,7 @@ public class InvTransferController implements Initializable {
         
         txtField07.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster("nFreightx").toString()), "0.00"));
         txtField13.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster("nDiscount").toString()), "0.00"));
-        
+        txtField18.setText(poTrans.getMaster(18).toString());
         Label12.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster("nTranTotl").toString()), "#,##0.00"));
         
         pnRow = 0;
