@@ -1436,7 +1436,8 @@ public class MDIMainController implements Initializable {
                 ", a.nEntryNox" + 
                 ", a.sRemarksx" +
                 ", a.cTranStat" +
-                " FROM Product_Request_Master a";
+                " FROM Product_Request_Master a" +
+                " WHERE a.cTranStat IN ('0', '1') " ;
                 
     }
     private String getSQLProductDetail(String sTransnox){

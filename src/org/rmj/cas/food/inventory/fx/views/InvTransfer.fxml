@@ -131,6 +131,12 @@
             </Label>
             <TextField fx:id="txtOther02" alignment="TOP_RIGHT" disable="true" editable="false" layoutX="466.0" layoutY="238.0" prefHeight="27.0" prefWidth="149.0" />
             <TableView fx:id="tableDetail" layoutX="517.0" layoutY="371.0" prefHeight="217.0" prefWidth="308.0" />
+            <TextField fx:id="txtDetail08" alignment="CENTER_RIGHT" disable="true" layoutX="710.0" layoutY="238.0" prefHeight="27.0" prefWidth="118.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="637.0" layoutY="243.0" prefHeight="17.0" prefWidth="69.0" text="Exp. Date">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane layoutY="30.0" prefHeight="596.0" prefWidth="90.0" style="-fx-background-color: #686868;" AnchorPane.topAnchor="30.0">
