@@ -129,7 +129,7 @@ public class InvStockRequestController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new InvRequest(poGRider, poGRider.getBranchCode(), false);
         poTrans.setCallBack(poCallBack);
-        
+        poTrans.setTranStat(1234);
         btnCancel.setOnAction(this::cmdButton_Click);
         btnSearch.setOnAction(this::cmdButton_Click);
         btnSave.setOnAction(this::cmdButton_Click);

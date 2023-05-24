@@ -65,7 +65,8 @@ public class FoodInventoryFX extends Application {
     public final static String pxeInvTransferReg = "InvTransferReg.fxml";
     public final static String pxeInvCountReg = "InvCountReg.fxml";
     public final static String pxeDailyProdReg = "DailyProductionReg.fxml";
-    
+    public final static String pxeStockRequestReg = "InvStockRequestReg.fxml";
+    public final static String pxeProdRequestReg = "InvProdRequestReg.fxml";
     public final static String pxeSerialUpload = "SerialUpload.fxml";
 
     public static GRider poGRider;
