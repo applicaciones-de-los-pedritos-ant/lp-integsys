@@ -81,6 +81,7 @@ public class LetMeIn {
             System.setProperty("pos.clt.dir.ejournal", po_props.getProperty("pos.clt.dir.ejournal"));    
             
             //store info
+            System.setProperty("store.commissary", po_props.getProperty("store.commissary"));
             System.setProperty("store.inventory.type", po_props.getProperty("store.inventory.type"));
             System.setProperty("store.inventory.strict.type", po_props.getProperty("store.inventory.strict.type"));
             

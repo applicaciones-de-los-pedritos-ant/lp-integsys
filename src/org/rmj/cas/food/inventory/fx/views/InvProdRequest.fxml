@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="dataPane" prefHeight="626.0" prefWidth="877.0" stylesheets="@../styles/Parameter.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="dataPane" prefHeight="626.0" prefWidth="877.0" stylesheets="@../styles/Parameter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="30.0" prefWidth="908.0" style="-fx-background-color: #000000;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -40,21 +40,23 @@
       </AnchorPane>
       <AnchorPane fx:id="anchorField" layoutX="90.0" layoutY="16.0" prefHeight="596.0" prefWidth="700.0" style="-fx-background-color: #B3B6B7;" AnchorPane.leftAnchor="90.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
          <children>
-            <Label fx:id="lblHeader" layoutX="111.0" layoutY="78.0" prefHeight="27.0" prefWidth="139.0" style="-fx-background-color: black;" />
-            <TextField fx:id="txtField01" disable="true" editable="false" layoutX="97.0" layoutY="74.0" prefHeight="27.0" prefWidth="149.0">
+            <Label fx:id="lblHeader" layoutX="108.0" layoutY="62.0" prefHeight="27.0" prefWidth="149.0" style="-fx-background-color: black;" />
+            <TextField fx:id="txtField01" disable="true" editable="false" layoutX="102.0" layoutY="54.0" prefHeight="27.0" prefWidth="149.0">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </TextField>
-            <Label layoutY="78.0" text="Transaction No.">
+            <Label layoutX="6.0" layoutY="60.0" text="Transaction No.">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label alignment="CENTER_RIGHT" layoutY="119.0" prefHeight="17.0" prefWidth="90.0" text="Date" />
-            <TextField fx:id="txtField02" disable="true" editable="false" layoutX="97.0" layoutY="115.0" prefHeight="25.0" prefWidth="149.0" />
-            <Label alignment="CENTER_RIGHT" layoutX="2.0" layoutY="150.0" prefHeight="17.0" prefWidth="90.0" text="Remarks" textAlignment="RIGHT" />
-            <TextArea fx:id="txtField07" layoutX="97.0" layoutY="147.0" prefHeight="74.0" prefWidth="262.0" />
+            <Label alignment="CENTER_RIGHT" layoutY="98.0" prefHeight="17.0" prefWidth="90.0" text="Date" />
+            <TextField fx:id="txtField02" disable="true" editable="false" layoutX="102.0" layoutY="94.0" prefHeight="25.0" prefWidth="149.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="1.0" layoutY="139.0" prefHeight="17.0" prefWidth="90.0" text="Request To" />
+            <TextField fx:id="txtField11" layoutX="102.0" layoutY="135.0" prefHeight="27.0" prefWidth="262.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="2.0" layoutY="168.0" prefHeight="17.0" prefWidth="90.0" text="Remarks" textAlignment="RIGHT" />
+            <TextArea fx:id="txtField07" layoutX="102.0" layoutY="165.0" prefHeight="74.0" prefWidth="262.0" />
             <Label alignment="CENTER_RIGHT" layoutX="383.0" layoutY="119.0" prefHeight="17.0" prefWidth="69.0" text="Barcode" />
             <TextField fx:id="txtDetail01" layoutX="460.0" layoutY="115.0" prefHeight="27.0" prefWidth="183.0" promptText="Press F3 to search" />
             <Label alignment="CENTER_RIGHT" layoutX="383.0" layoutY="150.0" prefHeight="17.0" prefWidth="69.0" text="Description" />
@@ -71,7 +73,7 @@
                </font>
             </Label>
             <TextField fx:id="txtDetail07" alignment="CENTER_RIGHT" layoutX="682.0" layoutY="175.0" prefHeight="27.0" prefWidth="90.0" />
-            <TableView fx:id="table" layoutX="73.0" layoutY="245.0" onMouseClicked="#table_Clicked" prefHeight="332.0" prefWidth="673.0" stylesheets="@../styles/Tables.css" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="50.0">
+            <TableView fx:id="table" layoutX="100.0" layoutY="254.0" onMouseClicked="#table_Clicked" prefHeight="332.0" prefWidth="673.0" stylesheets="@../styles/Tables.css" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="50.0">
                <columns>
                   <TableColumn fx:id="index01" maxWidth="30.0" prefWidth="30.0" text="NO" />
                   <TableColumn fx:id="index02" maxWidth="220.0" prefWidth="250.0" text="BARCODE" />
