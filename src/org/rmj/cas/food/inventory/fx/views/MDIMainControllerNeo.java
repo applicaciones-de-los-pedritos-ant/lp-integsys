@@ -96,6 +96,8 @@ public class MDIMainControllerNeo implements Initializable {
     @FXML private MenuItem mnuPOReceiving;
     @FXML private MenuItem mnuDailyProductionFG;
     @FXML private MenuItem mnuDailyProductionRM;
+    @FXML private MenuItem mnu_InvStockReqReg;
+    @FXML private MenuItem mnu_InvProdReqReg;
     @FXML private MenuItem mnuStocks;
     @FXML private CheckMenuItem chkLight;
     @FXML private MenuItem mnu_StockRequest;
@@ -335,7 +337,16 @@ p_nLocation = MouseInfo.getPointerInfo().getLocation();
 //        setDataPane(fadeAnimate(FoodInventoryFX.pxeInventory));
         loadScene(FoodInventoryFX.pxeInventory);
     }
-    
+        @FXML
+    private void mnu_InvStockRequestRegClick(ActionEvent event)throws IOException {
+//        setDataPane(fadeAnimate(FoodInventoryFX.pxeDailyProdReg));
+        loadScene(FoodInventoryFX.pxeStockRequestReg);
+    }
+    @FXML
+    private void mnu_InvProdReqRegClick(ActionEvent event)throws IOException {
+//        setDataPane(fadeAnimate(FoodInventoryFX.pxeDailyProdReg));
+        loadScene(FoodInventoryFX.pxeProdRequestReg);
+    }
     @FXML
     private void mnuInvLocation_Click(ActionEvent event) throws IOException {
         showParameter("InventoryLocation");
@@ -622,6 +633,18 @@ p_nLocation = MouseInfo.getPointerInfo().getLocation();
                 
                 return loProdRequestObj;
                 
+            case FoodInventoryFX.pxeStockRequestReg:
+                InvStockRequestRegController loStockRequestRegObj = new InvStockRequestRegController();
+                loStockRequestRegObj.setGRider(poGRider);
+                
+                return loStockRequestRegObj;
+                
+            case FoodInventoryFX.pxeProdRequestReg:
+                InvProdRequestRegController loProdRequestRegObj = new InvProdRequestRegController();
+                loProdRequestRegObj.setGRider(poGRider);
+                
+                return loProdRequestRegObj;
+                   
             default:
                 return null;
         }

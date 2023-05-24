@@ -98,6 +98,8 @@ public class MDIMainController implements Initializable {
     @FXML private MenuItem mnuStocks;
     @FXML private CheckMenuItem chkLight;
     @FXML private MenuItem mnu_StockRequest;
+    @FXML private MenuItem mnu_InvStockReqReg;
+    @FXML private MenuItem mnu_InvProdReqReg;
     @FXML private MenuItem mnu_InventoryTransfer;
     @FXML private MenuItem mnu_inventoryCount;
 //    @FXML private MenuItem mnu_DailyProduction;
@@ -621,6 +623,18 @@ public class MDIMainController implements Initializable {
                 
                 return loProdRequestObj;
                 
+            case FoodInventoryFX.pxeStockRequestReg:
+                InvStockRequestRegController loStockRequestRegObj = new InvStockRequestRegController();
+                loStockRequestRegObj.setGRider(poGRider);
+                
+                return loStockRequestRegObj;
+                
+            case FoodInventoryFX.pxeProdRequestReg:
+                InvProdRequestRegController loProdRequestRegObj = new InvProdRequestRegController();
+                loProdRequestRegObj.setGRider(poGRider);
+                
+                return loProdRequestRegObj;
+                
             default:
                 return null;
         }
@@ -718,6 +732,16 @@ public class MDIMainController implements Initializable {
         loadScene(FoodInventoryFX.pxeDailyProdReg);
     }
 
+    @FXML
+    private void mnu_InvStockRequestRegClick(ActionEvent event)throws IOException {
+//        setDataPane(fadeAnimate(FoodInventoryFX.pxeDailyProdReg));
+        loadScene(FoodInventoryFX.pxeStockRequestReg);
+    }
+    @FXML
+    private void mnu_InvProdReqRegClick(ActionEvent event)throws IOException {
+//        setDataPane(fadeAnimate(FoodInventoryFX.pxeDailyProdReg));
+        loadScene(FoodInventoryFX.pxeProdRequestReg);
+    }
     @FXML
     private void menu_TransferPostingClick(ActionEvent event)throws IOException {
 //        setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransPosting));

@@ -510,6 +510,30 @@
                                  </font>
                               </Button>
                            </graphic></MenuItem>
+                        <MenuItem fx:id="mnu_InvStockReqReg" mnemonicParsing="false" onAction="#mnu_InvStockRequestRegClick" text="Stock Request">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="SLIDERS" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem fx:id="mnu_InvProdReqReg" mnemonicParsing="false" onAction="#mnu_InvProdReqRegClick" text="Product Request">
+                           <graphic>
+                              <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="SLIDERS" size="14" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="1.0" />
+                                 </font>
+                              </Button>
+                           </graphic>
+                        </MenuItem>
                         <MenuItem fx:id="mnu_InvTransReg" mnemonicParsing="false" onAction="#mnu_InvTransRegClick" text="Inventory Transfer">
                            <graphic>
                               <Button graphicTextGap="2.0" mnemonicParsing="false">

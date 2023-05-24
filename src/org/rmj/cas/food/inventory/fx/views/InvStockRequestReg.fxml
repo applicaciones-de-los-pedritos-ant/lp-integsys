@@ -51,40 +51,35 @@
                </font>
             </Label>
             <Label alignment="CENTER_RIGHT" layoutY="119.0" prefHeight="17.0" prefWidth="90.0" text="Date" />
-            <TextField fx:id="txtField03" layoutX="97.0" layoutY="115.0" prefHeight="25.0" prefWidth="149.0" />
+            <TextField fx:id="txtField02" layoutX="97.0" layoutY="115.0" prefHeight="25.0" prefWidth="149.0" />
             <Label alignment="CENTER_RIGHT" layoutY="147.0" prefHeight="17.0" prefWidth="90.0" text="Branch" textAlignment="RIGHT" />
-            <TextField fx:id="txtField04" layoutX="97.0" layoutY="143.0" prefHeight="27.0" prefWidth="262.0" promptText="Press F3 to search" />
+            <TextField fx:id="txtField03" layoutX="97.0" layoutY="143.0" prefHeight="27.0" prefWidth="262.0" />
             <Label alignment="CENTER_RIGHT" layoutY="175.0" prefHeight="17.0" prefWidth="90.0" text="Inventory Type" textAlignment="RIGHT" />
-            <TextField fx:id="txtField06" disable="true" layoutX="97.0" layoutY="171.0" prefHeight="27.0" prefWidth="149.0" promptText="Press F3 to search" />
-            <Label alignment="CENTER_RIGHT" layoutY="199.0" prefHeight="17.0" prefWidth="90.0" text="Notes" />
-            <Label alignment="CENTER_RIGHT" layoutY="282.0" prefHeight="17.0" prefWidth="90.0" text="Remarks" textAlignment="RIGHT" />
-            <TextArea fx:id="txtField05" layoutX="97.0" layoutY="283.0" prefHeight="80.0" prefWidth="262.0" />
-            <Label alignment="CENTER_RIGHT" layoutX="384.0" layoutY="121.0" prefHeight="17.0" prefWidth="69.0" text="Order No." />
-            <TextField fx:id="txtDetail05" layoutX="460.0" layoutY="117.0" prefHeight="27.0" prefWidth="118.0" promptText="Press F3 to search" />
+            <TextField fx:id="txtField04" disable="true" layoutX="97.0" layoutY="171.0" prefHeight="27.0" prefWidth="149.0" />
+            <Label alignment="CENTER_RIGHT" layoutY="203.0" prefHeight="17.0" prefWidth="90.0" text="Reference No" textAlignment="RIGHT" />
+            <TextField fx:id="txtField05" layoutX="97.0" layoutY="199.0" prefHeight="25.0" prefWidth="149.0" />
+            <Label alignment="CENTER_RIGHT" layoutY="229.0" prefHeight="17.0" prefWidth="90.0" text="Notes" />
+            <TextArea fx:id="txtField06" layoutX="97.0" layoutY="228.0" prefHeight="60.0" prefWidth="262.0" />
+            <Label alignment="CENTER_RIGHT" layoutY="290.0" prefHeight="17.0" prefWidth="90.0" text="Remarks" textAlignment="RIGHT" />
+            <TextArea fx:id="txtField07" layoutX="97.0" layoutY="289.0" prefHeight="74.0" prefWidth="262.0" />
             <Label alignment="CENTER_RIGHT" layoutX="380.0" layoutY="148.0" prefHeight="17.0" prefWidth="69.0" text="Barcode" />
-            <TextField fx:id="txtDetail03" layoutX="460.0" layoutY="145.0" prefHeight="27.0" prefWidth="183.0" promptText="Press F3 to search" />
+            <TextField fx:id="txtDetail01" layoutX="460.0" layoutY="145.0" prefHeight="27.0" prefWidth="183.0" />
             <Label alignment="CENTER_RIGHT" layoutX="379.0" layoutY="175.0" prefHeight="17.0" prefWidth="69.0" text="Description" />
-            <TextField fx:id="txtDetail80" layoutX="460.0" layoutY="173.0" prefHeight="27.0" prefWidth="183.0" promptText="Press F3 to search" />
-            <TextArea fx:id="txtDetail10" layoutX="460.0" layoutY="201.0" prefHeight="49.0" prefWidth="363.0" />
+            <TextField fx:id="txtDetail02" layoutX="460.0" layoutY="173.0" prefHeight="27.0" prefWidth="183.0" />
             <Label alignment="CENTER_RIGHT" layoutX="379.0" layoutY="200.0" prefHeight="17.0" prefWidth="69.0" text="Notes" />
-            <Label alignment="CENTER_RIGHT" layoutX="379.0" layoutY="255.0" prefHeight="17.0" prefWidth="69.0" text="Issue Qty">
+            <TextArea fx:id="txtDetail03" layoutX="460.0" layoutY="201.0" prefHeight="49.0" prefWidth="363.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="383.0" layoutY="255.0" prefHeight="17.0" prefWidth="66.0" text="On Hand">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="txtDetail04" layoutX="460.0" layoutY="251.0" prefHeight="25.0" prefWidth="149.0" promptText="Press F3 to search" />
-            <Label alignment="CENTER_RIGHT" layoutX="621.0" layoutY="255.0" prefHeight="17.0" prefWidth="69.0" text="On Transit">
+            <TextField fx:id="txtDetail05" alignment="TOP_RIGHT" disable="true" editable="false" layoutX="460.0" layoutY="251.0" prefHeight="27.0" prefWidth="149.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="625.0" layoutY="257.0" prefHeight="17.0" prefWidth="69.0" text="Qty">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="txtDetail07" alignment="CENTER_RIGHT" disable="true" editable="false" layoutX="706.0" layoutY="251.0" prefHeight="27.0" prefWidth="118.0" />
-            <Label alignment="CENTER_RIGHT" layoutX="626.0" layoutY="285.0" prefHeight="17.0" prefWidth="69.0" text="Order Qty">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <TextField fx:id="txtDetail06" alignment="CENTER_RIGHT" layoutX="706.0" layoutY="279.0" prefHeight="27.0" prefWidth="118.0" />
+            <TextField fx:id="txtDetail07" alignment="CENTER_RIGHT" layoutX="705.0" layoutY="251.0" prefHeight="27.0" prefWidth="118.0" />
             <TableView fx:id="table" layoutX="11.0" layoutY="373.0" onMouseClicked="#table_Clicked" prefHeight="217.0" prefWidth="813.0" stylesheets="@../styles/Tables.css" />
             <Separator layoutX="372.0" layoutY="42.0" orientation="VERTICAL" prefHeight="329.0" prefWidth="1.0" style="-fx-background-color: black;" />
             <ImageView fx:id="imgTranStat" fitHeight="35.0" fitWidth="158.0" layoutX="657.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true" />
@@ -100,57 +95,26 @@
                </font>
             </Label>
             <TextField fx:id="txtField51" layoutX="437.0" layoutY="6.0" prefHeight="27.0" prefWidth="262.0" promptText="Press F3 to search" />
-            <Label layoutX="356.0" layoutY="10.0" text="Destination">
+            <Label layoutX="387.0" layoutY="10.0" text="Branch">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label alignment="CENTER_RIGHT" layoutX="383.0" layoutY="283.0" prefHeight="17.0" prefWidth="66.0" text="On Hand">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <TextField fx:id="txtOther02" alignment="TOP_RIGHT" disable="true" editable="false" layoutX="460.0" layoutY="279.0" prefHeight="27.0" prefWidth="149.0" />
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="596.0" prefWidth="90.0" style="-fx-background-color: #686868;" AnchorPane.topAnchor="30.0">
          <children>
-            <Button fx:id="btnNew" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="56.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="New" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
-               <graphic>
-                  <FontAwesomeIconView glyphName="FILE_ALT" size="30" />
-               </graphic>
-            </Button>
-            <Button fx:id="btnSave" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="62.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Save" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
-               <graphic>
-                  <FontAwesomeIconView glyphName="FLOPPY_ALT" size="30" />
-               </graphic>
-            </Button>
-            <Button fx:id="btnCancel" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="194.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Cancel" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="180.0">
-               <graphic>
-                  <FontAwesomeIconView glyphName="SIGN_OUT" size="30" />
-               </graphic>
-            </Button>
-            <Button fx:id="btnClose" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="192.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Close" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="180.0">
+            <Button fx:id="btnClose" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="120.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Close" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="120.0">
                <graphic>
                   <FontAwesomeIconView glyphName="POWER_OFF" size="30" />
                </graphic>
             </Button>
-            <Button fx:id="btnSearch" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="1.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Search" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <graphic>
-                  <FontAwesomeIconView glyphName="SEARCH" size="30" />
-               </graphic>
-            </Button>
-            <Button fx:id="btnPrint" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="129.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Print" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="120.0">
+            <Button fx:id="btnPrint" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Print" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
                <graphic>
                   <FontAwesomeIconView glyphName="PRINT" size="30" />
                </graphic>
             </Button>
-            <Button fx:id="btnDel" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="127.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Del. Detail" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="120.0">
-               <graphic>
-                  <FontAwesomeIconView glyphName="DEDENT" size="30" />
-               </graphic>
-            </Button>
-            <Button fx:id="btnBrowse" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="1.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Browse" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Button fx:id="btnBrowse" alignment="BOTTOM_CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Browse" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <graphic>
                   <FontAwesomeIconView glyphName="FOLDER_OPEN" size="30" />
                </graphic>
@@ -158,6 +122,5 @@
             <Separator maxWidth="1.0" minWidth="1.0" orientation="VERTICAL" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <TextArea fx:id="txtField051" layoutX="187.0" layoutY="230.0" prefHeight="80.0" prefWidth="262.0" />
    </children>
 </AnchorPane>
