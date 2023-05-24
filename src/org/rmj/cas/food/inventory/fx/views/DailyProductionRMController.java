@@ -2,10 +2,7 @@ package org.rmj.cas.food.inventory.fx.views;
 
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import java.math.BigDecimal;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Date;
@@ -16,18 +13,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -40,13 +34,10 @@ import javafx.scene.layout.AnchorPane;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.appdriver.constants.TransactionStatus;
 import org.rmj.appdriver.GRider;
-import org.rmj.appdriver.MiscUtil;
-import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.inventory.production.base.DailyProductionRM;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
-import sun.misc.FloatingDecimal;
 
 public class DailyProductionRMController implements Initializable {
 
@@ -196,10 +187,9 @@ public class DailyProductionRMController implements Initializable {
     @FXML
     private void table_Clicked(MouseEvent event) {
         pnRow = table.getSelectionModel().getSelectedIndex();
-        p_bTableFocus = true;
-        p_bRawFocus = false;
+
         if (pnRow < 0) return;
-//        setDetailInfo(pnRow); 
+        
         txtDetail80.requestFocus();
         txtDetail80.selectAll();
     }
@@ -213,8 +203,6 @@ public class DailyProductionRMController implements Initializable {
     
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
-    private boolean p_bTableFocus = false;
-    private boolean p_bRawFocus = false;
     
     private final String pxeDateFormat = "yyyy-MM-dd";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
@@ -539,12 +527,8 @@ public class DailyProductionRMController implements Initializable {
             case "btnDel":  
                 if(table.getSelectionModel().getSelectedItem() != null){
                     if(ShowMessageFX.OkayCancel(null, pxeModuleName, "Do you want to remove this item?") == true){
-                        if(p_bTableFocus== true){
-//                            poTrans.deleteDetail(pnRow);
-                            loadDetail(); 
-                        }else if(p_bRawFocus == true){
-                            poTrans.deleteDetail(pnRawdata);
-                        }
+                        poTrans.deleteDetail(pnRow);                            
+                        loadDetail();
                     }
                 }else{
                      ShowMessageFX.Warning(null, pxeModuleName, "Please select item to remove!");
@@ -580,8 +564,7 @@ public class DailyProductionRMController implements Initializable {
         psOldRec = "";
         psTransNox = "";
         psdTransact = "";
-        p_bRawFocus = false;
-        p_bTableFocus = false;
+
         data.clear();
         rawData.clear();
     }
@@ -689,7 +672,6 @@ public class DailyProductionRMController implements Initializable {
                     if (poTrans.SearchDetail(pnRow, 3, lsValue, true, true)){
                         txtDetail03.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
                         txtDetail80.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
-//                        txtDetail02.setText(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString());
                     } else {
                         txtDetail03.setText("");
                         txtDetail80.setText("");
@@ -701,7 +683,6 @@ public class DailyProductionRMController implements Initializable {
                     if (poTrans.SearchDetail(pnRow, 3, lsValue, false, false)){
                         txtDetail03.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
                         txtDetail80.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
-//                        txtDetail02.setText(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString());
                     } else {
                         txtDetail02.setText("0");
                         txtDetail03.setText("");
@@ -724,8 +705,6 @@ public class DailyProductionRMController implements Initializable {
     }
     
     private void unloadForm(){
-//        VBox myBox = (VBox) VBoxForm.getParent();
-//        myBox.getChildren().clear();
         dataPane.getChildren().clear();
         dataPane.setStyle("-fx-border-color: transparent");
     }
@@ -779,161 +758,9 @@ public class DailyProductionRMController implements Initializable {
             table.getFocusModel().focus(lnRow -1);
             
             pnRow = table.getSelectionModel().getSelectedIndex();           
-//            setDetailInfo(pnRow);
         }
     }
        
-//    private void setDetailInfo(int fnRow){
-//        if (!poTrans.getDetail(fnRow, "sStockIDx").equals("")){
-//            txtDetail03.setText((String) poTrans.getDetailOthers(pnRow, "sBarCodex"));
-//            txtDetail80.setText((String) poTrans.getDetailOthers(pnRow, "sDescript"));
-//            txtDetail06.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
-//            txtDetail04.setText(String.valueOf(poTrans.getDetail(pnRow, "nQuantity")));
-//            txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, "nGoalQtyx")));
-//        } else{
-//            txtDetail03.setText("");
-//            txtDetail04.setText("0");
-//            txtDetail05.setText("0");
-//            txtDetail06.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
-//            txtDetail80.setText("");
-//        }
-//    }
-    
-
-//    /**
-//     * for handling of editable table view and passing of parameters to setters.
-//     */
-//    private void initRawData(){
-//        TableColumn index01 = new TableColumn("No.");
-//        
-//        TableColumn<RawTable, String> index02 = new TableColumn<RawTable, String>("Barcode");
-//        index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index02"));
-//        index02.setCellFactory(TextFieldTableCell.forTableColumn());
-//        index02.setOnEditCommit(new EventHandler<CellEditEvent<RawTable, String>>() {
-//            @Override
-//            public void handle(CellEditEvent<RawTable, String> event) {
-//             RawTable tableModel = event.getRowValue();
-//             tableModel.setIndex02(event.getNewValue());
-//                if (poTrans.SearchInv(pnRawdata, 3, tableModel.getIndex02(), true, true)){
-//                    tableModel.setIndex02(poTrans.getInvOthers(pnRawdata, "sBarCodex").toString());
-//                    tableModel.setIndex03(poTrans.getInvOthers(pnRawdata, "sDescript").toString());
-//                    tableModel.setIndex04(poTrans.getInvOthers(pnRawdata, "sMeasurNm").toString());
-//                }
-//                loadRawDetail();
-//            }
-//        });
-//        
-//        TableColumn<RawTable, String> index03 = new TableColumn<RawTable, String>("Description");
-//        index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index03"));
-//        index03.setCellFactory(TextFieldTableCell.forTableColumn());
-//        index03.setOnEditCommit(new EventHandler<CellEditEvent<RawTable, String>>() {
-//            @Override
-//            public void handle(CellEditEvent<RawTable, String> event) {
-//                RawTable tableModel = event.getRowValue();
-//                tableModel.setIndex03(event.getNewValue());
-//                if (poTrans.SearchInv(pnRawdata, 3, tableModel.getIndex03(), false, false)){
-//                    tableModel.setIndex02(poTrans.getInvOthers(pnRawdata, "sBarCodex").toString());
-//                    tableModel.setIndex03(poTrans.getInvOthers(pnRawdata, "sDescript").toString());
-//                    tableModel.setIndex04(poTrans.getInvOthers(pnRawdata, "sMeasurNm").toString());
-//                }
-//                loadRawDetail();
-//            }
-//        });
-//        
-//        TableColumn<RawTable, String> index04 = new TableColumn<RawTable, String>("M.");
-//        index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index04"));
-////        index04.setCellFactory(TextFieldTableCell.forTableColumn());
-////        index04.setOnEditCommit(new EventHandler<CellEditEvent<RawTable, String>>() {
-////            @Override
-////            public void handle(CellEditEvent<RawTable, String> event) {
-////                RawTable tableModel = event.getRowValue();
-////                tableModel.setIndex04(event.getNewValue());
-////                poTrans.setInv(pnRawdata, "sMeasurNm" , Integer.valueOf(tableModel.getIndex04()));
-////                loadRawDetail();
-////            }
-////        });
-//        
-//        TableColumn<RawTable, String> index05 = new TableColumn<RawTable, String>("RcQty");
-//        index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index05"));
-//        index05.setCellFactory(TextFieldTableCell.forTableColumn());
-//        index05.setOnEditCommit(new EventHandler<CellEditEvent<RawTable, String>>() {
-//            @Override
-//            public void handle(CellEditEvent<RawTable, String> event) {
-//                RawTable tableModel = event.getRowValue();
-//                tableModel.setIndex05(event.getNewValue());
-//                poTrans.setInv(pnRawdata, "nQtyReqrd" , Double.valueOf(tableModel.getIndex05()));
-//                loadRawDetail();
-//            }
-//        });
-//        
-//        TableColumn<RawTable, String> index06 = new TableColumn<RawTable, String>("UsQty");
-//        index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index06"));
-//        index06.setCellFactory(TextFieldTableCell.forTableColumn());
-//        index06.setOnEditCommit(new EventHandler<CellEditEvent<RawTable, String>>() {
-//            @Override
-//            public void handle(CellEditEvent<RawTable, String> event) {
-//                RawTable tableModel = event.getRowValue();
-//                tableModel.setIndex06(event.getNewValue());
-//                poTrans.setInv(pnRawdata, "nQtyUsedx" , Double.valueOf(tableModel.getIndex05()));
-//                if (Double.valueOf(tableModel.getIndex06()) > 0){
-//                    poTrans.addInv();
-//                } 
-//                loadRawDetail();
-//            }
-//        });
-//        
-//        index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index01"));
-//        
-//        index01.setPrefWidth(40); index01.setStyle("-fx-alignment: CENTER;");
-//        index02.setPrefWidth(70);
-//        index03.setPrefWidth(120); 
-//        index04.setPrefWidth(40); index04.setStyle("-fx-alignment: CENTER;");
-//        index05.setPrefWidth(40); index05.setStyle("-fx-alignment: CENTER;");
-//        index06.setPrefWidth(40); index06.setStyle("-fx-alignment: CENTER;");
-//        
-//        index01.setSortable(false); index01.setResizable(false);
-//        index02.setSortable(false); index02.setResizable(false);
-//        index03.setSortable(false); index03.setResizable(false);
-//        index04.setSortable(false); index04.setResizable(false);
-//        index05.setSortable(false); index05.setResizable(false);
-//        index06.setSortable(false); index06.setResizable(false);
-//        
-//        table1.getColumns().clear();        
-//        table1.getColumns().add(index01);
-//        table1.getColumns().add(index02);
-//        table1.getColumns().add(index03);
-//        table1.getColumns().add(index04);
-//        table1.getColumns().add(index05);
-//        table1.getColumns().add(index06);
-//        
-//        /*making column's position uninterchangebale*/
-//        table1.widthProperty().addListener(new ChangeListener<Number>() {  
-//            public void changed(ObservableValue<? extends Number> source, Number oldWidth, Number newWidth)
-//            {
-//                TableHeaderRow header = (TableHeaderRow) table1.lookup("TableHeaderRow");
-//                header.reorderingProperty().addListener(new ChangeListener<Boolean>() {
-//                    @Override
-//                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-//                        header.setReordering(false);
-//                            }
-//                        });
-//                    }
-//                });
-//        
-//        table1.getColumns().clear();  
-//        table1.getColumns().add(index01);
-//        table1.getColumns().add(index02);
-//        table1.getColumns().add(index03);
-//        table1.getColumns().add(index04);
-//        table1.getColumns().add(index05);
-//        table1.getColumns().add(index06);
-//
-//        table1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-//        
-//        /*Set data source to table*/
-//        table1.setItems(rawData);
-//    }
-    
     private void setTranStat(String fsValue){
         switch (fsValue){
             case "0":
@@ -961,25 +788,11 @@ public class DailyProductionRMController implements Initializable {
         public void DetailRetreive(int fnIndex) {
             switch(fnIndex){
                 case 6:
-                    /*get the value from the class*/
-//                    txtDetail06.setText(CommonUtils.xsDateLong((Date)poTrans.getDetail(pnRow,"dExpiryDt")));
                     break;
                 case 4:
-//                    txtDetail04.setText(String.valueOf(poTrans.getDetail(pnRow,"nQuantity")));
-                
-                    loadDetail();
-//                    if (!poTrans.getDetail(poTrans.ItemCount()- 1, "sStockIDx").toString().isEmpty() && 
-//                            Double.valueOf(poTrans.getDetail(poTrans.ItemCount()- 1, fnIndex).toString()) > 0){
-//                        poTrans.addDetail();
-//                        pnRow = poTrans.ItemCount()-1;
-//
-//                        //set the previous order numeber to the new ones.
-//                        //poTrans.setDetail(pnRow, "sOrderNox", psOrderNox);
-//                    } 
-                    
                     loadDetail();
                     
-                     if (!txtDetail03.getText().isEmpty()){
+                    if (!txtDetail03.getText().isEmpty()){
                         txtDetail04.requestFocus();
                         txtDetail04.selectAll();
                     } else{
@@ -1001,81 +814,7 @@ public class DailyProductionRMController implements Initializable {
         }
     }
 
-//    @FXML
-//    private void tableRaw_Clicked(MouseEvent event) {
-//////       pnRawdata   = table1.getSelectionModel().getSelectedIndex();
-//       p_bTableFocus = false;
-//       p_bRawFocus = true;
-//       if(pnRawdata < 0) return;
-//       
-//       tableData.setItems(getRecordData(pnRawdata));
-//        if(!pbFound){
-//            addDetailData(pnlRow);
-//        }
-//    }
-    /**
-     * to handle adding of empty data base on date expiration
-     * @param fnRow 
-     */
-    private void addDetailData(int fnRow){
-        if (poTrans.getDetail(pnRawdata, "sStockIDx").equals("")) return;
-        
-        TableModel newData = new TableModel();
-        newData.setIndex01(String.valueOf(fnRow + 1));
-        newData.setIndex02(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRawdata, "dExpiryDt")));
-        newData.setIndex03("0");
-        newData.setIndex04(String.valueOf(poTrans.getDetail(pnRawdata, "nQtyUsedx")));
-        newData.setIndex05("");
-        newData.setIndex06("");
-        newData.setIndex07("");
-        newData.setIndex08("");
-        newData.setIndex09("");
-        newData.setIndex10("");
-        
-        index02.setSortType(TableColumn.SortType.ASCENDING);
-    }
-
     @FXML
-    private void tableData_Clicked(MouseEvent event) {
-        
+    private void tableData_Clicked(MouseEvent event) { 
     }
-    
-//    private ObservableList getRecordData(int fnRow){
-//        ObservableList dataDetail = FXCollections.observableArrayList();
-//        ResultSet loRS = null;
-//        
-//        loRS = getExpiration((String)poTrans.getInv(fnRow, "sStockIDx"));
-//        double lnQuantity = 0;
-//        pnlRow = 0;
-//        pbFound = false;
-//        
-//        try {
-//                dataDetail.clear();
-//                loRS.first();
-//                    for( int rowCount = 0; rowCount <= MiscUtil.RecordCount(loRS) -1; rowCount++){
-//                        if (CommonUtils.xsDateShort(loRS.getDate("dExpiryDt")).equals(CommonUtils.xsDateShort((Date) poTrans.getInv(fnRow, "dExpiryDt")))){
-//                            if(!pbFound) pbFound = true;
-//                            lnQuantity = Double.valueOf(poTrans.getInv(fnRow, "nQtyUsedx").toString());
-//                        }else{
-//                            lnQuantity = 0;
-//                        }
-//                    dataDetail.add(new TableModel(String.valueOf(rowCount +1),
-//                        String.valueOf(CommonUtils.xsDateMedium(loRS.getDate("dExpiryDt"))),
-//                        String.valueOf(loRS.getDouble("nQtyOnHnd")),
-//                        String.valueOf(lnQuantity),
-//                        String.valueOf((double) loRS.getDouble("nQtyOnHnd") - (double) lnQuantity),
-//                        "",
-//                        "",
-//                        "",
-//                        "",
-//                        ""
-//                    ));
-//                    pnlRow++;
-//                    loRS.next();
-//                }
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
-//        return dataDetail;
-//    }
 }

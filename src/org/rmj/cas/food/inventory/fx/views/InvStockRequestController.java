@@ -50,7 +50,6 @@ import org.json.simple.JSONObject;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.appdriver.constants.TransactionStatus;
 import org.rmj.appdriver.GRider;
-import org.rmj.appdriver.MiscUtil;
 import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
@@ -360,17 +359,12 @@ public class InvStockRequestController implements Initializable {
                         txtDetail01.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
                         txtDetail02.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
                         txtDetail03.setText("");
-//                        txtDetail04.setText(poTrans.getDetail(pnRow, "nIssueQty").toString());
                         txtDetail05.setText(poTrans.getDetail(pnRow, "nQtyOnHnd").toString());
-//                        txtDetail06.setText(poTrans.getDetail(pnRow, "nOnTranst").toString());
                         txtDetail07.setText("0");
                     } else {
                         txtDetail01.setText("");
                         txtDetail02.setText("");
-                        txtDetail03.setText("");
-//                        txtDetail04.setText("0");
                         txtDetail05.setText("0");
-//                        txtDetail06.setText("0");
                         txtDetail07.setText("0");
                     }
                     
@@ -380,23 +374,17 @@ public class InvStockRequestController implements Initializable {
                     } else{
                         txtDetail02.requestFocus();
                         txtDetail02.selectAll();
-                    }
-//                    
+                    }           
                     break;
                 case 2: /*Description Search*/                   
                     if (poTrans.SearchDetail(pnRow, 2, lsValue, false, false)){
                         txtDetail01.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
                         txtDetail02.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
-//                        txtDetail04.setText(poTrans.getDetail(pnRow, "nIssueQty").toString());
                         txtDetail05.setText(poTrans.getDetail(pnRow, "nQtyOnHnd").toString());
-//                        txtDetail06.setText(poTrans.getDetail(pnRow, "nOnTranst").toString());
                         txtDetail07.setText("0");
                     } else {
                         txtDetail01.setText("");
-                        
-//                        txtDetail04.setText("0");
                         txtDetail05.setText("0");
-//                        txtDetail06.setText("0");
                         txtDetail07.setText("0");
                     }
                     
@@ -412,15 +400,9 @@ public class InvStockRequestController implements Initializable {
                 case 80: /*Description Search*/
                     if (poTrans.SearchDetail(pnRow, 3, lsValue, true, false)){
                         txtDetail03.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
-                        
-//                        txtDetail06.setText(poTrans.getDetail(pnRow, "nQuantity").toString());
                         txtDetail07.setText(poTrans.getDetail(pnRow, "nInvCostx").toString());
-                        
-//                        txtDetail08.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
                     } else {
                         txtDetail03.setText("");
-                        
-//                        txtDetail06.setText("");
                         txtDetail07.setText("");
                     }
                     
@@ -433,17 +415,6 @@ public class InvStockRequestController implements Initializable {
                     }
                     
                     break;
-//                case 4:
-//                    if (poTrans.SearchDetail(pnRow, 4, lsValue, false, false)){
-//                        txtDetail.setText(poTrans.getDetailOthers(pnRow, "sOrigCode").toString());
-//                        loadDetail();
-//                    }
-//                    else 
-//                        txtDetail.setText("");
-//                    
-//                    break;
-//                case 5:
-//                    break;
             }
         }
         

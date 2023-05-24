@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,9 +71,7 @@ public class InvProdRequestController implements Initializable {
     @FXML
     private TextArea txtField07;
     @FXML
-    private TextField       txtField01,txtField02,
-                        txtDetail01,txtDetail02,txtDetail05,txtDetail07,
-                    txtField50;
+    private TextField txtField01, txtField02, txtDetail01, txtDetail02, txtDetail05, txtDetail07, txtField50;
     @FXML
     private TableView table;
     @FXML
@@ -106,11 +103,13 @@ public class InvProdRequestController implements Initializable {
     private String psOldRec = "";
     private boolean pbFound;
     private int pnlRow=0;
+    @FXML
+    private TextField txtField11;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new ProductionRequest(poGRider, poGRider.getBranchCode(), false);
-//        poTrans.setCallBack(poCallBack);
+        poTrans.setTranStat(10);
         
         btnCancel.setOnAction(this::cmdButton_Click);
         btnSearch.setOnAction(this::cmdButton_Click);
@@ -122,13 +121,12 @@ public class InvProdRequestController implements Initializable {
         btnClose.setOnAction(this::cmdButton_Click);
         btnExit.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
-        
-
             
         txtField01.focusedProperty().addListener(txtField_Focus);
         txtField02.focusedProperty().addListener(txtField_Focus);
         txtField07.focusedProperty().addListener(txtArea_Focus);
         txtField50.focusedProperty().addListener(txtField_Focus);
+        txtField11.focusedProperty().addListener(txtField_Focus);
         
         txtDetail01.focusedProperty().addListener(txtDetail_Focus);
         txtDetail02.focusedProperty().addListener(txtDetail_Focus);
@@ -140,6 +138,7 @@ public class InvProdRequestController implements Initializable {
         txtField02.setOnKeyPressed(this::txtField_KeyPressed);
         txtField07.setOnKeyPressed(this::txtFieldArea_KeyPressed);
         txtField50.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField11.setOnKeyPressed(this::txtField_KeyPressed);
         
         txtDetail01.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail02.setOnKeyPressed(this::txtDetail_KeyPressed);
@@ -185,17 +184,13 @@ public class InvProdRequestController implements Initializable {
         txtDetail01.setDisable(!lbShow);
         txtDetail02.setDisable(!lbShow);
         txtDetail07.setDisable(!lbShow);
-        
-//        if (lbShow)
-//            txtField01.requestFocus();
-//        else
-//            txtField51.requestFocus();
     }
     
     private void clearFields(){
         txtField01.setText("");
         txtField02.setText("");
         txtField07.setText("");
+        txtField11.setText("");
         txtField50.setText("");
         
         pbFound = false;
@@ -214,7 +209,6 @@ public class InvProdRequestController implements Initializable {
         psTransNox = "";
         pbEdited = false;
         
-//        tableDetail.setItems(loadEmptyData());
         data.clear();
     }
     
@@ -231,8 +225,7 @@ public class InvProdRequestController implements Initializable {
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index03"));
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
-//        index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
-        
+
         /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {  
             public void changed(ObservableValue<? extends Number> source, Number oldWidth, Number newWidth)
@@ -286,8 +279,7 @@ public class InvProdRequestController implements Initializable {
         if (event.getCode() == F3){
             switch (lnIndex){
                 case 1: /*Barcode Search*/       
-                    System.err.println("pnRow = " + pnRow);
-                    if (poTrans.SearchDetail(pnRow ,lnIndex,  lsValue, false)){                      
+                    if (poTrans.SearchDetail(pnRow ,lnIndex,  "%" + lsValue, false)){                      
                         txtDetail01.setText(poTrans.getDetail(pnRow, 5).toString());
                         txtDetail02.setText(poTrans.getDetail(pnRow, 7).toString());
                         txtDetail05.setText(poTrans.getDetail(pnRow, 6).toString());
@@ -299,10 +291,7 @@ public class InvProdRequestController implements Initializable {
                         txtDetail07.setText("0");
                     }
                     
-                    if (!txtDetail01.getText().isEmpty()){
-//                        txtDetail03.requestFocus();
-//                        txtDetail03.selectAll();
-                    } else{
+                    if (txtDetail01.getText().isEmpty()){
                         txtDetail02.requestFocus();
                         txtDetail02.selectAll();
                     }
@@ -350,11 +339,11 @@ public class InvProdRequestController implements Initializable {
     private void txtField_KeyPressed(KeyEvent event){
         TextField txtField = (TextField)event.getSource();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
-       String lsValue = txtField.getText();
-       try {
+        String lsValue = txtField.getText();
+        
+        try {
             if (event.getCode() == ENTER || event.getCode() == F3){
                 switch (lnIndex){
-                    
                     case 50: /*sTransNox*/
                         if(poTrans.SearchRecord(lsValue, true)==true){
                             loadRecord();
@@ -364,20 +353,27 @@ public class InvProdRequestController implements Initializable {
                             pnEditMode = EditMode.UNKNOWN;
                         }
                         return;
-                 
-                    }
+                    case 11: /*sRemarksx*/
+                        if (!poTrans.SearchBranch(lsValue, false)){
+                            ShowMessageFX.Warning(null, pxeModuleName, poTrans.getMessage());
+                            return;
+                        }
+                        
+                        txtField11.setText((String) poTrans.getMaster("sBranchNm"));
                 }
-       switch (event.getCode()){
-        case ENTER:
-        case DOWN:
-            CommonUtils.SetNextFocus(txtField);
-            break;
-        case UP:
-            CommonUtils.SetPreviousFocus(txtField);
+            }
+            
+            switch (event.getCode()){
+                case ENTER:
+                case DOWN:
+                    CommonUtils.SetNextFocus(txtField);
+                    break;
+                case UP:
+                    CommonUtils.SetPreviousFocus(txtField);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
-       }   catch (SQLException ex) {
-               Logger.getLogger(InvProdRequestController.class.getName()).log(Level.SEVERE, null, ex);
-           }
     }
     
     private void cmdButton_Click(ActionEvent event) {
@@ -395,11 +391,6 @@ public class InvProdRequestController implements Initializable {
                 break;
             case "btnPrint": 
                 if (!psOldRec.equals("")){
-//                    if(!poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_CLOSED)){
-//                    ShowMessageFX.Warning("Trasaction may be CANCELLED/OPEN.", pxeModuleName, "Can't print transactions!!!");
-//                    return;
-//                    }
-
                     if(poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_CANCELLED)){
                         ShowMessageFX.Warning("Trasaction may be CANCELLED.", pxeModuleName, "Can't print transactions!!!");
                         return;
@@ -407,28 +398,19 @@ public class InvProdRequestController implements Initializable {
                     
                     if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
                         if (!printTransfer()) return;
-                        
-//                        if (poTrans.closeTransaction(psOldRec)){
-//                            //ShowMessageFX.Information(null, pxeModuleName, "Transaction PRINTED successfully.");
                             clearFields();
                             initGrid();
                             pnEditMode = EditMode.UNKNOWN;
                             initButton(pnEditMode);
-//                        }
                     }
-                    
                 } else ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
+                
                 break;
             case "btnClose":
                 unloadForm();
                 return;
             case "btnConfirm":
                 if (!psOldRec.equals("")){
-                    if(!poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)){
-                        ShowMessageFX.Warning("Trasaction may be CANCELLED/CLOSED.", pxeModuleName, "Can't update transactions!!!");
-                        return;
-                    }
-                    
                     if (poGRider.getUserLevel() <= UserRight.ENCODER){
                         JSONObject loJSON = showFXDialog.getApproval(poGRider);
             
@@ -442,17 +424,37 @@ public class InvProdRequestController implements Initializable {
                         }
                     }  
                     
-                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
-                        if (!printTransfer()) return;
-                             if (poTrans.CloseRecord()){
+                    if (System.getProperty("store.commissary").equals(poGRider.getBranchCode())){
+                        if (poTrans.CloseRecord()){
+                            ShowMessageFX.Information(null, pxeModuleName, "Trnansaction closed successfully.");
+
+                            if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                                if (!printTransfer()) return;
+                            }
+
                             clearFields();
                             initGrid();
                             pnEditMode = EditMode.UNKNOWN;
                             initButton(pnEditMode);
-                        }
+                        } else
+                            ShowMessageFX.Warning(null, pxeModuleName, poTrans.getMessage());
+                    } else {
+                        if (poTrans.PostRecord()){
+                            ShowMessageFX.Information(null, pxeModuleName, "Trnansaction posted successfully.");
+
+                            if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                                if (!printTransfer()) return;
+                            }
+
+                            clearFields();
+                            initGrid();
+                            pnEditMode = EditMode.UNKNOWN;
+                            initButton(pnEditMode);
+                        } else
+                            ShowMessageFX.Warning(null, pxeModuleName, poTrans.getMessage());                      
                     }
-                    
-                } else ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to confirm!");
+                } else 
+                    ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to confirm!");
                 break;
             case "btnExit":
                 unloadForm();
@@ -467,7 +469,7 @@ public class InvProdRequestController implements Initializable {
                     return;
                 
             case "btnSearch":
-                    if (poTrans.SearchDetail(pnRow ,1,  "%", false)){                      
+                    if (poTrans.SearchDetail(pnRow ,1,  "", false)){                      
                         txtDetail01.setText(poTrans.getDetail(pnRow, 5).toString());
                         txtDetail02.setText(poTrans.getDetail(pnRow, 7).toString());
                         txtDetail05.setText(poTrans.getDetail(pnRow, 6).toString());
@@ -501,26 +503,23 @@ public class InvProdRequestController implements Initializable {
                         ShowMessageFX.Error(poTrans.getMessage(), pxeModuleName, "Please inform MIS Department.");return;
                 } 
             case "btnBrowse":
-                        if(poTrans.SearchRecord(txtField50.getText() + "%", true)==true){
-                            loadRecord(); 
-                            pnEditMode = poTrans.getEditMode();
-                            break;
-                        } else {
-                            clearFields();
-                            pnEditMode = EditMode.UNKNOWN;
-                        }
-                        return;    
-                   
-            case "btnDel":  
-               int lnIndex = table.getSelectionModel().getFocusedIndex();    
-                if(table.getSelectionModel().getSelectedItem() == null){
-                     ShowMessageFX.Warning(null, pxeModuleName, "Please select item to remove!");
-                     break;
+                if(poTrans.SearchRecord("%" + txtField50.getText(), true)==true){
+                    loadRecord(); 
+                    pnEditMode = poTrans.getEditMode();
+                    break;
+                } else {
+                    clearFields();
+                    pnEditMode = EditMode.UNKNOWN;
                 }
+                return;                       
+            case "btnDel":  
+                if (pnRow < 0) return;
+                
                 if(ShowMessageFX.OkayCancel(null, pxeModuleName, "Do you want to remove this item?") == true){
-                    poTrans.deleteDetail(lnIndex);
+                    poTrans.deleteDetail(pnRow);
                     loadDetail();
-                }     
+                }    
+                
                 break;
             default:
                 ShowMessageFX.Warning(null, pxeModuleName, "Button with name " + lsButton + " not registered.");
@@ -543,6 +542,7 @@ public class InvProdRequestController implements Initializable {
         txtField02.setText(CommonUtils.xsDateMedium((Date) poTrans.getMaster("dTransact")));
         
         txtField07.setText((String) poTrans.getMaster("sRemarksx"));
+        txtField11.setText((String) poTrans.getMaster("sBranchNm"));
         
         pnRow = 0;
         pnOldRow = 0;
@@ -572,35 +572,35 @@ public class InvProdRequestController implements Initializable {
     }
       
     private void loadDetail(){
-         try {
-        int lnCtr;
-        
-         int lnRow = poTrans.getItemCount();
-        data.clear();
-        /*ADD THE DETAIL*/
-       
-        for(lnCtr = 1; lnCtr <= poTrans.getItemCount(); lnCtr++){
-            data.add(new TableModel(String.valueOf(lnCtr), 
-                                    (String) poTrans.getDetailI(lnCtr, "sBarCodex"),
-                                    (String) poTrans.getDetail(lnCtr, 7), 
-                                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, 6).toString()), "0.00"),
-                                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, 3).toString()), "0.00"),
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    ""));
-        }
-         initGrid();
-        /*FOCUS ON FIRST ROW*/
-        if (!data.isEmpty()){
-            table.getSelectionModel().select(lnRow -1);
-            table.getFocusModel().focus(lnRow -1);
-            pnRow = table.getSelectionModel().getSelectedIndex() +1;           
-            
-            setDetailInfo(pnRow);
-        }
-    }   catch (SQLException ex) {
+        try {
+            int lnCtr;
+
+            int lnRow = poTrans.getItemCount();
+            data.clear();
+            /*ADD THE DETAIL*/
+
+            for(lnCtr = 1; lnCtr <= poTrans.getItemCount(); lnCtr++){
+                data.add(new TableModel(String.valueOf(lnCtr), 
+                                        (String) poTrans.getDetailI(lnCtr, "sBarCodex"),
+                                        (String) poTrans.getDetail(lnCtr, 7), 
+                                        CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, 6).toString()), "0.00"),
+                                        CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, 3).toString()), "0.00"),
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        ""));
+            }
+             initGrid();
+            /*FOCUS ON FIRST ROW*/
+            if (!data.isEmpty()){
+                table.getSelectionModel().select(lnRow -1);
+                table.getFocusModel().focus(lnRow -1);
+                pnRow = table.getSelectionModel().getSelectedIndex() +1;           
+
+                setDetailInfo(pnRow);
+            }
+        }   catch (SQLException ex) {
             Logger.getLogger(InvProdRequestController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -643,7 +643,11 @@ public class InvProdRequestController implements Initializable {
                         ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1991)");
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
+                  
+                    txtField.setText(SQLUtil.dateFormat((Date) poTrans.getMaster("dTransact"), SQLUtil.FORMAT_MEDIUM_DATE));
                     return;
+                case 11:
+                    break;
                 case 50:
                     if(lsValue.equals("") || lsValue.equals("%"))
                         txtField.setText("");
@@ -660,11 +664,7 @@ public class InvProdRequestController implements Initializable {
         } else{
             switch (lnIndex){
                 case 2: /*dTransact*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtField.setText(SQLUtil.dateFormat((Date) poTrans.getMaster("dTransact"), SQLUtil.FORMAT_SHORT_DATE));
                     txtField.selectAll();
                     break;
                 default:
@@ -744,9 +744,7 @@ public class InvProdRequestController implements Initializable {
         if (lsValue == null) return;
         
         if(!nv){ /*Lost Focus*/  
-            
             switch (lnIndex){
-               
                 case 7: /*sRemarksx*/
                     if (lsValue.length() > 256) lsValue = lsValue.substring(0, 256);
                     
@@ -819,6 +817,7 @@ public class InvProdRequestController implements Initializable {
      @FXML
     private void table_Clicked(MouseEvent event) {
         pnRow = table.getSelectionModel().getSelectedIndex() + 1;
+        
         if (pnRow < 0) return;
         
         setDetailInfo(pnRow);

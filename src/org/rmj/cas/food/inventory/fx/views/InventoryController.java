@@ -27,7 +27,6 @@ import static javafx.scene.input.KeyCode.F3;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.SQLUtil;
@@ -308,8 +307,7 @@ public class InventoryController implements Initializable {
                     loadDetail2Grid();
                     return;
                  case 80: /*Search for Barcode*/
-                    if(event.getCode() == F3) lsValue = txtField.getText() + "%";
-                    
+                    if(event.getCode() == F3) lsValue = txtField.getText();
                         if(poRecord.BrowseRecord(lsValue, false, false)==true){
                             loadRecord();
                             pnEditMode = poRecord.getEditMode();
@@ -318,10 +316,12 @@ public class InventoryController implements Initializable {
                         if(!txtField80.getText().equals(psBarcode)){
                             clearFields();
                             break;
-                        }else { txtField80.setText(psBarcode); } return;
-                     
+                        }else { 
+                            txtField80.setText(psBarcode); 
+                        } 
+                        return;
                 case 81: /*Search for Description*/
-                    if(event.getCode() == F3) lsValue = txtField.getText() + "%";
+                    if(event.getCode() == F3) lsValue = txtField.getText();
                         if(poRecord.BrowseRecord(lsValue, false, true)== true){
                             loadRecord(); 
                             pnEditMode = poRecord.getEditMode();
@@ -330,7 +330,10 @@ public class InventoryController implements Initializable {
                         if(!txtField81.getText().equals(psDescript)){
                             clearFields();
                             break;
-                            }else { txtField81.setText(psDescript); } return;
+                        }else { 
+                            txtField81.setText(psDescript); 
+                        } 
+                        return;
                 default:
                     ShowMessageFX.Warning("Please inform MIS Dept.", pxeModuleName, "Text field with index " + lnIndex + " not registered for QuickSearch.");
                     return;

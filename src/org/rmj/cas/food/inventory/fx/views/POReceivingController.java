@@ -385,9 +385,11 @@ public class POReceivingController implements Initializable {
                         ShowMessageFX.Warning("Trasaction may be CANCELLED/POSTED.", pxeModuleName, "Can't update processed transactions!!!");
                         return;
                     }
+                    
                     if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transasction?")== true){
                         if (poTrans.closeRecord(psOldRec)){
                             ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
+                            
                             if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
                                 poTrans.printRecord();
                             }
@@ -400,7 +402,6 @@ public class POReceivingController implements Initializable {
                     }
                 } else ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to confirm!");
                 break;
-                
             case "btnClose":
             case "btnExit": 
                 unloadForm();
@@ -428,13 +429,19 @@ public class POReceivingController implements Initializable {
                             initGrid();
                             pnEditMode = EditMode.UNKNOWN;
                             initButton(pnEditMode);
-                        if (poTrans.closeRecord(psOldRec)){
-                            if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
-                                poTrans.printRecord();
+                            
+                            if (poTrans.closeRecord(psOldRec)){
+                                if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                                    poTrans.printRecord();
+                                }
+                                clearFields();
                             }
+                        } else {
                             clearFields();
+                            initGrid();
+                            pnEditMode = EditMode.UNKNOWN;
+                            initButton(pnEditMode);
                         }
-                    }
                     } else {
                         clearFields();
                         initGrid();
@@ -669,10 +676,9 @@ public class POReceivingController implements Initializable {
         JSONObject loJSON;
         
         if (event.getCode() == F3){                    
-            if (lsValue.isEmpty()) return;
             switch (lnIndex){
                 case 3:                    
-                    loJSON = poTrans.SearchDetail(pnRow, 3, lsValue + "%", false, false);                  
+                    loJSON = poTrans.SearchDetail(pnRow, 3, lsValue, false, false);                  
                     if (loJSON != null){
                         txtDetail03.setText((String) loJSON.get("sTransNox"));
                     }
@@ -893,10 +899,10 @@ public class POReceivingController implements Initializable {
                 case 80: /*Description*/
                     //send the barcode and descript to class if it has no stock id
                     if (poTrans.getDetail(pnRow, "sStockIDx").equals("")){                        
-                        if (txtDetail80.getText().equals("")){
-                            ShowMessageFX.Warning(null, "Warning", "Description must have a value if stock is not existing.");
-                            return;
-                        }
+//                        if (txtDetail80.getText().equals("")){
+//                            ShowMessageFX.Warning(null, "Warning", "Description must have a value if stock is not existing.");
+//                            return;
+//                        }
                         poTrans.setDetail(pnRow, 101, txtDetail80.getText());
                     }
                     break;
