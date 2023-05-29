@@ -28,7 +28,6 @@ import static javafx.scene.input.KeyCode.F3;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import org.json.simple.JSONObject;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.appdriver.GRider;
@@ -38,7 +37,6 @@ import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.purchasing.agent.XMPurchaseOrder;
 import org.rmj.cas.inventory.base.Inventory;
 import org.rmj.cas.parameter.agent.XMBranch;
-import org.rmj.cas.parameter.agent.XMInventoryType;
 import org.rmj.cas.parameter.agent.XMTerm;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
 import org.rmj.appdriver.agentfx.ui.showFXDialog;
@@ -56,7 +54,6 @@ public class PurchaseOrderController implements Initializable {
     @FXML private TextField txtField06;
     @FXML private TextField txtField07;
     @FXML private TextField txtField08;
-//    @FXML private TextField txtField16;
     @FXML private TextArea txtField10;
     @FXML private Label Label09;
     @FXML private TextField txtDetail03;
@@ -106,7 +103,6 @@ public class PurchaseOrderController implements Initializable {
         txtField06.focusedProperty().addListener(txtField_Focus);
         txtField07.focusedProperty().addListener(txtField_Focus);
         txtField08.focusedProperty().addListener(txtField_Focus);
-//        txtField16.focusedProperty().addListener(txtField_Focus);
         txtField10.focusedProperty().addListener(txtArea_Focus);
         
         txtDetail03.focusedProperty().addListener(txtDetail_Focus);
@@ -122,7 +118,6 @@ public class PurchaseOrderController implements Initializable {
         txtField06.setOnKeyPressed(this::txtField_KeyPressed);
         txtField07.setOnKeyPressed(this::txtField_KeyPressed);
         txtField08.setOnKeyPressed(this::txtField_KeyPressed);
-//        txtField16.setOnKeyPressed(this::txtField_KeyPressed);
         txtField50.setOnKeyPressed(this::txtField_KeyPressed);
         txtField51.setOnKeyPressed(this::txtField_KeyPressed);
         txtField10.setOnKeyPressed(this::txtFieldArea_KeyPressed);
@@ -199,7 +194,6 @@ public class PurchaseOrderController implements Initializable {
         txtField06.setDisable(!lbShow);
         txtField07.setDisable(!lbShow);
         txtField08.setDisable(!lbShow);
-//        txtField16.setDisable(!lbShow);
         txtField10.setDisable(!lbShow);
         txtDetail03.setDisable(!lbShow);
         txtDetail04.setDisable(!lbShow);
@@ -344,14 +338,6 @@ public class PurchaseOrderController implements Initializable {
                     return;
                 }
                 break;
-                
-                //this feature is for finance department
-                /*if (!psOldRec.equals("")){
-                    if (poTrans.postRecord((String) poTrans.getMaster("sTransNox"))){
-                        ShowMessageFX.Information(null, pxeModuleName, "Transaction posted successfully.");
-                        if (poTrans.openRecord(psOldRec)) loadRecord(); pnEditMode = poTrans.getEditMode();
-                    }
-                }*/
             case "btnClose":
             case "btnExit": 
                 unloadForm();
@@ -384,13 +370,17 @@ public class PurchaseOrderController implements Initializable {
                 deleteDetail();
                 return;
             case "btnBrowse":               
-                if(poTrans.BrowseRecord(txtField50.getText(), false)==true){
-                    loadRecord();
-                    pnEditMode = poTrans.getEditMode();
+                if (pnIndex == 50){
+                    if(poTrans.BrowseRecord(txtField50.getText(), true)){
+                        loadRecord();
+                    }
                 } else {
-                    clearFields();
-                    pnEditMode = EditMode.UNKNOWN; break;
-                }      
+                    if(poTrans.BrowseRecord(txtField51.getText(), false)){
+                        loadRecord();
+                    }
+                }
+                
+                pnEditMode = poTrans.getEditMode();    
                 return;
             case "btnPrint":
                 if (!psOldRec.equals("")){
@@ -565,17 +555,8 @@ public class PurchaseOrderController implements Initializable {
             case F3:
                 if (lnIndex == 3){
                     lsValue = txtDetail.getText();
-                    
-//                    if (lsValue == null || lsValue.isEmpty()) return;
-                    
-//                    
-//                    if (lsValue != null) {
-//                        if (lsValue.isEmpty()) return;
-//                    }else{
-//                        return;
-//                    }
-
-                    loJSON = poTrans.SearchDetail(pnRow, 3, lsValue + "%", true, true);
+                    if (lsValue == null || lsValue.isEmpty()) lsValue = "";
+                    loJSON = poTrans.SearchDetail(pnRow, 3, "%" + lsValue, false, true);
                     
                     if (loJSON != null){
                         psBarCodex = (String) loJSON.get("sBarCodex");
@@ -585,10 +566,9 @@ public class PurchaseOrderController implements Initializable {
                     }
                 } else if (lnIndex == 80){
                     lsValue = txtDetail.getText();
-                    if (lsValue == null || lsValue.isEmpty()) return;
-//                    if (lsValue.isEmpty()) return;
-                    
-                    loJSON = poTrans.SearchDetail(pnRow, 3, lsValue  + "%", true, false);
+                    if (lsValue == null || lsValue.isEmpty()) lsValue = "";
+
+                    loJSON = poTrans.SearchDetail(pnRow, 3, lsValue  + "%", false, false);
                     if (loJSON != null){
                         psBarCodex = (String) loJSON.get("sBarCodex");
                         psDescript = (String) loJSON.get("sDescript");

@@ -139,7 +139,7 @@ public class POReturnRegController implements Initializable {
                                     String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
                                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()), "#,##0.00"),
                                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
-                                    CommonUtils.NumberFormat(((double)poTrans.getDetail(lnCtr, "nQuantity") 
+                                    CommonUtils.NumberFormat((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString())
                                                             * Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()))
                                                             + Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
                                     "",
