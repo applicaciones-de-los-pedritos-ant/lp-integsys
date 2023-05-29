@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.ReadOnlyBooleanPropertyBase;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -55,8 +54,6 @@ import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
-import org.rmj.appdriver.agentfx.ui.showFXDialog;
-import org.rmj.appdriver.constants.UserRight;
 import org.rmj.cas.inventory.production.base.ProductionRequest;
 
 public class InvProdRequestRegController implements Initializable {

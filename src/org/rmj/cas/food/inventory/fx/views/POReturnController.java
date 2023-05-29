@@ -47,8 +47,6 @@ public class POReturnController implements Initializable {
     @FXML private AnchorPane anchorField;
     @FXML private TextField txtField01;
     @FXML private TextField txtField03;
-    @FXML private TextField txtField02;
-    @FXML private TextField txtField18;
     @FXML private TextField txtField05;
     @FXML private TextField txtField16;
     @FXML private TextArea txtField12;
@@ -69,14 +67,11 @@ public class POReturnController implements Initializable {
     @FXML private Button btnConfirm;
     @FXML private Button btnDel;
     @FXML private TextField txtDetail03;
-    @FXML private ComboBox Combo04;
     @FXML private TextField txtDetail06;
     @FXML private TextField txtDetail05;
     @FXML private Label Label06;
     @FXML private FontAwesomeIconView glyphExit;
     @FXML private Button btnBrowse;
-    @FXML private TextField txtField27;
-    @FXML private ComboBox Combo28;
     @FXML private ImageView imgTranStat;
     @FXML private ImageView imgTranStat1;
     @FXML private TextField txtField50;
@@ -108,7 +103,6 @@ public class POReturnController implements Initializable {
         btnBrowse.setOnAction(this::cmdButton_Click);
         
         /*Add listener to text fields*/
-        txtField02.focusedProperty().addListener(txtField_Focus);
         txtField03.focusedProperty().addListener(txtField_Focus);
         txtField05.focusedProperty().addListener(txtField_Focus);
         txtField07.focusedProperty().addListener(txtField_Focus);
@@ -118,8 +112,6 @@ public class POReturnController implements Initializable {
         txtField11.focusedProperty().addListener(txtField_Focus);
         txtField13.focusedProperty().addListener(txtField_Focus);
         txtField16.focusedProperty().addListener(txtField_Focus);
-        txtField18.focusedProperty().addListener(txtField_Focus);
-        txtField27.focusedProperty().addListener(txtField_Focus);
         txtField12.focusedProperty().addListener(txtArea_Focus);
         
         txtDetail03.focusedProperty().addListener(txtDetail_Focus);
@@ -130,7 +122,6 @@ public class POReturnController implements Initializable {
         txtDetail80.focusedProperty().addListener(txtDetail_Focus);
                 
         /*Add keypress event for field with search*/
-        txtField02.setOnKeyPressed(this::txtField_KeyPressed);
         txtField03.setOnKeyPressed(this::txtField_KeyPressed);
         txtField05.setOnKeyPressed(this::txtField_KeyPressed);
         txtField07.setOnKeyPressed(this::txtField_KeyPressed);
@@ -140,8 +131,6 @@ public class POReturnController implements Initializable {
         txtField11.setOnKeyPressed(this::txtField_KeyPressed);
         txtField13.setOnKeyPressed(this::txtField_KeyPressed);
         txtField16.setOnKeyPressed(this::txtField_KeyPressed);
-        txtField18.setOnKeyPressed(this::txtField_KeyPressed);
-        txtField27.setOnKeyPressed(this::txtField_KeyPressed);
         txtField12.setOnKeyPressed(this::txtFieldArea_KeyPressed);
         
         txtDetail03.setOnKeyPressed(this::txtDetail_KeyPressed);
@@ -150,17 +139,7 @@ public class POReturnController implements Initializable {
         txtDetail07.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail08.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail80.setOnKeyPressed(this::txtDetail_KeyPressed);
-        
-        Combo04.setOnKeyPressed(this::ComboBox_KeyPressed);
-        Combo04.focusedProperty().addListener(Combo_Focus);
-        Combo04.setItems(cUnitType);
-        Combo04.getSelectionModel().select(1);
-        
-        Combo28.setOnKeyPressed(this::ComboBox_KeyPressed);
-        Combo28.focusedProperty().addListener(Combo_Focus);
-        Combo28.setItems(cDivision);
-        Combo28.getSelectionModel().select(cDivision.size() - 1);
-        
+
         pnEditMode = EditMode.UNKNOWN;
         
         clearFields();
@@ -194,8 +173,6 @@ public class POReturnController implements Initializable {
             txtDetail06.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, 6).toString()), "###0.00")); /*Unit Price*/
             txtDetail07.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, 7).toString()), "###0.00")); /*Freight*/
             txtDetail08.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt"))); //date
-            
-            Combo04.getSelectionModel().select(Integer.parseInt((String) poTrans.getDetail(pnRow, 4)));
         } else{
             txtDetail03.setText("");
             txtDetail05.setText("0");
@@ -223,7 +200,6 @@ public class POReturnController implements Initializable {
         btnClose.setVisible(!lbShow);
         
         txtField01.setDisable(!lbShow);
-        txtField02.setDisable(!lbShow);
         txtField03.setDisable(!lbShow);
         txtField05.setDisable(!lbShow);
         txtField07.setDisable(!lbShow);
@@ -233,19 +209,15 @@ public class POReturnController implements Initializable {
         txtField11.setDisable(!lbShow);
         txtField13.setDisable(!lbShow);
         txtField16.setDisable(!lbShow);
-        txtField18.setDisable(!lbShow);
-        txtField27.setDisable(!lbShow);
         txtField12.setDisable(!lbShow);
         txtDetail03.setDisable(!lbShow);
         txtDetail05.setDisable(!lbShow);
         txtDetail06.setDisable(!lbShow);
         txtDetail07.setDisable(!lbShow);
         txtDetail80.setDisable(!lbShow);
-        Combo04.setDisable(!lbShow);
-        Combo28.setDisable(!lbShow);
         
         if (lbShow)
-            txtField02.requestFocus();
+            txtField16.requestFocus();
         else
             txtField50.requestFocus();
     }
@@ -397,20 +369,11 @@ public class POReturnController implements Initializable {
             txtField16.setText((String) loPORec.getMaster("sReferNox"));
         }
         
-        XMBranch loBranch = poTrans.GetBranch((String)poTrans.getMaster(2), true);
-        if (loBranch != null) txtField02.setText((String) loBranch.getMaster("sBranchNm"));
-        
         JSONObject loSupplier = poTrans.GetSupplier((String)poTrans.getMaster(5), true);
         if (loSupplier != null) {
             txtField05.setText((String) loSupplier.get("sClientNm"));
             txtField51.setText((String) loSupplier.get("sClientNm"));
         }
-        
-        XMInventoryType loInv = poTrans.GetInventoryType((String)poTrans.getMaster(18), true);
-        if (loInv != null) txtField18.setText((String) loInv.getMaster("sDescript"));
-        
-        XMDepartment loDept = poTrans.GetDepartment((String)poTrans.getMaster(27), true);
-        if (loDept != null) txtField27.setText((String) loDept.getMaster("sDeptName"));
 
         txtField07.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(7).toString()), "0.00"));
         txtField09.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(9).toString()), "0.00"));
@@ -418,10 +381,6 @@ public class POReturnController implements Initializable {
         txtField10.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(10).toString()), "#,##0.00"));
         txtField11.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(11).toString()), "#,##0.00"));
         txtField13.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(13).toString()), "#,##0.00"));
-        
-        if (!String.valueOf(poTrans.getMaster("cDivision")).equals("")){
-            Combo28.getSelectionModel().select(Integer.parseInt((String) poTrans.getMaster("cDivision")));
-        } else Combo28.getSelectionModel().select(cDivision.size() - 1);
         
         Label06.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(6).toString()) + Double.valueOf(poTrans.getMaster(8).toString()), "###0.00"));
         
@@ -436,13 +395,10 @@ public class POReturnController implements Initializable {
     
     private void clearFields(){
         txtField01.setText("");
-        txtField02.setText("");
         txtField03.setText("");
         txtField05.setText("");        
         txtField12.setText("");
         txtField16.setText("");
-        txtField18.setText("");
-        txtField27.setText("");
         txtField50.setText("");
         txtField51.setText("");
         
@@ -462,8 +418,6 @@ public class POReturnController implements Initializable {
         
         
         Label06.setText("0.00");
-        Combo04.getSelectionModel().select(1);
-        Combo28.getSelectionModel().select(cDivision.size() - 1);
         
         pnRow = -1;
         pnOldRow = -1;
@@ -479,10 +433,8 @@ public class POReturnController implements Initializable {
     }
     
     private void unloadForm(){
-//        VBox myBox = (VBox) VBoxForm.getParent();
-//        myBox.getChildren().clear();
-          dataPane.getChildren().clear();
-          dataPane.setStyle("-fx-border-color: transparent");
+        dataPane.getChildren().clear();
+        dataPane.setStyle("-fx-border-color: transparent");
     }
     
     private void txtField_KeyPressed(KeyEvent event){
@@ -492,17 +444,15 @@ public class POReturnController implements Initializable {
         switch (event.getCode()){
         case F3:
             switch (lnIndex){
-                case 2: /*sBranchCd*/
                 case 5: /*sSupplier*/
-                case 18: /*sInvTypCd*/
-                case 27: /*sDeptIDxx*/
                     if (poTrans.SearchMaster(lnIndex, txtField.getText(), false)==true)CommonUtils.SetNextFocus(txtField);
                     else txtField.setText("");
                     return;
                 case 16: /*sPOTransx*/
                     if (poTrans.SearchMaster(lnIndex, txtField.getText(), false))
                         txtField12.requestFocus();
-                    else txtField02.requestFocus();
+                    else 
+                        txtField16.requestFocus();
                     return;
                 case 50: /*Refer No*/
                     if(poTrans.BrowseRecord(txtField.getText(), true) == true){
@@ -702,15 +652,7 @@ public class POReturnController implements Initializable {
                         loadDetail();
                         break;
                     case "Combo28":
-                        String sDivision = (String) loField.getValue();
-//                        if (loField.getSelectionModel().getSelectedIndex() != cDivision.size() -1){
-//                            poTrans.setMaster("cDivision", String.valueOf(loField.getSelectionModel().getSelectedIndex()));
-//                        } else poTrans.setMaster("cDivision", "");
-                        if(!cDivision.contains(sDivision)){
-                        Combo28.getSelectionModel().select(0);
-                    }
-                    Combo28.getSelectionModel().getSelectedIndex();
-                    poTrans.setMaster("cDivision", String.valueOf(loField.getSelectionModel().getSelectedIndex()));
+                        poTrans.setMaster("cDivision", String.valueOf(loField.getSelectionModel().getSelectedIndex()));
                 }
         }         
     };
@@ -951,7 +893,7 @@ public class POReturnController implements Initializable {
                         txtDetail03.requestFocus();
                         txtDetail03.selectAll();
                     } else{
-                        Combo04.requestFocus();
+                        txtDetail05.requestFocus();
                     }
                     break;
                 case 6:
@@ -972,29 +914,12 @@ public class POReturnController implements Initializable {
     
     private void getMaster(int fnIndex){
         switch(fnIndex){
-        case 2:
-            XMBranch loBranch = poTrans.GetBranch((String)poTrans.getMaster(fnIndex), true);
-            if (loBranch != null) txtField02.setText((String) loBranch.getMaster("sBranchNm"));
-            break;
         case 5:
             JSONObject loSupplier = poTrans.GetSupplier((String)poTrans.getMaster(fnIndex), true);
             if (loSupplier != null) txtField05.setText((String) loSupplier.get("sClientNm"));
             break;
         case 16:
-//            XMPOReceiving loPORec = poTrans.GetPOReceving((String)poTrans.getMaster(fnIndex), true);
-//            if (loPORec != null) txtField16.setText((String) loPORec.getMaster("sTransNox"));
             txtField16.setText((String) poTrans.getMaster("sPOTransx"));
-            break;
-        case 18:
-            XMInventoryType loInv = poTrans.GetInventoryType((String)poTrans.getMaster(fnIndex), true);
-            if (loInv != null) txtField18.setText((String) loInv.getMaster("sDescript"));
-            break;
-        case 27:
-            XMDepartment loDept = poTrans.GetDepartment((String)poTrans.getMaster(fnIndex), true);
-            if (loDept != null) txtField27.setText((String) loDept.getMaster("sDeptName"));
-            break;
-        case 28:
-            Combo28.getSelectionModel().select(Integer.parseInt((String) poTrans.getMaster("cDivision")));
             break;
         case 3:
             txtField03.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster(fnIndex)));

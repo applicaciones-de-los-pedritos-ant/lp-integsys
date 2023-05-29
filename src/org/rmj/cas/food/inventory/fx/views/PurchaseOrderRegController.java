@@ -25,7 +25,6 @@ import static javafx.scene.input.KeyCode.F3;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import org.json.simple.JSONObject;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.appdriver.constants.TransactionStatus;
@@ -70,7 +69,7 @@ public class PurchaseOrderRegController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
         poTrans = new XMPurchaseOrder(poGRider, poGRider.getBranchCode(), false);
-        poTrans.setTranStat(1230);
+        poTrans.setTranStat(123);
         poTrans.setClientNm(System.getProperty("user.name"));
         
         btnClose.setOnAction(this::cmdButton_Click);
@@ -206,7 +205,6 @@ public class PurchaseOrderRegController implements Initializable {
     private void cmdButton_Click(ActionEvent event) {
         String lsButton = ((Button)event.getSource()).getId();
         switch (lsButton){
-            
             case "btnClose":
             case "btnExit": 
                 unloadForm();
@@ -224,12 +222,18 @@ public class PurchaseOrderRegController implements Initializable {
                 
                 break;
             case "btnBrowse":
-                if(poTrans.BrowseRecord(txtField50.getText(), true)==true){
-                    loadRecord(); 
-                    pnEditMode = poTrans.getEditMode();
-                    break;
+                if (pnIndex == 50){
+                    if(poTrans.BrowseRecord(txtField50.getText(), true)){
+                        loadRecord();
+                    }
+                } else {
+                    if(poTrans.BrowseRecord(txtField51.getText(), false)){
+                        loadRecord();
+                    }
                 }
-
+                
+                pnEditMode = poTrans.getEditMode();
+                
                 if(!txtField50.getText().equals(psReferNox)){
                     clearFields();
                     break;
