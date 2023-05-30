@@ -20,8 +20,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import static javafx.scene.input.KeyCode.DOWN;
 import static javafx.scene.input.KeyCode.ENTER;
 import static javafx.scene.input.KeyCode.F3;
+import static javafx.scene.input.KeyCode.UP;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -48,10 +50,10 @@ public class PurchaseOrderRegController implements Initializable {
     @FXML private TextField txtField06;
     @FXML private TextField txtField07;
     @FXML private TextField txtField08;
-    @FXML private TextField txtField16;
+//    @FXML private TextField txtField16;
     @FXML private Label Label09;
     @FXML private TextField txtDetail03;
-    @FXML private TextField txtDetail04;
+    @FXML private TextField txtDetail04,txtDetail05,txtDetail06;
     @FXML private TextField txtDetail80;
     @FXML private TableView table;
     @FXML private TextArea txtField10;
@@ -93,12 +95,15 @@ public class PurchaseOrderRegController implements Initializable {
     }    
 
     @FXML
-    private void table_Clicked(MouseEvent event) {
+    private void table_Clicked(MouseEvent event) { 
         pnRow = table.getSelectionModel().getSelectedIndex();
-        setDetailInfo();
+        
+        setDetailInfo(); 
+        txtDetail03.requestFocus();
+        txtDetail03.selectAll();
     }
     
-    private void loadDetail(){
+ private void loadDetail(){
         int lnCtr;
         int lnRow = poTrans.getDetailCount();
         
@@ -113,20 +118,20 @@ public class PurchaseOrderRegController implements Initializable {
                 data.add(new TableModel(String.valueOf(lnCtr + 1), 
                                         (String) loInventory.getMaster("sBarCodex"), 
                                         (String) loInventory.getMaster("sDescript"), 
+                                        loInventory.getMeasureMent((String) loInventory.getMaster("sMeasurID")),
                                         String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
                                         String.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce")),
-                                        "",
                                         "",
                                         "",
                                         "",
                                         ""));
             } else {
                 data.add(new TableModel(String.valueOf(lnCtr + 1), 
-                                        "", 
-                                        "", 
-                                        String.valueOf(0),
-                                        String.valueOf(0.00),
-                                        "",
+                                        (String) poTrans.getDetail(lnCtr, 100), 
+                                        (String) poTrans.getDetail(lnCtr, 101), 
+                                        (String) poTrans.getDetail(lnCtr, 102),
+                                        String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
+                                        String.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce")),
                                         "",
                                         "",
                                         "",
@@ -145,24 +150,33 @@ public class PurchaseOrderRegController implements Initializable {
         }
         
         Label09.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(9).toString()), "#,##0.00"));      
-    } 
+    }
     
     private void setDetailInfo(){
         String lsStockIDx = (String) poTrans.getDetail(pnRow, "sStockIDx");
-        if (pnRow >= 0 && !lsStockIDx.equals("")){            
-            Inventory loInventory = poTrans.GetInventory(lsStockIDx, true, false);
-            psBarCodex = (String) loInventory.getMaster("sBarCodex");
-            psDescript = (String) loInventory.getMaster("sDescript");
+        if (pnRow >= 0){                        
+            if (!lsStockIDx.equals("")){    
+                Inventory loInventory = poTrans.GetInventory(lsStockIDx, true, false);
+                psBarCodex = (String) loInventory.getMaster("sBarCodex");
+                psDescript = (String) loInventory.getMaster("sDescript");
+            } else {
+                psBarCodex = (String) poTrans.getDetail(pnRow, 100);
+                psDescript = (String) poTrans.getDetail(pnRow, 101);
+            }
             
             /*load barcode and description*/
             txtDetail03.setText(psBarCodex);
             txtDetail80.setText(psDescript);
             
             txtDetail04.setText(String.valueOf(poTrans.getDetail(pnRow, 4))); /*Quantity*/
+            txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, 5))); /*Quantity*/
+            txtDetail06.setText(String.valueOf(poTrans.getDetail(pnRow, 9))); /*Quantity*/
         } else{
             txtDetail03.setText("");
             txtDetail80.setText("");
-            txtDetail04.setText("0");
+            txtDetail04.setText("0.00");
+            txtDetail05.setText("0.00");
+            txtDetail06.setText("0.00");
         }
     }
     
@@ -170,20 +184,23 @@ public class PurchaseOrderRegController implements Initializable {
         TableColumn index01 = new TableColumn("No.");
         TableColumn index02 = new TableColumn("Bar Code");
         TableColumn index03 = new TableColumn("Description");
-        TableColumn index04 = new TableColumn("Qty");
-        TableColumn index05 = new TableColumn("Unit Price");
+        TableColumn index04 = new TableColumn("M.");
+        TableColumn index05 = new TableColumn("Qty");
+        TableColumn index06 = new TableColumn("UPrice");
         
         index01.setPrefWidth(30);
         index02.setPrefWidth(110);
-        index03.setPrefWidth(165);
-        index04.setPrefWidth(45); index04.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index05.setPrefWidth(75); index05.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index03.setPrefWidth(130);
+        index04.setPrefWidth(75);
+        index05.setPrefWidth(45); index05.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index06.setPrefWidth(85); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
         index03.setSortable(false); index03.setResizable(false);
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
+        index06.setSortable(false); index06.setResizable(false);
 
         table.getColumns().clear();        
         table.getColumns().add(index01);
@@ -191,12 +208,14 @@ public class PurchaseOrderRegController implements Initializable {
         table.getColumns().add(index03);
         table.getColumns().add(index04);
         table.getColumns().add(index05);
+        table.getColumns().add(index06);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index03"));
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
+        index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
 
         /*Set data source to table*/
         table.setItems(data);
@@ -221,7 +240,7 @@ public class PurchaseOrderRegController implements Initializable {
                     ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
                 
                 break;
-            case "btnBrowse":
+            case "btnBrowse":              
                 if (pnIndex == 50){
                     if(poTrans.BrowseRecord(txtField50.getText(), true)){
                         loadRecord();
@@ -232,13 +251,7 @@ public class PurchaseOrderRegController implements Initializable {
                     }
                 }
                 
-                pnEditMode = poTrans.getEditMode();
-                
-                if(!txtField50.getText().equals(psReferNox)){
-                    clearFields();
-                    break;
-                }else txtField50.setText(psReferNox);
-
+                pnEditMode = poTrans.getEditMode();    
                 return;
             case "btnVoid":
                if (!psOldRec.equals("")){
@@ -270,7 +283,6 @@ public class PurchaseOrderRegController implements Initializable {
         txtField03.setText(CommonUtils.xsDateMedium((Date) poTrans.getMaster(3)));
         txtField07.setText((String) poTrans.getMaster(7));
         txtField50.setText((String) poTrans.getMaster(7));
-        psReferNox = (String) poTrans.getMaster(7);
         txtField10.setText((String) poTrans.getMaster(10));
 
         XMBranch loBranch = poTrans.GetBranch((String)poTrans.getMaster(2), true);
@@ -288,8 +300,8 @@ public class PurchaseOrderRegController implements Initializable {
         XMTerm loTerm = poTrans.GetTerm((String)poTrans.getMaster(8), true);
         if (loTerm != null) txtField08.setText((String) loTerm.getMaster("sDescript"));
 
-        XMInventoryType loInv = poTrans.GetInventoryType((String)poTrans.getMaster(16), true);
-        if (loInv != null) txtField16.setText((String) loInv.getMaster("sDescript"));
+//        XMInventoryType loInv = poTrans.GetInventoryType((String)poTrans.getMaster(16), true);
+//        if (loInv != null) txtField16.setText((String) loInv.getMaster("sDescript"));
         
         Label09.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(9).toString()), "#,##0.00"));      
         
@@ -301,6 +313,7 @@ public class PurchaseOrderRegController implements Initializable {
         psOldRec = txtField01.getText();
     }
     
+    
     private void clearFields(){
         txtField01.setText("");
         txtField02.setText("");
@@ -310,7 +323,7 @@ public class PurchaseOrderRegController implements Initializable {
         txtField07.setText("");
         txtField08.setText("");
         txtField10.setText("");
-        txtField16.setText("");
+//        txtField16.setText("");
         txtField50.setText("");
         txtField51.setText("");
         
@@ -343,9 +356,9 @@ public class PurchaseOrderRegController implements Initializable {
     }
     
     
-    public void setGRider(GRider foGRider){this.poGRider = foGRider;}
+ public void setGRider(GRider foGRider){this.poGRider = foGRider;}
     
-    private final String pxeModuleName = "POReceivingRegController";
+    private final String pxeModuleName = "PurchaseOrderController";
     private static GRider poGRider;
     private XMPurchaseOrder poTrans;
     
@@ -354,11 +367,8 @@ public class PurchaseOrderRegController implements Initializable {
     
     private final String pxeDateFormat = "yyyy-MM-dd";
     private final String pxeDateDefault = "1900-01-01";
-    
-    private TableModel model;
     private ObservableList<TableModel> data = FXCollections.observableArrayList();
-    ObservableList<String> cUnitType = FXCollections.observableArrayList("Demo", "Regular", "Repo");
-    ObservableList<String> cDivision = FXCollections.observableArrayList("Motorcycle", "Mobile Phone", "Hotel", "General");
+    private TableModel model;
     
     private int pnIndex = -1;
     private int pnRow = -1;
@@ -366,16 +376,13 @@ public class PurchaseOrderRegController implements Initializable {
     
     private String psOldRec = "";
     private String psBranchNm = "";
+    private String psDestinat = "";
     private String psInvTypNm = "";
     private String psTermName = "";
     private String psSupplier = "";
-    private String psDeptName = "";
     private String psReferNox = "";
-    
-    private String psBarCodex;
-    private String psDescript;
-    
-    private String psOrderNox = "";
+    private String psBarCodex = "";
+    private String psDescript = "";
     
     private void setTranStat(String fsValue){
         switch (fsValue){
@@ -395,48 +402,44 @@ public class PurchaseOrderRegController implements Initializable {
     }
     
     private void txtField_KeyPressed(KeyEvent event){
-        TextField txtField = (TextField)event.getSource();
+        TextField txtField = (TextField)event.getSource();        
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
-        String lsValue = txtField.getText();
-        if (event.getCode() == ENTER || event.getCode() == F3){
-            switch (lnIndex){
-                case 50: /*sTransNox*/
-                            if(poTrans.BrowseRecord(lsValue, true)==true){
-                                 loadRecord(); 
-                                 pnEditMode = poTrans.getEditMode();
-                             }
-                            
-                            if(!txtField50.getText().equals(psReferNox)){
-                                 clearFields();
-                                 break;
-                             }else{
-                                 txtField50.setText(psReferNox);
-                                  }
-                             return;
-
-                case 51: /*sSupplier*/
-                    if(event.getCode() == F3) lsValue = txtField.getText() + "%";
-                    if(poTrans.BrowseRecord(lsValue, false)== true){
-                        loadRecord(); 
-                        pnEditMode = poTrans.getEditMode();
-                        break;
-                    }if(!txtField51.getText().equals(psSupplier)){
-                        clearFields();
-                        break;
-                        }else{
-                            txtField51.setText(psSupplier);
-                                 }
-                        return;
-            }
-        }
         
         switch (event.getCode()){
-        case ENTER:
-        case DOWN:
-            CommonUtils.SetNextFocus(txtField);
-            break;
-        case UP:
-            CommonUtils.SetPreviousFocus(txtField);
+            case F3:
+                switch (lnIndex){
+                
+//                case 16: /*sInvTypCd*/
+//                    if (!poTrans.SearchMaster(lnIndex, txtField.getText(), false)==true){
+//                        txtField.setText("");
+//                    }
+//                    break;
+                case 50: /*ReferNox*/
+                    if(poTrans.BrowseRecord(txtField.getText(), true)==true){
+                        loadRecord();
+                        pnEditMode = poTrans.getEditMode();
+                    } else {
+                        clearFields();
+                        pnEditMode = EditMode.UNKNOWN; break;
+                    }
+                            
+                    return;
+                case 51: /*sSupplier*/
+                    if(poTrans.BrowseRecord(txtField.getText(), false)==true){
+                        loadRecord();
+                        pnEditMode = poTrans.getEditMode();
+                    } else {
+                        clearFields();
+                        pnEditMode = EditMode.UNKNOWN; break;
+                    }
+                            
+                    return;
+                }   
+            case ENTER:
+            case DOWN:
+                CommonUtils.SetNextFocus(txtField); break;
+            case UP:
+                CommonUtils.SetPreviousFocus(txtField);
         }
     }
     
@@ -453,9 +456,9 @@ public class PurchaseOrderRegController implements Initializable {
             switch (lnIndex){
                 case 50: /*sReferNox*/
                      if(lsValue.equals("") || lsValue.equals("%")){
-                       txtField.setText("");
+                       txtField.setText(psReferNox);
                     }else
-                    txtField.setText(psReferNox); break;
+                    txtField.setText(""); break;
                 case 51: /*sSupplierId*/
                      if(lsValue.equals("") || lsValue.equals("%")){
                        txtField.setText("");

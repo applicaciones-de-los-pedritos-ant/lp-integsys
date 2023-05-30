@@ -45,38 +45,34 @@ import org.rmj.purchasing.agent.XMPOReturn;
 public class POReturnRegController implements Initializable {
 
     @FXML private Button btnExit;
-    @FXML private FontAwesomeIconView glyphExit;
     @FXML private AnchorPane anchorField;
+    @FXML private TextField txtField01;
     @FXML private TextField txtField03;
-    @FXML private TextField txtField02;
     @FXML private TextField txtField05;
+    @FXML private TextField txtField16;
+    @FXML private TextArea txtField12;
+    @FXML private TextField txtDetail80;
+    @FXML private TextField txtDetail07;
+    @FXML private TableView table;
     @FXML private TextField txtField07;
     @FXML private TextField txtField08;
-    @FXML private TextField txtField16;
-    @FXML private TextField txtDetail03;
-    @FXML private TextField txtDetail80;
-    @FXML private TableView table;
-    @FXML private TextField txtField10;
-    @FXML private ImageView imgTranStat;
-    @FXML private TextField txtField01;
-    @FXML private Button btnClose;
-    @FXML private Button btnBrowse;
-    @FXML private Button btnVoid;
-    @FXML private Button btnPrint;
-    @FXML private TextField txtField50;
-    @FXML private TextField txtField51;
-    @FXML private TextField txtField27;
-    @FXML private ComboBox Combo28;
-    @FXML private TextField txtField18;
-    @FXML private TextArea txtField12;
-    @FXML private Label Label06;
-    @FXML private ComboBox Combo04;
-    @FXML private TextField txtDetail06;
-    @FXML private TextField txtDetail07;
-    @FXML private TextField txtDetail05;
     @FXML private TextField txtField11;
     @FXML private TextField txtField09;
+    @FXML private TextField txtField10;
     @FXML private TextField txtField13;
+    @FXML private Button btnPrint;
+    @FXML private Button btnClose;
+    @FXML private Button btnVoid;
+    @FXML private TextField txtDetail03;
+    @FXML private TextField txtDetail06;
+    @FXML private TextField txtDetail05;
+    @FXML private Label Label06;
+    @FXML private FontAwesomeIconView glyphExit;
+    @FXML private Button btnBrowse;
+    @FXML private ImageView imgTranStat;
+    @FXML private ImageView imgTranStat1;
+    @FXML private TextField txtField50;
+    @FXML private TextField txtField51;
     @FXML private TextField txtDetail08;
     @FXML private AnchorPane dataPane;
     
@@ -97,13 +93,7 @@ public class POReturnRegController implements Initializable {
         
         txtField50.setOnKeyPressed(this::txtField_KeyPressed);
         txtField51.setOnKeyPressed(this::txtField_KeyPressed);
-        
-        Combo04.setItems(cUnitType);
-        Combo04.getSelectionModel().select(1);
-        
-        Combo28.setItems(cDivision);
-        Combo28.getSelectionModel().select(cDivision.size() - 1);
-        
+              
         pnEditMode = EditMode.UNKNOWN;
         
         clearFields();
@@ -115,7 +105,10 @@ public class POReturnRegController implements Initializable {
     @FXML
     private void table_Clicked(MouseEvent event) {
         pnRow = table.getSelectionModel().getSelectedIndex();
-        setDetailInfo();
+        
+        setDetailInfo(); 
+        txtDetail03.requestFocus();
+        txtDetail03.selectAll();
     }
     
     private void loadDetail(){
@@ -139,7 +132,7 @@ public class POReturnRegController implements Initializable {
                                     String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
                                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()), "#,##0.00"),
                                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
-                                    CommonUtils.NumberFormat((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString())
+                                    CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
                                                             * Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()))
                                                             + Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
                                     "",
@@ -170,11 +163,13 @@ public class POReturnRegController implements Initializable {
         
         Label06.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(6).toString()) + Double.valueOf(poTrans.getMaster(8).toString()), "#,##0.00"));
         txtField08.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(8).toString()), "#,##0.00"));
-    }   
+    }    
+    
     
     private void setDetailInfo(){
         if (pnRow < 0){ return;}
         String lsStockIDx = (String) poTrans.getDetail(pnRow, "sStockIDx");
+        //&& !lsStockIDx.equals("")
         if (pnRow >= 0 && !lsStockIDx.equals("")){
             Inventory loInventory = poTrans.GetInventory(lsStockIDx, true, false);
             psBarCodex = (String) loInventory.getMaster("sBarCodex");
@@ -186,17 +181,16 @@ public class POReturnRegController implements Initializable {
             txtDetail06.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, 6).toString()), "###0.00")); /*Unit Price*/
             txtDetail07.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, 7).toString()), "###0.00")); /*Freight*/
             txtDetail08.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt"))); //date
-            
-            Combo04.getSelectionModel().select(Integer.parseInt((String) poTrans.getDetail(pnRow, 4)));
         } else{
             txtDetail03.setText("");
             txtDetail05.setText("0");
             txtDetail06.setText("0.00");
             txtDetail07.setText("0.00");
-            txtDetail08.setText(""); //date
+            txtDetail08.setText("");
             txtDetail80.setText("");   
         }
     }
+    
     
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
@@ -318,20 +312,11 @@ public class POReturnRegController implements Initializable {
             txtField16.setText((String) loPORec.getMaster("sReferNox"));
         }
         
-        XMBranch loBranch = poTrans.GetBranch((String)poTrans.getMaster(2), true);
-        if (loBranch != null) txtField02.setText((String) loBranch.getMaster("sBranchNm"));
-        
         JSONObject loSupplier = poTrans.GetSupplier((String)poTrans.getMaster(5), true);
         if (loSupplier != null) {
             txtField05.setText((String) loSupplier.get("sClientNm"));
             txtField51.setText((String) loSupplier.get("sClientNm"));
         }
-        
-        XMInventoryType loInv = poTrans.GetInventoryType((String)poTrans.getMaster(18), true);
-        if (loInv != null) txtField18.setText((String) loInv.getMaster("sDescript"));
-        
-        XMDepartment loDept = poTrans.GetDepartment((String)poTrans.getMaster(27), true);
-        if (loDept != null) txtField27.setText((String) loDept.getMaster("sDeptName"));
 
         txtField07.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(7).toString()), "0.00"));
         txtField09.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(9).toString()), "0.00"));
@@ -339,12 +324,6 @@ public class POReturnRegController implements Initializable {
         txtField10.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(10).toString()), "#,##0.00"));
         txtField11.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(11).toString()), "#,##0.00"));
         txtField13.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(13).toString()), "#,##0.00"));
-        txtField16.setText(poTrans.getMaster(16).toString());
-        
-        if (!String.valueOf(poTrans.getMaster("cDivision")).equals("")){
-            Combo28.getSelectionModel().select(Integer.parseInt((String) poTrans.getMaster("cDivision")));
-        } else 
-            Combo28.getSelectionModel().select(cDivision.size() - 1);
         
         Label06.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(6).toString()) + Double.valueOf(poTrans.getMaster(8).toString()), "###0.00"));
         
@@ -359,13 +338,10 @@ public class POReturnRegController implements Initializable {
     
     private void clearFields(){
         txtField01.setText("");
-        txtField02.setText("");
         txtField03.setText("");
         txtField05.setText("");        
         txtField12.setText("");
         txtField16.setText("");
-        txtField18.setText("");
-        txtField27.setText("");
         txtField50.setText("");
         txtField51.setText("");
         
@@ -385,8 +361,6 @@ public class POReturnRegController implements Initializable {
         
         
         Label06.setText("0.00");
-        Combo04.getSelectionModel().select(1);
-        Combo28.getSelectionModel().select(cDivision.size() - 1);
         
         pnRow = -1;
         pnOldRow = -1;
@@ -533,5 +507,5 @@ public class POReturnRegController implements Initializable {
         }
         
     };
-    
+
 }
