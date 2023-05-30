@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="dataPane" prefHeight="611.0" prefWidth="923.0" stylesheets="@../styles/Parameter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="dataPane" prefHeight="611.0" prefWidth="923.0" stylesheets="@../styles/Parameter.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="30.0" prefWidth="920.0" style="-fx-background-color: #000000;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -110,6 +110,11 @@
       </AnchorPane>
       <AnchorPane prefHeight="610.0" prefWidth="90.0" style="-fx-background-color: #686868;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="30.0">
          <children>
+            <Button fx:id="btnConfirm" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="129.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Confirm" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="120.0">
+               <graphic>
+                  <FontAwesomeIconView glyphName="CHECK" size="30" />
+               </graphic>
+            </Button>
             <Button fx:id="btnNew" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="56.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="New" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
                <graphic>
                   <FontAwesomeIconView glyphName="FILE_ALT" size="30" />
@@ -133,11 +138,6 @@
             <Button fx:id="btnSearch" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="1.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Search" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <graphic>
                   <FontAwesomeIconView glyphName="SEARCH" size="30" />
-               </graphic>
-            </Button>
-            <Button fx:id="btnConfirm" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="129.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Confirm" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="120.0">
-               <graphic>
-                  <FontAwesomeIconView glyphName="CHECK" size="30" />
                </graphic>
             </Button>
             <Button fx:id="btnDel" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="127.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Del. Detail" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="120.0">

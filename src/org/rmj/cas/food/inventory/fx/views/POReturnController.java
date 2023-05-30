@@ -40,6 +40,7 @@ import org.rmj.cas.parameter.agent.XMInventoryType;
 import org.rmj.purchasing.agent.XMPOReceiving;
 import org.rmj.purchasing.agent.XMPOReturn;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
+import org.rmj.appdriver.constants.TransactionStatus;
 
 public class POReturnController implements Initializable {
     
@@ -145,7 +146,7 @@ public class POReturnController implements Initializable {
         clearFields();
         initGrid();
         initButton(pnEditMode);
-        
+        poTrans.setTranStat(0);
         pbLoaded = true;
     }    
 
@@ -312,12 +313,32 @@ public class POReturnController implements Initializable {
                 break;
             case "btnConfirm":
                 if (!psOldRec.equals("")){
-                    if (poTrans.postRecord((String) poTrans.getMaster("sTransNox"))){
-                        ShowMessageFX.Information(null, pxeModuleName, "Transaction posted successfully.");
-                        if (poTrans.openRecord(psOldRec)) loadRecord(); pnEditMode = poTrans.getEditMode();
+                    
+                   if(ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")==true){
+                        if (poTrans.printRecord()){
+                            ShowMessageFX.Information(null, pxeModuleName, "Transaction printed successfully.");
+                            
+                        }
+                        
+                    }else
+                        return;
+                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transasction?")== true){
+                          
+                        if (poTrans.closeRecord(psOldRec)){
+                             clearFields();
+                            initGrid();
+                            pnEditMode = EditMode.UNKNOWN;
+                        }else {
+                            clearFields();
+                            initGrid();
+                            pnEditMode = EditMode.UNKNOWN;
+                            }
+                       
                     }
-                }
+                      
                 return;
+                }else 
+                    ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
             case "btnClose":
             case "btnExit": 
                 unloadForm();
@@ -335,9 +356,16 @@ public class POReturnController implements Initializable {
                     if (poTrans.openRecord((String) poTrans.getMaster("sTransNox"))){
                         loadRecord(); 
                         psOldRec = (String) poTrans.getMaster("sTransNox");
-                        
-                        if (poTrans.printRecord()) poTrans.closeRecord(psOldRec);
-                        
+                         if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transasction?")== true){
+                        if (poTrans.closeRecord(psOldRec)){
+                                if (poTrans.printRecord()){
+                            ShowMessageFX.Information(null, pxeModuleName, "Transaction printed successfully.");
+                            clearFields();
+                            initGrid();
+                            pnEditMode = EditMode.UNKNOWN;
+                        }
+                        }
+                }
                         pnEditMode = poTrans.getEditMode();
                     } else {
                         clearFields();
