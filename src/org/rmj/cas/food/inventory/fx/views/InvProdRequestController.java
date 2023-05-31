@@ -792,6 +792,8 @@ public class InvProdRequestController implements Initializable {
         Map<String, Object> params = new HashMap<>();
         params.put("sCompnyNm", "Los Pedritos");  
         params.put("sBranchNm", poGRider.getBranchName());
+        params.put("sAddressx", poGRider.getAddress());
+        params.put("sReportNm", "Inventory Product Request");
 //        params.put("sDestinat", lsSQL);
         
         params.put("sTransNox", poTrans.getMaster("sTransNox").toString().substring(1));

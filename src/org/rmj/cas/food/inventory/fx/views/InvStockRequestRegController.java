@@ -510,6 +510,8 @@ public class InvStockRequestRegController implements Initializable {
         params.put("sCompnyNm", "Los Pedritos");  
         params.put("sBranchNm", poGRider.getBranchName());
         params.put("sDestinat", lsSQL);
+        params.put("sAddressx", poGRider.getAddress());
+        params.put("sReportNm", "Inventory Stock Request");
         
         params.put("sTransNox", poTrans.getMaster("sTransNox").toString().substring(1));
         params.put("sReportDt", CommonUtils.xsDateMedium((Date)poTrans.getMaster("dTransact")));
