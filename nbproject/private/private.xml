@@ -11,5 +11,15 @@
             <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvProdRequestController.java</file>
             <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/applications/FoodInventoryFX.java</file>
         </group>
+        <group name="LP INTEGSYS">
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvProdRequestRegController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvProdRequestController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvStockRequestController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/POReturnController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/DailyProductionController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvAdjustmentController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/POReturnRegController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvStockRequestRegController.java</file>
+        </group>
     </open-files>
 </project-private>

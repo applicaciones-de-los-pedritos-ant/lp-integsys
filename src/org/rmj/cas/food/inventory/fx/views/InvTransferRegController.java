@@ -446,6 +446,8 @@ public class InvTransferRegController implements Initializable {
         params.put("sBranchNm", poGRider.getBranchName());
         params.put("sDestinat", lsSQL);
         
+        params.put("sAddressx", poGRider.getAddress());
+        params.put("sReportNm", "Inventory Transfer");
         params.put("sTransNox", poTrans.getMaster("sTransNox").toString().substring(1));
         params.put("sReportDt", CommonUtils.xsDateMedium((Date)poTrans.getMaster("dTransact")));
         params.put("sPrintdBy", System.getProperty("user.name"));

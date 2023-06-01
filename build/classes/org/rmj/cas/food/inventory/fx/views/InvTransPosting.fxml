@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="dataPane" prefHeight="625.0" prefWidth="920.0" stylesheets="@../styles/Parameter.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="30.0" prefWidth="920.0" style="-fx-background-color: #000000;" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label layoutX="5.0" layoutY="4.0" text="Inventory Stock Transfer Posting" textFill="WHITE" AnchorPane.leftAnchor="30.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnExit" layoutX="1.0" layoutY="3.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="21.0" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="System Bold" size="8.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView fx:id="glyphExit" glyphName="TIMES" />
+               </graphic>
+            </Button>
+            <Separator layoutY="26.0" prefHeight="0.0" prefWidth="500.0" style="-fx-background-color: orange;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="anchorField" layoutX="90.0" layoutY="16.0" prefHeight="596.0" prefWidth="829.0" style="-fx-background-color: #B3B6B7;" AnchorPane.leftAnchor="90.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+         <children>
+            <Label fx:id="lblHeader" layoutX="105.0" layoutY="107.0" prefHeight="27.0" prefWidth="149.0" style="-fx-background-color: black;" />
+            <TextField fx:id="txtField01" disable="true" editable="false" layoutX="102.0" layoutY="102.0" prefHeight="27.0" prefWidth="149.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </TextField>
+            <Label layoutX="5.0" layoutY="106.0" text="Transaction No.">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="144.0" prefHeight="17.0" prefWidth="90.0" text="Trans Date:" />
+            <TextField fx:id="txtField03" disable="true" editable="false" layoutX="102.0" layoutY="140.0" prefHeight="25.0" prefWidth="149.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="172.0" prefHeight="17.0" prefWidth="90.0" text="Destination" textAlignment="RIGHT" />
+            <TextField fx:id="txtField04" disable="true" editable="false" layoutX="102.0" layoutY="168.0" prefHeight="27.0" prefWidth="293.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="200.0" prefHeight="17.0" prefWidth="90.0" text="Order No." textAlignment="RIGHT" />
+            <TextField fx:id="txtField18" disable="true" editable="false" layoutX="102.0" layoutY="196.0" prefHeight="27.0" prefWidth="149.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="228.0" prefHeight="17.0" prefWidth="90.0" text="Vehicle ID" textAlignment="RIGHT" />
+            <TextField fx:id="txtField06" disable="true" editable="false" layoutX="102.0" layoutY="224.0" prefHeight="27.0" prefWidth="149.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="256.0" prefHeight="17.0" prefWidth="90.0" text="Freight Charge" />
+            <TextField fx:id="txtField07" disable="true" editable="false" layoutX="102.0" layoutY="252.0" prefHeight="25.0" prefWidth="149.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="284.0" prefHeight="17.0" prefWidth="90.0" text="Discount" />
+            <TextField fx:id="txtField13" disable="true" editable="false" layoutX="102.0" layoutY="280.0" prefHeight="25.0" prefWidth="149.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="309.0" prefHeight="17.0" prefWidth="90.0" text="Remarks" textAlignment="RIGHT" />
+            <TextArea fx:id="txtField05" disable="true" editable="false" layoutX="102.0" layoutY="308.0" prefHeight="49.0" prefWidth="293.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="470.0" layoutY="343.0" text="Total Amount" textAlignment="RIGHT">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="Label12" alignment="CENTER_RIGHT" layoutX="605.0" layoutY="335.0" prefHeight="35.0" prefWidth="218.0" style="-fx-background-color: #4d5656;" text="1,000,000.00" textFill="#ff6200">
+               <font>
+                  <Font name="System Bold Italic" size="24.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </Label>
+            <Label alignment="CENTER_RIGHT" layoutX="408.0" layoutY="101.0" prefHeight="17.0" prefWidth="69.0" text="Order No." />
+            <TextField fx:id="txtDetail05" disable="true" editable="false" layoutX="484.0" layoutY="97.0" prefHeight="27.0" prefWidth="98.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="405.0" layoutY="128.0" prefHeight="17.0" prefWidth="69.0" text="Barcode" />
+            <TextField fx:id="txtDetail03" disable="true" editable="false" layoutX="484.0" layoutY="125.0" prefHeight="27.0" prefWidth="158.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="402.0" layoutY="152.0" prefHeight="17.0" prefWidth="69.0" text="Description" />
+            <TextField fx:id="txtDetail80" disable="true" editable="false" layoutX="484.0" layoutY="153.0" prefHeight="27.0" prefWidth="158.0" />
+            <TextArea fx:id="txtDetail10" disable="true" editable="false" layoutX="484.0" layoutY="181.0" prefHeight="49.0" prefWidth="342.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="405.0" layoutY="180.0" prefHeight="17.0" prefWidth="69.0" text="Notes" />
+            <Label alignment="CENTER_RIGHT" layoutX="407.0" layoutY="236.0" prefHeight="17.0" prefWidth="69.0" text="Old Code">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtDetail04" disable="true" editable="false" layoutX="484.0" layoutY="231.0" prefHeight="27.0" prefWidth="98.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="628.0" layoutY="236.0" prefHeight="17.0" prefWidth="69.0" text="Unit Cost" />
+            <TextField fx:id="txtDetail07" alignment="CENTER_RIGHT" disable="true" editable="false" layoutX="708.0" layoutY="231.0" prefHeight="27.0" prefWidth="118.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="631.0" layoutY="266.0" prefHeight="17.0" prefWidth="69.0" text="Total QTY">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtDetail06" alignment="CENTER_RIGHT" disable="true" editable="false" layoutX="708.0" layoutY="259.0" prefHeight="27.0" prefWidth="118.0" />
+            <TextField fx:id="txtDetail09" alignment="CENTER_RIGHT" layoutX="687.0" layoutY="96.0" prefHeight="27.0" prefWidth="139.0" />
+            <TableView fx:id="table" focusTraversable="false" layoutX="10.0" layoutY="377.0" onMouseClicked="#table_Clicked" prefHeight="217.0" prefWidth="399.0" stylesheets="@../styles/Tables.css" />
+            <Separator layoutX="400.0" layoutY="43.0" orientation="VERTICAL" prefHeight="325.0" prefWidth="4.0" style="-fx-background-color: black;" />
+            <ImageView fx:id="imgTranStat" fitHeight="35.0" fitWidth="158.0" layoutX="659.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" />
+            <AnchorPane layoutX="2.0" layoutY="4.0" minHeight="43.0" prefHeight="43.0" prefWidth="828.0" style="-fx-background-color: #686868;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Separator layoutY="41.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
+               </children>
+            </AnchorPane>
+            <TextField fx:id="txtField50" layoutX="109.0" layoutY="7.0" prefHeight="27.0" prefWidth="149.0" promptText="Press F3 to search" />
+            <Label layoutX="27.0" layoutY="11.0" text="Transfer No.">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtField51" layoutX="436.0" layoutY="7.0" prefHeight="27.0" prefWidth="262.0" promptText="Press F3 to search" />
+            <Label layoutX="344.0" layoutY="11.0" text="Source Branch">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER_RIGHT" layoutX="406.0" layoutY="264.0" prefHeight="17.0" prefWidth="69.0" text="On Hand">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtOther02" disable="true" editable="false" layoutX="484.0" layoutY="259.0" prefHeight="27.0" prefWidth="98.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="169.0" layoutY="65.0" prefHeight="17.0" prefWidth="98.0" text="** Received Date:" textFill="RED">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtField19" layoutX="274.0" layoutY="61.0" prefHeight="27.0" prefWidth="118.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="577.0" layoutY="101.0" prefHeight="17.0" prefWidth="98.0" text="QTY Recevied">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="596.0" prefWidth="90.0" style="-fx-background-color: #686868;" AnchorPane.topAnchor="30.0">
+         <children>
+            <Button fx:id="btnPost" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Post" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
+               <graphic>
+                  <FontAwesomeIconView glyphName="THUMB_TACK" size="30" />
+               </graphic>
+            </Button>
+            <Button fx:id="btnClose" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="180.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Close" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="120.0">
+               <graphic>
+                  <FontAwesomeIconView glyphName="POWER_OFF" size="30" />
+               </graphic>
+            </Button>
+            <Button fx:id="btnBrowse" alignment="BOTTOM_CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Browse" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <graphic>
+                  <FontAwesomeIconView glyphName="FOLDER_OPEN" size="30" />
+               </graphic>
+            </Button>
+            <Separator maxWidth="1.0" minWidth="1.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+      <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="3.0">
+         <image>
+            <Image url="@../images/ic_launcher1.png" />
+         </image>
+      </ImageView>
+      <TableView fx:id="tableData" focusTraversable="false" layoutX="504.0" layoutY="406.0" onMouseClicked="#tableData_Clicked" prefHeight="217.0" prefWidth="411.0" />
+   </children>
+</AnchorPane>
