@@ -1007,7 +1007,6 @@ public class DailyProductionController implements Initializable {
         public void DetailRetreive(int fnIndex) {
             switch(fnIndex){
                 case 6:
-                    /*get the value from the class*/
                     txtDetail06.setText(CommonUtils.xsDateLong((Date)poTrans.getDetail(pnRow,"dExpiryDt")));
                     break;
                 case 4:
@@ -1018,9 +1017,6 @@ public class DailyProductionController implements Initializable {
                             (int) poTrans.getDetail(poTrans.ItemCount()- 1, fnIndex) > 0){
                         poTrans.addDetail();
                         pnRow = poTrans.ItemCount()-1;
-
-                        //set the previous order numeber to the new ones.
-                        //poTrans.setDetail(pnRow, "sOrderNox", psOrderNox);
                     } 
                     
                     loadDetail();
@@ -1049,26 +1045,15 @@ public class DailyProductionController implements Initializable {
 
     @FXML
     private void tableRaw_Clicked(MouseEvent event) {
-       pnRawdata   = table1.getSelectionModel().getSelectedIndex();
-       p_bTableFocus = false;
-       p_bRawFocus = true;
-       if(pnRawdata < 0) return;
-       
-       tableData.setItems(getRecordData(pnRawdata));
-        if(!pbFound){
-//            addDetailData(pnlRow);
-        }
-        
-//        if(!poTrans.getInv(pnRawdata, "sStockIDx").equals("")){
-            txtDetail07.setText(CommonUtils.xsDateMedium((Date) poTrans.getInv(pnRawdata, "dExpiryDt")));
-////        }else{
-//            txtDetail07.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
-//        }
+        pnRawdata   = table1.getSelectionModel().getSelectedIndex();
+        p_bTableFocus = false;
+        p_bRawFocus = true;
+        if(pnRawdata < 0) return;
+
+        tableData.setItems(getRecordData(pnRawdata));
+        txtDetail07.setText(CommonUtils.xsDateMedium((Date) poTrans.getInv(pnRawdata, "dExpiryDt")));
     }
-    /**
-     * to handle adding of empty data base on date expiration
-     * @param fnRow 
-     */
+
     private void addDetailData(int fnRow){
         if (poTrans.getInv(pnRawdata, "sStockIDx").equals("")) return;
         

@@ -75,6 +75,7 @@ public class PurchaseOrderController implements Initializable {
     @FXML private TextField txtField50;
     @FXML private TextField txtField51;
     @FXML private AnchorPane dataPane;
+    @FXML private Button btnUpdate;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -90,6 +91,7 @@ public class PurchaseOrderController implements Initializable {
         btnSave.setOnAction(this::cmdButton_Click);
         btnDel.setOnAction(this::cmdButton_Click);
         btnNew.setOnAction(this::cmdButton_Click);
+        btnUpdate.setOnAction(this::cmdButton_Click);
         btnConfirm.setOnAction(this::cmdButton_Click);
         btnClose.setOnAction(this::cmdButton_Click);
         btnExit.setOnAction(this::cmdButton_Click);
@@ -272,14 +274,15 @@ public class PurchaseOrderController implements Initializable {
                             if (poTrans.closeRecord(psOldRec, poGRider.getUserID(), "TOKENAPPROVL")){
                                 ShowMessageFX.Information("Transaction was approved successfully.", pxeModuleName, "Approval successful!!!");
 
-                                if (poTrans.openRecord(psOldRec)){                                
+                                if (poTrans.openRecord(psOldRec)){       
+                                    clearFields();
                                     loadRecord(); 
                                     psOldRec = (String) poTrans.getMaster("sTransNox");
 
-                                    poTrans.printRecord();
-
-                                    pnEditMode = poTrans.getEditMode();
-                                } else {
+                                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                                        poTrans.printRecord();
+                                    }
+                            
                                     clearFields();
                                     initGrid();
                                     pnEditMode = EditMode.UNKNOWN;
@@ -304,14 +307,16 @@ public class PurchaseOrderController implements Initializable {
                                         loadRecord(); 
                                         psOldRec = (String) poTrans.getMaster("sTransNox");
 
-                                        poTrans.printRecord();
+                                        if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                                            poTrans.printRecord();
+                                        }
 
                                         pnEditMode = poTrans.getEditMode();
-                                    } else {
-                                        clearFields();
-                                        initGrid();
-                                        pnEditMode = EditMode.UNKNOWN;
                                     }
+                                    
+                                    clearFields();
+                                    initGrid();
+                                    pnEditMode = EditMode.UNKNOWN;
                                 }
                             }
                         } else {
@@ -355,15 +360,12 @@ public class PurchaseOrderController implements Initializable {
                     if (poTrans.openRecord((String) poTrans.getMaster("sTransNox"))){
                         loadRecord(); 
                         psOldRec = (String) poTrans.getMaster("sTransNox");
-
                         pnEditMode = poTrans.getEditMode();
                     } else {
                         clearFields();
                         initGrid();
                         pnEditMode = EditMode.UNKNOWN;
                     }
-                    
-                    initButton(pnEditMode);
                     break;
                 } else return;
             case "btnDel":  
@@ -382,6 +384,19 @@ public class PurchaseOrderController implements Initializable {
                 
                 pnEditMode = poTrans.getEditMode();    
                 return;
+            case "btnUpdate":
+                if (!psOldRec.equals("")){
+                    if ("0".equals((String) poTrans.getMaster("cTranStat"))){
+                        if (!poTrans.updateRecord()){
+                            loadRecord();
+                            pnEditMode = poTrans.getEditMode();
+                        } else 
+                            ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
+                    } else {
+                        ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
+                    }
+                }
+                break;
             case "btnPrint":
                 if (!psOldRec.equals("")){
                     if ("1".equals(poTrans.getMaster("cTranStat")))

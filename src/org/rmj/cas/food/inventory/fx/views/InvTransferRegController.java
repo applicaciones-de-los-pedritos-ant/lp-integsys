@@ -228,11 +228,19 @@ public class InvTransferRegController implements Initializable {
                
             case "btnPrint": 
                if(!psOldRec.equals("")){
-                    if (!printTransfer()) return;
+                    if (printTransfer()){                        
+                        if ("0".equals((String) poTrans.getMaster("cTranStat"))){
+                            if (poTrans.closeTransaction(psOldRec)){
+                                ShowMessageFX.Information(null, pxeModuleName, "Transaction confirmed successfully.");
+                            } else{
+                                ShowMessageFX.Warning(null, pxeModuleName, "Unable to confirm transaction.");
+                            } 
+                        }
 
-                    clearFields();
-                    initGrid();
-                    pnEditMode = EditMode.UNKNOWN;
+                        clearFields();
+                        initGrid();
+                        pnEditMode = EditMode.UNKNOWN;
+                    } else return;
                 }else 
                     ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
                     
@@ -446,6 +454,8 @@ public class InvTransferRegController implements Initializable {
         params.put("sBranchNm", poGRider.getBranchName());
         params.put("sDestinat", lsSQL);
         
+        params.put("sAddressx", poGRider.getAddress());
+        params.put("sReportNm", "Inventory Transfer");
         params.put("sTransNox", poTrans.getMaster("sTransNox").toString().substring(1));
         params.put("sReportDt", CommonUtils.xsDateMedium((Date)poTrans.getMaster("dTransact")));
         params.put("sPrintdBy", System.getProperty("user.name"));
@@ -464,6 +474,58 @@ public class InvTransferRegController implements Initializable {
         
         return true;
     }
+    
+//    private boolean printTransfer(){        
+//        JSONArray json_arr = new JSONArray();
+//        json_arr.clear();
+//        
+//        for(int lnCtr = 0; lnCtr <= poTrans.ItemCount()-1; lnCtr ++){
+//            JSONObject json_obj = new JSONObject();
+//            json_obj.put("sField01", (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"));
+//            json_obj.put("sField02", (String) poTrans.getDetailOthers(lnCtr, "sDescript"));
+//            json_obj.put("sField05", (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"));
+//            json_obj.put("nField01", (Double) poTrans.getDetail(lnCtr, "nQuantity"));
+//            json_obj.put("lField01", Double.valueOf(poTrans.getDetail(lnCtr, "nInvCostx").toString()));
+//            json_arr.add(json_obj);
+//        }
+//        
+//        String lsSQL = "SELECT sBranchNm FROM Branch WHERE sBranchCD = " + SQLUtil.toSQL((String) poTrans.getMaster("sDestinat"));
+//        ResultSet loRS = poGRider.executeQuery(lsSQL);
+//        try {
+//            if (loRS.next())
+//                lsSQL = loRS.getString("sBranchNm");
+//            else
+//                lsSQL = (String) poTrans.getMaster("sDestinat");
+//        } catch (SQLException ex) {
+//            System.err.println(ex.getMessage());
+//            ShowMessageFX.Error(ex.getMessage(), pxeModuleName, "Unable to print...");
+//            System.exit(1);
+//        }
+//        
+//        //Create the parameter
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("sCompnyNm", "Los Pedritos");  
+//        params.put("sBranchNm", poGRider.getBranchName());
+//        params.put("sDestinat", lsSQL);
+//        
+//        params.put("sTransNox", poTrans.getMaster("sTransNox").toString().substring(1));
+//        params.put("sReportDt", CommonUtils.xsDateMedium((Date)poTrans.getMaster("dTransact")));
+//        params.put("sPrintdBy", System.getProperty("user.name"));
+//                
+//        try {
+//            InputStream stream = new ByteArrayInputStream(json_arr.toJSONString().getBytes("UTF-8"));
+//            JsonDataSource jrjson = new JsonDataSource(stream); 
+//            
+//            JasperPrint _jrprint = JasperFillManager.fillReport("d:/GGC_Java_Systems/reports/InvTransferPrint.jasper", params, jrjson);
+//            JasperViewer jv = new JasperViewer(_jrprint, false);     
+//            jv.setVisible(true);
+//            jv.setAlwaysOnTop(true);
+//        } catch (JRException | UnsupportedEncodingException  ex) {
+//            Logger.getLogger(InvTransferRegController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
+//        return true;
+//    }
     
     public void setGRider(GRider foGRider){this.poGRider = foGRider;}
     private final String pxeModuleName = "InvTransferController";

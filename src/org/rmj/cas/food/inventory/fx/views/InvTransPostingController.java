@@ -313,7 +313,7 @@ public class InvTransPostingController implements Initializable {
                }          
                    if(ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to post this transaction?")==true){
                     if(pnDetTotl!= pnExpTotl){
-                        if(ShowMessageFX.YesNo("Discrepancy error detected!", pxeModuleName, "Do you want to post this transaction?")==true){
+                        if(ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to post this transaction?")==true){
                             if (poGRider.getUserLevel() <= UserRight.ENCODER){
                                 JSONObject loJSON = showFXDialog.getApproval(poGRider);
                                 if (loJSON == null){

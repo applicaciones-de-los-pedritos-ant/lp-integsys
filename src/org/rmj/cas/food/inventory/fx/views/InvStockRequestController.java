@@ -77,9 +77,7 @@ public class InvStockRequestController implements Initializable {
     @FXML private Label Label12;
     @FXML private TextField txtDetail01;
     @FXML private TextField txtDetail02;
-//    @FXML private TextField txtDetail04;
     @FXML private TextField txtDetail05;
-//    @FXML private TextField txtDetail06;
     @FXML private TextField txtDetail07;
     @FXML private TextArea txtDetail03;
     @FXML private TableView table; 
@@ -129,7 +127,7 @@ public class InvStockRequestController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new InvRequest(poGRider, poGRider.getBranchCode(), false);
         poTrans.setCallBack(poCallBack);
-        poTrans.setTranStat(1234);
+        poTrans.setTranStat(0);
         btnCancel.setOnAction(this::cmdButton_Click);
         btnSearch.setOnAction(this::cmdButton_Click);
         btnSave.setOnAction(this::cmdButton_Click);
@@ -491,11 +489,6 @@ public class InvStockRequestController implements Initializable {
                 break;
             case "btnPrint": 
                 if (!psOldRec.equals("")){
-//                    if(!poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_CLOSED)){
-//                    ShowMessageFX.Warning("Trasaction may be CANCELLED/OPEN.", pxeModuleName, "Can't print transactions!!!");
-//                    return;
-//                    }
-
                     if(poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_CANCELLED)){
                         ShowMessageFX.Warning("Trasaction may be CANCELLED.", pxeModuleName, "Can't print transactions!!!");
                         return;
@@ -503,14 +496,10 @@ public class InvStockRequestController implements Initializable {
                     
                     if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
                         if (!printTransfer()) return;
-                        
-//                        if (poTrans.closeTransaction(psOldRec)){
-//                            //ShowMessageFX.Information(null, pxeModuleName, "Transaction PRINTED successfully.");
                             clearFields();
                             initGrid();
                             pnEditMode = EditMode.UNKNOWN;
                             initButton(pnEditMode);
-//                        }
                     }
                     
                 } else ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
@@ -538,18 +527,26 @@ public class InvStockRequestController implements Initializable {
                         }
                     }  
                     
-                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
-                        if (!printTransfer()) return;
-                        
+                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transasction?")== true){
                         if (poTrans.closeTransaction(psOldRec)){
-                            //ShowMessageFX.Information(null, pxeModuleName, "Transaction PRINTED successfully.");
+                            ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
+                            
+                            if (poTrans.openTransaction(psOldRec)){
+                                clearFields();
+                                loadRecord(); 
+                                
+                                psOldRec = (String) poTrans.getMaster("sTransNox");
+                                
+                                if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                                    if (!printTransfer()) return;
+                                }
+                            }
+
                             clearFields();
                             initGrid();
                             pnEditMode = EditMode.UNKNOWN;
-                            initButton(pnEditMode);
                         }
                     }
-                    
                 } else ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to confirm!");
                 break;
             case "btnExit":
@@ -568,10 +565,17 @@ public class InvStockRequestController implements Initializable {
             case "btnSave": 
                 if (poTrans.saveTransaction()){
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
-                    clearFields();
-                    initGrid();
-                    pnEditMode = EditMode.UNKNOWN;
-                    initButton(pnEditMode);
+                    
+                   //re open and print the record
+                    if (poTrans.openTransaction((String) poTrans.getMaster("sTransNox"))){
+                        loadRecord(); 
+                        psOldRec = (String) poTrans.getMaster("sTransNox");
+                        pnEditMode = poTrans.getEditMode();
+                    } else {
+                        clearFields();
+                        initGrid();
+                        pnEditMode = EditMode.UNKNOWN;
+                    }
                     break;
                 } else{
                     if (!poTrans.getErrMsg().equals(""))

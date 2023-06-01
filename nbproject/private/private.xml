@@ -4,12 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group/>
         <group name="LP IntegSys">
-            <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvProdRequestRegController.java</file>
-            <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/MDIMainController.java</file>
-            <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/applications/LetMeIn.java</file>
-            <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/applications/Login.java</file>
-            <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvProdRequestController.java</file>
-            <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/applications/FoodInventoryFX.java</file>
+            <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvTransferController.java</file>
+            <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvTransferRegController.java</file>
+            <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvStockRequestController.java</file>
+            <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/PurchaseOrderController.java</file>
+            <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvTransPostingController.java</file>
+            <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/PurchaseOrder.fxml</file>
         </group>
     </open-files>
 </project-private>

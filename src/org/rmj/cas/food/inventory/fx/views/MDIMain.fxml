@@ -26,7 +26,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="mnuMain" onKeyPressed="#mnuMain_KeyPressed" prefHeight="768.0" prefWidth="1366.0" stylesheets="@../styles/MainController.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" fx:id="mnuMain" onKeyPressed="#mnuMain_KeyPressed" prefHeight="768.0" prefWidth="1366.0" stylesheets="@../styles/MainController.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox layoutY="26.0" prefHeight="25.0" prefWidth="1010.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -346,7 +346,7 @@
                                  </font>
                               </Button>
                            </graphic></MenuItem>
-                        <MenuItem fx:id="mnu_inventoryCount" mnemonicParsing="false" onAction="#mnu_inventoryCountClick" text="Inventory Count">
+                        <MenuItem fx:id="mnu_inventoryCount" mnemonicParsing="false" onAction="#mnu_inventoryCountClick" text="Inventory Count" visible="false">
                            <graphic>
                               <Button graphicTextGap="2.0" mnemonicParsing="false">
                                  <graphic>
@@ -380,7 +380,7 @@
                               </Button>
                            </graphic>
                         </MenuItem>
-                        <MenuItem fx:id="mnuWasteInventory" mnemonicParsing="false" onAction="#mnuWasteInventory" text="Waste Inventory">
+                        <MenuItem fx:id="mnuWasteInventory" mnemonicParsing="false" onAction="#mnuWasteInventory" text="Waste Inventory" visible="false">
                            <graphic>
                               <Button graphicTextGap="2.0" mnemonicParsing="false">
                                  <graphic>
@@ -545,7 +545,7 @@
                                  </font>
                               </Button>
                            </graphic></MenuItem>
-                        <MenuItem fx:id="mnu_InvWasteReg" mnemonicParsing="false" onAction="#mnu_InvWasteReg" text="Waste Inventory">
+                        <MenuItem fx:id="mnu_InvWasteReg" mnemonicParsing="false" onAction="#mnu_InvWasteReg" text="Waste Inventory" visible="false">
                            <graphic>
                               <Button graphicTextGap="2.0" mnemonicParsing="false">
                                  <graphic>
@@ -569,7 +569,7 @@
                               </Button>
                            </graphic>
                         </MenuItem>
-                        <MenuItem fx:id="mnu_InvCountReg" mnemonicParsing="false" onAction="#mnu_InvCountRegClick" text="Inventory Count Reg" visible="true">
+                        <MenuItem fx:id="mnu_InvCountReg" mnemonicParsing="false" onAction="#mnu_InvCountRegClick" text="Inventory Count Reg" visible="false">
                            <graphic>
                               <Button graphicTextGap="2.0" mnemonicParsing="false">
                                  <graphic>
