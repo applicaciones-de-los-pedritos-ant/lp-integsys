@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="dataPane" prefHeight="525.0" prefWidth="920.0" stylesheets="@../styles/Parameter.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="dataPane" prefHeight="525.0" prefWidth="920.0" stylesheets="@../styles/Parameter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="30.0" prefWidth="920.0" style="-fx-background-color: #000000;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -89,9 +89,9 @@
       </AnchorPane>
       <AnchorPane layoutY="29.0" prefHeight="495.0" prefWidth="90.0" style="-fx-background-color: #686868;" AnchorPane.topAnchor="30.0">
          <children>
-            <Button fx:id="btnNew" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="56.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="New" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
+            <Button fx:id="btnSearch" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="1.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Search" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <graphic>
-                  <FontAwesomeIconView glyphName="FILE_ALT" size="30" />
+                  <FontAwesomeIconView glyphName="SEARCH" size="30" />
                </graphic>
             </Button>
             <Button fx:id="btnSave" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="62.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Save" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
@@ -99,19 +99,14 @@
                   <FontAwesomeIconView glyphName="FLOPPY_ALT" size="30" />
                </graphic>
             </Button>
+            <Button fx:id="btnDel" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="22.0" layoutY="115.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Del. Detail" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
+               <graphic>
+                  <FontAwesomeIconView glyphName="DEDENT" size="30" />
+               </graphic>
+            </Button>
             <Button fx:id="btnCancel" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="245.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Cancel" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="180.0">
                <graphic>
                   <FontAwesomeIconView glyphName="SIGN_OUT" size="30" />
-               </graphic>
-            </Button>
-            <Button fx:id="btnSearch" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="1.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Search" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <graphic>
-                  <FontAwesomeIconView glyphName="SEARCH" size="30" />
-               </graphic>
-            </Button>
-            <Button fx:id="btnConfirm" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="189.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Confirm" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="180.0">
-               <graphic>
-                  <FontAwesomeIconView glyphName="CHECK" size="30" />
                </graphic>
             </Button>
             <Button fx:id="btnBrowse" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="1.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Browse" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -119,17 +114,27 @@
                   <FontAwesomeIconView glyphName="FOLDER_OPEN" size="30" />
                </graphic>
             </Button>
-            <Button fx:id="btnPrint" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="-14.0" layoutY="136.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Print" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
+            <Button fx:id="btnNew" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="56.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="New" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
+               <graphic>
+                  <FontAwesomeIconView glyphName="FILE_ALT" size="30" />
+               </graphic>
+            </Button>
+            <Button fx:id="btnUpdate" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="32.0" layoutY="125.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Update" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="120.0">
+               <graphic>
+                  <FontAwesomeIconView glyphName="EDIT" size="30" />
+               </graphic>
+            </Button>
+            <Button fx:id="btnPrint" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="-14.0" layoutY="136.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Print" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="180.0">
                <graphic>
                   <FontAwesomeIconView glyphName="PRINT" size="30" />
                </graphic>
             </Button>
-            <Button fx:id="btnDel" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="22.0" layoutY="115.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Del. Detail" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
+            <Button fx:id="btnConfirm" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="189.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Confirm" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="240.0">
                <graphic>
-                  <FontAwesomeIconView glyphName="DEDENT" size="30" />
+                  <FontAwesomeIconView glyphName="CHECK" size="30" />
                </graphic>
             </Button>
-            <Button fx:id="btnClose" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="289.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Close" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="240.0">
+            <Button fx:id="btnClose" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="289.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="90.0" text="Close" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="300.0">
                <graphic>
                   <FontAwesomeIconView glyphName="POWER_OFF" size="30" />
                </graphic>

@@ -354,6 +354,11 @@ public class POReceivingController implements Initializable {
                             ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
                             
                             if (poTrans.openRecord(psOldRec)){
+                                clearFields();
+                                loadRecord(); 
+                                
+                                psOldRec = (String) poTrans.getMaster("sTransNox");
+                                
                                 if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
                                     poTrans.printRecord();
                                 }
@@ -362,7 +367,6 @@ public class POReceivingController implements Initializable {
                             clearFields();
                             initGrid();
                             pnEditMode = EditMode.UNKNOWN;
-                            initButton(pnEditMode);
                         }
                     }
                 } else ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to confirm!");
@@ -388,33 +392,13 @@ public class POReceivingController implements Initializable {
                     if (poTrans.openRecord((String) poTrans.getMaster("sTransNox"))){
                         loadRecord(); 
                         psOldRec = (String) poTrans.getMaster("sTransNox");
-                        
-                        if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transasction?")== true){
-                            ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
-                            initGrid();
-                            pnEditMode = EditMode.UNKNOWN;
-                            initButton(pnEditMode);
-                            
-                            if (poTrans.closeRecord(psOldRec)){
-                                if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
-                                    poTrans.printRecord();
-                                }
-                                clearFields();
-                            }
-                        } else {
-                            clearFields();
-                            initGrid();
-                            pnEditMode = EditMode.UNKNOWN;
-                            initButton(pnEditMode);
-                        }
+                        pnEditMode = poTrans.getEditMode();
                     } else {
                         clearFields();
                         initGrid();
                         pnEditMode = EditMode.UNKNOWN;
                         initButton(pnEditMode);
                     }
-                    
-                    initButton(pnEditMode);
                     break;
                 } else return;
                 
