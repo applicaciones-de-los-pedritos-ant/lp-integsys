@@ -22,7 +22,7 @@ import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.food.inventory.fx.modules.qsParameter;
-import org.rmj.cas.parameter.agent.XMModel;
+import org.rmj.lp.parameter.agent.XMModel;
 
 public class ModelController implements Initializable {
 

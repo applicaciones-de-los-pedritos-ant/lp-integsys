@@ -68,7 +68,7 @@ import org.rmj.appdriver.agentfx.service.TokenApprovalFactory;
 import org.rmj.appdriver.agentfx.ui.showFXDialog;
 import org.rmj.appdriver.constants.UserRight;
 import org.rmj.cas.food.reports.classes.FoodReports;
-import org.rmj.cas.parameter.fx.ParameterFX;
+import org.rmj.lp.parameter.fx.ParameterFX;
 //import org.rmj.cas.pos.reports.BIRReports;
 
 public class MDIMainControllerNeo implements Initializable {
@@ -422,30 +422,18 @@ p_nLocation = MouseInfo.getPointerInfo().getLocation();
 //    }
     
     public Parent loadScene(String foURL)throws IOException{
-        
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource(foURL));
-       
-        Object fxObj = getContoller(foURL);
-        fxmlLoader.setController(fxObj);
         try{
-        Parent root = fxmlLoader.load();
-        spLeft.getChildren().clear();
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource(foURL));
 
-        StackPane stack = new StackPane();
-        stack.getChildren().add(root);
+            Object fxObj = getContoller(foURL);
+            fxmlLoader.setController(fxObj);
+            Parent root = fxmlLoader.load();
 
-//            stack.translateXProperty()
-//                    .bind(spLeft.widthProperty().subtract(stack.widthProperty())
-//                            .divide(2));
-//
-//            stack.translateYProperty()
-//                    .bind(spLeft.heightProperty().subtract(stack.heightProperty())
-//                            .divide(2));
-        spLeft.getChildren().add(stack);
-//        dragNode(stack);
-        
-    FadeTransition ft = new FadeTransition(Duration.millis(1500));
+            spLeft.getChildren().clear();
+            spLeft.getChildren().add(root);
+
+            FadeTransition ft = new FadeTransition(Duration.millis(1500));
             ft.setNode(root);
             ft.setFromValue(1);
             ft.setToValue(1);
@@ -1072,59 +1060,59 @@ p_nLocation = MouseInfo.getPointerInfo().getLocation();
         
         switch (fsValue){
             case "Brand":
-                instance = new org.rmj.cas.parameter.fx.BrandController();
+                instance = new org.rmj.lp.parameter.fx.BrandController();
                 instance.setGRider(poGRider);
                 return instance;                
             case "InventoryType":
-                instance = new org.rmj.cas.parameter.fx.InventoryTypeController();
+                instance = new org.rmj.lp.parameter.fx.InventoryTypeController();
                 instance.setGRider(poGRider);
                 return instance;      
             case "Category":
-                instance = new org.rmj.cas.parameter.fx.CategoryController();
+                instance = new org.rmj.lp.parameter.fx.CategoryController();
                 instance.setGRider(poGRider);
                 return instance;          
             case "Category2":
-                instance = new org.rmj.cas.parameter.fx.Category2Controller();
+                instance = new org.rmj.lp.parameter.fx.Category2Controller();
                 instance.setGRider(poGRider);
                 return instance;          
             case "Category3":
-                instance = new org.rmj.cas.parameter.fx.Category3Controller();
+                instance = new org.rmj.lp.parameter.fx.Category3Controller();
                 instance.setGRider(poGRider);
                 return instance;    
             case "Category4":
-                instance = new org.rmj.cas.parameter.fx.Category4Controller();
+                instance = new org.rmj.lp.parameter.fx.Category4Controller();
                 instance.setGRider(poGRider);
                 return instance;    
             case "PromoDiscount":
-                instance = new org.rmj.cas.parameter.fx.PromoDiscountController();
+                instance = new org.rmj.lp.parameter.fx.PromoDiscountController();
                 instance.setGRider(poGRider);
                 return instance;    
             case "Model":
-                instance = new org.rmj.cas.parameter.fx.ModelController();
+                instance = new org.rmj.lp.parameter.fx.ModelController();
                 instance.setGRider(poGRider);
                 return instance;   
             case "Color":
-                instance = new org.rmj.cas.parameter.fx.ColorController();
+                instance = new org.rmj.lp.parameter.fx.ColorController();
                 instance.setGRider(poGRider);
                 return instance;  
             case "Company":
-                instance = new org.rmj.cas.parameter.fx.CompanyController();
+                instance = new org.rmj.lp.parameter.fx.CompanyController();
                 instance.setGRider(poGRider);
                 return instance;  
             case "Measure":
-                instance = new org.rmj.cas.parameter.fx.MeasureController();
+                instance = new org.rmj.lp.parameter.fx.MeasureController();
                 instance.setGRider(poGRider);
                 return instance;      
             case "Supplier":
-                instance = new org.rmj.cas.parameter.fx.SupplierController();
+                instance = new org.rmj.lp.parameter.fx.SupplierController();
                 instance.setGRider(poGRider);
                 return instance;      
             case "Term":
-                instance = new org.rmj.cas.parameter.fx.TermController();
+                instance = new org.rmj.lp.parameter.fx.TermController();
                 instance.setGRider(poGRider);
                 return instance;      
             case "InventoryLocation":
-                instance = new org.rmj.cas.parameter.fx.InventoryLocationController();
+                instance = new org.rmj.lp.parameter.fx.InventoryLocationController();
                 instance.setGRider(poGRider);
                 return instance; 
                 

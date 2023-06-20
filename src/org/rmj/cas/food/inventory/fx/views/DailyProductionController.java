@@ -1014,7 +1014,7 @@ public class DailyProductionController implements Initializable {
                 
                     loadDetail();
                     if (!poTrans.getDetail(poTrans.ItemCount()- 1, "sStockIDx").toString().isEmpty() && 
-                            (int) poTrans.getDetail(poTrans.ItemCount()- 1, fnIndex) > 0){
+                            Double.valueOf(String.valueOf(poTrans.getDetail(poTrans.ItemCount()- 1, fnIndex))) > 0.00){
                         poTrans.addDetail();
                         pnRow = poTrans.ItemCount()-1;
                     } 

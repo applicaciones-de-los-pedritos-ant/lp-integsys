@@ -62,6 +62,8 @@ public class FoodInventoryFX extends Application {
         stage.setY(bounds.getMinY());
         stage.setWidth(bounds.getWidth());
         stage.setHeight(bounds.getHeight());
+        stage.setMaxWidth(bounds.getWidth());
+        stage.setMaxHeight(bounds.getHeight());
         
         stage.show();
     }

@@ -21,7 +21,7 @@ import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.food.inventory.fx.modules.qsParameter;
-import org.rmj.cas.parameter.agent.XMCategoryLevel2;
+import org.rmj.lp.parameter.agent.XMCategoryLevel2;
 
 public class Category2Controller implements Initializable {
 

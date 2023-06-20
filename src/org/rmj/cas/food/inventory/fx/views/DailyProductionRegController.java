@@ -30,6 +30,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.appdriver.GRider;
+import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.constants.TransactionStatus;
@@ -63,7 +64,7 @@ public class DailyProductionRegController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new DailyProduction(poGRider, poGRider.getBranchCode(), false);
-        poTrans.setTranStat(1230);
+        poTrans.setTranStat(123);
         
         btnVoid.setOnAction(this::cmdButton_Click);
         btnPrint.setOnAction(this::cmdButton_Click);
@@ -198,20 +199,24 @@ public class DailyProductionRegController implements Initializable {
                             }else txtField50.setText(psTransNox);
                         
                         return;                     
-                case 51: /*dTransact*/
-                    if(poTrans.BrowseRecord(txtField51.getText() + "%", false)== true){
-                        loadRecord(); 
-                        pnEditMode = poTrans.getEditMode();
-                        break;
-                    }
-                    
-                    if(!txtField51.getText().equals(psdTransact)){
-                        clearFields();
-                        break;
-                    }else txtField51.setText(psdTransact);                            
-                    
-                    return;
-                    
+                    case 51: /*dTransact*/
+                        String lsValue = "";
+                        if (CommonUtils.isDate(txtField51.getText(), SQLUtil.FORMAT_MEDIUM_DATE)){
+                            lsValue = SQLUtil.dateFormat(SQLUtil.toDate(txtField51.getText(), SQLUtil.FORMAT_MEDIUM_DATE), SQLUtil.FORMAT_SHORT_DATE);
+                        }
+
+                        if(poTrans.BrowseRecord(lsValue, false)== true){
+                            loadRecord(); 
+                            pnEditMode = poTrans.getEditMode();
+                            break;
+                        }
+
+                        if(!txtField51.getText().equals(psdTransact)){
+                            clearFields();
+                            break;
+                        }else txtField51.setText(psdTransact);                            
+
+                        return;
                 default:
                     ShowMessageFX.Warning("No Entry", pxeModuleName, "Please have at least one keyword to browse!");
                     txtField51.requestFocus();
@@ -265,6 +270,8 @@ public class DailyProductionRegController implements Initializable {
         psTransNox = "";
         psdTransact = "";
         data.clear();
+        
+        pnIndex = 50;
     }
     
     /**
@@ -509,9 +516,9 @@ public class DailyProductionRegController implements Initializable {
                     txtField.setText(psTransNox); break;
                 case 51: /*sSupplierId*/
                     if(CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                         txtField.setText(CommonUtils.xsDateLong(CommonUtils.toDate(txtField.getText())));
+                         txtField.setText(CommonUtils.xsDateMedium(CommonUtils.toDate(txtField.getText())));
                     }else{
-                        txtField.setText(CommonUtils.xsDateLong(CommonUtils.toDate(pxeDateDefault)));
+                        txtField.setText(CommonUtils.xsDateMedium(CommonUtils.toDate(pxeDateDefault)));
                     }
                    break;
                 default:

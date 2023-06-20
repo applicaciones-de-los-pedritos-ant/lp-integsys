@@ -42,7 +42,7 @@ import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.ui.showFXDialog;
 import org.rmj.cas.inventory.base.InvTransfer;
-import org.rmj.cas.parameter.agent.XMBranch;
+import org.rmj.lp.parameter.agent.XMBranch;
 
 public class InvTransPostingController implements Initializable {
 

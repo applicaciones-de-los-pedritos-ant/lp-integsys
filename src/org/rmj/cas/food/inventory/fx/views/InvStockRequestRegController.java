@@ -57,8 +57,8 @@ import org.rmj.appdriver.constants.EditMode;
 import org.rmj.appdriver.constants.TransactionStatus;
 import org.rmj.appdriver.constants.UserRight;
 import org.rmj.cas.inventory.base.InvRequest;
-import org.rmj.cas.parameter.agent.XMBranch;
-import org.rmj.cas.parameter.agent.XMInventoryType;
+import org.rmj.lp.parameter.agent.XMBranch;
+import org.rmj.lp.parameter.agent.XMInventoryType;
 
 
 /**

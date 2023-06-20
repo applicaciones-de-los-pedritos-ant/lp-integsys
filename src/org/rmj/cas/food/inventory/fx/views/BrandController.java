@@ -21,7 +21,7 @@ import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.food.inventory.fx.modules.qsParameter;
-import org.rmj.cas.parameter.agent.XMBrand;
+import org.rmj.lp.parameter.agent.XMBrand;
 
 public class BrandController implements Initializable {
 
