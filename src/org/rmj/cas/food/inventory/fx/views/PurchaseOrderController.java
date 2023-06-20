@@ -36,8 +36,8 @@ import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.purchasing.agent.XMPurchaseOrder;
 import org.rmj.cas.inventory.base.Inventory;
-import org.rmj.cas.parameter.agent.XMBranch;
-import org.rmj.cas.parameter.agent.XMTerm;
+import org.rmj.lp.parameter.agent.XMBranch;
+import org.rmj.lp.parameter.agent.XMTerm;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
 import org.rmj.appdriver.agentfx.ui.showFXDialog;
 import org.rmj.appdriver.constants.UserRight;
@@ -79,6 +79,12 @@ public class PurchaseOrderController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //set the main anchor pane fit the size of its parent anchor pane
+        dataPane.setTopAnchor(dataPane, 0.0);
+        dataPane.setBottomAnchor(dataPane, 0.0);
+        dataPane.setLeftAnchor(dataPane, 0.0);
+        dataPane.setRightAnchor(dataPane, 0.0);   
+        
         /*Initialize class*/
         poTrans = new XMPurchaseOrder(poGRider, poGRider.getBranchCode(), false);
         poTrans.setTranStat(0);
@@ -185,6 +191,7 @@ public class PurchaseOrderController implements Initializable {
                 
         btnBrowse.setVisible(!lbShow);
         btnNew.setVisible(!lbShow);
+        btnUpdate.setVisible(!lbShow);
         btnConfirm.setVisible(!lbShow);
         btnClose.setVisible(!lbShow);
         btnPrint.setVisible(!lbShow);
@@ -385,18 +392,20 @@ public class PurchaseOrderController implements Initializable {
                 pnEditMode = poTrans.getEditMode();    
                 return;
             case "btnUpdate":
-                if (!psOldRec.equals("")){
-                    if ("0".equals((String) poTrans.getMaster("cTranStat"))){
-                        if (!poTrans.updateRecord()){
-                            loadRecord();
-                            pnEditMode = poTrans.getEditMode();
-                        } else 
-                            ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
-                    } else {
-                        ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
-                    }
-                }
-                break;
+                ShowMessageFX.Warning(null, pxeModuleName, "This feature is for enhancement.");
+                return;
+//                if (!psOldRec.equals("")){
+//                    if ("0".equals((String) poTrans.getMaster("cTranStat"))){
+//                        if (poTrans.updateRecord()){
+//                            loadRecord();
+//                            pnEditMode = poTrans.getEditMode();
+//                        } else 
+//                            ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
+//                    } else {
+//                        ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
+//                    }
+//                }
+//                break;
             case "btnPrint":
                 if (!psOldRec.equals("")){
                     if ("1".equals(poTrans.getMaster("cTranStat")))
@@ -519,11 +528,6 @@ public class PurchaseOrderController implements Initializable {
                         txtField.setText("");
                     }
                     break;
-//                case 16: /*sInvTypCd*/
-//                    if (!poTrans.SearchMaster(lnIndex, txtField.getText(), false)==true){
-//                        txtField.setText("");
-//                    }
-//                    break;
                 case 50: /*ReferNox*/
                     if(poTrans.BrowseRecord(txtField.getText(), true)==true){
                         loadRecord();

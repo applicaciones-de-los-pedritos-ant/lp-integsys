@@ -68,11 +68,10 @@ import org.rmj.appdriver.agentfx.service.TokenApprovalFactory;
 import org.rmj.appdriver.agentfx.ui.showFXDialog;
 import org.rmj.appdriver.constants.UserRight;
 import org.rmj.cas.food.reports.classes.FoodReports;
-import org.rmj.cas.parameter.fx.ParameterFX;
+import org.rmj.lp.parameter.fx.ParameterFX;
 //import org.rmj.cas.pos.reports.BIRReports;
 
 public class MDIMainController implements Initializable {
-    
     @FXML private MenuItem mnuClose;
     @FXML private MenuItem mnuTerm;
     @FXML private MenuItem mnuInvType;
@@ -102,7 +101,6 @@ public class MDIMainController implements Initializable {
     @FXML private MenuItem mnu_InvProdReqReg;
     @FXML private MenuItem mnu_InventoryTransfer;
     @FXML private MenuItem mnu_inventoryCount;
-//    @FXML private MenuItem mnu_DailyProduction;
     @FXML private MenuItem mnu_POReceivingReg;
     @FXML private MenuItem mnu_InvTransReg;
     @FXML private MenuItem mnu_InvCountReg;
@@ -110,7 +108,6 @@ public class MDIMainController implements Initializable {
     @FXML private MenuItem menu_TransferPosting;
     @FXML private ToggleButton btnRestoreDown;
     @FXML private FontAwesomeIconView cmdRestore;
-    @FXML private AnchorPane rootPane;
     @FXML private FontAwesomeIconView file;
     @FXML private FontAwesomeIconView transaction;
     @FXML private FontAwesomeIconView utilities;
@@ -154,8 +151,7 @@ public class MDIMainController implements Initializable {
     @FXML private TableColumn index10;
     @FXML private TableColumn index11;
     @FXML private TableColumn index12;
-    @FXML private SplitPane splPane;
-    @FXML private AnchorPane spLeft;
+    @FXML private StackPane spLeft;
     @FXML private AnchorPane spRight;
     @FXML private TreeTableView ProductTable;
     @FXML private TreeTableColumn indexmaster01,indexmaster02,indexmaster03;
@@ -169,6 +165,8 @@ public class MDIMainController implements Initializable {
     private ObservableList<TableModel> data01 = FXCollections.observableArrayList();
     private ObservableList<TableModel> data02 = FXCollections.observableArrayList(); 
     private ObservableList<TableModel> data03 = FXCollections.observableArrayList();     
+    @FXML
+    private MenuItem mnu_ProductionRequest;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -206,9 +204,6 @@ public class MDIMainController implements Initializable {
             mnu_InvTransReg.setVisible(poGRider.getBranchCode().contains("P"));
             mnu_InvWasteReg.setVisible(poGRider.getBranchCode().contains("P"));
             mnu_InvCountReg.setVisible(poGRider.getBranchCode().contains("P"));
-            
-            vertiCalPane = splPane.getItems().get(1);
-            splPane.setDividerPosition(0,0.67);
         } 
 
         if (!poGRider.getProductID().equalsIgnoreCase("general")){
@@ -384,62 +379,17 @@ public class MDIMainController implements Initializable {
         showParameter("Supplier");
     }
     
-//    public void setDataPane(Node node) {      
-//        dataPane.getChildren().setAll(node);
-//    }
-//    
-//    public VBox fadeAnimate(String url) throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader();
-//        fxmlLoader.setLocation(getClass().getResource(url));
-//        
-//        Object fxObj = getContoller(url);
-//        
-//        fxmlLoader.setController(fxObj);
-//        
-//        VBox v = (VBox) fxmlLoader.load();
-//        
-//        
-//        MouseGestures mg = new MouseGestures();
-//        mg.makeDraggable(dataPane, v);
-//
-//        FadeTransition ft = new FadeTransition(Duration.millis(1000));
-//        ft.setNode(v);
-//        ft.setFromValue(0.1);
-//        ft.setToValue(1);
-//        ft.setCycleCount(1);
-//        ft.setAutoReverse(false);
-//        ft.play();
-//        
-//        return v;
-//    }
-    
     public Parent loadScene(String foURL)throws IOException{
-//         AnchorPane root;
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource(foURL));
-       
-        Object fxObj = getContoller(foURL);
-        fxmlLoader.setController(fxObj);
-         try {
-//        root = (AnchorPane) fxmlLoader.load();
-        Parent root = fxmlLoader.load();
-        spLeft.getChildren().clear();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource(foURL));
 
-        StackPane stack = new StackPane();
-        stack.getChildren().add(root);
-//
-//            stack.translateXProperty()
-//                    .bind(spLeft.widthProperty().subtract(stack.widthProperty())
-//                            .divide(2));
-//
-//            stack.translateYProperty()
-//                    .bind(spLeft.heightProperty().subtract(stack.heightProperty())
-//                            .divide(2));
-        spLeft.getChildren().add(stack);
-////        dragNode(stack);
-
-
- 
+            Object fxObj = getContoller(foURL);
+            fxmlLoader.setController(fxObj);
+            
+            Parent root = fxmlLoader.load();
+            spLeft.getChildren().clear();
+            spLeft.getChildren().add(root);
             
             FadeTransition ft = new FadeTransition(Duration.millis(1500));
             ft.setNode(root);
@@ -673,7 +623,6 @@ public class MDIMainController implements Initializable {
 
     @FXML
     private void chkLight_Click(ActionEvent event) {
-        changeTheme();
     }
 
     @FXML
@@ -702,7 +651,6 @@ public class MDIMainController implements Initializable {
          loadScene(FoodInventoryFX.pxeInvCount);
     }
 
-    @FXML
     private void mnu_DailyProductionClick(ActionEvent event) throws IOException {
 //        setDataPane(fadeAnimate(FoodInventoryFX.pxeDailyProd));
             loadScene(FoodInventoryFX.pxeDailyProd);
@@ -959,17 +907,6 @@ public class MDIMainController implements Initializable {
         }
     */
     
-    public boolean changeTheme(){
-        if(chkLight.isSelected()){
-            rootPane.setStyle("-fx-background-color: white");
-            mnuBar.setStyle("-fx-background-color: #F37024");
-        }else{
-            rootPane.setStyle("-fx-background-color: #4d5656");
-            mnuBar.setStyle("-fx-background-color: none");
-        }
-        return false;
-    }
-    
     private void getTime(){
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
         
@@ -1067,59 +1004,59 @@ public class MDIMainController implements Initializable {
         
         switch (fsValue){
             case "Brand":
-                instance = new org.rmj.cas.parameter.fx.BrandController();
+                instance = new org.rmj.lp.parameter.fx.BrandController();
                 instance.setGRider(poGRider);
                 return instance;                
             case "InventoryType":
-                instance = new org.rmj.cas.parameter.fx.InventoryTypeController();
+                instance = new org.rmj.lp.parameter.fx.InventoryTypeController();
                 instance.setGRider(poGRider);
                 return instance;      
             case "Category":
-                instance = new org.rmj.cas.parameter.fx.CategoryController();
+                instance = new org.rmj.lp.parameter.fx.CategoryController();
                 instance.setGRider(poGRider);
                 return instance;          
             case "Category2":
-                instance = new org.rmj.cas.parameter.fx.Category2Controller();
+                instance = new org.rmj.lp.parameter.fx.Category2Controller();
                 instance.setGRider(poGRider);
                 return instance;          
             case "Category3":
-                instance = new org.rmj.cas.parameter.fx.Category3Controller();
+                instance = new org.rmj.lp.parameter.fx.Category3Controller();
                 instance.setGRider(poGRider);
                 return instance;    
             case "Category4":
-                instance = new org.rmj.cas.parameter.fx.Category4Controller();
+                instance = new org.rmj.lp.parameter.fx.Category4Controller();
                 instance.setGRider(poGRider);
                 return instance;    
             case "PromoDiscount":
-                instance = new org.rmj.cas.parameter.fx.PromoDiscountController();
+                instance = new org.rmj.lp.parameter.fx.PromoDiscountController();
                 instance.setGRider(poGRider);
                 return instance;    
             case "Model":
-                instance = new org.rmj.cas.parameter.fx.ModelController();
+                instance = new org.rmj.lp.parameter.fx.ModelController();
                 instance.setGRider(poGRider);
                 return instance;   
             case "Color":
-                instance = new org.rmj.cas.parameter.fx.ColorController();
+                instance = new org.rmj.lp.parameter.fx.ColorController();
                 instance.setGRider(poGRider);
                 return instance;  
             case "Company":
-                instance = new org.rmj.cas.parameter.fx.CompanyController();
+                instance = new org.rmj.lp.parameter.fx.CompanyController();
                 instance.setGRider(poGRider);
                 return instance;  
             case "Measure":
-                instance = new org.rmj.cas.parameter.fx.MeasureController();
+                instance = new org.rmj.lp.parameter.fx.MeasureController();
                 instance.setGRider(poGRider);
                 return instance;      
             case "Supplier":
-                instance = new org.rmj.cas.parameter.fx.SupplierController();
+                instance = new org.rmj.lp.parameter.fx.SupplierController();
                 instance.setGRider(poGRider);
                 return instance;      
             case "Term":
-                instance = new org.rmj.cas.parameter.fx.TermController();
+                instance = new org.rmj.lp.parameter.fx.TermController();
                 instance.setGRider(poGRider);
                 return instance;      
             case "InventoryLocation":
-                instance = new org.rmj.cas.parameter.fx.InventoryLocationController();
+                instance = new org.rmj.lp.parameter.fx.InventoryLocationController();
                 instance.setGRider(poGRider);
                 return instance; 
                 

@@ -21,7 +21,7 @@ import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.food.inventory.fx.modules.qsParameter;
-import org.rmj.cas.parameter.agent.XMInventoryLocation;
+import org.rmj.lp.parameter.agent.XMInventoryLocation;
 
 public class InventoryLocationController implements Initializable {
     

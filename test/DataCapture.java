@@ -8,8 +8,8 @@ import org.rmj.appdriver.GProperty;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.SQLUtil;
 import org.rmj.cas.inventory.base.InvMaster;
-import org.rmj.cas.parameter.agent.XMBrand;
-import org.rmj.cas.parameter.agent.XMModel;
+import org.rmj.lp.parameter.agent.XMBrand;
+import org.rmj.lp.parameter.agent.XMModel;
 
 public class DataCapture {
     public static void main(String [] args){

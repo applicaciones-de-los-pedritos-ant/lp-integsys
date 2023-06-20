@@ -69,7 +69,6 @@ public class InventoryController implements Initializable {
     @FXML private Button btnNew;
     @FXML private Button btnActivate;
     @FXML private FontAwesomeIconView glyphExit;
-    @FXML private Label lblHeader;
     @FXML private TableView tblInvetoryDetail;
     @FXML private TableColumn index01;
     @FXML private TableColumn index02;
@@ -635,7 +634,6 @@ public class InventoryController implements Initializable {
         btnSearch.setVisible(lbShow);
         btnSave.setVisible(lbShow);
         btnDeleteItem.setVisible(lbShow);
-        lblHeader.setVisible(lbShow);
         
         txtField80.setDisable(lbShow);
         txtField81.setDisable(lbShow);

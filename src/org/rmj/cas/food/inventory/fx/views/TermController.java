@@ -24,7 +24,7 @@ import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.food.inventory.fx.modules.qsParameter;
-import org.rmj.cas.parameter.agent.XMTerm;
+import org.rmj.lp.parameter.agent.XMTerm;
 
 public class TermController implements Initializable {
     @FXML private Button btnSave;

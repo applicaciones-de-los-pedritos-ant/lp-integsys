@@ -29,7 +29,7 @@ import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.cas.client.application.ClientFX;
 import org.rmj.cas.food.inventory.fx.modules.qsParameter;
-import org.rmj.cas.parameter.agent.XMSupplier;
+import org.rmj.lp.parameter.agent.XMSupplier;
 
 public class SupplierController implements Initializable {
     @FXML private VBox VBoxForm;

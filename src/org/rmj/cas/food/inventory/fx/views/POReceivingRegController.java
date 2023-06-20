@@ -35,10 +35,10 @@ import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.inventory.base.Inventory;
-import org.rmj.cas.parameter.agent.XMBranch;
-import org.rmj.cas.parameter.agent.XMDepartment;
-import org.rmj.cas.parameter.agent.XMInventoryType;
-import org.rmj.cas.parameter.agent.XMTerm;
+import org.rmj.lp.parameter.agent.XMBranch;
+import org.rmj.lp.parameter.agent.XMDepartment;
+import org.rmj.lp.parameter.agent.XMInventoryType;
+import org.rmj.lp.parameter.agent.XMTerm;
 import org.rmj.purchasing.agent.XMPOReceiving;
 
 
@@ -287,7 +287,6 @@ public class POReceivingRegController implements Initializable {
             case "btnExit": 
                 unloadForm();
                 return;
-               
             case "btnPrint":
                 if(!psOldRec.equals("")){
                     if (poTrans.printRecord()){

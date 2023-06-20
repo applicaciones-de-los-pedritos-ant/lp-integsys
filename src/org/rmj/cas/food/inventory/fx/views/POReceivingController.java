@@ -38,9 +38,9 @@ import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.inventory.base.Inventory;
-import org.rmj.cas.parameter.agent.XMBranch;
-import org.rmj.cas.parameter.agent.XMDepartment;
-import org.rmj.cas.parameter.agent.XMTerm;
+import org.rmj.lp.parameter.agent.XMBranch;
+import org.rmj.lp.parameter.agent.XMDepartment;
+import org.rmj.lp.parameter.agent.XMTerm;
 import org.rmj.purchasing.agent.XMPOReceiving;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
 
