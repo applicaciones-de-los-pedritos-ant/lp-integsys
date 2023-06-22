@@ -53,7 +53,6 @@ public class InvAdjustmentController implements Initializable {
     @FXML private Button btnExit;
     @FXML private FontAwesomeIconView glyphExit;
     @FXML private AnchorPane anchorField;
-    @FXML private Label lblHeader;
     @FXML private TextField txtField01;
     @FXML private TextField txtField02;
     @FXML private TextField txtDetail02;
@@ -626,7 +625,6 @@ public class InvAdjustmentController implements Initializable {
         btnSearch.setVisible(lbShow);
         btnSave.setVisible(lbShow);
         btnDel.setVisible(lbShow);
-        lblHeader.setVisible(lbShow);
         
         txtField50.setDisable(lbShow);
         
