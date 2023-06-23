@@ -183,10 +183,10 @@ public class DailyProductionController implements Initializable {
     
     private void initLisView(){
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(90); index02.setStyle("-fx-alignment: CENTER;");
-        index03.setPrefWidth(65); index03.setStyle("-fx-alignment: CENTER;");
-        index04.setPrefWidth(65); index04.setStyle("-fx-alignment: CENTER;");
-        index05.setPrefWidth(65); index05.setStyle("-fx-alignment: CENTER;");
+        index02.setPrefWidth(130); index02.setStyle("-fx-alignment: CENTER;");
+        index03.setPrefWidth(90); index03.setStyle("-fx-alignment: CENTER;");
+        index04.setPrefWidth(75); index04.setStyle("-fx-alignment: CENTER;");
+        index05.setPrefWidth(75); index05.setStyle("-fx-alignment: CENTER;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(true); index02.setResizable(false);
@@ -248,7 +248,7 @@ public class DailyProductionController implements Initializable {
     
     TableColumn index01 = new TableColumn("No.");
     TableColumn index02 = new TableColumn("Expiration");
-    TableColumn index03 = new TableColumn("OnHnd");
+    TableColumn index03 = new TableColumn("OnHand");
     TableColumn index04 = new TableColumn("Out");
     TableColumn index05 = new TableColumn("Rem");
     
@@ -814,7 +814,7 @@ public class DailyProductionController implements Initializable {
             rawData.add(new RawTable(String.valueOf(lnCtr + 1), 
                         (String) poTrans.getInvOthers(lnCtr, "sBarCodex"), 
                         (String) poTrans.getInvOthers(lnCtr, "sDescript"), 
-                        (String) poTrans.getInvOthers(lnCtr, "sMeasurNm"), //update qty onhand
+                        (String) poTrans.getInvOthers(lnCtr, "sMeasurNm"), 
                         String.valueOf(poTrans.getInv(lnCtr, "nQtyReqrd")),
                         String.valueOf(poTrans.getInv(lnCtr, "nQtyUsedx"))
                         ));
@@ -886,7 +886,7 @@ public class DailyProductionController implements Initializable {
             }
         });
         
-        TableColumn<RawTable, String> index04 = new TableColumn<RawTable, String>("OnHQty");
+        TableColumn<RawTable, String> index04 = new TableColumn<RawTable, String>("Measure");
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index04"));
         index04.setCellFactory(TextFieldTableCell.forTableColumn());
         index04.setOnEditCommit(new EventHandler<CellEditEvent<RawTable, String>>() {
@@ -932,8 +932,8 @@ public class DailyProductionController implements Initializable {
         
         index01.setPrefWidth(40); index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(70);
-        index03.setPrefWidth(120); 
-        index04.setPrefWidth(40); index04.setStyle("-fx-alignment: CENTER;");
+        index03.setPrefWidth(130); 
+        index04.setPrefWidth(70); index04.setStyle("-fx-alignment: CENTER;");
         index05.setPrefWidth(40); index05.setStyle("-fx-alignment: CENTER;");
         index06.setPrefWidth(40); index06.setStyle("-fx-alignment: CENTER;");
         
