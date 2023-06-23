@@ -148,7 +148,7 @@
                               <ImageView fx:id="imgTranStat" fitHeight="25.0" fitWidth="150.0" layoutX="651.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="3.0" />
                            </children>
                         </AnchorPane>
-                        <TableView fx:id="table" focusTraversable="false" layoutX="11.0" layoutY="241.0" onMouseClicked="#table_Clicked" prefHeight="168.0" prefWidth="418.0" stylesheets="@../styles/Tables.css" />
+                        <TableView fx:id="table" focusTraversable="false" layoutX="11.0" layoutY="241.0" onMouseClicked="#table_Clicked" prefHeight="168.0" prefWidth="418.0" styleClass="ta" stylesheets="@../styles/Tables.css" />
                         <Separator layoutX="442.0" layoutY="45.0" orientation="VERTICAL" prefHeight="300.0" prefWidth="0.0" style="-fx-background-color: black;" />
                         <TableView fx:id="table1" editable="true" layoutX="460.0" layoutY="93.0" onMouseClicked="#tableRaw_Clicked" prefHeight="176.0" prefWidth="400.0" stylesheets="@../styles/Tables.css" />
                         <GridPane layoutX="307.0" layoutY="53.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="40.0">
@@ -278,7 +278,7 @@
                               </Label>
                            </children>
                         </GridPane>
-                        <TableView fx:id="tableData" focusTraversable="false" layoutX="460.0" layoutY="290.0" onMouseClicked="#tableData_Clicked" prefHeight="119.0" prefWidth="400.0" />
+                        <TableView fx:id="tableData" focusTraversable="false" layoutX="460.0" layoutY="290.0" onMouseClicked="#tableData_Clicked" prefHeight="119.0" prefWidth="400.0" stylesheets="@../styles/Tables.css" />
                      </children>
                   </AnchorPane>
                </center>

@@ -193,7 +193,7 @@
                            </children>
                         </GridPane>
                         <TableView fx:id="table" focusTraversable="false" layoutX="130.0" layoutY="226.0" onMouseClicked="#table_Clicked" prefHeight="183.0" prefWidth="452.0" stylesheets="@../styles/Tables.css" />
-                        <TableView fx:id="tableDetail" layoutX="590.0" layoutY="226.0" prefHeight="183.0" prefWidth="268.0" />
+                        <TableView fx:id="tableDetail" layoutX="590.0" layoutY="226.0" prefHeight="183.0" prefWidth="268.0" stylesheets="@../styles/Tables.css" />
                      </children>
                   </AnchorPane>
                </center>
