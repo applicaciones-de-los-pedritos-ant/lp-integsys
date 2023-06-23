@@ -200,7 +200,7 @@
                               </Label>
                            </children>
                         </GridPane>
-                        <TableView fx:id="tableData" focusTraversable="false" layoutX="460.0" layoutY="290.0" prefHeight="119.0" prefWidth="400.0" />
+                        <TableView fx:id="tableData" focusTraversable="false" layoutX="460.0" layoutY="290.0" prefHeight="119.0" prefWidth="400.0" stylesheets="@../styles/Tables.css" />
                      </children>
                   </AnchorPane>
                </center>
