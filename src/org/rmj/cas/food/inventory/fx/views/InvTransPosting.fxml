@@ -47,7 +47,7 @@
                      <children>
                         <Separator layoutX="436.0" layoutY="43.0" orientation="VERTICAL" prefHeight="230.0" prefWidth="4.0" style="-fx-background-color: black;" />
                         <TableView fx:id="table" focusTraversable="false" layoutX="10.0" layoutY="280.0" onMouseClicked="#table_Clicked" prefHeight="129.0" prefWidth="399.0" stylesheets="@../styles/Tables.css" />
-                        <TableView fx:id="tableData" focusTraversable="false" layoutX="455.0" layoutY="280.0" onMouseClicked="#tableData_Clicked" prefHeight="129.0" prefWidth="411.0" />
+                        <TableView fx:id="tableData" focusTraversable="false" layoutX="455.0" layoutY="280.0" onMouseClicked="#tableData_Clicked" prefHeight="129.0" prefWidth="411.0" stylesheets="@../styles/Tables.css" />
                         <AnchorPane layoutX="2.0" layoutY="4.0" prefHeight="35.0" style="-fx-background-color: #686868;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <ImageView fx:id="imgTranStat" fitHeight="25.0" fitWidth="158.0" layoutX="722.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="3.0" />

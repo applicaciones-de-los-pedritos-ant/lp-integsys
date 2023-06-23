@@ -256,7 +256,7 @@
                               <Insets right="5.0" />
                            </padding>
                         </GridPane>
-                        <TableView fx:id="tableData" focusTraversable="false" layoutX="537.0" layoutY="219.0" onMouseClicked="#table_Clicked" prefHeight="180.0" prefWidth="318.0" />
+                        <TableView fx:id="tableData" focusTraversable="false" layoutX="537.0" layoutY="219.0" onMouseClicked="#table_Clicked" prefHeight="180.0" prefWidth="318.0" stylesheets="@../styles/Tables.css" />
                      </children>
                   </AnchorPane>
                </center>
