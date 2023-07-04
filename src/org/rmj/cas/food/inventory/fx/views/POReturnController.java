@@ -62,7 +62,7 @@ public class POReturnController implements Initializable {
     @FXML private Button btnClose;
     @FXML private Button btnSearch;
     @FXML private Button btnConfirm;
-    @FXML private Button btnDel;
+    @FXML private Button btnDel,btnUpdate;
     @FXML private TextField txtDetail03;
     @FXML private TextField txtDetail06;
     @FXML private TextField txtDetail05;
@@ -98,6 +98,7 @@ public class POReturnController implements Initializable {
         btnClose.setOnAction(this::cmdButton_Click);
         btnExit.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
+        btnUpdate.setOnAction(this::cmdButton_Click);
         
         /*Add listener to text fields*/
         txtField03.focusedProperty().addListener(txtField_Focus);
@@ -212,6 +213,7 @@ public class POReturnController implements Initializable {
         txtDetail06.setDisable(!lbShow);
         txtDetail07.setDisable(!lbShow);
         txtDetail80.setDisable(!lbShow);
+        btnUpdate.setVisible(!lbShow);
         
         if (lbShow)
             txtField16.requestFocus();
@@ -347,20 +349,33 @@ public class POReturnController implements Initializable {
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
                     
                     //re open and print the record
-                    if (poTrans.openRecord((String) poTrans.getMaster("sTransNox"))){
-                        loadRecord(); 
-                        psOldRec = (String) poTrans.getMaster("sTransNox");
-                        pnEditMode = poTrans.getEditMode();
-                    } else {
+//                    if (poTrans.openRecord((String) poTrans.getMaster("sTransNox"))){
+//                        loadRecord(); 
+//                        psOldRec = (String) poTrans.getMaster("sTransNox");
+//                        pnEditMode = poTrans.getEditMode();
+//                    } else {
                         clearFields();
                         initGrid();
                         pnEditMode = EditMode.UNKNOWN;
-                    }
+//                    }
                     break;
                 } else return;
             case "btnDel":  
                 deleteDetail();
                 return;
+            case "btnUpdate":
+                if (!psOldRec.equals("")){
+                    if ("0".equals((String) poTrans.getMaster("cTranStat"))){
+                        if (poTrans.updateRecord()){
+                            loadRecord();
+                            pnEditMode = poTrans.getEditMode();
+                        } else 
+                            ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
+                    } else {
+                        ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction...");
+                    }
+                }
+                break;
             default:
                 ShowMessageFX.Warning(null, pxeModuleName, "Button with name " + lsButton + " not registered.");
                 return;

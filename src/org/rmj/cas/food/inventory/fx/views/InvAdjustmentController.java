@@ -77,6 +77,7 @@ public class InvAdjustmentController implements Initializable {
     @FXML private TextArea txtField04;
     @FXML private Button btnVoid;
     @FXML private AnchorPane dataPane;
+    @FXML private Button btnUpdate;
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
@@ -93,6 +94,8 @@ public class InvAdjustmentController implements Initializable {
         btnExit.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
         btnVoid.setOnAction(this::cmdButton_Click);
+        btnUpdate.setOnAction(this::cmdButton_Click);
+        
         
         txtField01.focusedProperty().addListener(txtField_Focus);
         txtField02.focusedProperty().addListener(txtField_Focus);
@@ -582,6 +585,23 @@ public class InvAdjustmentController implements Initializable {
                     
                 }     
                 break;
+                
+                
+                case "btnUpdate":
+                if (!psOldRec.equals("")){
+                    if ("0".equals((String) poTrans.getMaster("cTranStat"))){
+                        if (poTrans.updateRecord()){
+                            loadRecord();
+                            pnEditMode = poTrans.getEditMode();
+                        } else 
+                            ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
+                    } else {
+                        ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction...");
+                    }
+                }
+                break;
+
+
             default:
                 ShowMessageFX.Warning(null, pxeModuleName, "Button with name " + lsButton + " not registered.");
                 return;
@@ -633,7 +653,8 @@ public class InvAdjustmentController implements Initializable {
         btnConfirm.setVisible(!lbShow);
         btnVoid.setVisible(!lbShow);
         btnClose.setVisible(!lbShow);
-        
+        btnUpdate.setVisible(!lbShow);
+
 //        txtField01.setDisable(!lbShow);
         txtField02.setDisable(!lbShow);
         txtField04.setDisable(!lbShow);

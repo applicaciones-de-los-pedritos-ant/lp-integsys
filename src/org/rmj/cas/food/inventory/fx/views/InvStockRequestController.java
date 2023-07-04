@@ -94,6 +94,7 @@ public class InvStockRequestController implements Initializable {
     @FXML private Button btnPrint;
     @FXML private TableView tableDetail;
     @FXML private AnchorPane dataPane;
+    @FXML private Button btnUpdate;
     
     TableColumn index01 = new TableColumn("No.");
     TableColumn index02 = new TableColumn("Expiration");
@@ -138,6 +139,7 @@ public class InvStockRequestController implements Initializable {
         btnClose.setOnAction(this::cmdButton_Click);
         btnExit.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
+        btnUpdate.setOnAction(this::cmdButton_Click);
         
         txtField01.focusedProperty().addListener(txtField_Focus);
         txtField02.focusedProperty().addListener(txtField_Focus);
@@ -206,6 +208,7 @@ public class InvStockRequestController implements Initializable {
         btnPrint.setVisible(!lbShow);
         btnConfirm.setVisible(!lbShow);
         btnClose.setVisible(!lbShow);
+        btnUpdate.setVisible(!lbShow);
         
         txtField01.setDisable(!lbShow);
         txtField02.setDisable(!lbShow);
@@ -616,6 +619,22 @@ public class InvStockRequestController implements Initializable {
                     loadDetail();
                 }     
                 break;
+                        
+            case "btnUpdate":
+                if (!psOldRec.equals("")){
+                    if ("0".equals((String) poTrans.getMaster("cTranStat"))){
+                        if (poTrans.updateRecord()){
+                            loadRecord();
+                            pnEditMode = poTrans.getEditMode();
+                        } else 
+                            ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
+                    } else {
+                        ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction...");
+                    }
+                }
+                break;
+
+
             default:
                 ShowMessageFX.Warning(null, pxeModuleName, "Button with name " + lsButton + " not registered.");
                 return;

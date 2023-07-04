@@ -389,23 +389,22 @@ public class PurchaseOrderController implements Initializable {
                     }
                 }
                 
-                pnEditMode = poTrans.getEditMode();    
-                return;
+                pnEditMode = poTrans.getEditMode();   
+                break;
+//                return;
             case "btnUpdate":
-                ShowMessageFX.Warning(null, pxeModuleName, "This feature is for enhancement.");
-                return;
-//                if (!psOldRec.equals("")){
-//                    if ("0".equals((String) poTrans.getMaster("cTranStat"))){
-//                        if (poTrans.updateRecord()){
-//                            loadRecord();
-//                            pnEditMode = poTrans.getEditMode();
-//                        } else 
-//                            ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
-//                    } else {
-//                        ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
-//                    }
-//                }
-//                break;
+                if (!psOldRec.equals("")){
+                    if ("0".equals((String) poTrans.getMaster("cTranStat"))){
+                        if (poTrans.updateRecord()){
+                            loadRecord();
+                            pnEditMode = poTrans.getEditMode();
+                        } else 
+                            ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
+                    } else {
+                        ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction...");
+                    }
+                }
+                break;
             case "btnPrint":
                 if (!psOldRec.equals("")){
                     if ("1".equals(poTrans.getMaster("cTranStat")))
@@ -413,7 +412,8 @@ public class PurchaseOrderController implements Initializable {
                     else 
                         ShowMessageFX.Warning(null, pxeModuleName, "Approval is needed to print this transaction.");
                 }
-                return;
+                break;
+//                return;
             default:
                 ShowMessageFX.Warning(null, pxeModuleName, "Button with name " + lsButton + " not registered.");
                 return;
