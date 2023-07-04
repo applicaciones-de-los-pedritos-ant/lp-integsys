@@ -216,7 +216,7 @@
                               <Font size="10.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btnClose" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="192.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Close" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="240.0">
+                        <Button fx:id="btnClose" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="192.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Close" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="300.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="POWER_OFF" size="30" />
                            </graphic>
@@ -232,7 +232,7 @@
                               <Font size="10.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btnConfirm" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="129.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Confirm" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="120.0">
+                        <Button fx:id="btnConfirm" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="129.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Confirm" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="180.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="CHECK" size="30" />
                            </graphic>
@@ -240,7 +240,7 @@
                               <Font size="10.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btnVoid" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="138.0" layoutY="202.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Void" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="180.0">
+                        <Button fx:id="btnVoid" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="138.0" layoutY="202.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Void" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="240.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="BAN" size="30" />
                            </graphic>
@@ -251,6 +251,14 @@
                         <Button fx:id="btnBrowse" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="1.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Browse" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="FOLDER_OPEN" size="30" />
+                           </graphic>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnUpdate" alignment="BOTTOM_CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Update" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="120.0">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="EDIT" size="30" />
                            </graphic>
                            <font>
                               <Font size="10.0" />
