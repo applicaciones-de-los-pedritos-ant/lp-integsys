@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="VBoxForm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="549.0" prefWidth="500.0" stylesheets="@../styles/Parameter.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="90.0" prefWidth="500.0" style="-fx-background-color: #000000;">
+         <children>
+            <Separator layoutY="25.0" prefHeight="0.0" prefWidth="500.0" style="-fx-background-color: orange;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Label layoutX="14.0" layoutY="3.0" text="Inventory" textFill="WHITE" AnchorPane.leftAnchor="5.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnExit" layoutX="1.0" layoutY="3.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="21.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="System Bold" size="8.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView fx:id="glyphExit" glyphName="TIMES" />
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="anchorField" prefHeight="524.0" prefWidth="500.0" style="-fx-background-color: #B3B6B7;">
+         <children>
+            <Label layoutX="14.0" layoutY="15.0" text="Stock ID">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblHeader" layoutX="105.0" layoutY="18.0" prefHeight="25.0" prefWidth="151.0" style="-fx-background-color: black;" />
+            <TextField fx:id="txtField01" editable="false" focusTraversable="false" layoutX="101.0" layoutY="11.0" />
+            <Label layoutX="14.0" layoutY="51.0" text="Barcode" />
+            <TextField fx:id="txtField02" layoutX="101.0" layoutY="47.0" prefHeight="25.0" prefWidth="149.0" />
+            <Label layoutX="14.0" layoutY="79.0" text="Description" />
+            <TextField fx:id="txtField03" layoutX="101.0" layoutY="75.0" prefHeight="25.0" prefWidth="384.0" />
+            <Label layoutX="14.0" layoutY="107.0" text="Brief Desc." />
+            <TextField fx:id="txtField04" layoutX="101.0" layoutY="103.0" />
+            <Label layoutX="271.0" layoutY="107.0" text="Alt. BCode" />
+            <TextField fx:id="txtField05" layoutX="336.0" layoutY="103.0" />
+            <Separator layoutX="20.0" layoutY="134.0" prefHeight="5.0" prefWidth="458.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Label layoutX="14.0" layoutY="144.0" text="Category 1" />
+            <TextField fx:id="txtField06" layoutX="101.0" layoutY="140.0" />
+            <Label layoutX="14.0" layoutY="172.0" text="Category 2" />
+            <TextField fx:id="txtField07" layoutX="101.0" layoutY="168.0" />
+            <Label layoutX="269.0" layoutY="145.0" text="Category 3" />
+            <TextField fx:id="txtField08" layoutX="336.0" layoutY="141.0" />
+            <Label layoutX="269.0" layoutY="173.0" text="Category 4" />
+            <TextField fx:id="txtField09" layoutX="336.0" layoutY="169.0" />
+            <Separator layoutX="20.0" layoutY="198.0" prefHeight="5.0" prefWidth="458.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Label layoutX="14.0" layoutY="208.0" text="Brand" />
+            <TextField fx:id="txtField10" layoutX="101.0" layoutY="204.0" />
+            <Label layoutX="14.0" layoutY="236.0" text="Model" />
+            <TextField fx:id="txtField11" layoutX="101.0" layoutY="232.0" />
+            <Label layoutX="269.0" layoutY="209.0" text="Color" />
+            <TextField fx:id="txtField12" layoutX="336.0" layoutY="205.0" />
+            <Label layoutX="269.0" layoutY="237.0" text="Inv. Type" />
+            <TextField fx:id="txtField13" layoutX="336.0" layoutY="233.0" />
+            <Separator layoutX="20.0" layoutY="262.0" prefHeight="5.0" prefWidth="458.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Label layoutX="14.0" layoutY="274.0" text="Unit Price" />
+            <TextField fx:id="txtField14" layoutX="101.0" layoutY="269.0" />
+            <Label layoutX="14.0" layoutY="301.0" text="Selling Price">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtField15" layoutX="101.0" layoutY="297.0" />
+            <Label layoutX="14.0" layoutY="329.0" text="Supervisor Disc" />
+            <TextField fx:id="txtField16" layoutX="101.0" layoutY="325.0" />
+            <Label layoutX="252.0" layoutY="273.0" text="Manager Disc." />
+            <TextField fx:id="txtField17" layoutX="337.0" layoutY="269.0" />
+            <Label layoutX="274.0" layoutY="301.0" text="Area Disc." />
+            <TextField fx:id="txtField18" layoutX="337.0" layoutY="297.0" />
+            <Label layoutX="266.0" layoutY="329.0" text="Dealer Disc." />
+            <TextField fx:id="txtField19" layoutX="337.0" layoutY="325.0" />
+            <Separator layoutX="20.0" layoutY="357.0" prefHeight="5.0" prefWidth="458.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Label layoutX="14.0" layoutY="369.0" text="Unit Type" />
+            <ComboBox fx:id="Combo23" layoutX="101.0" layoutY="365.0" prefWidth="150.0" />
+            <Label layoutX="271.0" layoutY="369.0" text="Inv. Status" />
+            <ComboBox fx:id="Combo24" layoutX="336.0" layoutY="365.0" prefWidth="150.0" />
+            <CheckBox fx:id="Check20" layoutX="101.0" layoutY="394.0" mnemonicParsing="false" text="Combo Inventory" />
+            <CheckBox fx:id="Check21" layoutX="102.0" layoutY="416.0" mnemonicParsing="false" text="With Promo" />
+            <Label layoutX="252.0" layoutY="402.0" text="Supersd. Parts" />
+            <CheckBox fx:id="Check22" layoutX="102.0" layoutY="437.0" mnemonicParsing="false" text="Serialized" />
+            <TextField fx:id="txtField25" editable="false" focusTraversable="false" layoutX="337.0" layoutY="398.0" />
+            <CheckBox fx:id="Check26" layoutX="337.0" layoutY="437.0" mnemonicParsing="false" text="Active">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </CheckBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="60.0" prefWidth="500.0" style="-fx-background-color: #686868;">
+         <children>
+            <Button fx:id="btnSave" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="290.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Save" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="FLOPPY_ALT" size="25" />
+               </graphic>
+            </Button>
+            <Button fx:id="btnUpdate" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="160.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Update" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="PENCIL" size="25" />
+               </graphic>
+            </Button>
+            <Button fx:id="btnCancel" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="432.0" layoutY="5.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="Cancel" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="SIGN_OUT" size="25" />
+               </graphic>
+            </Button>
+            <Button fx:id="btnClose" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="377.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Close" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="POWER_OFF" size="25" />
+               </graphic>
+            </Button>
+            <Button fx:id="btnSearch" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="363.0" layoutY="5.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Search" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="SEARCH" size="25" />
+               </graphic>
+            </Button>
+            <Button fx:id="btnBrowse" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="297.0" layoutY="5.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Browse" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="FOLDER_OPEN" size="25" />
+               </graphic>
+            </Button>
+            <Button fx:id="btnNew" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="151.0" layoutY="4.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="New" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="240.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="FILE_ALT" size="25" />
+               </graphic>
+            </Button>
+            <Button fx:id="btnActivate" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="250.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Activate" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="CHECK" size="25" />
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

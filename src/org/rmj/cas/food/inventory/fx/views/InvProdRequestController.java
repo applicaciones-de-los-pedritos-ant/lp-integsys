@@ -609,6 +609,7 @@ public class InvProdRequestController implements Initializable {
                                         "",
                                         "",
                                         ""));
+                System.out.println((String) poTrans.getDetailI(lnCtr, "xBrandNme"));
             }
              initGrid();
             /*FOCUS ON FIRST ROW*/

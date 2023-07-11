@@ -258,23 +258,28 @@ public class POReceivingController implements Initializable {
         TableColumn index02 = new TableColumn("Order No.");
         TableColumn index03 = new TableColumn("Bar Code");
         TableColumn index04 = new TableColumn("Description");
-        TableColumn index05 = new TableColumn("Unit");
-        TableColumn index06 = new TableColumn("Superseded");
-        TableColumn index07 = new TableColumn("Unit Type");
-        TableColumn index08 = new TableColumn("Qty");
-        TableColumn index09 = new TableColumn("Unit Price");
-        TableColumn index10 = new TableColumn("Freight");
+        TableColumn index05 = new TableColumn("Brand");
+        TableColumn index06 = new TableColumn("Unit");
+        TableColumn index07 = new TableColumn("Superseded");
+        TableColumn index08 = new TableColumn("Unit Type");
+        TableColumn index09 = new TableColumn("Qty");
+        TableColumn index10 = new TableColumn("Unit Price");
+        TableColumn index11 = new TableColumn("Freight");
+        TableColumn index12 = new TableColumn("Total");
         
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(90);
         index03.setPrefWidth(90);
-        index04.setPrefWidth(125);
-        index05.setPrefWidth(80);
+        index04.setPrefWidth(250);
+        index05.setPrefWidth(120);
         index06.setPrefWidth(80);
-        index07.setPrefWidth(80); index07.setStyle("-fx-alignment: CENTER;");
-        index08.setPrefWidth(80); index09.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index07.setPrefWidth(80);
+        index08.setPrefWidth(80); index08.setStyle("-fx-alignment: CENTER;");
         index09.setPrefWidth(80); index09.setStyle("-fx-alignment: CENTER-RIGHT;");
         index10.setPrefWidth(80); index10.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index11.setPrefWidth(80); index11.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index12.setPrefWidth(80); index12.setStyle("-fx-alignment: CENTER-RIGHT;");
+       
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
@@ -286,6 +291,8 @@ public class POReceivingController implements Initializable {
         index08.setSortable(false); index08.setResizable(false);
         index09.setSortable(false); index09.setResizable(false);
         index10.setSortable(false); index10.setResizable(false);
+        index11.setSortable(false); index11.setResizable(false);
+        index12.setSortable(false); index12.setResizable(false);
 
         table.getColumns().clear();        
         table.getColumns().add(index01);
@@ -298,6 +305,8 @@ public class POReceivingController implements Initializable {
         table.getColumns().add(index08);
         table.getColumns().add(index09);
         table.getColumns().add(index10);
+        table.getColumns().add(index11);
+        table.getColumns().add(index12);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
@@ -309,6 +318,8 @@ public class POReceivingController implements Initializable {
         index08.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index08"));
         index09.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index09"));
         index10.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index10"));
+        index11.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index11"));
+        index12.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index12"));
         
         /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {  
@@ -713,23 +724,31 @@ public class POReceivingController implements Initializable {
                             (String) poTrans.getDetail(lnCtr, "sOrderNox"),
                             psBarCodex, 
                             psDescript,
+                            (String) poTrans.getDetail(lnCtr, "sBrandNme"),
                             psMeasurNm,
                             lsOldCode,
                             cUnitType.get(Integer.parseInt((String) poTrans.getDetail(lnCtr, "cUnitType"))),
                             String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
                             CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()), "#,##0.00"),
-                            CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00")));
+                            CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
+                            CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
+                                * Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()))
+                                + Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00")));
             } else {
                 data.add(new TableModel(String.valueOf(lnCtr + 1), 
                             "",
                             (String) poTrans.getDetail(lnCtr, 100), 
                             (String) poTrans.getDetail(lnCtr, 101),
+                            (String) poTrans.getDetail(lnCtr, "sBrandNme"),
                             (String) poTrans.getDetail(lnCtr, 102),
                             "",
                             cUnitType.get(Integer.parseInt((String) poTrans.getDetail(lnCtr, "cUnitType"))),
                             String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
                             CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()), "#,##0.00"),
-                            CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00")));
+                            CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
+                            CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
+                                * Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()))
+                                + Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00")));
             }
         }
 
@@ -1041,7 +1060,7 @@ public class POReceivingController implements Initializable {
             loadDetail();
             break;
         case 13:
-            txtField13.setText(CommonUtils.NumberFormat((Double)poTrans.getMaster(fnIndex), "0.00"));
+            txtField13.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(fnIndex).toString()), "0.00"));
             loadDetail();
             break;
         case 14:

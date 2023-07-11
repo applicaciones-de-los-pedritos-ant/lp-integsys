@@ -138,18 +138,20 @@ public class InvAdjustmentController implements Initializable {
         TableColumn index01 = new TableColumn("No.");
         TableColumn index02 = new TableColumn("Barcode.");
         TableColumn index03 = new TableColumn("Description");
-        TableColumn index04 = new TableColumn("Expiry Date");
-        TableColumn index05 = new TableColumn("QOH");
-        TableColumn index06 = new TableColumn("CQty");
-        TableColumn index07 = new TableColumn("DQty");
+        TableColumn index04 = new TableColumn("Brand");
+        TableColumn index05 = new TableColumn("Expiry Date");
+        TableColumn index06 = new TableColumn("QOH");
+        TableColumn index07 = new TableColumn("CQty");
+        TableColumn index08 = new TableColumn("DQty");
         
         index01.setPrefWidth(50); index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(100);
         index03.setPrefWidth(142); 
-        index04.setPrefWidth(100); index04.setStyle("-fx-alignment: CENTER;");
-        index05.setPrefWidth(55); index05.setStyle("-fx-alignment: CENTER;");
-        index06.setPrefWidth(55); index05.setStyle("-fx-alignment: CENTER;");
-        index07.setPrefWidth(55); index06.setStyle("-fx-alignment: CENTER;");
+        index04.setPrefWidth(142); 
+        index05.setPrefWidth(100); index05.setStyle("-fx-alignment: CENTER;");
+        index06.setPrefWidth(55); index06.setStyle("-fx-alignment: CENTER;");
+        index07.setPrefWidth(55); index07.setStyle("-fx-alignment: CENTER;");
+        index08.setPrefWidth(55); index08.setStyle("-fx-alignment: CENTER;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
@@ -157,7 +159,8 @@ public class InvAdjustmentController implements Initializable {
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
         index06.setSortable(false); index06.setResizable(false);
-        index07.setSortable(false); index06.setResizable(false);
+        index07.setSortable(false); index07.setResizable(false);
+        index08.setSortable(false); index08.setResizable(false);
         
         table.getColumns().clear();        
         table.getColumns().add(index01);
@@ -167,6 +170,7 @@ public class InvAdjustmentController implements Initializable {
         table.getColumns().add(index05);
         table.getColumns().add(index06);
         table.getColumns().add(index07);
+        table.getColumns().add(index08);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
@@ -175,6 +179,7 @@ public class InvAdjustmentController implements Initializable {
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
         index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
+        index08.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index08"));
         
         /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {  
@@ -840,13 +845,14 @@ public class InvAdjustmentController implements Initializable {
             data.add(new TableModel(String.valueOf(lnCtr + 1), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sDescript"),
+                                    (String) poTrans.getDetail(lnCtr, "sBrandNme"),
                                     CommonUtils.xsDateMedium((Date) poTrans.getDetail(lnCtr, "dExpiryDt")),
                                     String.valueOf(poTrans.getDetailOthers(lnCtr, "nQtyOnHnd")),
                                     String.valueOf(poTrans.getDetail(lnCtr, "nCredtQty")),
                                     String.valueOf(poTrans.getDetail(lnCtr, "nDebitQty")),
                                     "",
-                                    "",
                                     ""));
+            System.out.println("sBrandNme = " + poTrans.getDetailOthers(lnCtr, "sBrandNme"));
             
             pnValTotl = pnValTotl + Double.valueOf(poTrans.getDetailOthers(lnCtr, "nQtyOnHnd").toString());
             pnCrdtTotl = pnCrdtTotl + Double.valueOf(poTrans.getDetail(lnCtr, "nCredtQty").toString());

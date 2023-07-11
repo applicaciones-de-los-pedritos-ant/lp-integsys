@@ -834,10 +834,12 @@ public class DailyProductionController implements Initializable {
             rawData.add(new RawTable(String.valueOf(lnCtr + 1), 
                         (String) poTrans.getInvOthers(lnCtr, "sBarCodex"), 
                         (String) poTrans.getInvOthers(lnCtr, "sDescript"), 
+                        (String) poTrans.getInvOthers(lnCtr, "sBrandNme"), 
                         (String) poTrans.getInvOthers(lnCtr, "sMeasurNm"), 
                         String.valueOf(poTrans.getInv(lnCtr, "nQtyReqrd")),
                         String.valueOf(poTrans.getInv(lnCtr, "nQtyUsedx"))
                         ));
+            System.out.println("nQtyUsedx = " + poTrans.getInv(lnCtr, "nQtyUsedx"));
         }
     
         /*FOCUS ON FIRST ROW*/
@@ -906,7 +908,7 @@ public class DailyProductionController implements Initializable {
             }
         });
         
-        TableColumn<RawTable, String> index04 = new TableColumn<RawTable, String>("Measure");
+        TableColumn<RawTable, String> index04 = new TableColumn<RawTable, String>("Brand");
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index04"));
         index04.setCellFactory(TextFieldTableCell.forTableColumn());
         index04.setOnEditCommit(new EventHandler<CellEditEvent<RawTable, String>>() {
@@ -914,12 +916,12 @@ public class DailyProductionController implements Initializable {
             public void handle(CellEditEvent<RawTable, String> event) {
                 RawTable tableModel = event.getRowValue();
                 tableModel.setIndex04(event.getNewValue());
-                poTrans.setInv(pnRawdata, "sMeasurNm" , Integer.valueOf(tableModel.getIndex04()));
+                poTrans.setInv(pnRawdata, "sBrandNme" , Integer.valueOf(tableModel.getIndex04()));
                 loadRawDetail();
             }
         });
         
-        TableColumn<RawTable, String> index05 = new TableColumn<RawTable, String>("RcQty");
+        TableColumn<RawTable, String> index05 = new TableColumn<RawTable, String>("Measure");
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index05"));
         index05.setCellFactory(TextFieldTableCell.forTableColumn());
         index05.setOnEditCommit(new EventHandler<CellEditEvent<RawTable, String>>() {
@@ -927,12 +929,12 @@ public class DailyProductionController implements Initializable {
             public void handle(CellEditEvent<RawTable, String> event) {
                 RawTable tableModel = event.getRowValue();
                 tableModel.setIndex05(event.getNewValue());
-                poTrans.setInv(pnRawdata, "nQtyReqrd" , Double.valueOf(tableModel.getIndex05()));
+                poTrans.setInv(pnRawdata, "sMeasurNm" , tableModel.getIndex05());
                 loadRawDetail();
             }
         });
         
-        TableColumn<RawTable, String> index06 = new TableColumn<RawTable, String>("UsQty");
+        TableColumn<RawTable, String> index06 = new TableColumn<RawTable, String>("RcQty");
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index06"));
         index06.setCellFactory(TextFieldTableCell.forTableColumn());
         index06.setOnEditCommit(new EventHandler<CellEditEvent<RawTable, String>>() {
@@ -940,8 +942,24 @@ public class DailyProductionController implements Initializable {
             public void handle(CellEditEvent<RawTable, String> event) {
                 RawTable tableModel = event.getRowValue();
                 tableModel.setIndex06(event.getNewValue());
-                poTrans.setInv(pnRawdata, "nQtyUsedx" , Double.valueOf(tableModel.getIndex05()));
+                poTrans.setInv(pnRawdata, "nQtyReqrd" , Double.valueOf(tableModel.getIndex06()));
                 if (Double.valueOf(tableModel.getIndex06()) > 0){
+                    poTrans.addInv();
+                } 
+                loadRawDetail();
+            }
+        });
+        
+        TableColumn<RawTable, String> index07 = new TableColumn<RawTable, String>("UsQty");
+        index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index07"));
+        index07.setCellFactory(TextFieldTableCell.forTableColumn());
+        index07.setOnEditCommit(new EventHandler<CellEditEvent<RawTable, String>>() {
+            @Override
+            public void handle(CellEditEvent<RawTable, String> event) {
+                RawTable tableModel = event.getRowValue();
+                tableModel.setIndex06(event.getNewValue());
+                poTrans.setInv(pnRawdata, "nQtyUsedx" , Double.valueOf(tableModel.getIndex07()));
+                if (Double.valueOf(tableModel.getIndex07()) > 0){
                     poTrans.addInv();
                 } 
                 loadRawDetail();
@@ -952,10 +970,11 @@ public class DailyProductionController implements Initializable {
         
         index01.setPrefWidth(40); index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(70);
-        index03.setPrefWidth(130); 
-        index04.setPrefWidth(70); index04.setStyle("-fx-alignment: CENTER;");
+        index03.setPrefWidth(180); 
+        index04.setPrefWidth(150);
         index05.setPrefWidth(40); index05.setStyle("-fx-alignment: CENTER;");
         index06.setPrefWidth(40); index06.setStyle("-fx-alignment: CENTER;");
+        index07.setPrefWidth(40); index07.setStyle("-fx-alignment: CENTER;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
@@ -963,6 +982,7 @@ public class DailyProductionController implements Initializable {
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
         index06.setSortable(false); index06.setResizable(false);
+        index07.setSortable(false); index07.setResizable(false);
         
         table1.getColumns().clear();        
         table1.getColumns().add(index01);
@@ -971,6 +991,7 @@ public class DailyProductionController implements Initializable {
         table1.getColumns().add(index04);
         table1.getColumns().add(index05);
         table1.getColumns().add(index06);
+        table1.getColumns().add(index07);
         
         /*making column's position uninterchangebale*/
         table1.widthProperty().addListener(new ChangeListener<Number>() {  
@@ -993,6 +1014,7 @@ public class DailyProductionController implements Initializable {
         table1.getColumns().add(index04);
         table1.getColumns().add(index05);
         table1.getColumns().add(index06);
+        table1.getColumns().add(index07);
 
         table1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         

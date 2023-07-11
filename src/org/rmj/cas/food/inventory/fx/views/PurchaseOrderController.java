@@ -219,17 +219,21 @@ public class PurchaseOrderController implements Initializable {
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
         TableColumn index02 = new TableColumn("Bar Code");
-        TableColumn index03 = new TableColumn("Description");
-        TableColumn index04 = new TableColumn("M.");
-        TableColumn index05 = new TableColumn("Qty");
-        TableColumn index06 = new TableColumn("UPrice");
+        TableColumn index03 = new TableColumn("Brand");
+        TableColumn index04 = new TableColumn("Description");
+        TableColumn index05 = new TableColumn("M.");
+        TableColumn index06 = new TableColumn("Qty");
+        TableColumn index07 = new TableColumn("UPrice");
+        TableColumn index08 = new TableColumn("UPrice");
         
         index01.setPrefWidth(30);
         index02.setPrefWidth(110);
         index03.setPrefWidth(130);
-        index04.setPrefWidth(75);
-        index05.setPrefWidth(45); index05.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index06.setPrefWidth(85); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index04.setPrefWidth(130);
+        index05.setPrefWidth(75);
+        index06.setPrefWidth(45); index05.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index07.setPrefWidth(85); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index08.setPrefWidth(85); index08.setStyle("-fx-alignment: CENTER-RIGHT;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
@@ -237,6 +241,8 @@ public class PurchaseOrderController implements Initializable {
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
         index06.setSortable(false); index06.setResizable(false);
+        index07.setSortable(false); index07.setResizable(false);
+        index08.setSortable(false); index08.setResizable(false);
 
         table.getColumns().clear();        
         table.getColumns().add(index01);
@@ -245,6 +251,8 @@ public class PurchaseOrderController implements Initializable {
         table.getColumns().add(index04);
         table.getColumns().add(index05);
         table.getColumns().add(index06);
+        table.getColumns().add(index07);
+        table.getColumns().add(index08);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
@@ -252,6 +260,8 @@ public class PurchaseOrderController implements Initializable {
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
+        index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
+        index08.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index08"));
 
         /*Set data source to table*/
         table.setItems(data);
@@ -650,22 +660,25 @@ public class PurchaseOrderController implements Initializable {
             
                 data.add(new TableModel(String.valueOf(lnCtr + 1), 
                                         (String) loInventory.getMaster("sBarCodex"), 
+                                        (String) poTrans.getDetail(lnCtr,"sBrandNme"), 
                                         (String) loInventory.getMaster("sDescript"), 
                                         loInventory.getMeasureMent((String) loInventory.getMaster("sMeasurID")),
                                         String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
                                         String.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce")),
-                                        "",
-                                        "",
+                                        CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
+                                            * Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString())), "#,##0.00"),
                                         "",
                                         ""));
             } else {
                 data.add(new TableModel(String.valueOf(lnCtr + 1), 
                                         (String) poTrans.getDetail(lnCtr, 100), 
+                                        (String) poTrans.getDetail(lnCtr,"sBranchNme"), 
                                         (String) poTrans.getDetail(lnCtr, 101), 
                                         (String) poTrans.getDetail(lnCtr, 102),
                                         String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
                                         String.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce")),
-                                        "",
+                                        CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
+                                            * Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString())), "#,##0.00"),
                                         "",
                                         "",
                                         ""));

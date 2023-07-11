@@ -292,17 +292,19 @@ public class InvTransferController implements Initializable {
         TableColumn index02 = new TableColumn("Order No.");
         TableColumn index03 = new TableColumn("Barcode");
         TableColumn index04 = new TableColumn("Description");
-        TableColumn index05 = new TableColumn("M.");
-        TableColumn index06 = new TableColumn("Unit Price");
-        TableColumn index07 = new TableColumn("Qty");
+        TableColumn index05 = new TableColumn("Brand");
+        TableColumn index06 = new TableColumn("M.");
+        TableColumn index07 = new TableColumn("Unit Price");
+        TableColumn index08 = new TableColumn("Qty");
         
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(90);
         index03.setPrefWidth(70);
         index04.setPrefWidth(130);
-        index05.setPrefWidth(60);
-        index06.setPrefWidth(65); index05.setStyle("-fx-alignment: CENTER;");
-        index07.setPrefWidth(40); index06.setStyle("-fx-alignment: CENTER;");
+        index05.setPrefWidth(130);
+        index06.setPrefWidth(60);
+        index07.setPrefWidth(65); index07.setStyle("-fx-alignment: CENTER;");
+        index08.setPrefWidth(40); index08.setStyle("-fx-alignment: CENTER;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
@@ -310,7 +312,8 @@ public class InvTransferController implements Initializable {
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
         index06.setSortable(false); index06.setResizable(false);
-        index07.setSortable(false); index06.setResizable(false);
+        index07.setSortable(false); index07.setResizable(false);
+        index08.setSortable(false); index08.setResizable(false);
 
         table.getColumns().clear();        
         table.getColumns().add(index01);
@@ -320,6 +323,7 @@ public class InvTransferController implements Initializable {
         table.getColumns().add(index05);
         table.getColumns().add(index06);
         table.getColumns().add(index07);
+        table.getColumns().add(index08);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
@@ -328,6 +332,7 @@ public class InvTransferController implements Initializable {
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
         index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
+        index08.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index08"));
         
         /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {  
@@ -890,12 +895,13 @@ public class InvTransferController implements Initializable {
                                     (String) poTrans.getDetail(lnCtr, "sOrderNox"),
                                     (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sDescript"),
+                                    (String) poTrans.getDetailOthers(lnCtr, "sBrandNme"),
                                     (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"),
                                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nInvCostx").toString()), "0.00"),
                                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()), "0.00"),
                                     "",
-                                    "",
                                     ""));
+            System.out.println(poTrans.getDetailOthers(lnCtr, "sBrandNme"));
         }
         initGrid();
         /*FOCUS ON FIRST ROW*/

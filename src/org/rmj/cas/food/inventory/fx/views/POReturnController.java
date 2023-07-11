@@ -241,21 +241,23 @@ public class POReturnController implements Initializable {
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
         TableColumn index02 = new TableColumn("Bar Code");
-        TableColumn index03 = new TableColumn("Description");
-        TableColumn index04 = new TableColumn("Unit Type");
-        TableColumn index05 = new TableColumn("Qty");
-        TableColumn index06 = new TableColumn("Unit Price");
-        TableColumn index07 = new TableColumn("Freight");
-        TableColumn index08 = new TableColumn("Total");
+        TableColumn index03 = new TableColumn("Brand");
+        TableColumn index04 = new TableColumn("Description");
+        TableColumn index05 = new TableColumn("Unit Type");
+        TableColumn index06 = new TableColumn("Qty");
+        TableColumn index07 = new TableColumn("Unit Price");
+        TableColumn index08 = new TableColumn("Freight");
+        TableColumn index09 = new TableColumn("Total");
         
         index01.setPrefWidth(31);
         index02.setPrefWidth(110);
         index03.setPrefWidth(230);
-        index04.setPrefWidth(100);
-        index05.setPrefWidth(41); index05.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index06.setPrefWidth(100); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index07.setPrefWidth(100); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index08.setPrefWidth(100); index08.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index04.setPrefWidth(230);
+        index05.setPrefWidth(100);
+        index06.setPrefWidth(41); index05.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index07.setPrefWidth(100); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index08.setPrefWidth(100); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index09.setPrefWidth(100); index08.setStyle("-fx-alignment: CENTER-RIGHT;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
@@ -265,6 +267,7 @@ public class POReturnController implements Initializable {
         index06.setSortable(false); index06.setResizable(false);
         index07.setSortable(false); index07.setResizable(false);
         index08.setSortable(false); index08.setResizable(false);
+        index09.setSortable(false); index09.setResizable(false);
 
         table.getColumns().clear();        
         table.getColumns().add(index01);
@@ -275,6 +278,7 @@ public class POReturnController implements Initializable {
         table.getColumns().add(index06);
         table.getColumns().add(index07);
         table.getColumns().add(index08);
+        table.getColumns().add(index09);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
@@ -284,6 +288,7 @@ public class POReturnController implements Initializable {
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
         index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
         index08.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index08"));
+        index09.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index09"));
 
         /*Set data source to table*/
         table.setItems(data);
@@ -602,6 +607,7 @@ public class POReturnController implements Initializable {
                 
                 data.add(new TableModel(String.valueOf(lnCtr + 1), 
                                     psBarCodex, 
+                                    String.valueOf(poTrans.getDetail(lnCtr, "sBrandNme")),
                                     psDescript, 
                                     cUnitType.get(Integer.parseInt((String) poTrans.getDetail(lnCtr, "cUnitType"))),
                                     String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
@@ -610,7 +616,6 @@ public class POReturnController implements Initializable {
                                     CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
                                                             * Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()))
                                                             + Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
-                                    "",
                                     ""));
             } else {
                 data.add(new TableModel(String.valueOf(lnCtr + 1), 
