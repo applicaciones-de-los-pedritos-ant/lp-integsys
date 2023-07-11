@@ -9,6 +9,7 @@ public class RawTable {
     private SimpleStringProperty index04;     
     private SimpleStringProperty index05;
     private SimpleStringProperty index06;
+    private SimpleStringProperty index07;
     
     public RawTable(){
         this.index01 = new SimpleStringProperty("");
@@ -17,6 +18,7 @@ public class RawTable {
         this.index04 = new SimpleStringProperty("");
         this.index05 = new SimpleStringProperty("");
         this.index06 = new SimpleStringProperty("");
+        this.index07 = new SimpleStringProperty("");
     }
     
     RawTable(String index01, String index02, String index03,String index04, String index05, String index06){
@@ -26,6 +28,15 @@ public class RawTable {
         this.index04 = new SimpleStringProperty(index04);
         this.index05 = new SimpleStringProperty(index05);
         this.index06 = new SimpleStringProperty(index06);
+    }
+    RawTable(String index01, String index02, String index03,String index04, String index05, String index06, String index07){
+        this.index01 = new SimpleStringProperty(index01);
+        this.index02 = new SimpleStringProperty(index02);
+        this.index03 = new SimpleStringProperty(index03);
+        this.index04 = new SimpleStringProperty(index04);
+        this.index05 = new SimpleStringProperty(index05);
+        this.index06 = new SimpleStringProperty(index06);
+        this.index07 = new SimpleStringProperty(index07);
     }
     
     public String getIndex01(){return index01.get();}
@@ -45,4 +56,7 @@ public class RawTable {
     
     public String getIndex06(){return index06.get();}
     public void setIndex06(String index06){this.index05.set(index06);}
+    
+    public String getIndex07(){return index07.get();}
+    public void setIndex07(String index07){this.index07.set(index07);}
 }

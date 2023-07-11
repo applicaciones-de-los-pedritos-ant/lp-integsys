@@ -152,20 +152,23 @@ public class InvTransPostingController implements Initializable {
         TableColumn index01 = new TableColumn("No.");
         TableColumn index02 = new TableColumn("Barcode");
         TableColumn index03 = new TableColumn("Description");
-        TableColumn index04 = new TableColumn("M.");
-        TableColumn index05 = new TableColumn("Total Qty");
+        TableColumn index04 = new TableColumn("Brand");
+        TableColumn index05 = new TableColumn("M.");
+        TableColumn index06 = new TableColumn("Total Qty");
         
         index01.setPrefWidth(40); index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(100); index02.setStyle("-fx-alignment: CENTER;");
         index03.setPrefWidth(120); index03.setStyle("-fx-alignment: CENTER;");
-        index04.setPrefWidth(50); index04.setStyle("-fx-alignment: CENTER;");
-        index05.setPrefWidth(80); index05.setStyle("-fx-alignment: CENTER;");
+        index04.setPrefWidth(120); index04.setStyle("-fx-alignment: CENTER;");
+        index05.setPrefWidth(50); index05.setStyle("-fx-alignment: CENTER;");
+        index06.setPrefWidth(80); index06.setStyle("-fx-alignment: CENTER;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
         index03.setSortable(false); index03.setResizable(false);
         index04.setSortable(false); index04.setResizable(false);
-        index05.setSortable(false); index04.setResizable(false);
+        index05.setSortable(false); index05.setResizable(false);
+        index06.setSortable(false); index06.setResizable(false);
 
         table.getColumns().clear();        
         table.getColumns().add(index01);
@@ -173,12 +176,14 @@ public class InvTransPostingController implements Initializable {
         table.getColumns().add(index03);
         table.getColumns().add(index04);
         table.getColumns().add(index05);
+        table.getColumns().add(index06);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index03"));
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
+        index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
         
          /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {  
@@ -359,7 +364,7 @@ public class InvTransPostingController implements Initializable {
                      lnReceived = lnReceived + (double) poTrans.getDetailExp(lnCtr1, "nReceived");
                  }
              }
-           poTrans.setDetail(lnCtr, "nReceived", lnReceived);
+//           poTrans.setDetail(lnCtr, "nReceived", lnReceived);
         }
                
         
@@ -453,9 +458,9 @@ public class InvTransPostingController implements Initializable {
             data.add(new TableModel(String.valueOf(lnCtr + 1), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sDescript"), 
+                                    (String) poTrans.getDetailOthers(lnCtr, "sBrandNme"), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"), 
                                     String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),    
-                                    "",
                                     "",
                                     "",
                                     "",

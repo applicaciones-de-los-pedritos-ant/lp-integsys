@@ -154,20 +154,23 @@ public class InvWasteController implements Initializable {
         TableColumn index01 = new TableColumn("No.");
         TableColumn index02 = new TableColumn("Barcode.");
         TableColumn index03 = new TableColumn("Description");
-        TableColumn index04 = new TableColumn("Cost");
-        TableColumn index05 = new TableColumn("Quantity");
+        TableColumn index04 = new TableColumn("Brand");
+        TableColumn index05 = new TableColumn("Cost");
+        TableColumn index06 = new TableColumn("Quantity");
         
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(140);
         index03.setPrefWidth(177); 
-        index04.setPrefWidth(80); index04.setStyle("-fx-alignment: CENTER;");
-        index05.setPrefWidth(70); index05.setStyle("-fx-alignment: CENTER;");
+        index04.setPrefWidth(150); 
+        index05.setPrefWidth(80); index05.setStyle("-fx-alignment: CENTER;");
+        index06.setPrefWidth(70); index06.setStyle("-fx-alignment: CENTER;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
         index03.setSortable(false); index03.setResizable(false);
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
+        index06.setSortable(false); index06.setResizable(false);
         
         table.getColumns().clear();        
         table.getColumns().add(index01);
@@ -175,12 +178,14 @@ public class InvWasteController implements Initializable {
         table.getColumns().add(index03);
         table.getColumns().add(index04);
         table.getColumns().add(index05);
+        table.getColumns().add(index06);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index03"));
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
+        index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
         
         /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {  
@@ -765,17 +770,18 @@ public class InvWasteController implements Initializable {
     
     private void loadDetail(){
         int lnCtr;
-        int lnRow = poTrans.ItemCount();
+//        int lnRow = poTrans.ItemCount();
+        pnlRow = poTrans.ItemCount();
         
         data.clear();
         /*ADD THE DETAIL*/
-        for(lnCtr = 0; lnCtr <= lnRow -1; lnCtr++){
+        for(lnCtr = 0; lnCtr <= pnlRow -1; lnCtr++){
             data.add(new TableModel(String.valueOf(lnCtr + 1), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sDescript"),
+                                    (String) poTrans.getDetail(lnCtr, "sBrandNme"),
                                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nInvCostx").toString()), "0.00"),
                                     String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
-                                    "",
                                     "",
                                     "",
                                     "",
@@ -784,8 +790,8 @@ public class InvWasteController implements Initializable {
     
         /*FOCUS ON FIRST ROW*/
         if (!data.isEmpty()){
-            table.getSelectionModel().select(lnRow -1);
-            table.getFocusModel().focus(lnRow -1);
+            table.getSelectionModel().select(pnlRow -1);
+            table.getFocusModel().focus(pnlRow -1);
             
             pnRow = table.getSelectionModel().getSelectedIndex();           
             

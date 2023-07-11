@@ -270,16 +270,18 @@ public class InvStockRequestController implements Initializable {
         TableColumn index01 = new TableColumn("No.");
         TableColumn index02 = new TableColumn("Barcode");
         TableColumn index03 = new TableColumn("Description");
-        TableColumn index04 = new TableColumn("M.");
-        TableColumn index05 = new TableColumn("QOH");
-        TableColumn index06 = new TableColumn("Qty");
+        TableColumn index04 = new TableColumn("Brand");
+        TableColumn index05 = new TableColumn("M.");
+        TableColumn index06 = new TableColumn("QOH");
+        TableColumn index07 = new TableColumn("Qty");
         
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(220);
         index03.setPrefWidth(260);
         index04.setPrefWidth(160);
-        index05.setPrefWidth(65); index05.setStyle("-fx-alignment: CENTER;");
-        index06.setPrefWidth(40); index06.setStyle("-fx-alignment: CENTER;");
+        index05.setPrefWidth(160);
+        index06.setPrefWidth(65); index05.setStyle("-fx-alignment: CENTER;");
+        index07.setPrefWidth(40); index06.setStyle("-fx-alignment: CENTER;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
@@ -287,6 +289,7 @@ public class InvStockRequestController implements Initializable {
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
         index06.setSortable(false); index06.setResizable(false);
+        index07.setSortable(false); index07.setResizable(false);
 
         table.getColumns().clear();        
         table.getColumns().add(index01);
@@ -295,6 +298,7 @@ public class InvStockRequestController implements Initializable {
         table.getColumns().add(index04);
         table.getColumns().add(index05);
         table.getColumns().add(index06);
+        table.getColumns().add(index07);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
@@ -302,6 +306,7 @@ public class InvStockRequestController implements Initializable {
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
+        index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
         
         /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {  
@@ -696,13 +701,14 @@ public class InvStockRequestController implements Initializable {
             data.add(new TableModel(String.valueOf(lnCtr + 1), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"),
                                     (String) poTrans.getDetailOthers(lnCtr, "sDescript"), 
+                                    (String) poTrans.getDetailOthers(lnCtr, "sBrandNme"), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"),
                                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nQtyOnHnd").toString()), "0.00"),
                                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()), "0.00"),
                                     "",
                                     "",
-                                    "",
                                     ""));
+            System.out.println(poTrans.getDetailOthers(lnCtr, "sBrandNme"));
         }
     
         /*FOCUS ON FIRST ROW*/
