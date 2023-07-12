@@ -136,7 +136,7 @@ public class DailyProductionController implements Initializable {
     
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
-        TableColumn index02 = new TableColumn("Barcode.");
+        TableColumn index02 = new TableColumn("Barcode");
         TableColumn index03 = new TableColumn("Description");
         TableColumn index04 = new TableColumn("Unit");
         TableColumn index05 = new TableColumn("Qty");
@@ -968,11 +968,11 @@ public class DailyProductionController implements Initializable {
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index01"));
         
-        index01.setPrefWidth(40); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(70);
+        index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
+        index02.setPrefWidth(90);
         index03.setPrefWidth(180); 
         index04.setPrefWidth(150);
-        index05.setPrefWidth(40); index05.setStyle("-fx-alignment: CENTER;");
+        index05.setPrefWidth(60); index05.setStyle("-fx-alignment: CENTER;");
         index06.setPrefWidth(40); index06.setStyle("-fx-alignment: CENTER;");
         index07.setPrefWidth(40); index07.setStyle("-fx-alignment: CENTER;");
         

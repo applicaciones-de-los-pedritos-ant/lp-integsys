@@ -708,7 +708,7 @@ public class InvCountController implements Initializable {
     
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
-        TableColumn index02 = new TableColumn("Barcode.");
+        TableColumn index02 = new TableColumn("Barcode");
         TableColumn index03 = new TableColumn("Description");
         TableColumn index04 = new TableColumn("Brand");
         TableColumn index05 = new TableColumn("Count");

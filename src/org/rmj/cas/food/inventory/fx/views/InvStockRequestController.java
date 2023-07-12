@@ -268,20 +268,20 @@ public class InvStockRequestController implements Initializable {
     
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
-        TableColumn index02 = new TableColumn("Barcode");
+        TableColumn index02 = new TableColumn("Bar Code");
         TableColumn index03 = new TableColumn("Description");
         TableColumn index04 = new TableColumn("Brand");
-        TableColumn index05 = new TableColumn("M.");
+        TableColumn index05 = new TableColumn("Measure");
         TableColumn index06 = new TableColumn("QOH");
         TableColumn index07 = new TableColumn("Qty");
         
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(220);
+        index02.setPrefWidth(90);
         index03.setPrefWidth(260);
-        index04.setPrefWidth(160);
-        index05.setPrefWidth(160);
-        index06.setPrefWidth(65); index05.setStyle("-fx-alignment: CENTER;");
-        index07.setPrefWidth(40); index06.setStyle("-fx-alignment: CENTER;");
+        index04.setPrefWidth(240);
+        index05.setPrefWidth(75); index05.setStyle("-fx-alignment: CENTER;");
+        index06.setPrefWidth(65); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index07.setPrefWidth(40); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);

@@ -136,7 +136,7 @@ public class InvAdjustmentController implements Initializable {
     
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
-        TableColumn index02 = new TableColumn("Barcode.");
+        TableColumn index02 = new TableColumn("Barcode");
         TableColumn index03 = new TableColumn("Description");
         TableColumn index04 = new TableColumn("Brand");
         TableColumn index05 = new TableColumn("Expiry Date");
@@ -144,14 +144,15 @@ public class InvAdjustmentController implements Initializable {
         TableColumn index07 = new TableColumn("CQty");
         TableColumn index08 = new TableColumn("DQty");
         
-        index01.setPrefWidth(50); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(100);
-        index03.setPrefWidth(142); 
-        index04.setPrefWidth(142); 
-        index05.setPrefWidth(100); index05.setStyle("-fx-alignment: CENTER;");
-        index06.setPrefWidth(55); index06.setStyle("-fx-alignment: CENTER;");
-        index07.setPrefWidth(55); index07.setStyle("-fx-alignment: CENTER;");
-        index08.setPrefWidth(55); index08.setStyle("-fx-alignment: CENTER;");
+        index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
+        index02.setPrefWidth(90);
+        index03.setPrefWidth(140); 
+        index04.setPrefWidth(150); 
+        index05.setPrefWidth(90); index05.setStyle("-fx-alignment: CENTER;");
+        index06.setPrefWidth(65); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index07.setPrefWidth(65); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index08.setPrefWidth(65); index08.setStyle("-fx-alignment: CENTER-RIGHT;");
+
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);

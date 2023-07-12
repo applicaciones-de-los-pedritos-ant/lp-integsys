@@ -75,7 +75,7 @@ public class InvProdRequestController implements Initializable {
     @FXML
     private TableView table;
     @FXML
-    private TableColumn index01,index02,index03,index04,index05;
+    private TableColumn index01,index02,index03,index04,index05,index06;
     @FXML
     private ImageView imgTranStat;
     @FXML
@@ -221,6 +221,7 @@ public class InvProdRequestController implements Initializable {
             index03.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
             index04.setStyle("-fx-alignment: CENTER-RIGHT;-fx-padding: 0 5 0 0;");
             index05.setStyle("-fx-alignment: CENTER-RIGHT;-fx-padding: 0 5 0 0;");
+            index06.setStyle("-fx-alignment: CENTER;-fx-padding: 0 0 0 0;");
 
 
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
@@ -228,6 +229,7 @@ public class InvProdRequestController implements Initializable {
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index03"));
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
+        index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
 
         /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {  
@@ -604,7 +606,7 @@ public class InvProdRequestController implements Initializable {
                                         (String) poTrans.getDetail(lnCtr, 7), 
                                         CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, 6).toString()), "0.00"),
                                         CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, 3).toString()), "0.00"),
-                                        "",
+                                        (String) poTrans.getDetailI(lnCtr, "xBrandNme"),
                                         "",
                                         "",
                                         "",

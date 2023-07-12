@@ -153,14 +153,15 @@ public class InvTransPostingController implements Initializable {
         TableColumn index02 = new TableColumn("Barcode");
         TableColumn index03 = new TableColumn("Description");
         TableColumn index04 = new TableColumn("Brand");
-        TableColumn index05 = new TableColumn("M.");
+        TableColumn index05 = new TableColumn("Measure");
         TableColumn index06 = new TableColumn("Total Qty");
+
         
-        index01.setPrefWidth(40); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(100); index02.setStyle("-fx-alignment: CENTER;");
+        index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
+        index02.setPrefWidth(90); index02.setStyle("-fx-alignment: CENTER;");
         index03.setPrefWidth(120); index03.setStyle("-fx-alignment: CENTER;");
-        index04.setPrefWidth(120); index04.setStyle("-fx-alignment: CENTER;");
-        index05.setPrefWidth(50); index05.setStyle("-fx-alignment: CENTER;");
+        index04.setPrefWidth(150); index04.setStyle("-fx-alignment: CENTER;");
+        index05.setPrefWidth(65); index05.setStyle("-fx-alignment: CENTER;");
         index06.setPrefWidth(80); index06.setStyle("-fx-alignment: CENTER;");
         
         index01.setSortable(false); index01.setResizable(false);

@@ -13,6 +13,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -21,6 +22,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import static javafx.scene.input.KeyCode.ENTER;
@@ -94,30 +96,35 @@ public class DailyProductionRegController implements Initializable {
     
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
-        TableColumn index02 = new TableColumn("Barcode.");
+        TableColumn index02 = new TableColumn("Barcode");
         TableColumn index03 = new TableColumn("Description");
-        TableColumn index04 = new TableColumn("QTY");
+        TableColumn index04 = new TableColumn("Unit");
+        TableColumn index05 = new TableColumn("Qty");
         
-        index01.setPrefWidth(50); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(100);
-        index03.setPrefWidth(175); 
-        index04.setPrefWidth(85); index04.setStyle("-fx-alignment: CENTER;");
+        index01.setPrefWidth(40); index01.setStyle("-fx-alignment: CENTER;");
+        index02.setPrefWidth(90);
+        index03.setPrefWidth(150); 
+        index04.setPrefWidth(85);
+        index05.setPrefWidth(50); index05.setStyle("-fx-alignment: CENTER;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
         index03.setSortable(false); index03.setResizable(false);
         index04.setSortable(false); index04.setResizable(false);
+        index05.setSortable(false); index05.setResizable(false);
         
         table.getColumns().clear();        
         table.getColumns().add(index01);
         table.getColumns().add(index02);
         table.getColumns().add(index03);
         table.getColumns().add(index04);
+        table.getColumns().add(index05);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index03"));
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
+        index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
         
         /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {  
@@ -279,22 +286,116 @@ public class DailyProductionRegController implements Initializable {
      */
     private void initRawData(){
         TableColumn index01 = new TableColumn("No.");
-        TableColumn index02 = new TableColumn("Barcode");
-        TableColumn index03 = new TableColumn("Description");
-        TableColumn index04 = new TableColumn("RcQty");
-        TableColumn index05 = new TableColumn("UsQty");
         
-        index01.setPrefWidth(40); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(70);
-        index03.setPrefWidth(120); 
-        index04.setPrefWidth(60); index04.setStyle("-fx-alignment: CENTER;");
+        TableColumn<RawTable, String> index02 = new TableColumn<RawTable, String>("Barcode");
+        index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index02"));
+        index02.setCellFactory(TextFieldTableCell.forTableColumn());
+        index02.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RawTable, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<RawTable, String> event) {
+             RawTable tableModel = event.getRowValue();
+             tableModel.setIndex02(event.getNewValue());
+                if (poTrans.SearchInv(pnRawdata, 3, tableModel.getIndex02(), true, true)){
+                    tableModel.setIndex02(poTrans.getInvOthers(pnRawdata, "sBarCodex").toString());
+                    tableModel.setIndex03(poTrans.getInvOthers(pnRawdata, "sDescript").toString());
+                    tableModel.setIndex04(poTrans.getInvOthers(pnRawdata, "sMeasurNm").toString());
+                }
+                loadRawDetail();
+            }
+        });
+        
+        TableColumn<RawTable, String> index03 = new TableColumn<RawTable, String>("Description");
+        index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index03"));
+        index03.setCellFactory(TextFieldTableCell.forTableColumn());
+        index03.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RawTable, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<RawTable, String> event) {
+                RawTable tableModel = event.getRowValue();
+                tableModel.setIndex03(event.getNewValue());
+                if (poTrans.SearchInv(pnRawdata, 3, tableModel.getIndex03(), false, false)){
+                    tableModel.setIndex02(poTrans.getInvOthers(pnRawdata, "sBarCodex").toString());
+                    tableModel.setIndex03(poTrans.getInvOthers(pnRawdata, "sDescript").toString());
+                    tableModel.setIndex04(poTrans.getInvOthers(pnRawdata, "sMeasurNm").toString());
+                }
+                loadRawDetail();
+            }
+        });
+        
+        TableColumn<RawTable, String> index04 = new TableColumn<RawTable, String>("Brand");
+        index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index04"));
+        index04.setCellFactory(TextFieldTableCell.forTableColumn());
+        index04.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RawTable, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<RawTable, String> event) {
+                RawTable tableModel = event.getRowValue();
+                tableModel.setIndex04(event.getNewValue());
+                poTrans.setInv(pnRawdata, "sBrandNme" , Integer.valueOf(tableModel.getIndex04()));
+                loadRawDetail();
+            }
+        });
+        
+        TableColumn<RawTable, String> index05 = new TableColumn<RawTable, String>("Measure");
+        index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index05"));
+        index05.setCellFactory(TextFieldTableCell.forTableColumn());
+        index05.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RawTable, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<RawTable, String> event) {
+                RawTable tableModel = event.getRowValue();
+                tableModel.setIndex05(event.getNewValue());
+                poTrans.setInv(pnRawdata, "sMeasurNm" , tableModel.getIndex05());
+                loadRawDetail();
+            }
+        });
+        
+        TableColumn<RawTable, String> index06 = new TableColumn<RawTable, String>("RcQty");
+        index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index06"));
+        index06.setCellFactory(TextFieldTableCell.forTableColumn());
+        index06.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RawTable, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<RawTable, String> event) {
+                RawTable tableModel = event.getRowValue();
+                tableModel.setIndex06(event.getNewValue());
+                poTrans.setInv(pnRawdata, "nQtyReqrd" , Double.valueOf(tableModel.getIndex06()));
+                if (Double.valueOf(tableModel.getIndex06()) > 0){
+                    poTrans.addInv();
+                } 
+                loadRawDetail();
+            }
+        });
+        
+        TableColumn<RawTable, String> index07 = new TableColumn<RawTable, String>("UsQty");
+        index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index07"));
+        index07.setCellFactory(TextFieldTableCell.forTableColumn());
+        index07.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RawTable, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<RawTable, String> event) {
+                RawTable tableModel = event.getRowValue();
+                tableModel.setIndex06(event.getNewValue());
+                poTrans.setInv(pnRawdata, "nQtyUsedx" , Double.valueOf(tableModel.getIndex07()));
+                if (Double.valueOf(tableModel.getIndex07()) > 0){
+                    poTrans.addInv();
+                } 
+                loadRawDetail();
+            }
+        });
+        
+        index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index01"));
+        
+        index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
+        index02.setPrefWidth(90);
+        index03.setPrefWidth(180); 
+        index04.setPrefWidth(150);
         index05.setPrefWidth(60); index05.setStyle("-fx-alignment: CENTER;");
+        index06.setPrefWidth(40); index06.setStyle("-fx-alignment: CENTER;");
+        index07.setPrefWidth(40); index07.setStyle("-fx-alignment: CENTER;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
         index03.setSortable(false); index03.setResizable(false);
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
+        index06.setSortable(false); index06.setResizable(false);
+        index07.setSortable(false); index07.setResizable(false);
         
         table1.getColumns().clear();        
         table1.getColumns().add(index01);
@@ -302,12 +403,8 @@ public class DailyProductionRegController implements Initializable {
         table1.getColumns().add(index03);
         table1.getColumns().add(index04);
         table1.getColumns().add(index05);
-        
-        index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index01"));
-        index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index02"));
-        index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index03"));
-        index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index04"));
-        index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.RawTable,String>("index05"));
+        table1.getColumns().add(index06);
+        table1.getColumns().add(index07);
         
         /*making column's position uninterchangebale*/
         table1.widthProperty().addListener(new ChangeListener<Number>() {  
@@ -329,6 +426,10 @@ public class DailyProductionRegController implements Initializable {
         table1.getColumns().add(index03);
         table1.getColumns().add(index04);
         table1.getColumns().add(index05);
+        table1.getColumns().add(index06);
+        table1.getColumns().add(index07);
+
+        table1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         
         /*Set data source to table*/
         table1.setItems(rawData);
@@ -362,6 +463,35 @@ public class DailyProductionRegController implements Initializable {
         
         psOldRec = txtField01.getText();
     }
+       
+    private void loadDetail(){
+        int lnCtr;
+        int lnRow = poTrans.ItemCount();
+        
+        data.clear();
+        /*ADD THE DETAIL*/
+        for(lnCtr = 0; lnCtr <= lnRow -1; lnCtr++){
+            data.add(new TableModel(String.valueOf(lnCtr + 1), 
+                                    (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"), 
+                                    (String) poTrans.getDetailOthers(lnCtr, "sDescript"),
+                                    (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"),
+                                    String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    ""));
+        }
+    
+        /*FOCUS ON FIRST ROW*/
+        if (!data.isEmpty()){
+            table.getSelectionModel().select(lnRow -1);
+            table.getFocusModel().focus(lnRow -1);
+            
+            pnRow = table.getSelectionModel().getSelectedIndex();           
+            setDetailInfo(pnRow);
+        }
+    }
     
     /**
      * since 06-11-21
@@ -377,45 +507,18 @@ public class DailyProductionRegController implements Initializable {
             rawData.add(new RawTable(String.valueOf(lnCtr + 1), 
                         (String) poTrans.getInvOthers(lnCtr, "sBarCodex"), 
                         (String) poTrans.getInvOthers(lnCtr, "sDescript"), 
+                        (String) poTrans.getInvOthers(lnCtr, "sBrandNme"), 
                         (String) poTrans.getInvOthers(lnCtr, "sMeasurNm"), 
                         String.valueOf(poTrans.getInv(lnCtr, "nQtyReqrd")),
                         String.valueOf(poTrans.getInv(lnCtr, "nQtyUsedx"))
                         ));
+            System.out.println("nQtyUsedx = " + poTrans.getInv(lnCtr, "nQtyUsedx"));
         }
     
         /*FOCUS ON FIRST ROW*/
         if (!rawData.isEmpty()){
             table1.getSelectionModel().select(lnRow -1);
             table1.getFocusModel().focus(lnRow -1);
-        }
-    }
-    
-    private void loadDetail(){
-        int lnCtr;
-        int lnRow = poTrans.ItemCount();
-        
-        data.clear();
-        /*ADD THE DETAIL*/
-        for(lnCtr = 0; lnCtr <= lnRow -1; lnCtr++){
-            data.add(new TableModel(String.valueOf(lnCtr + 1), 
-                                    (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"), 
-                                    (String) poTrans.getDetailOthers(lnCtr, "sDescript"),
-                                    String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    ""));
-        }
-    
-        /*FOCUS ON FIRST ROW*/
-        if (!data.isEmpty()){
-            table.getSelectionModel().select(lnRow -1);
-            table.getFocusModel().focus(lnRow -1);
-            
-            pnRow = table.getSelectionModel().getSelectedIndex();           
-            setDetailInfo(pnRow);
         }
     }
     

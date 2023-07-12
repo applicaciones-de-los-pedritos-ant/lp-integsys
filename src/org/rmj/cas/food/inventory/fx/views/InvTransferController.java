@@ -290,30 +290,29 @@ public class InvTransferController implements Initializable {
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
         TableColumn index02 = new TableColumn("Order No.");
-        TableColumn index03 = new TableColumn("Barcode");
+        TableColumn index03 = new TableColumn("Bar Code");
         TableColumn index04 = new TableColumn("Description");
         TableColumn index05 = new TableColumn("Brand");
-        TableColumn index06 = new TableColumn("M.");
+        TableColumn index06 = new TableColumn("Measure");
         TableColumn index07 = new TableColumn("Unit Price");
         TableColumn index08 = new TableColumn("Qty");
         
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(90);
-        index03.setPrefWidth(70);
-        index04.setPrefWidth(130);
+        index02.setPrefWidth(120);
+        index03.setPrefWidth(90);
+        index04.setPrefWidth(120);
         index05.setPrefWidth(130);
-        index06.setPrefWidth(60);
-        index07.setPrefWidth(65); index07.setStyle("-fx-alignment: CENTER;");
-        index08.setPrefWidth(40); index08.setStyle("-fx-alignment: CENTER;");
-        
+        index06.setPrefWidth(65);
+        index07.setPrefWidth(55); index07.setStyle("-fx-alignment: CENTER;");
+        index08.setPrefWidth(40); index08.setStyle("-fx-alignment: CENTER-RIGHT;");
+
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
         index03.setSortable(false); index03.setResizable(false);
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
         index06.setSortable(false); index06.setResizable(false);
-        index07.setSortable(false); index07.setResizable(false);
-        index08.setSortable(false); index08.setResizable(false);
+        index07.setSortable(false); index06.setResizable(false);
 
         table.getColumns().clear();        
         table.getColumns().add(index01);

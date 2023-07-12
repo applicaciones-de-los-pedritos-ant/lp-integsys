@@ -250,15 +250,15 @@ public class POReturnController implements Initializable {
         TableColumn index09 = new TableColumn("Total");
         
         index01.setPrefWidth(31);
-        index02.setPrefWidth(110);
-        index03.setPrefWidth(230);
+        index02.setPrefWidth(100);
+        index03.setPrefWidth(150);
         index04.setPrefWidth(230);
-        index05.setPrefWidth(100);
-        index06.setPrefWidth(41); index05.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index07.setPrefWidth(100); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index08.setPrefWidth(100); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index09.setPrefWidth(100); index08.setStyle("-fx-alignment: CENTER-RIGHT;");
-        
+        index05.setPrefWidth(68); index05.setStyle("-fx-alignment: CENTER;");
+        index06.setPrefWidth(60); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index07.setPrefWidth(75); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index08.setPrefWidth(60); index08.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index09.setPrefWidth(75); index09.setStyle("-fx-alignment: CENTER-RIGHT;");
+
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
         index03.setSortable(false); index03.setResizable(false);

@@ -133,13 +133,14 @@
                <center>
                   <AnchorPane fx:id="anchorField" style="-fx-background-color: #B3B6B7;" BorderPane.alignment="CENTER">
                      <children>
-                        <TableView fx:id="table" layoutX="100.0" layoutY="209.0" onMouseClicked="#table_Clicked" prefHeight="200.0" prefWidth="673.0" stylesheets="@../styles/Tables.css" AnchorPane.leftAnchor="103.0" AnchorPane.rightAnchor="84.0">
+                        <TableView fx:id="table" layoutX="175.0" layoutY="209.0" onMouseClicked="#table_Clicked" prefHeight="200.0" prefWidth="680.0" stylesheets="@../styles/Tables.css">
                            <columns>
                               <TableColumn fx:id="index01" maxWidth="30.0" prefWidth="30.0" text="NO" />
-                              <TableColumn fx:id="index02" maxWidth="220.0" prefWidth="250.0" text="BARCODE" />
-                              <TableColumn fx:id="index03" maxWidth="300.0" prefWidth="250.0" text="DESCRIPT" />
-                              <TableColumn fx:id="index04" maxWidth="120.0" prefWidth="82.0" text="ON HAND" />
-                              <TableColumn fx:id="index05" maxWidth="120.0" prefWidth="60.0" text="QTY" />
+                              <TableColumn fx:id="index02" maxWidth="120.0" prefWidth="120.0" text="BARCODE" />
+                              <TableColumn fx:id="index03" maxWidth="250.0" prefWidth="250.0" text="DESCRIPT" />
+                              <TableColumn fx:id="index06" maxWidth="180.0" prefWidth="150.0" text="BRAND" />
+                              <TableColumn fx:id="index04" maxWidth="80.0" prefWidth="65.0" text="ON HAND" />
+                              <TableColumn fx:id="index05" maxWidth="80.0" prefWidth="65.0" text="QTY" />
                            </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -256,6 +257,7 @@
                               </Label>
                            </children>
                         </GridPane>
+                        <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="209.0" prefHeight="40.0" prefWidth="83.0" text="Transaction Detail" textAlignment="RIGHT" wrapText="true" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="215.0" />
                      </children>
                   </AnchorPane>
                </center>

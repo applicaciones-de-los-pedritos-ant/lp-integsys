@@ -152,18 +152,18 @@ public class InvWasteController implements Initializable {
     
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
-        TableColumn index02 = new TableColumn("Barcode.");
+        TableColumn index02 = new TableColumn("Barcode");
         TableColumn index03 = new TableColumn("Description");
         TableColumn index04 = new TableColumn("Brand");
         TableColumn index05 = new TableColumn("Cost");
         TableColumn index06 = new TableColumn("Quantity");
         
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(140);
-        index03.setPrefWidth(177); 
+        index02.setPrefWidth(90);
+        index03.setPrefWidth(150); 
         index04.setPrefWidth(150); 
-        index05.setPrefWidth(80); index05.setStyle("-fx-alignment: CENTER;");
-        index06.setPrefWidth(70); index06.setStyle("-fx-alignment: CENTER;");
+        index05.setPrefWidth(80); index05.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index06.setPrefWidth(80); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);

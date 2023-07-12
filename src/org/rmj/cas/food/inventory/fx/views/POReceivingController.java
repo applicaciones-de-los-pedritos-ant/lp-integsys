@@ -267,19 +267,19 @@ public class POReceivingController implements Initializable {
         TableColumn index11 = new TableColumn("Freight");
         TableColumn index12 = new TableColumn("Total");
         
-        index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
+        index01.setPrefWidth(28); index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(90);
         index03.setPrefWidth(90);
-        index04.setPrefWidth(250);
-        index05.setPrefWidth(120);
-        index06.setPrefWidth(80);
-        index07.setPrefWidth(80);
-        index08.setPrefWidth(80); index08.setStyle("-fx-alignment: CENTER;");
-        index09.setPrefWidth(80); index09.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index10.setPrefWidth(80); index10.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index11.setPrefWidth(80); index11.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index12.setPrefWidth(80); index12.setStyle("-fx-alignment: CENTER-RIGHT;");
-       
+        index04.setPrefWidth(115);
+        index05.setPrefWidth(123); 
+        index06.setPrefWidth(65); index06.setStyle("-fx-alignment: CENTER;");
+//        index07.setPrefWidth(75); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index08.setPrefWidth(68); index08.setStyle("-fx-alignment: CENTER;");
+        index09.setPrefWidth(60); index09.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index10.setPrefWidth(75); index10.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index11.setPrefWidth(60); index11.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index12.setPrefWidth(75); index12.setStyle("-fx-alignment: CENTER-RIGHT;");
+
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
@@ -287,7 +287,7 @@ public class POReceivingController implements Initializable {
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
         index06.setSortable(false); index06.setResizable(false);
-        index07.setSortable(false); index07.setResizable(false);
+//        index07.setSortable(false); index07.setResizable(false);
         index08.setSortable(false); index08.setResizable(false);
         index09.setSortable(false); index09.setResizable(false);
         index10.setSortable(false); index10.setResizable(false);
@@ -301,7 +301,7 @@ public class POReceivingController implements Initializable {
         table.getColumns().add(index04);
         table.getColumns().add(index05);
         table.getColumns().add(index06);
-        table.getColumns().add(index07);
+//        table.getColumns().add(index07);
         table.getColumns().add(index08);
         table.getColumns().add(index09);
         table.getColumns().add(index10);
@@ -314,7 +314,7 @@ public class POReceivingController implements Initializable {
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
-        index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
+//        index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
         index08.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index08"));
         index09.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index09"));
         index10.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index10"));
