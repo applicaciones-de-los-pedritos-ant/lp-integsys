@@ -18,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -25,8 +26,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import static javafx.scene.input.KeyCode.DOWN;
 import static javafx.scene.input.KeyCode.ENTER;
 import static javafx.scene.input.KeyCode.F3;
+import static javafx.scene.input.KeyCode.UP;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -36,6 +40,8 @@ import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.MiscUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
+import org.rmj.appdriver.agentfx.callback.IMasterDetail;
+import org.rmj.appdriver.constants.TransactionStatus;
 import org.rmj.cas.inventory.base.InvWaste;
 
 public class InvWasteRegController implements Initializable {
@@ -61,108 +67,90 @@ public class InvWasteRegController implements Initializable {
     @FXML private TextField txtDetail06;
     @FXML private TableView tableData;
     @FXML private AnchorPane dataPane;
-   
+    @FXML private Label lblHeader;
+    @FXML private TextField txtDetail82;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new InvWaste(poGRider, poGRider.getBranchCode(), false);
         poTrans.setTranStat(1230);
         
-        btnVoid.setOnAction(this::cmdButton_Click);
-        btnPrint.setOnAction(this::cmdButton_Click);
         btnClose.setOnAction(this::cmdButton_Click);
         btnExit.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
-        
-        txtField50.focusedProperty().addListener(txtField_Focus);
-        txtField51.focusedProperty().addListener(txtField_Focus);
-        
+        btnPrint.setOnAction(this::cmdButton_Click);
+        btnVoid.setOnAction(this::cmdButton_Click);
+                
+        txtField01.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField02.setOnKeyPressed(this::txtField_KeyPressed);
         txtField50.setOnKeyPressed(this::txtField_KeyPressed);
         txtField51.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField03.setOnKeyPressed(this::txtFieldArea_KeyPressed);
+        
+        txtDetail03.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail04.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail05.setOnKeyPressed(this::txtDetail_KeyPressed); 
+        txtDetail06.setOnKeyPressed(this::txtDetail_KeyPressed); 
+        txtDetail80.setOnKeyPressed(this::txtDetail_KeyPressed);    
         
         pnEditMode = EditMode.UNKNOWN;    
         clearFields();
         
         initGrid();
         initLisView();
-        pbLoaded = true;  
+        
+        pbLoaded = true;
     }
-
+    
     private void initLisView(){
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(150); index02.setStyle("-fx-alignment: CENTER;");
-        index03.setPrefWidth(130); index03.setStyle("-fx-alignment: CENTER;");
+        index02.setPrefWidth(90); index02.setStyle("-fx-alignment: CENTER;");
+        index03.setPrefWidth(65); index03.setStyle("-fx-alignment: CENTER;");
+        index04.setPrefWidth(65); index04.setStyle("-fx-alignment: CENTER;");
+        index05.setPrefWidth(65); index05.setStyle("-fx-alignment: CENTER;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(true); index02.setResizable(false);
         index03.setSortable(false); index03.setResizable(false);
-       
+        index04.setSortable(false); index04.setResizable(false);
+        index05.setSortable(false); index05.setResizable(false);
+
         tableData.getColumns().clear();
         tableData.getColumns().add(index01);
         tableData.getColumns().add(index02);
         tableData.getColumns().add(index03);
+        tableData.getColumns().add(index04);
+        tableData.getColumns().add(index05);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index03"));
-        
-        tableData.setItems(dataDetail);
+        index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
+        index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
         
     }
-
-    @FXML
-    private void table_Clicked(MouseEvent event) {
-        pnRow = table.getSelectionModel().getSelectedIndex();
-        getRecordData(pnRow);
-        setDetailInfo(pnRow);
-    }
-    
-    private void getRecordData(int fnRow){
-        ResultSet loRS = null;
-        loRS = poTrans.getExpiration((String)poTrans.getDetail(fnRow, "sStockIDx"));
-        
-        try {
-                dataDetail.clear();
-                loRS.first();
-                    for( int rowCount = 0; rowCount <= MiscUtil.RecordCount(loRS) -1; rowCount++){
-                    dataDetail.add(new TableModel(String.valueOf(rowCount +1),
-                        String.valueOf(CommonUtils.xsDateMedium(loRS.getDate("dExpiryDt"))),
-                        String.valueOf(loRS.getDouble("nQtyOnHnd")),
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""     
-                    ));
-                    loRS.next();
-                }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-    
-    
     
     private void initGrid(){
-        
         TableColumn index01 = new TableColumn("No.");
-        TableColumn index02 = new TableColumn("Barcode.");
+        TableColumn index02 = new TableColumn("Barcode");
         TableColumn index03 = new TableColumn("Description");
-        TableColumn index04 = new TableColumn("Unit Cost");
-        TableColumn index05 = new TableColumn("Quantity");
+        TableColumn index04 = new TableColumn("Brand");
+        TableColumn index05 = new TableColumn("Cost");
+        TableColumn index06 = new TableColumn("Quantity");
         
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(140);
-        index03.setPrefWidth(177); 
-        index04.setPrefWidth(80); index04.setStyle("-fx-alignment: CENTER;");
-        index05.setPrefWidth(70); index05.setStyle("-fx-alignment: CENTER;");
+        index02.setPrefWidth(90);
+        index03.setPrefWidth(150); 
+        index04.setPrefWidth(150); 
+        index05.setPrefWidth(80); index05.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index06.setPrefWidth(80); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
         index03.setSortable(false); index03.setResizable(false);
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
+        index06.setSortable(false); index06.setResizable(false);
         
         table.getColumns().clear();        
         table.getColumns().add(index01);
@@ -170,12 +158,14 @@ public class InvWasteRegController implements Initializable {
         table.getColumns().add(index03);
         table.getColumns().add(index04);
         table.getColumns().add(index05);
+        table.getColumns().add(index06);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index03"));
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
+        index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
         
         /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {  
@@ -190,47 +180,85 @@ public class InvWasteRegController implements Initializable {
                         });
                     }
                 });
-        
         /*Set data source to table*/
         table.setItems(data);
     }
+
+    @FXML
+    private void table_Clicked(MouseEvent event) {
+        pnRow = table.getSelectionModel().getSelectedIndex();
+        tableData.setItems(getRecordData(pnRow));
+        if(!pbFound){
+            addDetailData(pnlRow);
+        }
+
+        setDetailInfo(pnRow);
+        txtDetail03.requestFocus();
+        txtDetail03.selectAll();
+    }
+    
+    private void addDetailData(int fnRow){
+        if (poTrans.getDetail(pnRow, "sStockIDx").equals("")) return;
+        
+        TableModel newData = new TableModel();
+        newData.setIndex01(String.valueOf(fnRow + 1));
+        newData.setIndex02(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
+        newData.setIndex03("0");
+        newData.setIndex04(String.valueOf(poTrans.getDetail(pnRow, "nQuantity")));
+        newData.setIndex05("");
+        newData.setIndex06("");
+        newData.setIndex07("");
+        newData.setIndex08("");
+        newData.setIndex09("");
+        newData.setIndex10("");
+        tableData.getItems().add(newData);
+        
+        index02.setSortType(TableColumn.SortType.ASCENDING);
+        tableData.getSortOrder().add(index02);
+        tableData.sort();
+        
+    }
     
     public void setGRider(GRider foGRider){this.poGRider = foGRider;}
-    private final String pxeModuleName = "InvWasteController";
+    private final String pxeModuleName = "InvWasteRegController";
     private static GRider poGRider;
     private InvWaste poTrans;
     
     TableColumn index01 = new TableColumn("No.");
     TableColumn index02 = new TableColumn("Expiration");
     TableColumn index03 = new TableColumn("OnHnd");
+    TableColumn index04 = new TableColumn("Out");
+    TableColumn index05 = new TableColumn("Rem");
     
-    private String psTransNox = "";
-    private String psdTransact = "";
+    private boolean pbFound;
+    private int pnlRow=0;
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
     
     private final String pxeDateFormat = "yyyy-MM-dd";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
+    private TableModel model;
     private ObservableList<TableModel> data = FXCollections.observableArrayList();
-    private ObservableList<TableModel> dataDetail =  FXCollections.observableArrayList();
     
     private int pnIndex = -1;
     private int pnRow = -1;
     private int pnOldRow = -1;
     
     private String psOldRec = "";
-    
-     private void cmdButton_Click(ActionEvent event) {
+    private String psTransNox = "";
+    private String psdTransact = "";
+
+    private void cmdButton_Click(ActionEvent event) {
         String lsButton = ((Button)event.getSource()).getId();
         
         switch (lsButton){
-                
+            
             case "btnClose":
-            case "btnExit": 
+            case "btnExit":
                 unloadForm();
                 return;
-               
+                
             case "btnPrint": 
                 if(!psOldRec.equals("")){
                     ShowMessageFX.Information(null, pxeModuleName, "This feature is coming soon!.");
@@ -245,41 +273,42 @@ public class InvWasteRegController implements Initializable {
 //                        return;
                 }else 
                     ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
-                break;
+                    break;
                 
             case "btnBrowse":
                 switch(pnIndex){
                     case 50: /*sTransNox*/
-                        if(poTrans.BrowseRecord(txtField50.getText(), true)==true){
+                        if(poTrans.BrowseRecord(txtField50.getText(), true) == true){
                             loadRecord(); 
                             pnEditMode = poTrans.getEditMode();
                             break;
                         }else
                             if(!txtField50.getText().equals(psTransNox)){
                                 clearFields();
+                                pnEditMode = EditMode.UNKNOWN;
                                 break;
                             }else txtField50.setText(psTransNox);
+                    
+                        return;
+                    case 51: /*dTransact*/
+                        if(poTrans.BrowseRecord(txtField51.getText() + "%", false) == true){
+                            loadRecord(); 
+                            pnEditMode = poTrans.getEditMode();
+                            break;
+                        }
                         
-                        return;                     
-                case 51: /*dTransact*/
-                    if(poTrans.BrowseRecord(txtField51.getText() + "%", false)== true){
-                        loadRecord(); 
-                        pnEditMode = poTrans.getEditMode();
-                        break;
-                    }
-                    
-                    if(!txtField51.getText().equals(psdTransact)){
-                        clearFields();
-                        break;
-                    }else txtField51.setText(psdTransact);                            
-                    
-                    return;
-                    
-                default:
-                    ShowMessageFX.Warning("No Entry", pxeModuleName, "Please have at least one keyword to browse!");
-                    txtField51.requestFocus();
+                        if(!txtField51.getText().equals(psdTransact)){
+                            clearFields();
+                            pnEditMode = EditMode.UNKNOWN;
+                            break;
+                        }else txtField51.setText(psdTransact);
+                        
+                        return;
+                    default:
+                        ShowMessageFX.Warning("No Entry", pxeModuleName, "Please have at least one keyword to browse!");
+                        txtField51.requestFocus();
                 }
-
+                
                 return;
             case "btnVoid":
                if (!psOldRec.equals("")){
@@ -304,18 +333,21 @@ public class InvWasteRegController implements Initializable {
                 return;
         }
     }
-     
+    
     private void clearFields(){
         txtField01.setText("");
         txtField02.setText("");
         txtField03.setText("");
         txtField50.setText("");
-        txtField51.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
+        //txtField51.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
         
+        pbFound = false;
+        pnlRow = 0;
         txtDetail03.setText("");
-        txtDetail04.setText("0");
-        txtDetail05.setText("");
         txtDetail80.setText("");
+        txtDetail82.setText("0");
+        txtDetail04.setText("0");
+        txtDetail05.setText("0.00");
         
         pnRow = -1;
         pnOldRow = -1;
@@ -324,14 +356,97 @@ public class InvWasteRegController implements Initializable {
         psOldRec = "";
         psTransNox = "";
         psdTransact = "";
+        tableData.setItems(loadEmptyData());
         data.clear();
+    }
+    
+     
+    private void txtField_KeyPressed(KeyEvent event){
+        TextField txtField = (TextField)event.getSource();
+        int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
+        String lsValue = txtField.getText();
+        if (event.getCode() == ENTER || event.getCode() == F3){
+            switch (lnIndex){
+                case 50: /*sTransNox*/
+                    if(event.getCode() == F3) lsValue = txtField.getText() + "%";
+                    if(poTrans.BrowseRecord(lsValue, true)==true){
+                            loadRecord();
+                            pnEditMode = poTrans.getEditMode();
+                            break;
+                        }else
+                            if(!txtField50.getText().equals(psTransNox)){
+                            clearFields();
+                            pnEditMode = EditMode.UNKNOWN;
+                            break;
+                            }else{
+                                txtField50.setText(psTransNox);
+                                     }
+                            return;
+                     
+                case 51: /*dTransact*/
+                    if(poTrans.BrowseRecord(lsValue, false)== true){
+                        loadRecord();
+                        pnEditMode = poTrans.getEditMode();
+                        break;
+                    }
+                    if(!txtField51.getText().equals(psdTransact)){
+                        clearFields();
+                        pnEditMode = EditMode.UNKNOWN;
+                        break;
+                    } else{
+                        txtField51.setText(psdTransact);
+                    }
+                    
+                    return;
+                }
+            }
+           
+        switch (event.getCode()){
+        case ENTER:
+        case DOWN:
+            CommonUtils.SetNextFocus(txtField);
+            break;
+        case UP:
+            CommonUtils.SetPreviousFocus(txtField);
+        }
+    }
+     
+    private void txtFieldArea_KeyPressed(KeyEvent event){
+        if (event.getCode() == ENTER || event.getCode() == DOWN){
+            event.consume();
+            CommonUtils.SetNextFocus((TextArea)event.getSource());
+        }else if (event.getCode() ==KeyCode.UP){
+        event.consume();
+            CommonUtils.SetPreviousFocus((TextArea)event.getSource());
+        }
+    }
+    
+    private void txtDetail_KeyPressed(KeyEvent event){
+        TextField txtDetail = (TextField) event.getSource();
+        int lnIndex = Integer.parseInt(txtDetail.getId().substring(9, 11));
+        String lsValue = txtDetail.getText();
+        
+        if (event.getCode() == F3){
+            switch (lnIndex){
+                
+        }
+        }
+        
+        switch (event.getCode()){
+        case ENTER:
+        case DOWN:
+            CommonUtils.SetNextFocus(txtDetail);
+            break;
+        case UP:
+            CommonUtils.SetPreviousFocus(txtDetail);
+        }
     }
     
     private void unloadForm(){
 //        VBox myBox = (VBox) VBoxForm.getParent();
 //        myBox.getChildren().clear();
-          dataPane.getChildren().clear();
-          dataPane.setStyle("-fx-border-color: transparent");
+        dataPane.getChildren().clear();
+        dataPane.setStyle("-fx-border-color: transparent");
     }
     
     private void loadRecord(){
@@ -339,35 +454,39 @@ public class InvWasteRegController implements Initializable {
         txtField50.setText((String) poTrans.getMaster("sTransNox"));
         psTransNox = txtField50.getText();
         txtField02.setText(CommonUtils.xsDateMedium((Date) poTrans.getMaster("dTransact")));
-       try{
-          txtField51.setText(CommonUtils.xsDateMedium(CommonUtils.toDate(poTrans.getMaster("dTransact").toString())));
-          psdTransact = CommonUtils.xsDateMedium(CommonUtils.toDate(poTrans.getMaster("dTransact").toString()));
+        
+        try{
+          txtField51.setText(CommonUtils.xsDateShort(CommonUtils.toDate(poTrans.getMaster("dTransact").toString())));
+          psdTransact = CommonUtils.xsDateShort(CommonUtils.toDate(poTrans.getMaster("dTransact").toString()));
         }catch(NullPointerException e){
             System.out.println(e);
         }
+        
         txtField03.setText((String) poTrans.getMaster("sRemarksx"));
         setTranStat((String) poTrans.getMaster("cTranStat"));
         
         pnRow = 0;
         pnOldRow = 0;
         loadDetail();
+        tableData.setItems(loadEmptyData());
         
         psOldRec = txtField01.getText();
     }
     
     private void loadDetail(){
         int lnCtr;
-        int lnRow = poTrans.ItemCount();
+//        int lnRow = poTrans.ItemCount();
+        pnlRow = poTrans.ItemCount();
         
         data.clear();
         /*ADD THE DETAIL*/
-        for(lnCtr = 0; lnCtr <= lnRow -1; lnCtr++){
+        for(lnCtr = 0; lnCtr <= pnlRow -1; lnCtr++){
             data.add(new TableModel(String.valueOf(lnCtr + 1), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sDescript"),
-                                    String.valueOf(poTrans.getDetail(lnCtr, "nInvCostx")),
+                                    (String) poTrans.getDetail(lnCtr, "sBrandNme"),
+                                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nInvCostx").toString()), "0.00"),
                                     String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
-                                    "",
                                     "",
                                     "",
                                     "",
@@ -376,8 +495,8 @@ public class InvWasteRegController implements Initializable {
     
         /*FOCUS ON FIRST ROW*/
         if (!data.isEmpty()){
-            table.getSelectionModel().select(lnRow -1);
-            table.getFocusModel().focus(lnRow -1);
+            table.getSelectionModel().select(pnlRow -1);
+            table.getFocusModel().focus(pnlRow -1);
             
             pnRow = table.getSelectionModel().getSelectedIndex();           
             
@@ -386,14 +505,12 @@ public class InvWasteRegController implements Initializable {
     }
     
     private void setDetailInfo(int fnRow){
-        int lnRow = table.getSelectionModel().getSelectedIndex();
-        
-        pnRow = lnRow;
-        
+        pnRow = fnRow;
         if (pnRow >= 0){
             txtDetail03.setText((String) poTrans.getDetailOthers(pnRow, "sBarCodex"));
             txtDetail80.setText((String) poTrans.getDetailOthers(pnRow, "sDescript"));
-            txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, "nInvCostx")));
+            txtDetail82.setText(String.valueOf(poTrans.getDetailOthers(pnRow, "xQtyOnHnd")));
+            txtDetail05.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, "nInvCostx").toString()), "0.00"));
             txtDetail04.setText(String.valueOf(poTrans.getDetail(pnRow, "nQuantity")));
             txtDetail06.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
         } else{
@@ -401,6 +518,7 @@ public class InvWasteRegController implements Initializable {
             txtDetail04.setText("0");
             txtDetail05.setText("0.00");
             txtDetail80.setText("");
+            txtDetail82.setText("0");
             txtDetail06.setText("");
         }
     }
@@ -422,94 +540,102 @@ public class InvWasteRegController implements Initializable {
         }    
     }
     
-    private void txtField_KeyPressed(KeyEvent event){
-        TextField txtField = (TextField)event.getSource();
-        int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
-        String lsValue = txtField.getText();
-        if (event.getCode() == ENTER || event.getCode() == F3){
-            switch (lnIndex){
-                 case 50: /*sTransNox*/
-                    if(event.getCode()== F3) lsValue = txtField.getText() + "%";
-                        if(poTrans.BrowseRecord(lsValue, true)==true){
-                        loadRecord(); 
-                        pnEditMode = poTrans.getEditMode();   
-                    }
-                    
-                    if(!txtField50.getText().equals(psTransNox)){
-                        clearFields();
-                        break;
-                        }else{
-                            txtField50.setText(psTransNox);
-                                 }
-                    return;
-                     
-                case 51: /*dTransact*/
-                    if(poTrans.BrowseRecord(lsValue, false)== true){
-                        loadRecord(); 
-                        pnEditMode = poTrans.getEditMode();
-                    }
-                    if(!txtField51.getText().equals(psdTransact)){
-                        clearFields();
-                        break;
-                        }else{
-                            txtField51.setText(psdTransact);
-                              }
-                    return;
-            }
-        } 
-        
-        switch (event.getCode()){
-        case ENTER:
-        case DOWN:
-            CommonUtils.SetNextFocus(txtField);
-            break;
-        case UP:
-            CommonUtils.SetPreviousFocus(txtField);
+    IMasterDetail poCallBack = new IMasterDetail() {
+        @Override
+        public void MasterRetreive(int fnIndex) {
+            getMaster(fnIndex);
         }
-    }
-    
-    final ChangeListener<? super Boolean> txtField_Focus = (o,ov,nv)->{
-        if (!pbLoaded) return;
-        
-        TextField txtField = (TextField)((ReadOnlyBooleanPropertyBase)o).getBean();
-        int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
-        String lsValue = txtField.getText();
-        
-        if (lsValue == null) return;
-            
-        if(!nv){ /*Lost Focus*/           
-            switch (lnIndex){
-                case 50: /*sTransNox*/
-                    if(lsValue.equals("") || lsValue.equals("%")){
-                       txtField.setText("");
-                    }else
-                    txtField.setText(psTransNox); break;
-                case 51: /*sSupplierId*/
-                    if(CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                         txtField.setText(CommonUtils.xsDateLong(CommonUtils.toDate(txtField.getText())));
-                    }else{
-                        txtField.setText(CommonUtils.xsDateLong(CommonUtils.toDate(pxeDateDefault)));
+
+        @Override
+        public void DetailRetreive(int fnIndex) {
+            switch(fnIndex){
+                case 4:
+                    txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow,"nQuantity")));
+                    if (!poTrans.getDetail(poTrans.ItemCount()- 1, "sStockIDx").toString().isEmpty() && 
+                            Double.valueOf(poTrans.getDetail(poTrans.ItemCount()- 1, fnIndex).toString()) > 0){
+                        poTrans.addDetail();
+                        pnRow = poTrans.ItemCount()-1;
+
+                        //set the previous order numeber to the new ones.
+                        //poTrans.setDetail(pnRow, "sOrderNox", psOrderNox);
+                    } 
+                    
+                    loadDetail();
+                    
+                     if (!txtDetail03.getText().isEmpty()){
+                        txtDetail04.requestFocus();
+                        txtDetail04.selectAll();
+                    } else{
+                        txtDetail03.requestFocus();
+                        txtDetail03.selectAll();
                     }
-                   break;
-                default:
-                    ShowMessageFX.Warning(null, pxeModuleName, "Text field with name " + txtField.getId() + " not registered.");
             }
-            pnIndex = lnIndex;   
-        }else{
-            switch (lnIndex){
-                case 51:
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
-                    txtField.selectAll();
-                    break;
-                default:
-            }
-            pnIndex = lnIndex;
-            txtField.selectAll();
         }
     };
     
+    private void getMaster(int fnIndex){
+        switch(fnIndex){
+            case 2:
+                /*get the value from the class*/
+                txtField02.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster("dTransact")));
+                break;
+                
+                
+        }
+    }
+    
+    private ObservableList getRecordData(int fnRow){
+        ObservableList dataDetail = FXCollections.observableArrayList();
+        ResultSet loRS = null;
+        loRS = poTrans.getExpiration((String)poTrans.getDetail(fnRow, "sStockIDx"));
+        double lnQuantity = 0;
+        pnlRow = 0;
+        pbFound = false;
+        
+        try {
+                dataDetail.clear();
+                loRS.first();
+                    for( int rowCount = 0; rowCount <= MiscUtil.RecordCount(loRS) -1; rowCount++){
+                        if (CommonUtils.xsDateShort(loRS.getDate("dExpiryDt")).equals(CommonUtils.xsDateShort((Date) poTrans.getDetail(fnRow, "dExpiryDt")))){
+                            if(!pbFound) pbFound = true;
+                            lnQuantity = (double)poTrans.getDetail(fnRow, "nQuantity");
+                        }else{
+                            lnQuantity = 0;
+                        }
+                    dataDetail.add(new TableModel(String.valueOf(rowCount +1),
+                        String.valueOf(CommonUtils.xsDateMedium(loRS.getDate("dExpiryDt"))),
+                        String.valueOf(loRS.getDouble("nQtyOnHnd")),
+                        String.valueOf(lnQuantity),
+                        String.valueOf((double)loRS.getDouble("nQtyOnHnd") - (double) lnQuantity),
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""     
+                    ));
+                    pnlRow++;
+                    loRS.next();
+                }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return dataDetail;
+    }
+    
+    private ObservableList loadEmptyData(){
+        ObservableList dataDetail = FXCollections.observableArrayList();
+            dataDetail.clear();
+            dataDetail.add(new TableModel(String.valueOf(1),
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""     
+            ));
+        return dataDetail;
+    }
 }

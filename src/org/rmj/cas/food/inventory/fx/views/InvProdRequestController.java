@@ -59,7 +59,7 @@ import org.rmj.appdriver.constants.UserRight;
 import org.rmj.cas.inventory.production.base.ProductionRequest;
 
 public class InvProdRequestController implements Initializable {
-       @FXML
+    @FXML
     private AnchorPane dataPane,anchorField;
 
     @FXML
@@ -266,15 +266,6 @@ public class InvProdRequestController implements Initializable {
         }
     }
     
-     private void txtDetailArea_KeyPressed(KeyEvent event){
-        if (event.getCode() == ENTER || event.getCode() == KeyCode.DOWN){
-            event.consume();
-            CommonUtils.SetNextFocus((TextArea)event.getSource());
-        }else if (event.getCode() ==KeyCode.UP){
-        event.consume();
-            CommonUtils.SetPreviousFocus((TextArea)event.getSource());
-        }
-    }
     
      private void txtDetail_KeyPressed(KeyEvent event){
         TextField txtDetail = (TextField) event.getSource();

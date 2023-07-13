@@ -631,7 +631,7 @@ public class InvAdjustmentController implements Initializable {
         
         pnRow = -1;
         pnOldRow = -1;
-        pnIndex = 51;
+        pnIndex = 50;
         setTranStat("-1");
         psOldRec = "";
         psTransNox = "";
