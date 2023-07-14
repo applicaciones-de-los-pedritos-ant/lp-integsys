@@ -109,7 +109,8 @@ public class InvStockRequestController implements Initializable {
     private InvRequest poTrans;
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM-dd-yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
     private TableModel model;
@@ -268,20 +269,20 @@ public class InvStockRequestController implements Initializable {
     
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
-        TableColumn index02 = new TableColumn("Barcode");
+        TableColumn index02 = new TableColumn("Bar Code");
         TableColumn index03 = new TableColumn("Description");
         TableColumn index04 = new TableColumn("Brand");
-        TableColumn index05 = new TableColumn("M.");
+        TableColumn index05 = new TableColumn("Measure");
         TableColumn index06 = new TableColumn("QOH");
         TableColumn index07 = new TableColumn("Qty");
         
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(220);
+        index02.setPrefWidth(90);
         index03.setPrefWidth(260);
-        index04.setPrefWidth(160);
-        index05.setPrefWidth(160);
-        index06.setPrefWidth(65); index05.setStyle("-fx-alignment: CENTER;");
-        index07.setPrefWidth(40); index06.setStyle("-fx-alignment: CENTER;");
+        index04.setPrefWidth(240);
+        index05.setPrefWidth(75); index05.setStyle("-fx-alignment: CENTER;");
+        index06.setPrefWidth(65); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index07.setPrefWidth(40); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
@@ -753,9 +754,9 @@ public class InvStockRequestController implements Initializable {
                     break;
                 case 2: /*dTransact*/
                   if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                        poTrans.setMaster("dTransact", CommonUtils.toDate(txtField.getText()));
+                        poTrans.setMaster("dTransact", SQLUtil.toDate(txtField.getText(), pxeDateFormat));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1991)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
                     return;
@@ -779,11 +780,7 @@ public class InvStockRequestController implements Initializable {
         } else{
             switch (lnIndex){
                 case 2: /*dTransact*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtField.setText(SQLUtil.dateFormat(poTrans.getMaster("dTransact"), pxeDateFormat));
                     txtField.selectAll();
                     break;
                 default:

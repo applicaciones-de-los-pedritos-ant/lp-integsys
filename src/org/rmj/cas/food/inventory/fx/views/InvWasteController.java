@@ -36,6 +36,7 @@ import org.rmj.appdriver.constants.EditMode;
 import org.rmj.appdriver.constants.TransactionStatus;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.MiscUtil;
+import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.inventory.base.InvWaste;
@@ -152,18 +153,18 @@ public class InvWasteController implements Initializable {
     
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
-        TableColumn index02 = new TableColumn("Barcode.");
+        TableColumn index02 = new TableColumn("Barcode");
         TableColumn index03 = new TableColumn("Description");
         TableColumn index04 = new TableColumn("Brand");
         TableColumn index05 = new TableColumn("Cost");
         TableColumn index06 = new TableColumn("Quantity");
         
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(140);
-        index03.setPrefWidth(177); 
+        index02.setPrefWidth(90);
+        index03.setPrefWidth(150); 
         index04.setPrefWidth(150); 
-        index05.setPrefWidth(80); index05.setStyle("-fx-alignment: CENTER;");
-        index06.setPrefWidth(70); index06.setStyle("-fx-alignment: CENTER;");
+        index05.setPrefWidth(80); index05.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index06.setPrefWidth(80); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
@@ -255,7 +256,8 @@ public class InvWasteController implements Initializable {
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
     
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM-dd-yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
     private TableModel model;
@@ -282,9 +284,9 @@ public class InvWasteController implements Initializable {
             switch (lnIndex){
                 case 2: /*dTransact*/
                      if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                        poTrans.setMaster("dTransact", CommonUtils.toDate(txtField.getText()));
+                        poTrans.setMaster("dTransact", SQLUtil.toDate(txtField.getText(), pxeDateFormat));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1991)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
                     return;
@@ -296,7 +298,7 @@ public class InvWasteController implements Initializable {
                     break;   
                 case 51:
                     if(CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                         txtField.setText(CommonUtils.xsDateLong(CommonUtils.toDate(txtField.getText())));
+                         txtField.setText(SQLUtil.dateFormat(SQLUtil.toDate(txtField.getText(), pxeDateFormat),SQLUtil.FORMAT_LONG_DATE));
                     }else{
                         txtField.setText(CommonUtils.xsDateLong(CommonUtils.toDate(pxeDateDefault)));
                     }
@@ -311,20 +313,11 @@ public class InvWasteController implements Initializable {
         } else{
             switch (lnIndex){
                 case 2: /*dTransact*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtField.setText(SQLUtil.dateFormat(poTrans.getMaster("dTransact"), pxeDateFormat));
                     txtField.selectAll();
                     break;
                 case 51:
-                    /*try{
-                        if(!CommonUtils.isDate(txtField.getText(), pxeDateFormat))
-                            txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }*/
+                    txtField.setText(SQLUtil.dateFormat(SQLUtil.toDate(txtField.getText(), SQLUtil.FORMAT_LONG_DATE),pxeDateFormat));
                     txtField.selectAll();
                     break;
                 default:
@@ -362,9 +355,9 @@ public class InvWasteController implements Initializable {
                     break;
                 case 6:
                     if (CommonUtils.isDate(txtDetail.getText(), pxeDateFormat)){
-                        poTrans.setDetail(pnRow, "dExpiryDt", CommonUtils.toDate(txtDetail.getText()));
+                        poTrans.setDetail(pnRow, "dExpiryDt", SQLUtil.toDate(txtDetail.getText(), pxeDateFormat));
                     }else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1991)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setDetail(pnRow, "dExpiryDt",CommonUtils.toDate(pxeDateDefault));
                     }
                     txtDetail.setText(CommonUtils.xsDateMedium((Date)poTrans.getDetail(pnRow, "dExpiryDt")));
@@ -376,11 +369,7 @@ public class InvWasteController implements Initializable {
         } else{
             switch (lnIndex){
                 case 6: /*dExpiryDt*/
-                    try{
-                        txtDetail.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtDetail.setText(SQLUtil.dateFormat(poTrans.getMaster("dTransact"), pxeDateFormat));
                     txtDetail.selectAll();
                     break;
                 default:
@@ -576,6 +565,7 @@ public class InvWasteController implements Initializable {
         pbFound = false;
         pnlRow = 0;
         txtDetail03.setText("");
+        txtDetail06.setText("");
         txtDetail80.setText("");
         txtDetail82.setText("0");
         txtDetail04.setText("0");
@@ -617,6 +607,7 @@ public class InvWasteController implements Initializable {
         txtDetail03.setDisable(!lbShow);
         txtDetail04.setDisable(!lbShow);
         txtDetail05.setDisable(!lbShow);
+        txtDetail06.setDisable(!lbShow);
         txtDetail80.setDisable(!lbShow);
         
         if (lbShow)

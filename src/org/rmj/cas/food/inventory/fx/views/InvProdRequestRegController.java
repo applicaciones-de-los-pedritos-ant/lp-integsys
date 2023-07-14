@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ReadOnlyBooleanPropertyBase;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -54,6 +55,8 @@ import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
+import org.rmj.appdriver.agentfx.ui.showFXDialog;
+import org.rmj.appdriver.constants.UserRight;
 import org.rmj.cas.inventory.production.base.ProductionRequest;
 
 public class InvProdRequestRegController implements Initializable {
@@ -69,18 +72,19 @@ public class InvProdRequestRegController implements Initializable {
     @FXML
     private TextArea txtField07;
     @FXML
-    private TextField txtField01, txtField02, txtDetail01, txtDetail02, txtDetail05, txtDetail07, txtField50;
+    private TextField txtField01, txtField02, txtDetail01, txtDetail02,
+            txtDetail05, txtDetail07, txtField50;
     @FXML
     private TableView table;
     @FXML
-    private TableColumn index01,index02,index03,index04,index05;
+    private TableColumn index01,index02,index03,index04,index05,index06;
     @FXML
     private ImageView imgTranStat;
     @FXML
     private Button btnClose,btnPrint,btnBrowse;
-
     
-    private final String pxeModuleName = "InvProdRequestController";
+
+    private final String pxeModuleName = "InvProdRequestRegController";
     protected Date pdExpiryDt = null;
     protected Boolean pbEdited = false;
     private static GRider poGRider;
@@ -107,15 +111,15 @@ public class InvProdRequestRegController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new ProductionRequest(poGRider, poGRider.getBranchCode(), false);
-        poTrans.setTranStat(1234);
+        poTrans.setTranStat(1230);
         
-        
+       
         btnPrint.setOnAction(this::cmdButton_Click);
         btnClose.setOnAction(this::cmdButton_Click);
         btnExit.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
+       
             
-                        
         /*Add keypress event for field with search*/
         txtField01.setOnKeyPressed(this::txtField_KeyPressed);
         txtField02.setOnKeyPressed(this::txtField_KeyPressed);
@@ -134,7 +138,6 @@ public class InvProdRequestRegController implements Initializable {
         pnEditMode = EditMode.UNKNOWN;
         clearFields();
         initGrid();
-        txtField50.requestFocus();
         
         pbLoaded = true;
     }
@@ -143,7 +146,7 @@ public class InvProdRequestRegController implements Initializable {
         this.poGRider = foGRider;
     }
     
-    
+        
     private void clearFields(){
         txtField01.setText("");
         txtField02.setText("");
@@ -176,6 +179,7 @@ public class InvProdRequestRegController implements Initializable {
             index03.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
             index04.setStyle("-fx-alignment: CENTER-RIGHT;-fx-padding: 0 5 0 0;");
             index05.setStyle("-fx-alignment: CENTER-RIGHT;-fx-padding: 0 5 0 0;");
+            index06.setStyle("-fx-alignment: CENTER;-fx-padding: 0 0 0 0;");
 
 
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
@@ -183,6 +187,7 @@ public class InvProdRequestRegController implements Initializable {
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index03"));
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
+        index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
 
         /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {  
@@ -219,66 +224,17 @@ public class InvProdRequestRegController implements Initializable {
         }
     }
     
-     private void txtDetailArea_KeyPressed(KeyEvent event){
-        if (event.getCode() == ENTER || event.getCode() == KeyCode.DOWN){
-            event.consume();
-            CommonUtils.SetNextFocus((TextArea)event.getSource());
-        }else if (event.getCode() ==KeyCode.UP){
-        event.consume();
-            CommonUtils.SetPreviousFocus((TextArea)event.getSource());
-        }
-    }
     
      private void txtDetail_KeyPressed(KeyEvent event){
         TextField txtDetail = (TextField) event.getSource();
         int lnIndex = Integer.parseInt(txtDetail.getId().substring(9, 11));
         String lsValue = txtDetail.getText();
-        try {
+        
         if (event.getCode() == F3){
             switch (lnIndex){
-                case 1: /*Barcode Search*/       
-                    if (poTrans.SearchDetail(pnRow ,lnIndex,  "%" + lsValue, false)){                      
-                        txtDetail01.setText(poTrans.getDetail(pnRow, 5).toString());
-                        txtDetail02.setText(poTrans.getDetail(pnRow, 7).toString());
-                        txtDetail05.setText(poTrans.getDetail(pnRow, 6).toString());
-                        txtDetail07.setText("0");
-                    } else {
-                        txtDetail01.setText(""); 
-                        txtDetail02.setText("");
-                        txtDetail05.setText("0");
-                        txtDetail07.setText("0");
-                    }
-                    
-                    if (txtDetail01.getText().isEmpty()){
-                        txtDetail02.requestFocus();
-                        txtDetail02.selectAll();
-                    }
-                    break;
-                case 2: /*Description Search*/                   
-                    if (poTrans.SearchDetail(pnRow,lnIndex, lsValue, false)){
-                        txtDetail01.setText(poTrans.getDetail(pnRow, 5).toString());
-                        txtDetail02.setText(poTrans.getDetail(pnRow, 7).toString());
-                        txtDetail05.setText(poTrans.getDetail(pnRow, 6).toString());
-                        txtDetail07.setText("0");
-                    } else {
-                        txtDetail01.setText(""); 
-                        txtDetail02.setText("");
-                        txtDetail05.setText("0");
-                        txtDetail07.setText("0");
-                    }
-                    
-                    if (!txtDetail01.getText().isEmpty()){
-                        txtDetail07.requestFocus();
-                        txtDetail07.selectAll();
-                    } else{
-                        txtDetail02.requestFocus();
-                        txtDetail02.selectAll();
-                    }
-                    
-                    break;
-              
+                
             }
-            loadDetail();  
+            
         }
         
         switch (event.getCode()){
@@ -289,9 +245,7 @@ public class InvProdRequestRegController implements Initializable {
         case UP:
             CommonUtils.SetPreviousFocus(txtDetail);
         }
-    }   catch (SQLException ex) {
-            Logger.getLogger(InvProdRequestController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
      }
     
     private void txtField_KeyPressed(KeyEvent event){
@@ -332,8 +286,7 @@ public class InvProdRequestRegController implements Initializable {
         String lsButton = ((Button)event.getSource()).getId();
         try {
         switch (lsButton){
-           
-            case "btnPrint": 
+                        case "btnPrint": 
                 if (!psOldRec.equals("")){
                     if(poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_CANCELLED)){
                         ShowMessageFX.Warning("Trasaction may be CANCELLED.", pxeModuleName, "Can't print transactions!!!");
@@ -345,20 +298,17 @@ public class InvProdRequestRegController implements Initializable {
                             clearFields();
                             initGrid();
                             pnEditMode = EditMode.UNKNOWN;
-                            txtField50.requestFocus();
-                    }
+                            }
                 } else ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
                 
                 break;
             case "btnClose":
                 unloadForm();
                 return;
-            
             case "btnExit":
                 unloadForm();
                 return;
                 
-            
             case "btnBrowse":
                 if(poTrans.SearchRecord("%" + txtField50.getText(), true)==true){
                     loadRecord(); 
@@ -375,9 +325,8 @@ public class InvProdRequestRegController implements Initializable {
                 return;
         }
         
-        txtField50.requestFocus();
     }catch (SQLException ex) {
-            Logger.getLogger(InvProdRequestController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InvProdRequestRegController.class.getName()).log(Level.SEVERE, null, ex);
                 }
     
         }
@@ -399,7 +348,7 @@ public class InvProdRequestRegController implements Initializable {
         setTranStat((String) poTrans.getMaster("cTranStat"));
         psOldRec = txtField01.getText();
     } catch (SQLException ex) {
-            Logger.getLogger(InvProdRequestController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InvProdRequestRegController.class.getName()).log(Level.SEVERE, null, ex);
         }
 }
     
@@ -434,11 +383,12 @@ public class InvProdRequestRegController implements Initializable {
                                         (String) poTrans.getDetail(lnCtr, 7), 
                                         CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, 6).toString()), "0.00"),
                                         CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, 3).toString()), "0.00"),
-                                        "",
+                                        (String) poTrans.getDetailI(lnCtr, "xBrandNme"),
                                         "",
                                         "",
                                         "",
                                         ""));
+                System.out.println((String) poTrans.getDetailI(lnCtr, "xBrandNme"));
             }
              initGrid();
             /*FOCUS ON FIRST ROW*/
@@ -450,7 +400,7 @@ public class InvProdRequestRegController implements Initializable {
                 setDetailInfo(pnRow);
             }
         }   catch (SQLException ex) {
-            Logger.getLogger(InvProdRequestController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InvProdRequestRegController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -468,7 +418,7 @@ public class InvProdRequestRegController implements Initializable {
             txtDetail07.setText("0.00");
         }
     }   catch (SQLException ex) {
-            Logger.getLogger(InvProdRequestController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InvProdRequestRegController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -502,10 +452,10 @@ public class InvProdRequestRegController implements Initializable {
         Map<String, Object> params = new HashMap<>();
         params.put("sCompnyNm", "Los Pedritos");  
         params.put("sBranchNm", poGRider.getBranchName());
-//        params.put("sDestinat", lsSQL);
-        
         params.put("sAddressx", poGRider.getAddress());
         params.put("sReportNm", "Inventory Product Request");
+//        params.put("sDestinat", lsSQL);
+        
         params.put("sTransNox", poTrans.getMaster("sTransNox").toString().substring(1));
         params.put("sReportDt", CommonUtils.xsDateMedium((Date)poTrans.getMaster("dTransact")));
         params.put("sPrintdBy", System.getProperty("user.name"));
@@ -521,7 +471,7 @@ public class InvProdRequestRegController implements Initializable {
         } catch (JRException | UnsupportedEncodingException  ex) {
             Logger.getLogger(InvTransferController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(InvProdRequestController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InvProdRequestRegController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return true;
@@ -563,7 +513,7 @@ public class InvProdRequestRegController implements Initializable {
 
         }
     }   catch (SQLException ex) {
-            Logger.getLogger(InvProdRequestController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InvProdRequestRegController.class.getName()).log(Level.SEVERE, null, ex);
         }
 }
 }

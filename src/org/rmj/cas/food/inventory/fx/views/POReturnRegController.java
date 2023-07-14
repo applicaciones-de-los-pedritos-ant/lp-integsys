@@ -2,6 +2,7 @@ package org.rmj.cas.food.inventory.fx.views;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.net.URL;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -22,8 +23,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import static javafx.scene.input.KeyCode.DOWN;
 import static javafx.scene.input.KeyCode.ENTER;
 import static javafx.scene.input.KeyCode.F3;
+import static javafx.scene.input.KeyCode.UP;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -34,6 +37,7 @@ import org.rmj.appdriver.constants.TransactionStatus;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
+import org.rmj.appdriver.agentfx.callback.IMasterDetail;
 import org.rmj.cas.inventory.base.Inventory;
 import org.rmj.lp.parameter.agent.XMBranch;
 import org.rmj.lp.parameter.agent.XMDepartment;
@@ -75,30 +79,47 @@ public class POReturnRegController implements Initializable {
     @FXML private TextField txtField51;
     @FXML private TextField txtDetail08;
     @FXML private AnchorPane dataPane;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        /*Initialize class*/
         poTrans = new XMPOReturn(poGRider, poGRider.getBranchCode(), false);
         poTrans.setTranStat(1230);
+         
+        txtField50.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField51.setOnKeyPressed(this::txtField_KeyPressed);
+                
+        /*Set action event handler for the buttons*/
         
         btnClose.setOnAction(this::cmdButton_Click);
         btnExit.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
         btnVoid.setOnAction(this::cmdButton_Click);
         btnPrint.setOnAction(this::cmdButton_Click);
+                       
+        /*Add keypress event for field with search*/
+        txtField03.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField05.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField07.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField08.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField09.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField10.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField11.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField13.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField16.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField12.setOnKeyPressed(this::txtFieldArea_KeyPressed);
         
-        txtField50.focusedProperty().addListener(txtField_Focus);
-        txtField51.focusedProperty().addListener(txtField_Focus);
-        
-        txtField50.setOnKeyPressed(this::txtField_KeyPressed);
-        txtField51.setOnKeyPressed(this::txtField_KeyPressed);
-              
+        txtDetail03.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail05.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail06.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail07.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail08.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail80.setOnKeyPressed(this::txtDetail_KeyPressed);
+
         pnEditMode = EditMode.UNKNOWN;
         
         clearFields();
         initGrid();
-        
         pbLoaded = true;
     }    
 
@@ -110,61 +131,6 @@ public class POReturnRegController implements Initializable {
         txtDetail03.requestFocus();
         txtDetail03.selectAll();
     }
-    
-    private void loadDetail(){
-        int lnCtr;
-        int lnRow = poTrans.getDetailCount();
-        
-        data.clear();
-        /*ADD THE DETAIL*/
-        
-        Inventory loInventory;
-        for(lnCtr = 0; lnCtr <= lnRow -1; lnCtr++){
-            if (!"".equals((String) poTrans.getDetail(lnCtr, "sStockIDx"))) {
-                loInventory = poTrans.GetInventory((String) poTrans.getDetail(lnCtr, "sStockIDx"), true, false);
-                psBarCodex = (String) loInventory.getMaster("sBarCodex");
-                psDescript = (String) loInventory.getMaster("sDescript");
-                
-                data.add(new TableModel(String.valueOf(lnCtr + 1), 
-                                    psBarCodex, 
-                                    psDescript, 
-                                    cUnitType.get(Integer.parseInt((String) poTrans.getDetail(lnCtr, "cUnitType"))),
-                                    String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
-                                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()), "#,##0.00"),
-                                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
-                                    CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
-                                                            * Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()))
-                                                            + Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
-                                    "",
-                                    ""));
-            } else {
-                data.add(new TableModel(String.valueOf(lnCtr + 1), 
-                                    "", 
-                                    "", 
-                                    "",
-                                    "0",
-                                    "0.00",
-                                    "0.00",
-                                    "0.00",
-                                    "",
-                                    ""));
-            }
-            
-        }
-                
-        /*FOCUS ON FIRST ROW*/
-        if (!data.isEmpty()){
-            table.getSelectionModel().select(pnRow);
-            table.getFocusModel().focus(pnRow);
-            
-            pnRow = table.getSelectionModel().getSelectedIndex();           
-            setDetailInfo();
-        }
-        
-        Label06.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(6).toString()) + Double.valueOf(poTrans.getMaster(8).toString()), "#,##0.00"));
-        txtField08.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(8).toString()), "#,##0.00"));
-    }    
-    
     
     private void setDetailInfo(){
         if (pnRow < 0){ return;}
@@ -192,25 +158,44 @@ public class POReturnRegController implements Initializable {
     }
     
     
+    private void setTranStat(String fsValue){
+        switch (fsValue){
+            case "0":
+                imgTranStat.setImage(new Image("org/rmj/cas/food/inventory/fx/images/open.png")); break;
+            case "1":
+                imgTranStat.setImage(new Image("org/rmj/cas/food/inventory/fx/images/closed.png")); break;
+            case "2":
+                imgTranStat.setImage(new Image("org/rmj/cas/food/inventory/fx/images/posted.png")); break;
+            case "3":
+                imgTranStat.setImage(new Image("org/rmj/cas/food/inventory/fx/images/cancelled.png")); break;
+            case "4":
+                imgTranStat.setImage(new Image("org/rmj/cas/food/inventory/fx/images/void.png")); break;
+            default:
+                imgTranStat.setImage(new Image("org/rmj/cas/food/inventory/fx/images/unknown.png"));
+        }    
+    }
+    
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
         TableColumn index02 = new TableColumn("Bar Code");
-        TableColumn index03 = new TableColumn("Description");
-        TableColumn index04 = new TableColumn("Unit Type");
-        TableColumn index05 = new TableColumn("Qty");
-        TableColumn index06 = new TableColumn("Unit Price");
-        TableColumn index07 = new TableColumn("Freight");
-        TableColumn index08 = new TableColumn("Total");
+        TableColumn index03 = new TableColumn("Brand");
+        TableColumn index04 = new TableColumn("Description");
+        TableColumn index05 = new TableColumn("Unit Type");
+        TableColumn index06 = new TableColumn("Qty");
+        TableColumn index07 = new TableColumn("Unit Price");
+        TableColumn index08 = new TableColumn("Freight");
+        TableColumn index09 = new TableColumn("Total");
         
         index01.setPrefWidth(31);
-        index02.setPrefWidth(110);
-        index03.setPrefWidth(230);
-        index04.setPrefWidth(100);
-        index05.setPrefWidth(41); index05.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index06.setPrefWidth(100); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index07.setPrefWidth(100); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index08.setPrefWidth(100); index08.setStyle("-fx-alignment: CENTER-RIGHT;");
-        
+        index02.setPrefWidth(100);
+        index03.setPrefWidth(150);
+        index04.setPrefWidth(230);
+        index05.setPrefWidth(68); index05.setStyle("-fx-alignment: CENTER;");
+        index06.setPrefWidth(60); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index07.setPrefWidth(75); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index08.setPrefWidth(60); index08.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index09.setPrefWidth(75); index09.setStyle("-fx-alignment: CENTER-RIGHT;");
+
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
         index03.setSortable(false); index03.setResizable(false);
@@ -219,6 +204,7 @@ public class POReturnRegController implements Initializable {
         index06.setSortable(false); index06.setResizable(false);
         index07.setSortable(false); index07.setResizable(false);
         index08.setSortable(false); index08.setResizable(false);
+        index09.setSortable(false); index09.setResizable(false);
 
         table.getColumns().clear();        
         table.getColumns().add(index01);
@@ -229,6 +215,7 @@ public class POReturnRegController implements Initializable {
         table.getColumns().add(index06);
         table.getColumns().add(index07);
         table.getColumns().add(index08);
+        table.getColumns().add(index09);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
@@ -238,6 +225,7 @@ public class POReturnRegController implements Initializable {
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
         index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
         index08.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index08"));
+        index09.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index09"));
 
         /*Set data source to table*/
         table.setItems(data);
@@ -246,12 +234,8 @@ public class POReturnRegController implements Initializable {
     private void cmdButton_Click(ActionEvent event) {
         String lsButton = ((Button)event.getSource()).getId();
         switch (lsButton){
+        
             
-            case "btnClose":
-            case "btnExit": 
-                unloadForm();
-                return;
-               
             case "btnPrint":
                 if(!psOldRec.equals("")){
                     if(ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")==true){
@@ -275,7 +259,12 @@ public class POReturnRegController implements Initializable {
                 } else {
                     clearFields();
                     pnEditMode = EditMode.UNKNOWN;
-                }
+                }                        
+                return;
+            
+            case "btnClose":
+            case "btnExit": 
+                unloadForm();
                 return;
             case "btnVoid":
                if (!psOldRec.equals("")){
@@ -292,7 +281,7 @@ public class POReturnRegController implements Initializable {
                         break;
                     }else
                         return;
-                    
+                
                 } else ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to cancel!");
                 break;
                 
@@ -300,6 +289,7 @@ public class POReturnRegController implements Initializable {
                 ShowMessageFX.Warning(null, pxeModuleName, "Button with name " + lsButton + " not registered.");
                 return;
         }
+        
     }
     
     private void loadRecord(){
@@ -376,11 +366,132 @@ public class POReturnRegController implements Initializable {
     }
     
     private void unloadForm(){
-//        VBox myBox = (VBox) VBoxForm.getParent();
-//        myBox.getChildren().clear();
         dataPane.getChildren().clear();
         dataPane.setStyle("-fx-border-color: transparent");
     }
+    
+    private void txtField_KeyPressed(KeyEvent event){
+        TextField txtField = (TextField)event.getSource();
+        int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
+        
+        switch (event.getCode()){
+        case F3:
+            switch (lnIndex){
+                case 50: /*Refer No*/
+                    if(poTrans.BrowseRecord(txtField.getText(), true) == true){
+                        loadRecord(); 
+                        pnEditMode = poTrans.getEditMode();
+                    } else {
+                        clearFields();
+                        pnEditMode = EditMode.UNKNOWN;
+                    }
+                    return;
+                case 51: /*sSupplier*/
+                    if(poTrans.BrowseRecord(txtField.getText(), false) == true){
+                        loadRecord(); 
+                        pnEditMode = poTrans.getEditMode();
+                    } else {
+                        clearFields();
+                        pnEditMode = EditMode.UNKNOWN;
+                    }
+                    return;
+            }
+            break;
+        case ENTER:
+        case DOWN:
+            CommonUtils.SetNextFocus(txtField);
+            break;
+        case UP:
+            CommonUtils.SetPreviousFocus(txtField);
+        }
+    }
+    
+    
+    private void ComboBox_KeyPressed(KeyEvent event){
+        if (event.getCode() == ENTER){ 
+            event.consume();
+            CommonUtils.SetNextFocus((ComboBox)event.getSource());
+        }
+    }
+    
+    private void txtFieldArea_KeyPressed(KeyEvent event){
+        if (event.getCode() == ENTER){ 
+            event.consume();
+            CommonUtils.SetNextFocus((TextArea)event.getSource());
+        }
+    }
+    
+    private void txtDetail_KeyPressed(KeyEvent event){
+        TextField txtDetail = (TextField) event.getSource();
+        int lnIndex = Integer.parseInt(txtDetail.getId().substring(9, 11));
+        JSONObject loJSON;
+        String lsValue = txtDetail.getText();
+        
+        switch (event.getCode()){
+            case F3:
+                switch (lnIndex){
+                }
+            case ENTER:
+                CommonUtils.SetNextFocus(txtDetail);
+        }
+        
+        
+    }
+    
+        
+    private void loadDetail(){
+        int lnCtr;
+        int lnRow = poTrans.getDetailCount();
+        
+        data.clear();
+        /*ADD THE DETAIL*/
+        
+        Inventory loInventory;
+        for(lnCtr = 0; lnCtr <= lnRow -1; lnCtr++){
+            if (!"".equals((String) poTrans.getDetail(lnCtr, "sStockIDx"))) {
+                loInventory = poTrans.GetInventory((String) poTrans.getDetail(lnCtr, "sStockIDx"), true, false);
+                psBarCodex = (String) loInventory.getMaster("sBarCodex");
+                psDescript = (String) loInventory.getMaster("sDescript");
+                
+                data.add(new TableModel(String.valueOf(lnCtr + 1), 
+                                    psBarCodex, 
+                                    String.valueOf(poTrans.getDetail(lnCtr, "sBrandNme")),
+                                    psDescript, 
+                                    cUnitType.get(Integer.parseInt((String) poTrans.getDetail(lnCtr, "cUnitType"))),
+                                    String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
+                                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()), "#,##0.00"),
+                                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
+                                    CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
+                                                            * Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()))
+                                                            + Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
+                                    ""));
+            } else {
+                data.add(new TableModel(String.valueOf(lnCtr + 1), 
+                                    "", 
+                                    "", 
+                                    "",
+                                    "0",
+                                    "0.00",
+                                    "0.00",
+                                    "0.00",
+                                    "",
+                                    ""));
+            }
+            
+        }
+                
+        /*FOCUS ON FIRST ROW*/
+        if (!data.isEmpty()){
+            table.getSelectionModel().select(pnRow);
+            table.getFocusModel().focus(pnRow);
+            
+            pnRow = table.getSelectionModel().getSelectedIndex();           
+            setDetailInfo();
+        }
+        
+        Label06.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(6).toString()) + Double.valueOf(poTrans.getMaster(8).toString()), "#,##0.00"));
+        txtField08.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(8).toString()), "#,##0.00"));
+    }    
     
     public void setGRider(GRider foGRider){this.poGRider = foGRider;}
     
@@ -404,108 +515,109 @@ public class POReturnRegController implements Initializable {
     private int pnOldRow = -1;
     
     private String psOldRec = "";
-    private String psBranchNm = "";
-    private String psInvTypNm = "";
-    private String psTermName = "";
-    private String psSupplier = "";
-    private String psDeptName = "";
-    private String psReferNox = "";
     
-    private String psBarCodex;
-    private String psDescript;
+    private String psBarCodex = "";
+    private String psDescript = "";
     
-    private String psOrderNox = "";
-    
-    private void setTranStat(String fsValue){
-        switch (fsValue){
-            case "0":
-                imgTranStat.setImage(new Image("org/rmj/cas/food/inventory/fx/images/open.png")); break;
-            case "1":
-                imgTranStat.setImage(new Image("org/rmj/cas/food/inventory/fx/images/closed.png")); break;
-            case "2":
-                imgTranStat.setImage(new Image("org/rmj/cas/food/inventory/fx/images/posted.png")); break;
-            case "3":
-                imgTranStat.setImage(new Image("org/rmj/cas/food/inventory/fx/images/cancelled.png")); break;
-            case "4":
-                imgTranStat.setImage(new Image("org/rmj/cas/food/inventory/fx/images/void.png")); break;
-            default:
-                imgTranStat.setImage(new Image("org/rmj/cas/food/inventory/fx/images/unknown.png"));
-        }    
-    }
-    
-    private void txtField_KeyPressed(KeyEvent event){
-        TextField txtField = (TextField)event.getSource();
-        int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
-        String lsValue = txtField.getText();
-        if (event.getCode() == ENTER || event.getCode() == F3){
-            switch (lnIndex){
-                case 50: /*sTransNox*/
-                       if(event.getCode() == F3) lsValue = txtField.getText() + "%";
-                            if(poTrans.BrowseRecord(lsValue, true)==true){
-                                 loadRecord(); 
-                                 pnEditMode = poTrans.getEditMode();
-                             }
-                            if(!txtField50.getText().equals(psReferNox)){
-                                 clearFields();
-                                 break;
-                             }else{
-                                 txtField50.setText(psReferNox);
-                                  }
-                             return;
-
-                case 51: /*sSupplier*/
-                    if(event.getCode() == F3) lsValue = txtField.getText() + "%";
-                    if(poTrans.BrowseRecord(lsValue, false)== true){
-                        loadRecord(); 
-                        pnEditMode = poTrans.getEditMode();
-                        break;
-                    }if(!txtField51.getText().equals(psSupplier)){
-                        clearFields();
-                        break;
-                        }else{
-                            txtField51.setText(psSupplier);
-                                 }
-                        return;
-            }
-        } 
-        
-        switch (event.getCode()){
-        case ENTER:
-        case DOWN:
-            CommonUtils.SetNextFocus(txtField);
-            break;
-        case UP:
-            CommonUtils.SetPreviousFocus(txtField);
-        }
-    }
-    
-    final ChangeListener<? super Boolean> txtField_Focus = (o,ov,nv)->{
+    final ChangeListener<? super Boolean> Combo_Focus = (o,ov,nv)->{
         if (!pbLoaded) return;
         
-        TextField txtField = (TextField)((ReadOnlyBooleanPropertyBase)o).getBean();
-        int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
-        String lsValue = txtField.getText();
+        ComboBox loField = (ComboBox)((ReadOnlyBooleanPropertyBase)o).getBean();
         
-        if (lsValue == null) return;
-            
-        if(!nv){ /*Lost Focus*/           
-            switch (lnIndex){
-                case 50: /*sReferNox*/
-                     if(lsValue.equals("") || lsValue.equals("%")){
-                       txtField.setText("");
-                    }else
-                    txtField.setText(psReferNox); break;
-                case 51: /*sSupplierId*/
-                     if(lsValue.equals("") || lsValue.equals("%")){
-                       txtField.setText("");
-                    }else
-                    txtField.setText(psSupplier); break;
-                default:
-                    ShowMessageFX.Warning(null, pxeModuleName, "Text field with name " + txtField.getId() + " not registered.");
-            }
-            pnIndex = lnIndex;
-        }
-        
+        if(!nv){ /*Lost Focus*/
+                switch (loField.getId()){
+                    case "Combo04":
+                        poTrans.setDetail(pnRow, "cUnitType", String.valueOf(loField.getSelectionModel().getSelectedIndex()));
+                        loadDetail();
+                        break;
+                    case "Combo28":
+                        poTrans.setMaster("cDivision", String.valueOf(loField.getSelectionModel().getSelectedIndex()));
+                }
+        }         
     };
+    
+    
+    IMasterDetail poCallBack = new IMasterDetail() {
+        @Override
+        public void MasterRetreive(int fnIndex) {
+            getMaster(fnIndex);
+        }
 
+        @Override
+        public void DetailRetreive(int fnIndex) {
+            switch(fnIndex){
+                case 3:
+                    break;
+                case 5:
+                    txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, fnIndex)));
+                    loadDetail();
+                    
+                    if (!poTrans.getDetail(poTrans.getDetailCount() - 1, "sStockIDx").toString().isEmpty() && 
+                            Double.valueOf(poTrans.getDetail(poTrans.getDetailCount() - 1, fnIndex).toString()) > 0){
+                        poTrans.addDetail();
+                        pnRow = poTrans.getDetailCount() - 1;
+                    }                            
+                    loadDetail();
+
+                    if (txtDetail03.getText().isEmpty()){
+                        txtDetail03.requestFocus();
+                        txtDetail03.selectAll();
+                    } else{
+                        txtDetail05.requestFocus();
+                    }
+                    break;
+                case 6:
+                    txtDetail06.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, fnIndex).toString()), "0.00"));
+                    loadDetail();
+                    break;
+                case 7:
+                    txtDetail07.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, fnIndex).toString()), "0.00"));
+                    loadDetail();
+                    break;
+                case 8:
+                    txtDetail08.setText(CommonUtils.xsDateLong((Date)poTrans.getDetail(pnRow,"dExpiryDt")));
+                    loadDetail();
+                    break;
+            }
+        }
+    };
+    
+    private void getMaster(int fnIndex){
+        switch(fnIndex){
+        case 5:
+            JSONObject loSupplier = poTrans.GetSupplier((String) poTrans.getMaster(fnIndex), true);
+            if (loSupplier != null) {
+                System.out.println((String) loSupplier.get("sClientNm"));
+                txtField05.setText((String) loSupplier.get("sClientNm"));
+            }
+            break;
+        case 16:
+            txtField16.setText((String) poTrans.getMaster("sPOTransx"));
+            break;
+        case 3:
+            txtField03.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster(fnIndex)));
+            break;
+        case 6:
+            Label06.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(6).toString()), "#,##0.00"));      
+            break;
+        case 7:
+            txtField07.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(fnIndex).toString()), "0.00"));
+            break;
+        case 9:
+            txtField09.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(fnIndex).toString()), "0.00"));
+            break;
+        case 8:
+            txtField08.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(fnIndex).toString()), "#,##0.00"));
+            break;
+        case 10:
+            txtField10.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(fnIndex).toString()), "#,##0.00"));
+            break;
+        case 11:
+            txtField11.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(fnIndex).toString()), "#,##0.00"));
+            break;
+        case 13:
+            txtField13.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(fnIndex).toString()), "#,##0.00"));
+            break;
+        }
+    }
 }

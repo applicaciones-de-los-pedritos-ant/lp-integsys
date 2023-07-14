@@ -114,7 +114,9 @@ public class InvTransferController implements Initializable {
     private InvTransfer poTrans;
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    
+    private final String pxeDateFormat = "MM-dd-yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
     private TableModel model;
@@ -231,7 +233,7 @@ public class InvTransferController implements Initializable {
 //        txtField06.setDisable(!lbShow);
         txtField07.setDisable(!lbShow);
         txtField13.setDisable(!lbShow);
-        //txtField18.setDisable(!lbShow);
+        txtField18.setDisable(!lbShow);
         
         txtDetail03.setDisable(!lbShow);
         txtDetail04.setDisable(!lbShow);
@@ -257,7 +259,8 @@ public class InvTransferController implements Initializable {
         txtField13.setText("0.00");
         txtField50.setText("");
         txtField51.setText("");
-        txtOther02.setText("0");        
+        txtOther02.setText("0");   
+        txtField18.setText(SQLUtil.dateFormat((Date) java.sql.Date.valueOf(LocalDate.now()), SQLUtil.FORMAT_MEDIUM_DATE));
         
         pbFound = false;
         txtDetail03.setText("");
@@ -290,30 +293,29 @@ public class InvTransferController implements Initializable {
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
         TableColumn index02 = new TableColumn("Order No.");
-        TableColumn index03 = new TableColumn("Barcode");
+        TableColumn index03 = new TableColumn("Bar Code");
         TableColumn index04 = new TableColumn("Description");
         TableColumn index05 = new TableColumn("Brand");
-        TableColumn index06 = new TableColumn("M.");
+        TableColumn index06 = new TableColumn("Measure");
         TableColumn index07 = new TableColumn("Unit Price");
         TableColumn index08 = new TableColumn("Qty");
         
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(90);
-        index03.setPrefWidth(70);
-        index04.setPrefWidth(130);
+        index02.setPrefWidth(120);
+        index03.setPrefWidth(90);
+        index04.setPrefWidth(120);
         index05.setPrefWidth(130);
-        index06.setPrefWidth(60);
-        index07.setPrefWidth(65); index07.setStyle("-fx-alignment: CENTER;");
-        index08.setPrefWidth(40); index08.setStyle("-fx-alignment: CENTER;");
-        
+        index06.setPrefWidth(65);
+        index07.setPrefWidth(55); index07.setStyle("-fx-alignment: CENTER;");
+        index08.setPrefWidth(40); index08.setStyle("-fx-alignment: CENTER-RIGHT;");
+
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
         index03.setSortable(false); index03.setResizable(false);
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
         index06.setSortable(false); index06.setResizable(false);
-        index07.setSortable(false); index07.setResizable(false);
-        index08.setSortable(false); index08.setResizable(false);
+        index07.setSortable(false); index06.setResizable(false);
 
         table.getColumns().clear();        
         table.getColumns().add(index01);
@@ -857,7 +859,7 @@ public class InvTransferController implements Initializable {
                 dataDetail.clear();
                 loRS.first();
                 for( int rowCount = 0; rowCount <= MiscUtil.RecordCount(loRS) -1; rowCount++){
-                    if (SQLUtil.dateFormat(loRS.getDate("dExpiryDt"), SQLUtil.FORMAT_SHORT_DATE).equals(SQLUtil.dateFormat((Date) poTrans.getDetail(fnRow, "dExpiryDt"), SQLUtil.FORMAT_SHORT_DATE))){
+                    if (SQLUtil.dateFormat(loRS.getDate("dExpiryDt"), pxeDateFormat).equals(SQLUtil.dateFormat((Date) poTrans.getDetail(fnRow, "dExpiryDt"), pxeDateFormat))){
                         if(!pbFound) pbFound = true;
                         lnQuantity = (double)poTrans.getDetail(fnRow, "nQuantity");
                     }else{
@@ -924,7 +926,7 @@ public class InvTransferController implements Initializable {
             txtDetail80.setText((String) poTrans.getDetailOthers(fnRow, "sDescript"));
             txtDetail04.setText((String) poTrans.getDetailOthers(fnRow, "sOrigCode"));
             txtDetail07.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(fnRow, "nInvCostx").toString()), "0.00"));
-            txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(fnRow, "dExpiryDt"), SQLUtil.FORMAT_SHORT_DATE));
+            txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(fnRow, "dExpiryDt"), SQLUtil.FORMAT_MEDIUM_DATE).toString());
             txtDetail06.setText(String.valueOf(poTrans.getDetail(fnRow, "nQuantity")));
             txtDetail10.setText(String.valueOf(poTrans.getDetail(fnRow, "sNotesxxx")));
             txtOther02.setText(String.valueOf(poTrans.getDetailOthers(fnRow, "nQtyOnHnd")));
@@ -955,10 +957,10 @@ public class InvTransferController implements Initializable {
                 case 1: /*sTransNox*/
                     break;
                 case 3: /*dTransact*/
-                  if (CommonUtils.isDate(txtField.getText(), "yyyy-MM-dd")){
-                        poTrans.setMaster("dTransact", CommonUtils.toDate(     txtField.getText()));
+                  if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
+                        poTrans.setMaster("dTransact", SQLUtil.toDate(txtField.getText(), pxeDateFormat));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be(e.g. 1991-07-07)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
                     return;
@@ -1008,11 +1010,7 @@ public class InvTransferController implements Initializable {
         } else{
             switch (lnIndex){
                 case 3: /*dTransact*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtField.setText(SQLUtil.dateFormat(poTrans.getMaster("dTransact"), pxeDateFormat));
                     txtField.selectAll();
                     break;
                 default:
@@ -1078,13 +1076,14 @@ public class InvTransferController implements Initializable {
                     poTrans.setDetail(pnRow,"nInvCostx", y);
                     break;
                 case 8: /*dExpiryDt*/
+                    System.out.println("dExpiration after search" + txtDetail.getText());
                     if (CommonUtils.isDate(txtDetail.getText(), pxeDateFormat) || 
-                        CommonUtils.isDate(txtDetail.getText(), SQLUtil.FORMAT_MEDIUM_DATE)){
-                        poTrans.setDetail(pnRow, "dExpiryDt", CommonUtils.toDate(txtDetail.getText()));
+                            (CommonUtils.isDate(txtDetail.getText(), SQLUtil.FORMAT_MEDIUM_DATE))){
+                        poTrans.setDetail(pnRow, "dExpiryDt",  SQLUtil.toDate(txtDetail.getText(), pxeDateFormat));;
                         txtDetail06.requestFocus();
                         txtDetail06.selectAll();
                     }else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1991)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setDetail(pnRow, "dExpiryDt",CommonUtils.toDate(pxeDateDefault));
                     }
                     
@@ -1096,7 +1095,7 @@ public class InvTransferController implements Initializable {
         } else{
             switch (lnIndex){
                 case 8: /*dExpiryDt*/
-                    txtDetail.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), SQLUtil.FORMAT_SHORT_DATE));                    
+                    txtDetail.setText(SQLUtil.dateFormat(poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
                     txtDetail.selectAll();
                     break;
                 default:

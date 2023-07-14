@@ -207,6 +207,7 @@ public class PurchaseOrderController implements Initializable {
         txtDetail03.setDisable(!lbShow);
         txtDetail04.setDisable(!lbShow);
         txtDetail05.setDisable(!lbShow);
+        txtDetail06.setDisable(!lbShow);
         txtDetail80.setDisable(!lbShow);
         txtField50.setDisable(lbShow);
         
@@ -221,20 +222,18 @@ public class PurchaseOrderController implements Initializable {
         TableColumn index02 = new TableColumn("Bar Code");
         TableColumn index03 = new TableColumn("Brand");
         TableColumn index04 = new TableColumn("Description");
-        TableColumn index05 = new TableColumn("M.");
+        TableColumn index05 = new TableColumn("Measure");
         TableColumn index06 = new TableColumn("Qty");
         TableColumn index07 = new TableColumn("UPrice");
-        TableColumn index08 = new TableColumn("UPrice");
         
         index01.setPrefWidth(30);
-        index02.setPrefWidth(110);
-        index03.setPrefWidth(130);
-        index04.setPrefWidth(130);
+        index02.setPrefWidth(90);
+        index03.setPrefWidth(150);
+        index04.setPrefWidth(120);
         index05.setPrefWidth(75);
-        index06.setPrefWidth(45); index05.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index07.setPrefWidth(85); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index08.setPrefWidth(85); index08.setStyle("-fx-alignment: CENTER-RIGHT;");
-        
+        index06.setPrefWidth(45); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index07.setPrefWidth(85); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
+
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
         index03.setSortable(false); index03.setResizable(false);
@@ -242,18 +241,16 @@ public class PurchaseOrderController implements Initializable {
         index05.setSortable(false); index05.setResizable(false);
         index06.setSortable(false); index06.setResizable(false);
         index07.setSortable(false); index07.setResizable(false);
-        index08.setSortable(false); index08.setResizable(false);
 
         table.getColumns().clear();        
         table.getColumns().add(index01);
         table.getColumns().add(index02);
-        table.getColumns().add(index03);
         table.getColumns().add(index04);
+        table.getColumns().add(index03);
         table.getColumns().add(index05);
         table.getColumns().add(index06);
         table.getColumns().add(index07);
-        table.getColumns().add(index08);
-        
+      
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index03"));
@@ -261,8 +258,7 @@ public class PurchaseOrderController implements Initializable {
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
         index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
-        index08.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index08"));
-
+       
         /*Set data source to table*/
         table.setItems(data);
     }
@@ -707,7 +703,8 @@ public class PurchaseOrderController implements Initializable {
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
     
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM-dd-yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
     private final String pxeDateDefault = "1900-01-01";
     private ObservableList<TableModel> data = FXCollections.observableArrayList();
     private TableModel model;
@@ -835,9 +832,9 @@ public class PurchaseOrderController implements Initializable {
                     return;
                 case 3: /*dTransact*/
                     if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                        poTrans.setMaster(lnIndex, CommonUtils.toDate(txtField.getText()));
+                        poTrans.setMaster(lnIndex, SQLUtil.toDate(txtField.getText(), pxeDateFormat));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1900)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
                     return;
@@ -848,11 +845,7 @@ public class PurchaseOrderController implements Initializable {
         } else{
             switch (lnIndex){
                 case 3: /*dTransact*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtField.setText(SQLUtil.dateFormat(poTrans.getMaster("dTransact"), pxeDateFormat));
                     txtField.selectAll();
                     break;
                 default:

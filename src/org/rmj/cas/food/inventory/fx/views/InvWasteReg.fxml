@@ -46,7 +46,10 @@
                <center>
                   <AnchorPane fx:id="anchorField" style="-fx-background-color: #B3B6B7;" BorderPane.alignment="CENTER">
                      <children>
-                        <TableView fx:id="table" focusTraversable="false" layoutX="10.0" layoutY="221.0" onMouseClicked="#table_Clicked" prefHeight="180.0" prefWidth="505.0" stylesheets="@../styles/Tables.css" />
+                        <TableView fx:id="table" focusTraversable="false" layoutX="10.0" layoutY="221.0" onMouseClicked="#table_Clicked" prefHeight="180.0" prefWidth="585.0" stylesheets="@../styles/Tables.css">
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy></TableView>
                         <Separator layoutX="436.0" layoutY="45.0" orientation="VERTICAL" prefHeight="175.0" prefWidth="6.0" style="-fx-background-color: black;" />
                         <AnchorPane layoutX="2.0" layoutY="1.0" prefHeight="35.0" style="-fx-background-color: #686868;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
@@ -190,14 +193,17 @@
                               <Insets right="5.0" />
                            </padding>
                         </GridPane>
-                        <TableView fx:id="tableData" focusTraversable="false" layoutX="537.0" layoutY="219.0" onMouseClicked="#table_Clicked" prefHeight="180.0" prefWidth="318.0" stylesheets="@../styles/Tables.css" />
+                        <TableView fx:id="tableData" focusTraversable="false" layoutX="600.0" layoutY="219.0" onMouseClicked="#table_Clicked" prefHeight="180.0" prefWidth="335.0" stylesheets="@../styles/Tables.css">
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy></TableView>
                      </children>
                   </AnchorPane>
                </center>
                <left>
                   <AnchorPane style="-fx-background-color: #686868;" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="btnVoid" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="60.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Cancel" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
+                        <Button fx:id="btnVoid" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="60.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Void" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="TRASH" size="30" />
                            </graphic>

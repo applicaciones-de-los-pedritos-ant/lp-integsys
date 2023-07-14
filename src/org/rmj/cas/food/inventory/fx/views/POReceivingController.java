@@ -35,6 +35,7 @@ import org.json.simple.JSONObject;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.appdriver.constants.TransactionStatus;
 import org.rmj.appdriver.GRider;
+import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.inventory.base.Inventory;
@@ -245,6 +246,7 @@ public class POReceivingController implements Initializable {
         txtDetail07.setDisable(!lbShow);
         txtDetail08.setDisable(!lbShow);
         txtDetail09.setDisable(!lbShow);
+        txtDetail10.setDisable(!lbShow);
         txtDetail80.setDisable(!lbShow);
 
         if (lbShow)
@@ -267,19 +269,19 @@ public class POReceivingController implements Initializable {
         TableColumn index11 = new TableColumn("Freight");
         TableColumn index12 = new TableColumn("Total");
         
-        index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
+        index01.setPrefWidth(28); index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(90);
         index03.setPrefWidth(90);
-        index04.setPrefWidth(250);
-        index05.setPrefWidth(120);
-        index06.setPrefWidth(80);
-        index07.setPrefWidth(80);
-        index08.setPrefWidth(80); index08.setStyle("-fx-alignment: CENTER;");
-        index09.setPrefWidth(80); index09.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index10.setPrefWidth(80); index10.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index11.setPrefWidth(80); index11.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index12.setPrefWidth(80); index12.setStyle("-fx-alignment: CENTER-RIGHT;");
-       
+        index04.setPrefWidth(115);
+        index05.setPrefWidth(123); 
+        index06.setPrefWidth(65); index06.setStyle("-fx-alignment: CENTER;");
+//        index07.setPrefWidth(75); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index08.setPrefWidth(68); index08.setStyle("-fx-alignment: CENTER;");
+        index09.setPrefWidth(60); index09.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index10.setPrefWidth(75); index10.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index11.setPrefWidth(60); index11.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index12.setPrefWidth(75); index12.setStyle("-fx-alignment: CENTER-RIGHT;");
+
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
@@ -287,7 +289,7 @@ public class POReceivingController implements Initializable {
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
         index06.setSortable(false); index06.setResizable(false);
-        index07.setSortable(false); index07.setResizable(false);
+//        index07.setSortable(false); index07.setResizable(false);
         index08.setSortable(false); index08.setResizable(false);
         index09.setSortable(false); index09.setResizable(false);
         index10.setSortable(false); index10.setResizable(false);
@@ -301,7 +303,7 @@ public class POReceivingController implements Initializable {
         table.getColumns().add(index04);
         table.getColumns().add(index05);
         table.getColumns().add(index06);
-        table.getColumns().add(index07);
+//        table.getColumns().add(index07);
         table.getColumns().add(index08);
         table.getColumns().add(index09);
         table.getColumns().add(index10);
@@ -314,7 +316,7 @@ public class POReceivingController implements Initializable {
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
-        index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
+//        index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
         index08.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index08"));
         index09.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index09"));
         index10.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index10"));
@@ -519,6 +521,7 @@ public class POReceivingController implements Initializable {
         txtDetail08.setText("0.00");
         txtDetail09.setText("0.00");
         txtDetail80.setText("");
+        txtDetail10.setText("");
         
         Label09.setText("0.00");
         
@@ -774,7 +777,8 @@ public class POReceivingController implements Initializable {
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
     
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM-dd-yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
     private TableModel model;
@@ -874,9 +878,9 @@ public class POReceivingController implements Initializable {
                     break;
                  case 10: /*dExpiryDt*/
                     if (CommonUtils.isDate(txtDetail.getText(), pxeDateFormat)){
-                        poTrans.setDetail(pnRow, "dExpiryDt", CommonUtils.toDate(txtDetail.getText()));
+                        poTrans.setDetail(pnRow, "dExpiryDt",  SQLUtil.toDate(txtDetail.getText(), pxeDateFormat));
                     }else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 1991-07-07)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setDetail(pnRow, "dExpiryDt",CommonUtils.toDate(pxeDateDefault));
                     }
                     return;
@@ -886,11 +890,7 @@ public class POReceivingController implements Initializable {
         } else{
             switch (lnIndex){
                 case 10: /*dExpiryDt*/
-                    try{
-                        txtDetail.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtDetail.setText(SQLUtil.dateFormat(poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
                     txtDetail.selectAll();
                     break;
                 default:
@@ -935,9 +935,9 @@ public class POReceivingController implements Initializable {
                 case 3: /*dTransact*/
                 case 7: /*dRefernce*/
                     if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                        poTrans.setMaster(lnIndex, CommonUtils.toDate(txtField.getText()));
+                        poTrans.setMaster(lnIndex, SQLUtil.toDate(txtField.getText(), pxeDateFormat));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 1991-07-07)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
                     return;
@@ -979,12 +979,11 @@ public class POReceivingController implements Initializable {
         } else{
             switch (lnIndex){
                 case 3: /*dTransact*/
+                    txtField.setText(SQLUtil.dateFormat(poTrans.getMaster("dTransact"), pxeDateFormat));
+                    txtField.selectAll();
+                    break;
                 case 7: /*dRefernce*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtField.setText(SQLUtil.dateFormat(poTrans.getMaster("dRefernce"), pxeDateFormat));
                     txtField.selectAll();
                     break;
             }

@@ -68,19 +68,32 @@ import org.rmj.lp.parameter.agent.XMInventoryType;
  * since 07-03-21
  */
 public class InvStockRequestRegController implements Initializable {
-   @FXML private FontAwesomeIconView glyphExit;
+    @FXML private FontAwesomeIconView glyphExit;
     @FXML private AnchorPane anchorField;
     @FXML private Label lblHeader;
-    @FXML private TextField txtField01,txtField02,txtField03,txtField04,txtField05,txtField50,
-                                txtField51,txtDetail01,txtDetail02,txtDetail05,txtDetail07;
-    @FXML private TextArea txtField06,txtField07,txtDetail03;
+    @FXML private TextField txtField01;
+    @FXML private TextField txtField02;
+    @FXML private TextField txtField03;
+    @FXML private TextField txtField04;
+    @FXML private TextField txtField05;
+    @FXML private TextField txtField50;
+    @FXML private TextField txtField51;
+    @FXML private TextArea txtField06;
+    @FXML private TextArea txtField07;
     @FXML private Label Label12;
-    @FXML private TableView table,tableDetail; 
+    @FXML private TextField txtDetail01;
+    @FXML private TextField txtDetail02;
+    @FXML private TextField txtDetail05;
+    @FXML private TextField txtDetail07;
+    @FXML private TextArea txtDetail03;
+    @FXML private TableView table; 
+    
     @FXML private Button btnClose,btnPrint,btnBrowse,btnExit;
     @FXML private ImageView imgTranStat;
+    @FXML private TableView tableDetail;
     @FXML private AnchorPane dataPane;
     
-    TableColumn index01 = new TableColumn("No.");
+     TableColumn index01 = new TableColumn("No.");
     TableColumn index02 = new TableColumn("Expiration");
     TableColumn index03 = new TableColumn("OnHnd");
     TableColumn index04 = new TableColumn("Out");
@@ -107,19 +120,18 @@ public class InvStockRequestRegController implements Initializable {
     private String psOldRec = "";
     private boolean pbFound;
     private int pnlRow=0;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new InvRequest(poGRider, poGRider.getBranchCode(), false);
         poTrans.setCallBack(poCallBack);
-        poTrans.setTranStat(1234);
+        poTrans.setTranStat(1230);
         
         btnPrint.setOnAction(this::cmdButton_Click);
         btnClose.setOnAction(this::cmdButton_Click);
         btnExit.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
-        
-                        
+
         /*Add keypress event for field with search*/
         txtField01.setOnKeyPressed(this::txtField_KeyPressed);
         txtField02.setOnKeyPressed(this::txtField_KeyPressed);
@@ -134,14 +146,16 @@ public class InvStockRequestRegController implements Initializable {
         txtDetail01.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail02.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail03.setOnKeyPressed(this::txtDetailArea_KeyPressed);
+//        txtDetail04.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail05.setOnKeyPressed(this::txtDetail_KeyPressed);
+//        txtDetail06.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail07.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail05.setDisable(true);
         
         pnEditMode = EditMode.UNKNOWN;
         clearFields();
         initGrid();
-        txtField50.requestFocus();
+        initButton(pnEditMode);
         
         pbLoaded = true;
     }
@@ -150,6 +164,40 @@ public class InvStockRequestRegController implements Initializable {
         this.poGRider = foGRider;
     }
     
+    private void initButton(int fnValue){
+        boolean lbShow = (fnValue == EditMode.ADDNEW || fnValue == EditMode.UPDATE);
+        
+        
+        lblHeader.setVisible(lbShow);
+        
+        txtField50.setDisable(lbShow);
+        txtField51.setDisable(lbShow);
+                
+        btnBrowse.setVisible(!lbShow);
+        btnPrint.setVisible(!lbShow);
+        btnClose.setVisible(!lbShow);
+        
+        txtField01.setDisable(!lbShow);
+        txtField02.setDisable(!lbShow);
+        txtField03.setDisable(!lbShow);
+        txtField04.setDisable(!lbShow);
+        txtField05.setDisable(!lbShow);
+        txtField06.setDisable(!lbShow);
+        txtField07.setDisable(!lbShow);
+        
+        txtDetail01.setDisable(!lbShow);
+        txtDetail02.setDisable(!lbShow);
+        txtDetail03.setDisable(!lbShow);
+//        txtDetail04.setDisable(!lbShow);
+//        txtDetail05.setDisable(!lbShow);
+//        txtDetail06.setDisable(!lbShow);
+        txtDetail07.setDisable(!lbShow);
+        
+        if (lbShow)
+            txtField01.requestFocus();
+        else
+            txtField51.requestFocus();
+    }
     
     private void clearFields(){
         txtField01.setText("");
@@ -166,7 +214,9 @@ public class InvStockRequestRegController implements Initializable {
         txtDetail01.setText("");
         txtDetail02.setText("");
         txtDetail03.setText("");
+//        txtDetail04.setText("0");
         txtDetail05.setText("0");
+//        txtDetail06.setText("0");
         txtDetail07.setText("0");
         
         pnlRow = 0;
@@ -185,18 +235,20 @@ public class InvStockRequestRegController implements Initializable {
     
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
-        TableColumn index02 = new TableColumn("Barcode");
+        TableColumn index02 = new TableColumn("Bar Code");
         TableColumn index03 = new TableColumn("Description");
-        TableColumn index04 = new TableColumn("M.");
-        TableColumn index05 = new TableColumn("QOH");
-        TableColumn index06 = new TableColumn("Qty");
+        TableColumn index04 = new TableColumn("Brand");
+        TableColumn index05 = new TableColumn("Measure");
+        TableColumn index06 = new TableColumn("QOH");
+        TableColumn index07 = new TableColumn("Qty");
         
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(220);
+        index02.setPrefWidth(90);
         index03.setPrefWidth(260);
-        index04.setPrefWidth(160);
-        index05.setPrefWidth(65); index05.setStyle("-fx-alignment: CENTER;");
-        index06.setPrefWidth(40); index06.setStyle("-fx-alignment: CENTER;");
+        index04.setPrefWidth(240);
+        index05.setPrefWidth(75); index05.setStyle("-fx-alignment: CENTER;");
+        index06.setPrefWidth(65); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index07.setPrefWidth(40); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
@@ -204,6 +256,7 @@ public class InvStockRequestRegController implements Initializable {
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
         index06.setSortable(false); index06.setResizable(false);
+        index07.setSortable(false); index07.setResizable(false);
 
         table.getColumns().clear();        
         table.getColumns().add(index01);
@@ -212,6 +265,7 @@ public class InvStockRequestRegController implements Initializable {
         table.getColumns().add(index04);
         table.getColumns().add(index05);
         table.getColumns().add(index06);
+        table.getColumns().add(index07);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
@@ -219,6 +273,7 @@ public class InvStockRequestRegController implements Initializable {
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
+        index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
         
         /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {  
@@ -239,6 +294,8 @@ public class InvStockRequestRegController implements Initializable {
     }
       
     private void unloadForm(){
+//        VBox myBox = (VBox) VBoxForm.getParent();
+//        myBox.getChildren().clear();
         dataPane.getChildren().clear();
         dataPane.setStyle("-fx-border-color: transparent");
     }
@@ -266,9 +323,74 @@ public class InvStockRequestRegController implements Initializable {
      private void txtDetail_KeyPressed(KeyEvent event){
         TextField txtDetail = (TextField) event.getSource();
         int lnIndex = Integer.parseInt(txtDetail.getId().substring(9, 11));
+        String lsValue = txtDetail.getText() + "%";
         
         if (event.getCode() == F3){
-            
+            switch (lnIndex){
+                case 1: /*Barcode Search*/                   
+                    if (poTrans.SearchDetail(pnRow, 1, lsValue, false, false)){                      
+                        txtDetail01.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
+                        txtDetail02.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
+                        txtDetail03.setText("");
+                        txtDetail05.setText(poTrans.getDetail(pnRow, "nQtyOnHnd").toString());
+                        txtDetail07.setText("0");
+                    } else {
+                        txtDetail01.setText("");
+                        txtDetail02.setText("");
+                        txtDetail05.setText("0");
+                        txtDetail07.setText("0");
+                    }
+                    
+                    if (!txtDetail01.getText().isEmpty()){
+                        txtDetail03.requestFocus();
+                        txtDetail03.selectAll();
+                    } else{
+                        txtDetail02.requestFocus();
+                        txtDetail02.selectAll();
+                    }           
+                    break;
+                case 2: /*Description Search*/                   
+                    if (poTrans.SearchDetail(pnRow, 2, lsValue, false, false)){
+                        txtDetail01.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
+                        txtDetail02.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
+                        txtDetail05.setText(poTrans.getDetail(pnRow, "nQtyOnHnd").toString());
+                        txtDetail07.setText("0");
+                    } else {
+                        txtDetail01.setText("");
+                        txtDetail05.setText("0");
+                        txtDetail07.setText("0");
+                    }
+                    
+                    if (!txtDetail01.getText().isEmpty()){
+                        txtDetail03.requestFocus();
+                        txtDetail03.selectAll();
+                    } else{
+                        txtDetail02.requestFocus();
+                        txtDetail02.selectAll();
+                    }
+                    
+                    break;
+                case 80: /*Description Search*/
+                    if (poTrans.SearchDetail(pnRow, 3, lsValue, true, false)){
+                        txtDetail03.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
+                        txtDetail07.setText(poTrans.getDetail(pnRow, "nInvCostx").toString());
+                    } else {
+                        txtDetail03.setText("");
+                        txtDetail07.setText("");
+                    }
+                    
+                    if (!txtDetail03.getText().isEmpty()){
+                        txtDetail07.requestFocus();
+                        txtDetail07.selectAll();
+                    } else{
+                        txtDetail05.requestFocus();
+                        txtDetail05.selectAll();
+                    }
+                    
+                    break;
+            }
+        }
+        
         switch (event.getCode()){
         case ENTER:
         case DOWN:
@@ -278,32 +400,35 @@ public class InvStockRequestRegController implements Initializable {
             CommonUtils.SetPreviousFocus(txtDetail);
         }
     }
-     }
     
     private void txtField_KeyPressed(KeyEvent event){
         TextField txtField = (TextField)event.getSource();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
+        String lsValue = txtField.getText() + "%";
             if (event.getCode() == ENTER || event.getCode() == F3){
                 switch(lnIndex){
                     case 50: /*sTransNox*/
-                        if(poTrans.BrowseRecord(txtField50.getText(), true)==true){
-                            loadRecord(); 
+                        if(poTrans.BrowseRecord(lsValue, true)==true){
+                            loadRecord();
                             pnEditMode = poTrans.getEditMode();
-                            break;
                         } else {
                             clearFields();
                             pnEditMode = EditMode.UNKNOWN;
                         }
-                        return;    
-                    case 51: /*sDestination*/
-                        if(poTrans.BrowseRecord(txtField51.getText() + "%", false)== true){
+                        return;
+                    case 51: /*psDestina*/
+                        if(poTrans.BrowseRecord(lsValue, false)== true){
                             loadRecord(); 
                             pnEditMode = poTrans.getEditMode();
+                        } else {
+                            clearFields();
+                            pnEditMode = EditMode.UNKNOWN;
                         }
-                    default:
-                        txtField51.requestFocus();
+                           
+                        return;
+                    }
                 }
-                
+
         switch (event.getCode()){
         case ENTER:
         case DOWN:
@@ -312,7 +437,6 @@ public class InvStockRequestRegController implements Initializable {
         case UP:
             CommonUtils.SetPreviousFocus(txtField);
         }
-    }
     }
     
     private void cmdButton_Click(ActionEvent event) {
@@ -332,8 +456,7 @@ public class InvStockRequestRegController implements Initializable {
                             clearFields();
                             initGrid();
                             pnEditMode = EditMode.UNKNOWN;
-                            txtField50.requestFocus();
-//                        }
+                            initButton(pnEditMode);
                     }
                     
                 } else ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
@@ -345,7 +468,7 @@ public class InvStockRequestRegController implements Initializable {
             case "btnExit":
                 unloadForm();
                 return;
-           
+                
             case "btnBrowse":
                 switch(pnIndex){
                     case 50: /*sTransNox*/
@@ -367,13 +490,13 @@ public class InvStockRequestRegController implements Initializable {
                         txtField51.requestFocus();
                 }
                 return;
-           
+            
             default:
                 ShowMessageFX.Warning(null, pxeModuleName, "Button with name " + lsButton + " not registered.");
                 return;
         }
         
-        txtField50.requestFocus();
+        initButton(pnEditMode);
     }
     
     private void loadRecord(){
@@ -429,13 +552,14 @@ public class InvStockRequestRegController implements Initializable {
             data.add(new TableModel(String.valueOf(lnCtr + 1), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"),
                                     (String) poTrans.getDetailOthers(lnCtr, "sDescript"), 
+                                    (String) poTrans.getDetailOthers(lnCtr, "sBrandNme"), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"),
                                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nQtyOnHnd").toString()), "0.00"),
                                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()), "0.00"),
                                     "",
                                     "",
-                                    "",
                                     ""));
+            System.out.println(poTrans.getDetailOthers(lnCtr, "sBrandNme"));
         }
     
         /*FOCUS ON FIRST ROW*/
@@ -466,9 +590,6 @@ public class InvStockRequestRegController implements Initializable {
     }
     
     
-    
-    
-
     @FXML
     private void table_Clicked(MouseEvent event) {
         pnRow = table.getSelectionModel().getSelectedIndex();
@@ -510,6 +631,7 @@ public class InvStockRequestRegController implements Initializable {
         params.put("sCompnyNm", "Los Pedritos");  
         params.put("sBranchNm", poGRider.getBranchName());
         params.put("sDestinat", lsSQL);
+        
         params.put("sAddressx", poGRider.getAddress());
         params.put("sReportNm", "Inventory Stock Request");
         

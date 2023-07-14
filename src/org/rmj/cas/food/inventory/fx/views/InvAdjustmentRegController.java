@@ -5,9 +5,11 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.ResourceBundle;
+import javafx.beans.property.ReadOnlyBooleanPropertyBase;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -28,6 +30,7 @@ import javafx.scene.input.KeyCode;
 import static javafx.scene.input.KeyCode.DOWN;
 import static javafx.scene.input.KeyCode.ENTER;
 import static javafx.scene.input.KeyCode.F3;
+import static javafx.scene.input.KeyCode.UP;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -37,7 +40,9 @@ import org.rmj.appdriver.MiscUtil;
 
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
+import org.rmj.appdriver.agentfx.callback.IMasterDetail;
 import org.rmj.appdriver.constants.EditMode;
+import org.rmj.appdriver.constants.TransactionStatus;
 
 import org.rmj.cas.inventory.base.InvAdjustment;
 
@@ -68,21 +73,29 @@ public class InvAdjustmentRegController implements Initializable {
     @FXML private Button btnClose;
     @FXML private Button btnBrowse;
     @FXML private AnchorPane dataPane;
-    
-    private static GRider poGRider;
+    @FXML private TextField txtDetail02;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb){
         poTrans = new InvAdjustment(poGRider, poGRider.getBranchCode(), false);
-        poTrans.setTranStat(1234);
+        poTrans.setTranStat(1230);
         
         btnClose.setOnAction(this::cmdButton_Click);
+        btnExit.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
-        
+               
+        txtField01.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField02.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField04.setOnKeyPressed(this::txtFieldArea_KeyPressed);
         txtField50.setOnKeyPressed(this::txtField_KeyPressed);
+        
+        txtDetail02.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail03.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail04.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail05.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail06.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail07.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail80.setOnKeyPressed(this::txtDetail_KeyPressed);    
         
         pnEditMode = EditMode.UNKNOWN;    
         clearFields();
@@ -91,24 +104,28 @@ public class InvAdjustmentRegController implements Initializable {
         initLisView();
         
         pbLoaded = true;
-        
-    }  
+
+    }
     
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
-        TableColumn index02 = new TableColumn("Barcode.");
+        TableColumn index02 = new TableColumn("Barcode");
         TableColumn index03 = new TableColumn("Description");
-        TableColumn index04 = new TableColumn("Expiry Date");
-        TableColumn index05 = new TableColumn("Credt Qty");
-        TableColumn index06 = new TableColumn("Debt Qty");
+        TableColumn index04 = new TableColumn("Brand");
+        TableColumn index05 = new TableColumn("Expiry Date");
+        TableColumn index06 = new TableColumn("QOH");
+        TableColumn index07 = new TableColumn("CQty");
+        TableColumn index08 = new TableColumn("DQty");
         
-        
-        index01.setPrefWidth(50); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(100);
-        index03.setPrefWidth(142); 
-        index04.setPrefWidth(100); index04.setStyle("-fx-alignment: CENTER;");
-        index05.setPrefWidth(80); index05.setStyle("-fx-alignment: CENTER;");
-        index06.setPrefWidth(80); index06.setStyle("-fx-alignment: CENTER;");
+        index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
+        index02.setPrefWidth(90);
+        index03.setPrefWidth(140); 
+        index04.setPrefWidth(150); 
+        index05.setPrefWidth(90); index05.setStyle("-fx-alignment: CENTER;");
+        index06.setPrefWidth(65); index06.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index07.setPrefWidth(65); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index08.setPrefWidth(65); index08.setStyle("-fx-alignment: CENTER-RIGHT;");
+
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
@@ -116,6 +133,8 @@ public class InvAdjustmentRegController implements Initializable {
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
         index06.setSortable(false); index06.setResizable(false);
+        index07.setSortable(false); index07.setResizable(false);
+        index08.setSortable(false); index08.setResizable(false);
         
         table.getColumns().clear();        
         table.getColumns().add(index01);
@@ -124,6 +143,8 @@ public class InvAdjustmentRegController implements Initializable {
         table.getColumns().add(index04);
         table.getColumns().add(index05);
         table.getColumns().add(index06);
+        table.getColumns().add(index07);
+        table.getColumns().add(index08);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
@@ -131,6 +152,8 @@ public class InvAdjustmentRegController implements Initializable {
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
+        index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
+        index08.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index08"));
         
         /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {  
@@ -152,13 +175,28 @@ public class InvAdjustmentRegController implements Initializable {
     @FXML
     private void table_Clicked(MouseEvent event) {
         pnRow = table.getSelectionModel().getSelectedIndex();
-        getRecordData(pnRow);
+        tableDetail.setItems(getRecordData(pnRow));
+        if(!pbFound){
+            addDetailData(pnlRow);
+        }
         setDetailInfo(pnRow);
-        
     }
     
     public void setGRider(GRider foGRider){this.poGRider = foGRider;}
+    private final String pxeModuleName = "InventoryAdjustmentRegController";
+    private static GRider poGRider;
     private InvAdjustment poTrans;
+    private double pnCrdtTotl=0;
+    private double pnDbtTotl=0;
+    private double pnValTotl=0;
+    
+    private boolean pbFound;
+    private int pnlRow=0;
+    
+    TableColumn index01 = new TableColumn("No.");
+    TableColumn index02 = new TableColumn("Expiration");
+    TableColumn index03 = new TableColumn("ActualQty");
+    TableColumn index04 = new TableColumn("Quantity");
     
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
@@ -166,8 +204,8 @@ public class InvAdjustmentRegController implements Initializable {
     private final String pxeDateFormat = "yyyy-MM-dd";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
+    private TableModel model;
     private ObservableList<TableModel> data = FXCollections.observableArrayList();
-    private ObservableList<TableModel> dataDetail =  FXCollections.observableArrayList();
     
     private int pnIndex = -1;
     private int pnRow = -1;
@@ -176,19 +214,30 @@ public class InvAdjustmentRegController implements Initializable {
     private String psOldRec = "";
     private String psTransNox = "";
     private String psdTransact = "";
-    private final String pxeModuleName = "Inventory Adjustment Controller";
     
-    private void getRecordData(int fnRow){
+    
+    private ObservableList getRecordData(int fnRow){
+        ObservableList dataDetail = FXCollections.observableArrayList();
         ResultSet loRS = null;
         loRS = poTrans.getExpiration((String)poTrans.getDetail(fnRow, "sStockIDx"));
+        double lnQuantity = 0;
+        pnlRow = 0;
+        pbFound = false;
+        
         try {
                 dataDetail.clear();
                 loRS.first();
-                for( int rowCount = 0; rowCount <= MiscUtil.RecordCount(loRS) -1; rowCount++){
+                    for( int rowCount = 0; rowCount <= MiscUtil.RecordCount(loRS) -1; rowCount++){
+                        if (CommonUtils.xsDateShort(loRS.getDate("dExpiryDt")).equals(CommonUtils.xsDateShort((Date) poTrans.getDetail(fnRow, "dExpiryDt")))){
+                            if(!pbFound) pbFound = true;
+                            lnQuantity = loRS.getDouble("nQtyOnHnd") + Double.valueOf(poTrans.getDetail(fnRow, "nCredtQty").toString()) - Double.valueOf(poTrans.getDetail(fnRow, "nDebitQty").toString());
+                        }else{
+                            lnQuantity = 0;
+                        }
                     dataDetail.add(new TableModel(String.valueOf(rowCount +1),
                         String.valueOf(CommonUtils.xsDateMedium(loRS.getDate("dExpiryDt"))),
                         String.valueOf(loRS.getDouble("nQtyOnHnd")),
-                        "",
+                        String.valueOf(lnQuantity),
                         "",
                         "",
                         "",
@@ -196,31 +245,24 @@ public class InvAdjustmentRegController implements Initializable {
                         "",
                         ""
                     ));
-                      loRS.next();
+                    pnlRow++;
+                    loRS.next();
                 }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        return dataDetail;
     }
     
     private void cmdButton_Click(ActionEvent event) {
         String lsButton = ((Button)event.getSource()).getId();
         
         switch (lsButton){
-                
             case "btnClose":
             case "btnExit":
                 unloadForm();
                 return;
                 
-            case "btnCancel": 
-                if(ShowMessageFX.OkayCancel(null, pxeModuleName, "Do you want to disregard changes?") == true){
-                    clearFields();
-                    pnEditMode = EditMode.UNKNOWN;
-                    break;
-                } else
-                    return;
-            
             case "btnBrowse":
                 switch(pnIndex){
                     case 50: /*sTransNox*/
@@ -241,7 +283,6 @@ public class InvAdjustmentRegController implements Initializable {
                 }
                 
                 return;
-                
             default:
                 ShowMessageFX.Warning(null, pxeModuleName, "Button with name " + lsButton + " not registered.");
                 return;
@@ -264,15 +305,19 @@ public class InvAdjustmentRegController implements Initializable {
         
         pnRow = -1;
         pnOldRow = -1;
-        pnIndex = 51;
+        pnIndex = 50;
         setTranStat("-1");
         psOldRec = "";
         psTransNox = "";
         psdTransact = "";
         data.clear();
-        dataDetail.clear();
+        pnCrdtTotl=0;
+        pnDbtTotl=0;
+        pnValTotl=0;
+        pbFound = false;
+        pnlRow = 0;
     }
-    
+     
     private void txtField_KeyPressed(KeyEvent event){
         TextField txtField = (TextField)event.getSource();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
@@ -309,28 +354,27 @@ public class InvAdjustmentRegController implements Initializable {
     }
     
     private void initLisView(){
-        TableColumn index01 = new TableColumn("No.");
-        TableColumn index02 = new TableColumn("Expiration");
-        TableColumn index03 = new TableColumn("OnHnd");
         
         index01.setPrefWidth(30); index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(120); index02.setStyle("-fx-alignment: CENTER;");
-        index03.setPrefWidth(90); index03.setStyle("-fx-alignment: CENTER;");
+        index02.setPrefWidth(90); index02.setStyle("-fx-alignment: CENTER;");
+        index03.setPrefWidth(65); index03.setStyle("-fx-alignment: CENTER;");
+        index04.setPrefWidth(65); index04.setStyle("-fx-alignment: CENTER;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(true); index02.setResizable(false);
         index03.setSortable(false); index03.setResizable(false);
+        index04.setSortable(false); index04.setResizable(false);
 
         tableDetail.getColumns().clear();
         tableDetail.getColumns().add(index01);
         tableDetail.getColumns().add(index02);
         tableDetail.getColumns().add(index03);
+        tableDetail.getColumns().add(index04);
         
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index03"));
-        
-        tableDetail.setItems(dataDetail);
+        index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         
     }
      
@@ -341,6 +385,27 @@ public class InvAdjustmentRegController implements Initializable {
         }else if (event.getCode() ==KeyCode.UP){
         event.consume();
             CommonUtils.SetPreviousFocus((TextArea)event.getSource());
+        }
+    }
+    
+    private void txtDetail_KeyPressed(KeyEvent event){
+        TextField txtDetail = (TextField) event.getSource();
+        int lnIndex = Integer.parseInt(txtDetail.getId().substring(9, 11));
+        String lsValue = txtDetail.getText() + "%";
+        
+        if (event.getCode() == F3){
+            switch (lnIndex){
+                
+            }
+        }
+        
+        switch (event.getCode()){
+        case ENTER:
+        case DOWN:
+            CommonUtils.SetNextFocus(txtDetail);
+            break;
+        case UP:
+            CommonUtils.SetPreviousFocus(txtDetail);
         }
     }
     
@@ -375,42 +440,64 @@ public class InvAdjustmentRegController implements Initializable {
     
     private void loadDetail(){
         int lnCtr;
-        int lnRow = poTrans.ItemCount();
+        pnlRow = poTrans.ItemCount();
+        
+        pnValTotl = 0;
+        pnCrdtTotl = 0;
+        pnDbtTotl = 0;
         
         data.clear();
         /*ADD THE DETAIL*/
-        for(lnCtr = 0; lnCtr <= lnRow -1; lnCtr++){
+        for(lnCtr = 0; lnCtr <= pnlRow -1; lnCtr++){
             data.add(new TableModel(String.valueOf(lnCtr + 1), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sDescript"),
+                                    (String) poTrans.getDetail(lnCtr, "sBrandNme"),
                                     CommonUtils.xsDateMedium((Date) poTrans.getDetail(lnCtr, "dExpiryDt")),
+                                    String.valueOf(poTrans.getDetailOthers(lnCtr, "nQtyOnHnd")),
                                     String.valueOf(poTrans.getDetail(lnCtr, "nCredtQty")),
                                     String.valueOf(poTrans.getDetail(lnCtr, "nDebitQty")),
                                     "",
-                                    "",
-                                    "",
                                     ""));
+            System.out.println("sBrandNme = " + poTrans.getDetailOthers(lnCtr, "sBrandNme"));
+            
+            pnValTotl = pnValTotl + Double.valueOf(poTrans.getDetailOthers(lnCtr, "nQtyOnHnd").toString());
+            pnCrdtTotl = pnCrdtTotl + Double.valueOf(poTrans.getDetail(lnCtr, "nCredtQty").toString());
+            pnDbtTotl = pnDbtTotl + Double.valueOf(poTrans.getDetail(lnCtr, "nDebitQty").toString());
         }
     
         /*FOCUS ON FIRST ROW*/
         if (!data.isEmpty()){
-            table.getSelectionModel().select(lnRow -1);
-            table.getFocusModel().focus(lnRow -1);
+            table.getSelectionModel().select(pnlRow -1);
+            table.getFocusModel().focus(pnlRow -1);
             pnRow = table.getSelectionModel().getSelectedIndex();           
             setDetailInfo(pnRow);
         }
     }
     
+    public boolean isEntryOk(){
+        if(pnCrdtTotl != 0 && pnDbtTotl != 0){
+            if (pnCrdtTotl != pnDbtTotl){
+            ShowMessageFX.Warning(null, pxeModuleName, "Qty on credit and debit must be equal to QTY on hand!");
+            return false;
+            }
+        }
+        
+        return true;
+    }
+    
     private void setDetailInfo(int fnRow){
         if (!poTrans.getDetail(fnRow, "sStockIDx").equals("")){
+            txtDetail07.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(fnRow, "dExpiryDt")));
+            txtDetail02.setText(String.valueOf(poTrans.getDetailOthers(fnRow, "nQtyOnHnd")));
             txtDetail03.setText((String) poTrans.getDetailOthers(fnRow, "sBarCodex"));
             txtDetail80.setText((String) poTrans.getDetailOthers(fnRow, "sDescript"));
             txtDetail04.setText(String.valueOf(poTrans.getDetail(fnRow, "nCredtQty")));
             txtDetail05.setText(String.valueOf(poTrans.getDetail(fnRow, "nDebitQty")));
             txtDetail06.setText(String.valueOf(poTrans.getDetail(fnRow, "nInvCostx")));
-            txtDetail07.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(fnRow, "dExpiryDt")));
             txtDetail03.requestFocus();
         } else{
+            txtDetail02.setText("0");
             txtDetail03.setText("");
             txtDetail04.setText("0");
             txtDetail05.setText("0");
@@ -436,6 +523,81 @@ public class InvAdjustmentRegController implements Initializable {
             default:
                 imgTranStat.setImage(new Image("org/rmj/cas/food/inventory/fx/images/unknown.png"));
         }    
+    }
+    
+    IMasterDetail poCallBack = new IMasterDetail() {
+        @Override
+        public void MasterRetreive(int fnIndex) {
+            getMaster(fnIndex);
+        }
+
+        @Override
+        public void DetailRetreive(int fnIndex) {
+            switch(fnIndex){
+                case 4:
+                    txtDetail04.setText(String.valueOf(poTrans.getDetail(pnRow,"nCredtQty")));
+                    if (!poTrans.getDetail(poTrans.ItemCount()-1, "sStockIDx").toString().isEmpty()){
+                        if(Double.valueOf(poTrans.getDetail(pnRow, "nCredtQty").toString()) != 0.00) poTrans.addDetail();
+                    }
+                    loadDetail();
+ 
+                     break;
+                case 5:
+                    txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow,"nDebitQty")));
+                    if (!poTrans.getDetail(poTrans.ItemCount()-1, "sStockIDx").toString().isEmpty()){
+                        if(Double.valueOf(poTrans.getDetail(pnRow, "nDebitQty").toString()) != 0.00) poTrans.addDetail();
+                    }
+                    loadDetail();
+                    
+                    break;
+                case 7:
+                    /*get the value from the class*/
+                    txtDetail07.setText(CommonUtils.xsDateLong((Date)poTrans.getDetail(pnRow,"dExpiryDt")));
+                    loadDetail();
+                    break;
+            }
+        }
+    };
+    
+    private void addDetailData(int fnRow){
+        if (poTrans.getDetail(pnRow, "sStockIDx").equals("")) return;
+        TableModel newData = new TableModel();
+        newData.setIndex01(String.valueOf(fnRow + 1));
+        newData.setIndex02(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
+        newData.setIndex03("0");
+        
+        if (Double.valueOf(poTrans.getDetail(pnRow, "nCredtQty").toString()) > 0.00){
+            newData.setIndex04(String.valueOf(poTrans.getDetail(pnRow, "nCredtQty")));
+        }else if(Double.valueOf(poTrans.getDetail(pnRow, "nDebitQty").toString())> 0.00){
+            ShowMessageFX.Warning(null,pxeModuleName,"Cannot debit an empty inventory!");
+            poTrans.setDetail(pnRow, "nDebitQty", 0.00);
+            return;
+        }else{
+            newData.setIndex04("0");
+        }
+        newData.setIndex05("");
+        newData.setIndex06("");
+        newData.setIndex07("");
+        newData.setIndex08("");
+        newData.setIndex09("");
+        newData.setIndex10("");
+        tableDetail.getItems().add(newData);
+        
+        index02.setSortType(TableColumn.SortType.ASCENDING);
+        tableDetail.getSortOrder().add(index02);
+        tableDetail.sort();
+        
+    }
+    
+    private void getMaster(int fnIndex){
+        switch(fnIndex){
+            case 1:
+                txtField01.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster("dTransact")));
+                break;
+            case 3:
+                txtField02.setText(CommonUtils.TitleCase((String) poTrans.getMaster("sRemarksx")));
+                break;
+        }
     }
     
 }

@@ -177,7 +177,7 @@ public class InvCountController implements Initializable {
                 dataDetail.clear();
                 loRS.first();
                     for( int rowCount = 0; rowCount <= MiscUtil.RecordCount(loRS) -1; rowCount++){
-                        if (CommonUtils.xsDateShort(loRS.getDate("dExpiryDt")).equals(CommonUtils.xsDateShort((Date) poTrans.getDetail(fnRow, "dExpiryDt")))){
+                        if (CommonUtils.xsDateMedium(loRS.getDate("dExpiryDt")).equals(CommonUtils.xsDateMedium((Date) poTrans.getDetail(fnRow, "dExpiryDt")))){
                             if(!pbFound) pbFound = true;
                             lnQuantity = (int)poTrans.getDetail(fnRow, "nFinalCtr");
                         }else{
@@ -389,7 +389,7 @@ public class InvCountController implements Initializable {
                                     poTrans.getDetailOthers(lnCtr, "sDescript").toString(),
                                     poTrans.getDetailOthers(lnCtr, "sBrandNme").toString(),
                                     String.valueOf(poTrans.getDetail(lnCtr, "nFinalCtr")),
-                                    String.valueOf(CommonUtils.xsDateShort((Date) poTrans.getDetail(lnCtr, "dExpiryDt"))),
+                                    String.valueOf(CommonUtils.xsDateMedium((Date) poTrans.getDetail(lnCtr, "dExpiryDt"))),
                                     "",
                                     "",
                                     "",
@@ -652,6 +652,7 @@ public class InvCountController implements Initializable {
         txtDetail10.setText("");
         txtDetail80.setText("");
         txtDetail09.setText("0");
+        txtDetail11.setText("");
         
         pnRow = -1;
         pnOldRow = -1;
@@ -699,6 +700,7 @@ public class InvCountController implements Initializable {
         txtDetail09.setDisable(!lbShow);
         txtDetail10.setDisable(!lbShow);
         txtDetail80.setDisable(!lbShow);
+        txtDetail11.setDisable(!lbShow);
         
         if (lbShow)
             txtField03.requestFocus();
@@ -708,7 +710,7 @@ public class InvCountController implements Initializable {
     
     private void initGrid(){
         TableColumn index01 = new TableColumn("No.");
-        TableColumn index02 = new TableColumn("Barcode.");
+        TableColumn index02 = new TableColumn("Barcode");
         TableColumn index03 = new TableColumn("Description");
         TableColumn index04 = new TableColumn("Brand");
         TableColumn index05 = new TableColumn("Count");
@@ -791,7 +793,8 @@ public class InvCountController implements Initializable {
     TableColumn index03 = new TableColumn("On Hand");
     TableColumn index04 = new TableColumn("Count");
     
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM-dd-yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     private TableModel model;
     private ObservableList<TableModel> data = FXCollections.observableArrayList();
@@ -827,9 +830,9 @@ public class InvCountController implements Initializable {
                     txtField.setText(psInvType); return;
                 case 3: /*dTransact*/
                     if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                        poTrans.setMaster("dTransact", CommonUtils.toDate(txtField.getText()));
+                        poTrans.setMaster("dTransact", SQLUtil.toDate(txtField.getText(), pxeDateFormat));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1991)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
                     /*get the value from the class*/
@@ -852,11 +855,7 @@ public class InvCountController implements Initializable {
         } else{
             switch (lnIndex){
                 case 3: /*dTransact*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtField.setText(SQLUtil.dateFormat(poTrans.getMaster("dTransact"), pxeDateFormat));
                     txtField.selectAll();
                     break;
                 default:
@@ -934,10 +933,10 @@ public class InvCountController implements Initializable {
                     break;
                 case 11: /*dReceived*/
                          if (CommonUtils.isDate(txtDetail.getText(), pxeDateFormat)){
-                             poTrans.setDetail(pnRow, "dExpiryDt", CommonUtils.toDate(txtDetail.getText()));
+                             poTrans.setDetail(pnRow, "dExpiryDt", SQLUtil.toDate(txtDetail.getText(), pxeDateFormat));
                              txtDetail.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
                          }else{
-                             ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1991)");
+                             ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                              poTrans.setDetail(pnRow, "dExpiryDt" , CommonUtils.toDate(pxeDateDefault));
                              txtDetail.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
                          }
@@ -948,11 +947,7 @@ public class InvCountController implements Initializable {
              } else{
                  switch (lnIndex){
                      case 11: /*dReceived*/
-                         try{
-                             txtDetail.setText(CommonUtils.xsDateShort(lsValue));
-                         }catch(ParseException e){
-                             ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                         }
+                         txtDetail.setText(SQLUtil.dateFormat(poTrans.getMaster("dTransact"), pxeDateFormat));
                          txtDetail.selectAll();
                          break;
                      default:
