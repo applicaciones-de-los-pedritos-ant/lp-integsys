@@ -207,6 +207,7 @@ public class PurchaseOrderController implements Initializable {
         txtDetail03.setDisable(!lbShow);
         txtDetail04.setDisable(!lbShow);
         txtDetail05.setDisable(!lbShow);
+        txtDetail06.setDisable(!lbShow);
         txtDetail80.setDisable(!lbShow);
         txtField50.setDisable(lbShow);
         
@@ -702,7 +703,8 @@ public class PurchaseOrderController implements Initializable {
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
     
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM-dd-yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
     private final String pxeDateDefault = "1900-01-01";
     private ObservableList<TableModel> data = FXCollections.observableArrayList();
     private TableModel model;
@@ -830,9 +832,9 @@ public class PurchaseOrderController implements Initializable {
                     return;
                 case 3: /*dTransact*/
                     if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                        poTrans.setMaster(lnIndex, CommonUtils.toDate(txtField.getText()));
+                        poTrans.setMaster(lnIndex, SQLUtil.toDate(txtField.getText(), pxeDateFormat));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1900)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
                     return;
@@ -843,11 +845,7 @@ public class PurchaseOrderController implements Initializable {
         } else{
             switch (lnIndex){
                 case 3: /*dTransact*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtField.setText(SQLUtil.dateFormat(poTrans.getMaster("dTransact"), pxeDateFormat));
                     txtField.selectAll();
                     break;
                 default:

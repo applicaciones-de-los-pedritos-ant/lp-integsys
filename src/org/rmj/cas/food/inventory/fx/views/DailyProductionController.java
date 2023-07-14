@@ -233,7 +233,8 @@ public class DailyProductionController implements Initializable {
     private boolean p_bTableFocus = false;
     private boolean p_bRawFocus = false;
     
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM-dd-yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
     private ObservableList<TableModel> data = FXCollections.observableArrayList();
@@ -267,9 +268,9 @@ public class DailyProductionController implements Initializable {
             switch (lnIndex){
                 case 2: /*dTransact*/
                      if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                        poTrans.setMaster("dTransact", CommonUtils.toDate(txtField.getText()));
+                        poTrans.setMaster("dTransact",  SQLUtil.toDate(txtField.getText(), pxeDateFormat));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 1991-07-07)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
                     return;
@@ -282,7 +283,7 @@ public class DailyProductionController implements Initializable {
                        
                 case 51:
                     if(CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                         txtField.setText(CommonUtils.xsDateLong(CommonUtils.toDate(txtField.getText())));
+                         txtField.setText(SQLUtil.dateFormat(SQLUtil.toDate(txtField.getText(), pxeDateFormat),SQLUtil.FORMAT_LONG_DATE));
                     }else{
                         txtField.setText(CommonUtils.xsDateLong(CommonUtils.toDate(pxeDateDefault)));
                     }
@@ -295,20 +296,12 @@ public class DailyProductionController implements Initializable {
             pnIndex = lnIndex;
         } else{
             switch (lnIndex){
-                case 2: /*dTransact*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                case 2: /*dTransact*/ 
+                    txtField.setText(SQLUtil.dateFormat(poTrans.getMaster("dTransact"), pxeDateFormat));
                     txtField.selectAll();
                     break;
                 case 51:
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtField.setText(SQLUtil.dateFormat(SQLUtil.toDate(txtField.getText(), SQLUtil.FORMAT_LONG_DATE),pxeDateFormat));
                     txtField.selectAll();
                     break;
                 default:
@@ -335,17 +328,17 @@ public class DailyProductionController implements Initializable {
                     break;
                 case 6: /*dExpiryDt*/
                     if (CommonUtils.isDate(txtDetail.getText(), pxeDateFormat)){
-                        poTrans.setDetail(pnRow, "dExpiryDt", CommonUtils.toDate(txtDetail.getText()));
+                        poTrans.setDetail(pnRow, "dExpiryDt",  SQLUtil.toDate(txtDetail.getText(), pxeDateFormat));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 1991-07-07)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setDetail(pnRow, "dExpiryDt" , CommonUtils.toDate(pxeDateDefault));
                     }
                     return;
                  case 7: /*dExpiryDt*/
                     if (CommonUtils.isDate(txtDetail.getText(), pxeDateFormat)){
-                        poTrans.setInv(pnRawdata, "dExpiryDt", CommonUtils.toDate(txtDetail.getText()));
+                        poTrans.setInv(pnRawdata, "dExpiryDt", SQLUtil.toDate(txtDetail.getText(), pxeDateFormat));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 1991-07-07)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setInv(pnRawdata, "dExpiryDt" , CommonUtils.toDate(pxeDateDefault));
                     }
                     txtDetail.setText(CommonUtils.xsDateMedium((Date)poTrans.getInv(pnRawdata, "dExpiryDt")));
@@ -377,11 +370,7 @@ public class DailyProductionController implements Initializable {
             switch (lnIndex){
                 case 6: /*dExpiryDt*/
                 case 7:
-                    try{
-                        txtDetail.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtDetail.setText(SQLUtil.dateFormat(poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
                     txtDetail.selectAll();
                     break;
                 default:
@@ -603,6 +592,7 @@ public class DailyProductionController implements Initializable {
         txtDetail05.setText("0");
         txtDetail80.setText("");
         txtDetail07.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
+        txtDetail06.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
         
         pnRow = -1;
         pnOldRow = -1;
@@ -648,7 +638,8 @@ public class DailyProductionController implements Initializable {
         txtDetail03.setDisable(!lbShow);
         txtDetail04.setDisable(!lbShow);
         txtDetail05.setDisable(!lbShow);
-//        txtDetail07.setDisable(!lbShow);
+        txtDetail07.setDisable(!lbShow);
+        txtDetail06.setDisable(!lbShow);
         txtDetail80.setDisable(!lbShow);
         
         
@@ -854,7 +845,7 @@ public class DailyProductionController implements Initializable {
         if (!poTrans.getDetail(fnRow, "sStockIDx").equals("")){
             txtDetail03.setText((String) poTrans.getDetailOthers(pnRow, "sBarCodex"));
             txtDetail80.setText((String) poTrans.getDetailOthers(pnRow, "sDescript"));
-            txtDetail06.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
+            txtDetail06.setText(SQLUtil.dateFormat(poTrans.getDetail(pnRow, "dExpiryDt"),pxeDateFormat));
             txtDetail04.setText(String.valueOf(poTrans.getDetail(pnRow, "nQuantity")));
             txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, "nGoalQtyx")));
         } else{

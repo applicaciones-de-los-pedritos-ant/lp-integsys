@@ -38,6 +38,7 @@ import org.json.simple.JSONObject;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.appdriver.constants.TransactionStatus;
 import org.rmj.appdriver.GRider;
+import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.ui.showFXDialog;
@@ -493,7 +494,7 @@ public class InvTransPostingController implements Initializable {
             poTrans.setDetailExp(lnCtr, "nReceived", poTrans.getDetailExp(lnCtr, "nQuantity"));
             dataDetail.add(new TableModel(String.valueOf(poTrans.getDetailExp(lnCtr, "nEntryNox")), 
                                     (String) poTrans.getDetailExp(lnCtr, "sDescript"), 
-                                    String.valueOf(CommonUtils.xsDateShort((Date)poTrans.getDetailExp(lnCtr, "dExpiryDt"))),
+                                    String.valueOf(CommonUtils.xsDateMedium((Date)poTrans.getDetailExp(lnCtr, "dExpiryDt"))),
                                     String.valueOf(poTrans.getDetailExp(lnCtr, "nQuantity")),    
                                     String.valueOf(poTrans.getDetailExp(lnCtr, "nReceived")),
                                     "",
@@ -567,7 +568,8 @@ public class InvTransPostingController implements Initializable {
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
     
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM-dd-yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
     private final String pxeDateDefault = "1900-01-01";
     
     private TableModel model;
@@ -690,9 +692,9 @@ public class InvTransPostingController implements Initializable {
                     break;
                 case 8:
                     if (CommonUtils.isDate(txtDetail.getText(), pxeDateFormat)){
-                        poTrans.setDetailExp(pnExp, "dExpiryDt", CommonUtils.toDate(txtDetail.getText()));
+                        poTrans.setDetailExp(pnExp, "dExpiryDt", SQLUtil.toDate(txtDetail.getText(), pxeDateFormat));
                     }else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1991)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setDetailExp(pnExp, "dExpiryDt",CommonUtils.toDate(pxeDateDefault));
                     }
                     txtDetail.setText(CommonUtils.xsDateMedium((Date)poTrans.getDetailExp(pnExp, "dExpiryDt")));
@@ -704,11 +706,7 @@ public class InvTransPostingController implements Initializable {
         } else{
             switch (lnIndex){
                 case 8: /*dExpiryDt*/
-                    try{
-                        txtDetail.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtDetail.setText(SQLUtil.dateFormat(poTrans.getMaster("dTransact"), pxeDateFormat));
                     txtDetail.selectAll();
                     break;
                 default:
@@ -739,9 +737,9 @@ public class InvTransPostingController implements Initializable {
                         break;
                 case 19: /*dReceived*/
                     if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                        txtField.setText(CommonUtils.xsDateMedium(CommonUtils.toDate(txtField.getText())));
+                        txtField.setText(SQLUtil.dateFormat(SQLUtil.toDate(txtField.getText(), pxeDateFormat),SQLUtil.FORMAT_MEDIUM_DATE));
                     }else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1991)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         txtField.setText(CommonUtils.xsDateMedium(CommonUtils.toDate(pxeDateDefault)));
                     }
                     return;
@@ -751,11 +749,7 @@ public class InvTransPostingController implements Initializable {
         } else{
             switch (lnIndex){
                 case 19: /*dReceived*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtField.setText(SQLUtil.dateFormat(SQLUtil.toDate(txtField.getText(), SQLUtil.FORMAT_MEDIUM_DATE),pxeDateFormat));
                     txtField.selectAll();
                     break;
                 default:

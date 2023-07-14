@@ -36,6 +36,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.MiscUtil;
+import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
@@ -228,7 +229,9 @@ public class InvAdjustmentController implements Initializable {
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
     
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    
+    private final String pxeDateFormat = "MM-dd-yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
     private TableModel model;
@@ -255,10 +258,10 @@ public class InvAdjustmentController implements Initializable {
             switch (lnIndex){
                 case 2: /*dTransact*/
                      if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                        poTrans.setMaster("dTransact", CommonUtils.toDate(txtField.getText()));
+                        poTrans.setMaster("dTransact", SQLUtil.toDate(txtField.getText(), pxeDateFormat));
                        txtField.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster("dTransact")));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1991)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster("dTransact", CommonUtils.toDate(pxeDateDefault));
                         txtField.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster("dTransact")));
                     }
@@ -270,14 +273,14 @@ public class InvAdjustmentController implements Initializable {
                        txtField.setText("");
                        break;
                        
-                case 51:
-                    if(CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                         txtField.setText(CommonUtils.xsDateLong(CommonUtils.toDate(txtField.getText())));
-                    }else{
-                        txtField.setText(CommonUtils.xsDateLong(CommonUtils.toDate(pxeDateDefault)));
-                    }
+//                case 51:
+//                    if(CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
+//                         txtField.setText(SQLUtil.dateFormat(SQLUtil.toDate(txtField.getText(), SQLUtil.FORMAT_LONG_DATE),pxeDateFormat));
+//                    }else{
+//                        txtField.setText(CommonUtils.xsDateLong(CommonUtils.toDate(pxeDateDefault)));
+//                    }
                    
-                   break;
+//                   break;
                 default:
                     ShowMessageFX.Warning(null, pxeModuleName, "Text field with name " + txtField.getId() + " not registered.");
                     return;
@@ -286,21 +289,17 @@ public class InvAdjustmentController implements Initializable {
         } else{
             switch (lnIndex){
                 case 2: /*dTransact*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
-                    txtField.selectAll();
+                        txtField.setText(SQLUtil.dateFormat(poTrans.getMaster("dTransact"), pxeDateFormat));
+                        txtField.selectAll();
                     break;
-                case 51:
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
-                    txtField.selectAll();
-                    break;
+//                case 51:
+//                    try{
+//                        txtField.setText(CommonUtils.xsDateShort(lsValue));
+//                    }catch(ParseException e){
+//                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
+//                    }
+//                    txtField.selectAll();
+//                    break;
                 default:
             }
             pnIndex = lnIndex;
@@ -322,10 +321,10 @@ public class InvAdjustmentController implements Initializable {
             switch (lnIndex){
                 case 7: /*dExpiryDt*/
                     if (CommonUtils.isDate(txtDetail.getText(), pxeDateFormat)){
-                        poTrans.setDetail(pnRow, "dExpiryDt", CommonUtils.toDate(txtDetail.getText()));
+                        poTrans.setDetail(pnRow, "dExpiryDt", SQLUtil.toDate(txtDetail.getText(), pxeDateFormat));
                         txtDetail.setText(CommonUtils.xsDateLong((Date)poTrans.getDetail(pnRow, "dExpiryDt")));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1991)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setDetail(pnRow, "dExpiryDt" , CommonUtils.toDate(pxeDateDefault));
                         txtDetail.setText(CommonUtils.xsDateLong((Date)poTrans.getDetail(pnRow, "dExpiryDt")));
                     }
@@ -377,11 +376,7 @@ public class InvAdjustmentController implements Initializable {
         } else{
             switch (lnIndex){
                 case 7: /*dExpiryDt*/
-                    try{
-                        txtDetail.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtDetail.setText(SQLUtil.dateFormat(poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
                     txtDetail.selectAll();
                     break;
                 default:
@@ -427,7 +422,7 @@ public class InvAdjustmentController implements Initializable {
                 dataDetail.clear();
                 loRS.first();
                     for( int rowCount = 0; rowCount <= MiscUtil.RecordCount(loRS) -1; rowCount++){
-                        if (CommonUtils.xsDateShort(loRS.getDate("dExpiryDt")).equals(CommonUtils.xsDateShort((Date) poTrans.getDetail(fnRow, "dExpiryDt")))){
+                        if (CommonUtils.xsDateMedium(loRS.getDate("dExpiryDt")).equals(CommonUtils.xsDateMedium((Date) poTrans.getDetail(fnRow, "dExpiryDt")))){
                             if(!pbFound) pbFound = true;
                             lnQuantity = loRS.getDouble("nQtyOnHnd") + Double.valueOf(poTrans.getDetail(fnRow, "nCredtQty").toString()) - Double.valueOf(poTrans.getDetail(fnRow, "nDebitQty").toString());
                         }else{
@@ -623,8 +618,8 @@ public class InvAdjustmentController implements Initializable {
         
         txtDetail03.setText("");
         txtDetail04.setText("");
-        txtDetail05.setText("");
-        txtDetail05.setText("0");
+        txtDetail05.setText("0.00");
+        txtDetail02.setText("0");
         txtDetail06.setText("0.00");
         txtDetail07.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
         txtDetail80.setText("");
@@ -669,6 +664,7 @@ public class InvAdjustmentController implements Initializable {
         txtDetail04.setDisable(!lbShow);
         txtDetail05.setDisable(!lbShow);
         txtDetail06.setDisable(!lbShow);
+        txtDetail07.setDisable(!lbShow);
         txtDetail80.setDisable(!lbShow);
         
         if (lbShow)

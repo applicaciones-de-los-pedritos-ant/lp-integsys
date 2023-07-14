@@ -35,6 +35,7 @@ import org.json.simple.JSONObject;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.appdriver.constants.TransactionStatus;
 import org.rmj.appdriver.GRider;
+import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.inventory.base.Inventory;
@@ -245,6 +246,7 @@ public class POReceivingController implements Initializable {
         txtDetail07.setDisable(!lbShow);
         txtDetail08.setDisable(!lbShow);
         txtDetail09.setDisable(!lbShow);
+        txtDetail10.setDisable(!lbShow);
         txtDetail80.setDisable(!lbShow);
 
         if (lbShow)
@@ -519,6 +521,7 @@ public class POReceivingController implements Initializable {
         txtDetail08.setText("0.00");
         txtDetail09.setText("0.00");
         txtDetail80.setText("");
+        txtDetail10.setText("");
         
         Label09.setText("0.00");
         
@@ -774,7 +777,8 @@ public class POReceivingController implements Initializable {
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
     
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM-dd-yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
     private TableModel model;
@@ -874,9 +878,9 @@ public class POReceivingController implements Initializable {
                     break;
                  case 10: /*dExpiryDt*/
                     if (CommonUtils.isDate(txtDetail.getText(), pxeDateFormat)){
-                        poTrans.setDetail(pnRow, "dExpiryDt", CommonUtils.toDate(txtDetail.getText()));
+                        poTrans.setDetail(pnRow, "dExpiryDt",  SQLUtil.toDate(txtDetail.getText(), pxeDateFormat));
                     }else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 1991-07-07)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setDetail(pnRow, "dExpiryDt",CommonUtils.toDate(pxeDateDefault));
                     }
                     return;
@@ -886,11 +890,7 @@ public class POReceivingController implements Initializable {
         } else{
             switch (lnIndex){
                 case 10: /*dExpiryDt*/
-                    try{
-                        txtDetail.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtDetail.setText(SQLUtil.dateFormat(poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
                     txtDetail.selectAll();
                     break;
                 default:
@@ -935,9 +935,9 @@ public class POReceivingController implements Initializable {
                 case 3: /*dTransact*/
                 case 7: /*dRefernce*/
                     if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                        poTrans.setMaster(lnIndex, CommonUtils.toDate(txtField.getText()));
+                        poTrans.setMaster(lnIndex, SQLUtil.toDate(txtField.getText(), pxeDateFormat));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 1991-07-07)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
                     return;
@@ -979,12 +979,11 @@ public class POReceivingController implements Initializable {
         } else{
             switch (lnIndex){
                 case 3: /*dTransact*/
+                    txtField.setText(SQLUtil.dateFormat(poTrans.getMaster("dTransact"), pxeDateFormat));
+                    txtField.selectAll();
+                    break;
                 case 7: /*dRefernce*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtField.setText(SQLUtil.dateFormat(poTrans.getMaster("dRefernce"), pxeDateFormat));
                     txtField.selectAll();
                     break;
             }

@@ -109,7 +109,8 @@ public class InvStockRequestController implements Initializable {
     private InvRequest poTrans;
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM-dd-yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
     private TableModel model;
@@ -753,9 +754,9 @@ public class InvStockRequestController implements Initializable {
                     break;
                 case 2: /*dTransact*/
                   if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                        poTrans.setMaster("dTransact", CommonUtils.toDate(txtField.getText()));
+                        poTrans.setMaster("dTransact", SQLUtil.toDate(txtField.getText(), pxeDateFormat));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1991)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
                     return;
@@ -779,11 +780,7 @@ public class InvStockRequestController implements Initializable {
         } else{
             switch (lnIndex){
                 case 2: /*dTransact*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtField.setText(SQLUtil.dateFormat(poTrans.getMaster("dTransact"), pxeDateFormat));
                     txtField.selectAll();
                     break;
                 default:

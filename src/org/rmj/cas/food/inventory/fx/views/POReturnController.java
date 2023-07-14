@@ -31,6 +31,7 @@ import javafx.scene.layout.AnchorPane;
 import org.json.simple.JSONObject;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.appdriver.GRider;
+import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.cas.inventory.base.Inventory;
@@ -212,6 +213,7 @@ public class POReturnController implements Initializable {
         txtDetail05.setDisable(!lbShow);
         txtDetail06.setDisable(!lbShow);
         txtDetail07.setDisable(!lbShow);
+        txtDetail08.setDisable(!lbShow);
         txtDetail80.setDisable(!lbShow);
         btnUpdate.setVisible(!lbShow);
         
@@ -654,7 +656,8 @@ public class POReturnController implements Initializable {
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
     
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM-dd-yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
     private final String pxeDateDefault = "1900-01-01";
     
     private TableModel model;
@@ -755,9 +758,9 @@ public class POReturnController implements Initializable {
                     break;
                 case 8: /*dExpiryDt*/
                         if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                            poTrans.setDetail(pnRow, "dExpiryDt", CommonUtils.toDate(txtField.getText()));
+                            poTrans.setDetail(pnRow, "dExpiryDt", SQLUtil.toDate(txtField.getText(), pxeDateFormat));
                         }else{
-                            ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1991)");
+                            ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                             poTrans.setDetail(pnRow, "dExpiryDt",CommonUtils.toDate(pxeDateDefault));
                         }
                         return;
@@ -767,11 +770,7 @@ public class POReturnController implements Initializable {
         } else{
             switch (lnIndex){
                 case 8: /*dExpiryDt*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtField.setText(SQLUtil.dateFormat(poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
                     txtField.selectAll();
                     break;
                 default:
@@ -800,9 +799,9 @@ public class POReturnController implements Initializable {
                     return;
                 case 3: /*dTransact*/
                     if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                        poTrans.setMaster(lnIndex, CommonUtils.toDate(txtField.getText()));
+                        poTrans.setMaster(lnIndex, SQLUtil.toDate(txtField.getText(), pxeDateFormat));
                     } else{
-                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 07-07-1991)");
+                        ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
                     return;
@@ -884,11 +883,7 @@ public class POReturnController implements Initializable {
         } else{
             switch (lnIndex){
                 case 3: /*dTransact*/
-                    try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
-                    }catch(ParseException e){
-                        ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
-                    }
+                    txtField.setText(SQLUtil.dateFormat(poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
                     txtField.selectAll();
                     break;
                 default:
