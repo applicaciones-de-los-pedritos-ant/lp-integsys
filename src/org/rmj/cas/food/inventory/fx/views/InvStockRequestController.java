@@ -802,10 +802,9 @@ public class InvStockRequestController implements Initializable {
         
         if(!nv){ /*Lost Focus*/     
             switch (lnIndex){
-                case 3: /*Barcode Search*/
-                case 80:/*sDescript Search*/
-                case 4:/*sOrigIDxx*/
-                case 5:/*sOrderNox Search*/
+                case 1: /*Barcode Search*/
+                case 2:/*sDescript Search*/
+                case 5:/*Qty onhand*/
                     break;
                 
                 case 7:/*nQuantity*/
@@ -860,7 +859,7 @@ public class InvStockRequestController implements Initializable {
         
         if(!nv){ /*Lost Focus*/            
             switch (lnIndex){
-                case 10: /*sNotesxxx*/
+                case 3: /*sNotesxxx*/
                     if (lsValue.length() > 256) lsValue = lsValue.substring(0, 256);
                     
                     poTrans.setDetail(pnRow, "sNotesxxx", CommonUtils.TitleCase(lsValue));

@@ -191,11 +191,11 @@
                                  </font></TextField>
                            </children>
                         </GridPane>
-                        <TableView fx:id="table" focusTraversable="false" layoutX="20.0" layoutY="226.0" onMouseClicked="#table_Clicked" prefHeight="183.0" prefWidth="585.0" stylesheets="@../styles/Tables.css">
+                        <TableView fx:id="table" focusTraversable="false" layoutX="20.0" layoutY="226.0" onMouseClicked="#table_Clicked" prefHeight="183.0" prefWidth="665.0" stylesheets="@../styles/Tables.css">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy></TableView>
-                        <TableView fx:id="tableDetail" layoutX="610.0" layoutY="226.0" prefHeight="183.0" prefWidth="268.0" stylesheets="@../styles/Tables.css">
+                        <TableView fx:id="tableDetail" layoutX="690.0" layoutY="226.0" prefHeight="183.0" prefWidth="268.0" stylesheets="@../styles/Tables.css">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy></TableView>

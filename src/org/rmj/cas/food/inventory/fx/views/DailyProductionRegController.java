@@ -240,15 +240,18 @@ public class DailyProductionRegController implements Initializable {
                 
             case "btnPrint": 
                 if(!psOldRec.equals("")){
-                    if(ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")==true){
-                        //if (poTrans.printTransaction(psOldRec))
-                        ShowMessageFX.Information(null, pxeModuleName, "Transaction printed successfully.");
-                    clearFields();
-                        initGrid();
-                    pnEditMode = EditMode.UNKNOWN;
-                    break;
-                    }else
-                    return;
+                    ShowMessageFX.Information(null, pxeModuleName, "This feature is coming soon!.");
+
+//                if(!psOldRec.equals("")){
+//                    if(ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")==true){
+////                        if (poTrans.printTransaction(psOldRec))
+//                        ShowMessageFX.Information(null, pxeModuleName, "Transaction printed successfully.");
+//                    clearFields();
+//                        initGrid();
+//                    pnEditMode = EditMode.UNKNOWN;
+//                    break;
+//                    }else
+//                    return;
                 }else 
                     ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
                     break;
@@ -520,7 +523,7 @@ public class DailyProductionRegController implements Initializable {
         if (!poTrans.getDetail(fnRow, "sStockIDx").equals("")){
             txtDetail03.setText((String) poTrans.getDetailOthers(pnRow, "sBarCodex"));
             txtDetail80.setText((String) poTrans.getDetailOthers(pnRow, "sDescript"));
-            txtDetail06.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
+            txtDetail06.setText(SQLUtil.dateFormat(poTrans.getDetail(pnRow, "dExpiryDt"),SQLUtil.FORMAT_LONG_DATE));
             txtDetail04.setText(String.valueOf(poTrans.getDetail(pnRow, "nQuantity")));
             txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, "nGoalQtyx")));
         } else{

@@ -845,7 +845,7 @@ public class DailyProductionController implements Initializable {
         if (!poTrans.getDetail(fnRow, "sStockIDx").equals("")){
             txtDetail03.setText((String) poTrans.getDetailOthers(pnRow, "sBarCodex"));
             txtDetail80.setText((String) poTrans.getDetailOthers(pnRow, "sDescript"));
-            txtDetail06.setText(SQLUtil.dateFormat(poTrans.getDetail(pnRow, "dExpiryDt"),pxeDateFormat));
+            txtDetail06.setText(SQLUtil.dateFormat(poTrans.getDetail(pnRow, "dExpiryDt"),SQLUtil.FORMAT_LONG_DATE));
             txtDetail04.setText(String.valueOf(poTrans.getDetail(pnRow, "nQuantity")));
             txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, "nGoalQtyx")));
         } else{

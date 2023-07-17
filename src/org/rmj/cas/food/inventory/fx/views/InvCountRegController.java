@@ -325,8 +325,8 @@ public class InvCountRegController implements Initializable {
                                     poTrans.getDetailOthers(lnCtr, "sDescript").toString(),
                                     poTrans.getDetailOthers(lnCtr, "sBrandNme").toString(),
                                     String.valueOf(poTrans.getDetail(lnCtr, "nFinalCtr")),
-                                    String.valueOf(CommonUtils.xsDateShort((Date) poTrans.getDetail(lnCtr, "dExpiryDt"))),
-                                    "",
+                                    String.valueOf(CommonUtils.xsDateMedium((Date) poTrans.getDetail(lnCtr, "dExpiryDt"))),
+                                    (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"),
                                     "",
                                     "",
                                     ""));
@@ -414,16 +414,19 @@ public class InvCountRegController implements Initializable {
                 return;
                 
             case "btnPrint": 
-               if(!psOldRec.equals("")){
-                    if(ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")==true){
-                        //if (poTrans.printTransaction(psOldRec))
-                        ShowMessageFX.Information(null, pxeModuleName, "Transaction printed successfully.");
-                        clearFields();
-                        initGrid();
-                        pnEditMode = EditMode.UNKNOWN;
-                        break;
-                    }else
-                        return;
+                 if(!psOldRec.equals("")){
+                    ShowMessageFX.Information(null, pxeModuleName, "This feature is coming soon!.");
+
+//               if(!psOldRec.equals("")){
+//                    if(ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")==true){
+//                        //if (poTrans.printTransaction(psOldRec))
+//                        ShowMessageFX.Information(null, pxeModuleName, "Transaction printed successfully.");
+//                        clearFields();
+//                        initGrid();
+//                        pnEditMode = EditMode.UNKNOWN;
+//                        break;
+//                    }else
+//                        return;
                 }else 
                     ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
                 break;
@@ -531,6 +534,7 @@ public class InvCountRegController implements Initializable {
         TableColumn index04 = new TableColumn("Brand");
         TableColumn index05 = new TableColumn("Count");
         TableColumn index06 = new TableColumn("Expiration");
+        TableColumn index07 = new TableColumn("Measure");
         
         index01.setPrefWidth(50); index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(100);
@@ -538,6 +542,7 @@ public class InvCountRegController implements Initializable {
         index04.setPrefWidth(120);
         index05.setPrefWidth(80); index05.setStyle("-fx-alignment: CENTER;");
         index06.setPrefWidth(98); index06.setStyle("-fx-alignment: CENTER;");
+        index07.setPrefWidth(75); index07.setStyle("-fx-alignment: CENTER;");
         
         index01.setSortable(false); index01.setResizable(false);
         index02.setSortable(false); index02.setResizable(false);
@@ -545,6 +550,7 @@ public class InvCountRegController implements Initializable {
         index04.setSortable(false); index04.setResizable(false);
         index05.setSortable(false); index05.setResizable(false);
         index06.setSortable(false); index06.setResizable(false);
+        index07.setSortable(false); index07.setResizable(false);
        
         
         table.getColumns().clear();        
@@ -552,6 +558,7 @@ public class InvCountRegController implements Initializable {
         table.getColumns().add(index02);
         table.getColumns().add(index03);
         table.getColumns().add(index04);
+        table.getColumns().add(index07);
         table.getColumns().add(index05);
         table.getColumns().add(index06);
         
@@ -561,6 +568,7 @@ public class InvCountRegController implements Initializable {
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
+        index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
         
          /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {  
