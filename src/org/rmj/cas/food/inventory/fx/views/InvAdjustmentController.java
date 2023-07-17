@@ -397,7 +397,7 @@ public class InvAdjustmentController implements Initializable {
         
         if(!nv){ /*Lost Focus*/            
             switch (lnIndex){
-                case 2: /*sRemarksx*/
+                case 4: /*sRemarksx*/
                     if (lsValue.length() > 256) lsValue = lsValue.substring(0, 512);
                     
                     poTrans.setMaster("sRemarksx", CommonUtils.TitleCase(lsValue));

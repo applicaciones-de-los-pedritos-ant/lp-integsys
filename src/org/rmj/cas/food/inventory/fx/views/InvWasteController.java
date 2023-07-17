@@ -742,8 +742,8 @@ public class InvWasteController implements Initializable {
         txtField02.setText(CommonUtils.xsDateMedium((Date) poTrans.getMaster("dTransact")));
         
         try{
-          txtField51.setText(CommonUtils.xsDateShort(CommonUtils.toDate(poTrans.getMaster("dTransact").toString())));
-          psdTransact = CommonUtils.xsDateShort(CommonUtils.toDate(poTrans.getMaster("dTransact").toString()));
+          txtField51.setText(CommonUtils.xsDateLong(CommonUtils.toDate(poTrans.getMaster("dTransact").toString())));
+          psdTransact = CommonUtils.xsDateLong(CommonUtils.toDate(poTrans.getMaster("dTransact").toString()));
         }catch(NullPointerException e){
             System.out.println(e);
         }
