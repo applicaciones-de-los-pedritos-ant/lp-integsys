@@ -122,14 +122,6 @@
                   <FontAwesomeIconView glyphName="CALCULATOR" size="25" />
                </graphic>
             </Button>
-            <Button fx:id="btnCancel" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="432.0" layoutY="5.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="Cancel" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <font>
-                  <Font size="10.0" />
-               </font>
-               <graphic>
-                  <FontAwesomeIconView glyphName="SIGN_OUT" size="25" />
-               </graphic>
-            </Button>
             <Button fx:id="btnClose" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="377.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Close" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <font>
                   <Font size="10.0" />
