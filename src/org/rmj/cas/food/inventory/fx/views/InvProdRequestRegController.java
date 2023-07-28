@@ -433,6 +433,7 @@ public class InvProdRequestRegController implements Initializable {
             JSONObject json_obj = new JSONObject();
             json_obj.put("sField01", (String) poTrans.getDetail(lnCtr, 5));
             json_obj.put("sField02", (String) poTrans.getDetail(lnCtr, 7));
+            json_obj.put("sField03", (String) poTrans.getDetailI(lnCtr, "xBrandNme"));
             json_obj.put("sField05", (String) poTrans.getDetail(lnCtr, 10));
             json_obj.put("nField01", (BigDecimal) poTrans.getDetail(lnCtr, 6));
             json_arr.add(json_obj);

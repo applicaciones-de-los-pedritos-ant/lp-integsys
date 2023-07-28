@@ -843,6 +843,7 @@ public class InvTransferRegController implements Initializable {
             json_obj.put("sField01", (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"));
             json_obj.put("sField02", (String) poTrans.getDetailOthers(lnCtr, "sDescript"));
             json_obj.put("sField03", (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"));
+            json_obj.put("sField04", (String) poTrans.getDetailOthers(lnCtr, "sBrandNme"));
             json_obj.put("lField01", (Double) poTrans.getDetail(lnCtr, "nQuantity"));
             json_arr.add(json_obj);
         }
