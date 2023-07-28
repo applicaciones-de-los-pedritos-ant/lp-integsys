@@ -609,6 +609,7 @@ public class InvStockRequestRegController implements Initializable {
             JSONObject json_obj = new JSONObject();
             json_obj.put("sField01", (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"));
             json_obj.put("sField02", (String) poTrans.getDetailOthers(lnCtr, "sDescript"));
+            json_obj.put("sField06", (String) poTrans.getDetailOthers(lnCtr, "sBrandNme"));
             json_obj.put("sField05", (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"));
             json_obj.put("nField01", Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()));
             json_arr.add(json_obj);
