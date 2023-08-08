@@ -467,7 +467,6 @@ public class InvTransferRegController implements Initializable {
                     }
                     
                     if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
-                        
                         if (!"0".equals((String) poTrans.getMaster("cTranStat"))){
                                 if (printTransfer()){                        
                                     clearFields();
