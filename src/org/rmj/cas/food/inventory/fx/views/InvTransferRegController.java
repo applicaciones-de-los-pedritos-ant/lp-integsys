@@ -467,17 +467,16 @@ public class InvTransferRegController implements Initializable {
                     }
                     
                     if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
-                        if ("0".equals((String) poTrans.getMaster("cTranStat"))){
-                            if (poTrans.closeTransaction(psOldRec)){
+                        if (!"0".equals((String) poTrans.getMaster("cTranStat"))){
                                 if (printTransfer()){                        
                                     clearFields();
                                     initGrid();
                                     pnEditMode = EditMode.UNKNOWN;
                                 } else return;
                             } else{
-                                ShowMessageFX.Warning(null, pxeModuleName, "Unable to confirm transaction.");
+                                ShowMessageFX.Warning(null, pxeModuleName, "Please Confirm the transaction first.");
                             }
-                        }
+                        
                     }
                     
                 } else ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");

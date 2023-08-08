@@ -34,13 +34,13 @@ import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
-import org.rmj.purchasing.agent.XMPurchaseOrder;
 import org.rmj.cas.inventory.base.Inventory;
 import org.rmj.lp.parameter.agent.XMBranch;
 import org.rmj.lp.parameter.agent.XMTerm;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
 import org.rmj.appdriver.agentfx.ui.showFXDialog;
 import org.rmj.appdriver.constants.UserRight;
+import org.rmj.purchasing.agent.PurchaseOrders;
 
 
 public class PurchaseOrderController implements Initializable {
@@ -86,7 +86,7 @@ public class PurchaseOrderController implements Initializable {
         dataPane.setRightAnchor(dataPane, 0.0);   
         
         /*Initialize class*/
-        poTrans = new XMPurchaseOrder(poGRider, poGRider.getBranchCode(), false);
+        poTrans = new PurchaseOrders(poGRider, poGRider.getBranchCode(), false);
         poTrans.setTranStat(0);
         poTrans.setCallBack(poCallBack);
         poTrans.setClientNm(System.getProperty("user.name"));
@@ -268,7 +268,7 @@ public class PurchaseOrderController implements Initializable {
         
         switch (lsButton){
             case "btnNew":
-                if (poTrans.newRecord()){
+                if (poTrans.newTransaction()){
                     clearFields(); 
                     loadRecord(); 
                     pnEditMode = poTrans.getEditMode();
@@ -284,10 +284,10 @@ public class PurchaseOrderController implements Initializable {
                         
                         //token type approval
                         if (showFXDialog.getTokenApproval(poGRider, "CASys_DBF.PO_Master", psOldRec)){
-                            if (poTrans.closeRecord(psOldRec, poGRider.getUserID(), "TOKENAPPROVL")){
+                            if (poTrans.closeTransaction(psOldRec, poGRider.getUserID(), "TOKENAPPROVL")){
                                 ShowMessageFX.Information("Transaction was approved successfully.", pxeModuleName, "Approval successful!!!");
 
-                                if (poTrans.openRecord(psOldRec)){       
+                                if (poTrans.openTransaction(psOldRec)){       
                                     clearFields();
                                     loadRecord(); 
                                     psOldRec = (String) poTrans.getMaster("sTransNox");
@@ -313,10 +313,10 @@ public class PurchaseOrderController implements Initializable {
                                     return;
                                 }
 
-                                if (poTrans.closeRecord(psOldRec, (String) loJSON.get("sUserIDxx"), "USERAPPROVAL")){
+                                if (poTrans.closeTransaction(psOldRec, (String) loJSON.get("sUserIDxx"), "USERAPPROVAL")){
                                     ShowMessageFX.Information("Transaction was approved successfully.", pxeModuleName, "Approval successful!!!");
 
-                                    if (poTrans.openRecord(psOldRec)){                                
+                                    if (poTrans.openTransaction(psOldRec)){                                
                                         loadRecord(); 
                                         psOldRec = (String) poTrans.getMaster("sTransNox");
 
@@ -333,10 +333,10 @@ public class PurchaseOrderController implements Initializable {
                                 }
                             }
                         } else {
-                            if (poTrans.closeRecord(psOldRec, poGRider.getUserID(), "USERAPPROVAL")){
+                            if (poTrans.closeTransaction(psOldRec, poGRider.getUserID(), "USERAPPROVAL")){
                                 ShowMessageFX.Information("Transaction was approved successfully.", pxeModuleName, "Approval successful!!!");
 
-                                if (poTrans.openRecord(psOldRec)){                                
+                                if (poTrans.openTransaction(psOldRec)){                                
                                     loadRecord(); 
                                     psOldRec = (String) poTrans.getMaster("sTransNox");
 
@@ -366,11 +366,11 @@ public class PurchaseOrderController implements Initializable {
                 break;
             case "btnSearch": return;
             case "btnSave": 
-                if (poTrans.saveRecord()){
+                if (poTrans.saveTransaction()){
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
 
                     //re open and print the record
-                    if (poTrans.openRecord((String) poTrans.getMaster("sTransNox"))){
+                    if (poTrans.openTransaction((String) poTrans.getMaster("sTransNox"))){
                         loadRecord(); 
                         psOldRec = (String) poTrans.getMaster("sTransNox");
                         pnEditMode = poTrans.getEditMode();
@@ -581,28 +581,19 @@ public class PurchaseOrderController implements Initializable {
                 if (lnIndex == 3){
                     lsValue = txtDetail.getText();
                     if (lsValue == null || lsValue.isEmpty()) lsValue = "";
-                    loJSON = poTrans.SearchDetail(pnRow, 3, "%" + lsValue, false, true);
-                    
-                    if (loJSON != null){
-                        psBarCodex = (String) loJSON.get("sBarCodex");
-                        psDescript = (String) loJSON.get("sDescript");
-                        txtDetail03.setText(psBarCodex);
-                        txtDetail80.setText(psDescript);
-                    }
+                    if(poTrans.SearchDetail(pnRow, 3, "%" + lsValue, false, true));
+                 
                 } else if (lnIndex == 80){
                     lsValue = txtDetail.getText();
                     if (lsValue == null || lsValue.isEmpty()) lsValue = "";
 
-                    loJSON = poTrans.SearchDetail(pnRow, 3, lsValue  + "%", false, false);
-                    if (loJSON != null){
-                        psBarCodex = (String) loJSON.get("sBarCodex");
-                        psDescript = (String) loJSON.get("sDescript");
-                        txtDetail03.setText(psBarCodex);
-                        txtDetail80.setText(psDescript);
-                    }
+                    if(poTrans.SearchDetail(pnRow, 3, lsValue  + "%", false, false));
+//                    
                 }
                 loadDetail();
-        }
+                }
+                
+        
         
         switch (event.getCode()){
         case ENTER:
@@ -617,7 +608,7 @@ public class PurchaseOrderController implements Initializable {
     private void deleteDetail(){
         if (pnOldRow == -1) return;
         if (poTrans.deleteDetail(pnOldRow)){
-            pnRow = poTrans.getDetailCount() - 1;
+            pnRow = poTrans.ItemCount() - 1;
             pnOldRow = pnRow;
             
             loadDetail();
@@ -644,7 +635,7 @@ public class PurchaseOrderController implements Initializable {
     
     private void loadDetail(){
         int lnCtr;
-        int lnRow = poTrans.getDetailCount();
+        int lnRow = poTrans.ItemCount();
         
         data.clear();
         /*ADD THE DETAIL*/
@@ -698,7 +689,7 @@ public class PurchaseOrderController implements Initializable {
     
     private final String pxeModuleName = "PurchaseOrderController";
     private static GRider poGRider;
-    private XMPurchaseOrder poTrans;
+    private PurchaseOrders poTrans;
     
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
@@ -875,7 +866,7 @@ public class PurchaseOrderController implements Initializable {
                     //}
                     
                     poTrans.addDetail();
-                    pnRow = poTrans.getDetailCount() - 1;
+                    pnRow = poTrans.ItemCount() - 1;
                     loadDetail();
                     if (txtDetail04.getText().isEmpty()){
                         txtDetail04.requestFocus();

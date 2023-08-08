@@ -36,7 +36,7 @@ import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.cas.inventory.base.Inventory;
 import org.rmj.purchasing.agent.XMPOReceiving;
-import org.rmj.purchasing.agent.XMPOReturn;
+import org.rmj.purchasing.agent.POReturn;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
 
 public class POReturnController implements Initializable {
@@ -80,7 +80,7 @@ public class POReturnController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         /*Initialize class*/
-        poTrans = new XMPOReturn(poGRider, poGRider.getBranchCode(), false);
+        poTrans = new POReturn(poGRider, poGRider.getBranchCode(), false);
         poTrans.setCallBack(poCallBack);
         
         txtField50.focusedProperty().addListener(txtField_Focus);
@@ -310,7 +310,7 @@ public class POReturnController implements Initializable {
                 }                        
                 return;
             case "btnNew":
-                if (poTrans.newRecord()){
+                if (poTrans.newTransaction()){
                     clearFields();
                     loadRecord();
                     pnEditMode = poTrans.getEditMode();
@@ -319,10 +319,10 @@ public class POReturnController implements Initializable {
             case "btnConfirm":
                 if (!psOldRec.equals("")){
                     if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transasction?")== true){  
-                        if (poTrans.closeRecord(psOldRec)){
+                        if (poTrans.closeTransaction(psOldRec)){
                              ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
                             
-                            if (poTrans.openRecord(psOldRec)){
+                            if (poTrans.openTransaction(psOldRec)){
                                 clearFields();
                                 loadRecord(); 
                                 
@@ -352,7 +352,7 @@ public class POReturnController implements Initializable {
                 break;
             case "btnSearch": getMaster(pnIndex); return;
             case "btnSave": 
-                if (poTrans.saveRecord()){
+                if (poTrans.saveTransaction()){
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
                     
                     //re open and print the record
@@ -541,36 +541,14 @@ public class POReturnController implements Initializable {
             case F3:
                 switch (lnIndex){
                     case 3:
-                        loJSON = poTrans.SearchDetail(pnRow, 3, lsValue, true, true);
-                        if (loJSON != null){
-                            psBarCodex = (String) loJSON.get("sBarCodex");
-                            psDescript = (String) loJSON.get("sDescript");
-                            txtDetail03.setText(psBarCodex);
-                            txtDetail80.setText(psDescript);
-                            if (loJSON.get("nQuantity")!=null){
-                                txtDetail05.setText(String.valueOf(loJSON.get("nQuantity")));
-                                txtDetail08.setText(CommonUtils.toDate((String) loJSON.get("dExpiryDt")).toString());
-                                txtDetail06.setText(String.valueOf(loJSON.get("xUnitPrce")));
-                                txtDetail07.setText(String.valueOf(loJSON.get("nFreightx")));
-                            }
+                        if(poTrans.SearchDetail(pnRow, 3, lsValue, true, true));
                             loadDetail();
-                        }
+                  
                         break;
                     case 80:
-                        loJSON = poTrans.SearchDetail(pnRow, 3, lsValue, false, false);
-                        if (loJSON != null){
-                            psBarCodex = (String) loJSON.get("sBarCodex");
-                            psDescript = (String) loJSON.get("sDescript");
-                            txtDetail03.setText(psBarCodex);
-                            txtDetail80.setText(psDescript);
-                            if (loJSON.get("nQuantity")!=null){
-                                txtDetail05.setText((String) loJSON.get("nQuantity"));
-                                txtDetail08.setText(CommonUtils.toDate((String) loJSON.get("dExpiryDt")).toString());
-                                txtDetail06.setText(String.valueOf(loJSON.get("xUnitPrce")));
-                                txtDetail07.setText(String.valueOf(loJSON.get("nFreightx")));
-                            }
+                        if(poTrans.SearchDetail(pnRow, 3, lsValue, false, false));
                             loadDetail();
-                        }
+
                         break;
                 }
                 break;
@@ -584,7 +562,7 @@ public class POReturnController implements Initializable {
     private void deleteDetail(){
         if (pnOldRow == -1) return;
         if (poTrans.deleteDetail(pnOldRow)){
-            pnRow = poTrans.getDetailCount() - 1;
+            pnRow = poTrans.ItemCount()- 1;
             pnOldRow = pnRow;
             
             loadDetail();
@@ -595,7 +573,7 @@ public class POReturnController implements Initializable {
         
     private void loadDetail(){
         int lnCtr;
-        int lnRow = poTrans.getDetailCount();
+        int lnRow = poTrans.ItemCount();
         
         data.clear();
         /*ADD THE DETAIL*/
@@ -651,7 +629,7 @@ public class POReturnController implements Initializable {
     
     private final String pxeModuleName = "POReceivingController";
     private static GRider poGRider;
-    private XMPOReturn poTrans;
+    private POReturn poTrans;
     
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
@@ -908,10 +886,10 @@ public class POReturnController implements Initializable {
                     txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, fnIndex)));
                     loadDetail();
                     
-                    if (!poTrans.getDetail(poTrans.getDetailCount() - 1, "sStockIDx").toString().isEmpty() && 
-                            Double.valueOf(poTrans.getDetail(poTrans.getDetailCount() - 1, fnIndex).toString()) > 0){
+                    if (!poTrans.getDetail(poTrans.ItemCount() - 1, "sStockIDx").toString().isEmpty() && 
+                            Double.valueOf(poTrans.getDetail(poTrans.ItemCount() - 1, fnIndex).toString()) > 0){
                         poTrans.addDetail();
-                        pnRow = poTrans.getDetailCount() - 1;
+                        pnRow = poTrans.ItemCount() - 1;
                     }                            
                     loadDetail();
 
