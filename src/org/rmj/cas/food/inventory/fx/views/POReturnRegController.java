@@ -43,7 +43,7 @@ import org.rmj.lp.parameter.agent.XMBranch;
 import org.rmj.lp.parameter.agent.XMDepartment;
 import org.rmj.lp.parameter.agent.XMInventoryType;
 import org.rmj.purchasing.agent.XMPOReceiving;
-import org.rmj.purchasing.agent.XMPOReturn;
+import org.rmj.purchasing.agent.POReturn;
 
 
 public class POReturnRegController implements Initializable {
@@ -83,7 +83,7 @@ public class POReturnRegController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         /*Initialize class*/
-        poTrans = new XMPOReturn(poGRider, poGRider.getBranchCode(), false);
+        poTrans = new POReturn(poGRider, poGRider.getBranchCode(), false);
         poTrans.setTranStat(1230);
          
         txtField50.setOnKeyPressed(this::txtField_KeyPressed);
@@ -273,7 +273,7 @@ public class POReturnRegController implements Initializable {
                         return;
                     }
                     if(ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to cancel this transaction?")==true){
-                        if (poTrans.cancelRecord(psOldRec))
+                        if (poTrans.cancelTransaction(psOldRec))
                         ShowMessageFX.Information(null, pxeModuleName, "Transaction CANCELLED successfully.");
                         clearFields();
                         initGrid();
@@ -441,7 +441,7 @@ public class POReturnRegController implements Initializable {
         
     private void loadDetail(){
         int lnCtr;
-        int lnRow = poTrans.getDetailCount();
+        int lnRow = poTrans.ItemCount();
         
         data.clear();
         /*ADD THE DETAIL*/
@@ -497,7 +497,7 @@ public class POReturnRegController implements Initializable {
     
     private final String pxeModuleName = "POReceivingRegController";
     private static GRider poGRider;
-    private XMPOReturn poTrans;
+    private POReturn poTrans;
     
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
@@ -552,10 +552,10 @@ public class POReturnRegController implements Initializable {
                     txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, fnIndex)));
                     loadDetail();
                     
-                    if (!poTrans.getDetail(poTrans.getDetailCount() - 1, "sStockIDx").toString().isEmpty() && 
-                            Double.valueOf(poTrans.getDetail(poTrans.getDetailCount() - 1, fnIndex).toString()) > 0){
+                    if (!poTrans.getDetail(poTrans.ItemCount() - 1, "sStockIDx").toString().isEmpty() && 
+                            Double.valueOf(poTrans.getDetail(poTrans.ItemCount() - 1, fnIndex).toString()) > 0){
                         poTrans.addDetail();
-                        pnRow = poTrans.getDetailCount() - 1;
+                        pnRow = poTrans.ItemCount() - 1;
                     }                            
                     loadDetail();
 

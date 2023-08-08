@@ -42,7 +42,7 @@ import org.rmj.cas.inventory.base.Inventory;
 import org.rmj.lp.parameter.agent.XMBranch;
 import org.rmj.lp.parameter.agent.XMDepartment;
 import org.rmj.lp.parameter.agent.XMTerm;
-import org.rmj.purchasing.agent.XMPOReceiving;
+import org.rmj.purchasing.agent.POReceiving1;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
 
 public class POReceivingController implements Initializable {
@@ -91,7 +91,7 @@ public class POReceivingController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         /*Initialize class*/
-        poTrans = new XMPOReceiving(poGRider, poGRider.getBranchCode(), false);
+        poTrans = new POReceiving1(poGRider, poGRider.getBranchCode(), false);
         poTrans.setTranStat(0);
         poTrans.setCallBack(poCallBack);
         poTrans.setClientNm(System.getProperty("user.name"));
@@ -345,7 +345,7 @@ public class POReceivingController implements Initializable {
         
         switch (lsButton){
             case "btnNew":
-                if (poTrans.newRecord()) {
+                if (poTrans.newTransaction()) {
                     clearFields(); 
                     loadRecord();
                     txtField50.setText("");
@@ -366,10 +366,10 @@ public class POReceivingController implements Initializable {
                     }
                     
                     if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transasction?")== true){
-                        if (poTrans.closeRecord(psOldRec)){
+                        if (poTrans.closeTransaction(psOldRec,"TOKENAPPROVL")){
                             ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
                             
-                            if (poTrans.openRecord(psOldRec)){
+                            if (poTrans.openTransaction(psOldRec)){
                                 clearFields();
                                 loadRecord(); 
                                 
@@ -401,11 +401,11 @@ public class POReceivingController implements Initializable {
                 
             case "btnSearch": return;
             case "btnSave": 
-                if (poTrans.saveRecord()){
+                if (poTrans.saveTransaction()){
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
                     
                     //re open and print the record
-                    if (poTrans.openRecord((String) poTrans.getMaster("sTransNox"))){
+                    if (poTrans.openTransaction((String) poTrans.getMaster("sTransNox"))){
                         loadRecord(); 
                         psOldRec = (String) poTrans.getMaster("sTransNox");
                         pnEditMode = poTrans.getEditMode();
@@ -470,7 +470,7 @@ public class POReceivingController implements Initializable {
         txtField06.setText((String) poTrans.getMaster(6));
         txtField50.setText((String) poTrans.getMaster(6));
         psReferNox = txtField50.getText();
-        txtField07.setText(CommonUtils.xsDateMedium((Date) poTrans.getMaster("dRefernce")));
+        txtField07.setText(CommonUtils.xsDateMedium((Date) (poTrans.getMaster("dRefernce") != null ? poTrans.getMaster("dRefernce"): CommonUtils.toDate(pxeDateDefault))));
         txtField10.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(10).toString()), "0.00"));
         txtField11.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(11).toString()), "#,##0.00"));
         txtField12.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(12).toString()), "0.00"));
@@ -638,45 +638,19 @@ public class POReceivingController implements Initializable {
             switch (lnIndex){
                 case 3: 
                     if (event.getCode() == F3){
-                        loJSON = poTrans.SearchDetail(pnRow, 3, lsValue, false, false);  
+                        if(poTrans.SearchDetail(pnRow, 3, lsValue, false, false));  
 
-                        if (loJSON != null){
-                            txtDetail03.setText((String) loJSON.get("sTransNox"));
-                            CommonUtils.SetNextFocus(txtDetail);
-                        }
-                    } else {
-                        if (!lsValue.isEmpty()){
-                            loJSON = poTrans.SearchDetail(pnRow, 3, lsValue, false, false);  
-
-                            if (loJSON != null){
-                                txtDetail03.setText((String) loJSON.get("sTransNox"));
-                                CommonUtils.SetNextFocus(txtDetail);
-                            }
-                        } else {
-                            poTrans.setDetail(pnRow, 3, "");
-                            CommonUtils.SetNextFocus(txtDetail);
-                        }
-                    }
+                      }
                     break;
                 case 4:
-                    loJSON = poTrans.SearchDetail(pnRow, 4, lsValue, false, false);
-                    if (loJSON != null){
-                        psBarCodex = (String) loJSON.get("sBarCodex");
-                        psDescript = (String) loJSON.get("sDescript");
-                        txtDetail04.setText(psBarCodex);
-                        txtDetail80.setText(psDescript);
+                    if(poTrans.SearchDetail(pnRow, 4, lsValue, false, false));
                         loadDetail();
-                    }
+//                    
                     break;
                 case 80:
-                    loJSON = poTrans.SearchDetail(pnRow, 4, lsValue, true, false);
-                    if (loJSON != null){
-                        psBarCodex = (String) loJSON.get("sBarCodex");
-                        psDescript = (String) loJSON.get("sDescript");
-                        txtDetail04.setText(psBarCodex);
-                        txtDetail80.setText(psDescript);
+                    if(poTrans.SearchDetail(pnRow, 4, lsValue, true, false));
                         loadDetail();
-                    }
+                    
                     break;
             }
         }
@@ -694,7 +668,7 @@ public class POReceivingController implements Initializable {
     private void deleteDetail(){
         if (pnOldRow == -1) return;
         if (poTrans.deleteDetail(pnOldRow)){
-            pnRow = poTrans.getDetailCount() - 1;
+            pnRow = poTrans.ItemCount() - 1;
             pnOldRow = pnRow;
             
             loadDetail();
@@ -704,7 +678,7 @@ public class POReceivingController implements Initializable {
     
     private void loadDetail(){
         int lnCtr;
-        int lnRow = poTrans.getDetailCount();
+        int lnRow = poTrans.ItemCount();
         
         data.clear();
         /*ADD THE DETAIL*/
@@ -772,7 +746,7 @@ public class POReceivingController implements Initializable {
     
     private final String pxeModuleName = "POReceivingController";
     private static GRider poGRider;
-    private XMPOReceiving poTrans;
+    private POReceiving1 poTrans;
     
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
@@ -1008,7 +982,7 @@ public class POReceivingController implements Initializable {
                         
                     poTrans.addDetail(); //pass psOrderNox here
                     
-                    pnRow = poTrans.getDetailCount() - 1;
+                    pnRow = poTrans.ItemCount() - 1;
 
                     loadDetail();
                     if (txtDetail04.getText().isEmpty()){
