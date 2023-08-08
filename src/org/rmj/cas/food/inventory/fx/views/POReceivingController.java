@@ -42,7 +42,7 @@ import org.rmj.cas.inventory.base.Inventory;
 import org.rmj.lp.parameter.agent.XMBranch;
 import org.rmj.lp.parameter.agent.XMDepartment;
 import org.rmj.lp.parameter.agent.XMTerm;
-import org.rmj.purchasing.agent.POReceiving1;
+import org.rmj.purchasing.agent.POReceiving;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
 
 public class POReceivingController implements Initializable {
@@ -91,7 +91,7 @@ public class POReceivingController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         /*Initialize class*/
-        poTrans = new POReceiving1(poGRider, poGRider.getBranchCode(), false);
+        poTrans = new POReceiving(poGRider, poGRider.getBranchCode(), false);
         poTrans.setTranStat(0);
         poTrans.setCallBack(poCallBack);
         poTrans.setClientNm(System.getProperty("user.name"));
@@ -746,7 +746,7 @@ public class POReceivingController implements Initializable {
     
     private final String pxeModuleName = "POReceivingController";
     private static GRider poGRider;
-    private POReceiving1 poTrans;
+    private POReceiving poTrans;
     
     private int pnEditMode = -1;
     private boolean pbLoaded = false;

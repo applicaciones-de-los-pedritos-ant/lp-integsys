@@ -43,7 +43,7 @@ import org.rmj.lp.parameter.agent.XMBranch;
 import org.rmj.lp.parameter.agent.XMDepartment;
 import org.rmj.lp.parameter.agent.XMInventoryType;
 import org.rmj.lp.parameter.agent.XMTerm;
-import org.rmj.purchasing.agent.POReceiving1;
+import org.rmj.purchasing.agent.POReceiving;
 
 
 public class POReceivingRegController implements Initializable {
@@ -91,7 +91,7 @@ public class POReceivingRegController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         /*Initialize class*/
-        poTrans = new POReceiving1(poGRider, poGRider.getBranchCode(), false);
+        poTrans = new POReceiving(poGRider, poGRider.getBranchCode(), false);
         poTrans.setTranStat(1230);
         poTrans.setClientNm(System.getProperty("user.name"));
                 
@@ -570,7 +570,7 @@ public class POReceivingRegController implements Initializable {
     
     private final String pxeModuleName = "POReceivingRegController";
     private static GRider poGRider;
-    private POReceiving1 poTrans;
+    private POReceiving poTrans;
     
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
