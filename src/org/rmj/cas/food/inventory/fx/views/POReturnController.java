@@ -336,7 +336,7 @@ public class POReturnController implements Initializable {
                             clearFields();
                             initGrid();
                             pnEditMode = EditMode.UNKNOWN;
-                        }
+                        }else poTrans.ShowMessageFX();
                     }
                       
                     return;
@@ -356,17 +356,17 @@ public class POReturnController implements Initializable {
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
                     
                     //re open and print the record
-//                    if (poTrans.openRecord((String) poTrans.getMaster("sTransNox"))){
-//                        loadRecord(); 
-//                        psOldRec = (String) poTrans.getMaster("sTransNox");
-//                        pnEditMode = poTrans.getEditMode();
-//                    } else {
+                    if (poTrans.openTransaction((String) poTrans.getMaster("sTransNox"))){
+                        loadRecord(); 
+                        psOldRec = (String) poTrans.getMaster("sTransNox");
+                        pnEditMode = poTrans.getEditMode();
+                    } else {
                         clearFields();
                         initGrid();
                         pnEditMode = EditMode.UNKNOWN;
-//                    }
+                    }
                     break;
-                } else return;
+                } else poTrans.ShowMessageFX();return;
             case "btnDel":  
                 deleteDetail();
                 return;

@@ -300,8 +300,8 @@ public class PurchaseOrderController implements Initializable {
                                     initGrid();
                                     pnEditMode = EditMode.UNKNOWN;
                                 }
-                            }
-                        }
+                            }else poTrans.ShowMessageFX();
+                        }else poTrans.ShowMessageFX();
                     } else{
                         //user approval type
                         if (poGRider.getUserLevel() < UserRight.MANAGER){
@@ -330,8 +330,8 @@ public class PurchaseOrderController implements Initializable {
                                     clearFields();
                                     initGrid();
                                     pnEditMode = EditMode.UNKNOWN;
-                                }
-                            }
+                                }else poTrans.ShowMessageFX();
+                            }else poTrans.ShowMessageFX();
                         } else {
                             if (poTrans.closeTransaction(psOldRec, poGRider.getUserID(), "USERAPPROVAL")){
                                 ShowMessageFX.Information("Transaction was approved successfully.", pxeModuleName, "Approval successful!!!");
@@ -348,7 +348,7 @@ public class PurchaseOrderController implements Initializable {
                                     initGrid();
                                     pnEditMode = EditMode.UNKNOWN;
                                 }
-                            }
+                            }else poTrans.ShowMessageFX();
                         }
                     }
                 } else {
@@ -380,7 +380,7 @@ public class PurchaseOrderController implements Initializable {
                         pnEditMode = EditMode.UNKNOWN;
                     }
                     break;
-                } else return;
+                } else poTrans.ShowMessageFX(); return;
             case "btnDel":  
                 deleteDetail();
                 return;
@@ -388,11 +388,11 @@ public class PurchaseOrderController implements Initializable {
                 if (pnIndex == 50){
                     if(poTrans.BrowseRecord(txtField50.getText(), true)){
                         loadRecord();
-                    }
+                    }else poTrans.ShowMessageFX();
                 } else {
                     if(poTrans.BrowseRecord(txtField51.getText(), false)){
                         loadRecord();
-                    }
+                    }else poTrans.ShowMessageFX();
                 }
                 
                 pnEditMode = poTrans.getEditMode();   
@@ -458,7 +458,7 @@ public class PurchaseOrderController implements Initializable {
         
         loadDetail();
         setTranStat((String) poTrans.getMaster("cTranStat"));
-        
+            
         pnRow = 0;
         pnOldRow = 0;
         psOldRec = txtField01.getText();
@@ -539,7 +539,7 @@ public class PurchaseOrderController implements Initializable {
                         loadRecord();
                         pnEditMode = poTrans.getEditMode();
                     } else {
-                        clearFields();
+                        clearFields(); 
                         pnEditMode = EditMode.UNKNOWN; break;
                     }
                             
@@ -590,7 +590,7 @@ public class PurchaseOrderController implements Initializable {
                     if(poTrans.SearchDetail(pnRow, 3, lsValue  + "%", false, false));
 //                    
                 }
-                loadDetail();
+                    loadDetail();
                 }
                 
         
