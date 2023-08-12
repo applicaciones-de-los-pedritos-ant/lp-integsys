@@ -416,7 +416,7 @@ public class POReceivingController implements Initializable {
                         initButton(pnEditMode);
                     }
                     break;
-                } else return;
+                } else  poTrans.ShowMessageFX(); return;
                 
             case "btnBrowse":
                 if(poTrans.BrowseRecord(txtField50.getText(), true)==true){
