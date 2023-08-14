@@ -34,6 +34,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
@@ -53,8 +54,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import org.apache.commons.lang3.time.DateUtils;
 import org.rmj.appdriver.GRider;
@@ -167,6 +170,8 @@ public class MDIMainController implements Initializable {
     private ObservableList<TableModel> data03 = FXCollections.observableArrayList();     
     @FXML
     private MenuItem mnu_ProductionRequest;
+    @FXML
+    private MenuItem mnuSPRec;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -404,6 +409,62 @@ public class MDIMainController implements Initializable {
             System.err.println(ex.getMessage());
         }
         return null;
+    }
+
+    @FXML
+    private void mnuSPRec_Click(ActionEvent event) {
+        try {
+            loadSPRecalculateWindow();
+        } catch (SQLException ex) {
+            Logger.getLogger(MDIMainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private double xOffset = 0;
+    private double yOffset = 0;
+    private void loadSPRecalculateWindow() throws SQLException{
+        try {
+            Stage stage = new Stage();
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("SPRecalculateUtility.fxml"));
+
+            SPRecalculateUtilityController loControl = new SPRecalculateUtilityController();
+            loControl.setGRider(poGRider);
+            fxmlLoader.setController(loControl);
+
+            //load the main interface
+            Parent parent = fxmlLoader.load();
+
+            parent.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+
+            parent.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    stage.setX(event.getScreenX() - xOffset);
+                    stage.setY(event.getScreenY() - yOffset);
+                }
+            });
+
+            //set the main interface as the scene
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("");
+            stage.showAndWait();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            ShowMessageFX.Warning(null,e.getMessage(), "Warning", null);
+            System.exit(1);
+        }
     }
     
     class Delta { double x, y; }
