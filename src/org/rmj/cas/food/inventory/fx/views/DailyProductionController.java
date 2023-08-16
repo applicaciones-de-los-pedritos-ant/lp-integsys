@@ -933,7 +933,13 @@ public class DailyProductionController implements Initializable {
             public void handle(CellEditEvent<RawTable, String> event) {
                 RawTable tableModel = event.getRowValue();
                 tableModel.setIndex06(event.getNewValue());
-                poTrans.setInv(pnRawdata, "nQtyReqrd" , Double.valueOf(tableModel.getIndex06()));
+                Number y = 0;
+                try{
+                    y =Double.valueOf(tableModel.getIndex05());
+                }catch (NumberFormatException e){
+                    y = 0;
+                }
+                poTrans.setInv(pnRawdata, "nQtyReqrd" , y);
                 if (Double.valueOf(tableModel.getIndex06()) > 0){
                     poTrans.addInv();
                 } 
@@ -949,7 +955,13 @@ public class DailyProductionController implements Initializable {
             public void handle(CellEditEvent<RawTable, String> event) {
                 RawTable tableModel = event.getRowValue();
                 tableModel.setIndex06(event.getNewValue());
-                poTrans.setInv(pnRawdata, "nQtyUsedx" , Double.valueOf(tableModel.getIndex07()));
+                Number y = 0;
+                try{
+                    y =Double.valueOf(tableModel.getIndex06());
+                }catch (NumberFormatException e){
+                    y = 0;
+                }
+                poTrans.setInv(pnRawdata, "nQtyUsedx" , y);
                 if (Double.valueOf(tableModel.getIndex07()) > 0){
                     poTrans.addInv();
                 } 
@@ -1054,13 +1066,13 @@ public class DailyProductionController implements Initializable {
                     
                     loadDetail();
                     
-                     if (!txtDetail03.getText().isEmpty()){
-                        txtDetail04.requestFocus();
-                        txtDetail04.selectAll();
-                    } else{
-                        txtDetail03.requestFocus();
-                        txtDetail03.selectAll();
-                    }
+//                     if (!txtDetail03.getText().isEmpty()){
+//                        txtDetail04.requestFocus();
+//                        txtDetail04.selectAll();
+//                    } else{
+//                        txtDetail03.requestFocus();
+//                        txtDetail03.selectAll();
+//                    }
             }
         }
     };

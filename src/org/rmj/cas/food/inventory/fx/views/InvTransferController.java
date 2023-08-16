@@ -1076,7 +1076,7 @@ public class InvTransferController implements Initializable {
                     poTrans.setDetail(pnRow,"nInvCostx", y);
                     break;
                 case 8: /*dExpiryDt*/
-                    System.out.println("dExpiration after search" + txtDetail.getText());
+                    System.out.println("dExpiration after search " + txtDetail.getText());
                     if (CommonUtils.isDate(txtDetail.getText(), pxeDateFormat) || 
                             (CommonUtils.isDate(txtDetail.getText(), SQLUtil.FORMAT_MEDIUM_DATE))){
                         poTrans.setDetail(pnRow, "dExpiryDt",  SQLUtil.toDate(txtDetail.getText(), pxeDateFormat));;
@@ -1257,6 +1257,7 @@ public class InvTransferController implements Initializable {
             Map<String, Object> params = new HashMap<>();
             params.put("sReportNm", "Inventory Transfer");
             params.put("sBranchNm", poGRider.getBranchName());
+            params.put("sBranchCd", poGRider.getBranchCode());
             params.put("sDestinat", lsSQL);
             params.put("sTransNox", poTrans.getMaster("sTransNox").toString().substring(1));
             params.put("sReportDt", CommonUtils.xsDateMedium((Date)poTrans.getMaster("dTransact")));

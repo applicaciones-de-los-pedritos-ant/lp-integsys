@@ -675,7 +675,6 @@ public class InvWasteController implements Initializable {
             CommonUtils.SetPreviousFocus((TextArea)event.getSource());
         }
     }
-    
     private void txtDetail_KeyPressed(KeyEvent event){
         TextField txtDetail = (TextField) event.getSource();
         int lnIndex = Integer.parseInt(txtDetail.getId().substring(9, 11));
@@ -684,7 +683,8 @@ public class InvWasteController implements Initializable {
         if (event.getCode() == F3){
             switch (lnIndex){
                 case 3:
-                    if (poTrans.SearchDetail(pnRow, 3, lsValue, true, true)){
+                    if (event.getCode() == F3) lsValue = lsValue + "%";
+                    if (poTrans.SearchDetail(pnRow, 3, lsValue, false, false)){
                         txtDetail03.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
                         txtDetail80.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
                         txtDetail82.setText(poTrans.getDetailOthers(pnRow, "xQtyOnHnd").toString());
@@ -702,7 +702,7 @@ public class InvWasteController implements Initializable {
                 case 80:
                     if (event.getCode() == F3) lsValue = lsValue + "%";
                     
-                    if (poTrans.SearchDetail(pnRow, 3, lsValue, false, false)){
+                    if (poTrans.SearchDetail(pnRow, 3, "%", true, false)){
                         txtDetail03.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
                         txtDetail80.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
                         txtDetail82.setText(poTrans.getDetailOthers(pnRow, "xQtyOnHnd").toString());
