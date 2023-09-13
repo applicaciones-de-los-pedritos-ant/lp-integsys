@@ -896,11 +896,11 @@ public class POReceivingController implements Initializable {
                        poTrans.setMaster(lnIndex, "");
                     }
                     
-                    if (txtField.getText().length() > 8){
-                        ShowMessageFX.Warning("Max characters for `Reference No.` exceeds the limit.", pxeModuleName, "Please verify your entry.");
-                        txtField.requestFocus();
-                        return;
-                    }
+//                    if (txtField.getText().length() > 8){
+//                        ShowMessageFX.Warning("Max characters for `Reference No.` exceeds the limit.", pxeModuleName, "Please verify your entry.");
+//                        txtField.requestFocus();
+//                        return;
+//                    }
                     poTrans.setMaster(lnIndex, txtField.getText());
                     return;
                 case 8: /*sTermCode*/
