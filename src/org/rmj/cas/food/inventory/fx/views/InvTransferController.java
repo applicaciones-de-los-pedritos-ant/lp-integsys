@@ -1079,7 +1079,7 @@ public class InvTransferController implements Initializable {
                     System.out.println("dExpiration after search " + txtDetail.getText());
                     if (CommonUtils.isDate(txtDetail.getText(), pxeDateFormat) || 
                             (CommonUtils.isDate(txtDetail.getText(), SQLUtil.FORMAT_MEDIUM_DATE))){
-                        poTrans.setDetail(pnRow, "dExpiryDt",  SQLUtil.toDate(txtDetail.getText(), pxeDateFormat));;
+                        poTrans.setDetail(pnRow, "dExpiryDt",  SQLUtil.toDate(txtDetail.getText(), pxeDateFormat));
                         txtDetail06.requestFocus();
                         txtDetail06.selectAll();
                     }else{
