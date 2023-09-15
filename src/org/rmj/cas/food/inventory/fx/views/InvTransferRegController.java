@@ -864,6 +864,7 @@ public class InvTransferRegController implements Initializable {
             params.put("sTransNox", poTrans.getMaster("sTransNox").toString().substring(1));
             params.put("sReportDt", CommonUtils.xsDateMedium((Date)poTrans.getMaster("dTransact")));
             params.put("sPrintdBy", System.getProperty("user.name"));
+            params.put("xRemarksx", poTrans.getMaster("sRemarksx"));
 
 
             lsSQL = "SELECT sClientNm FROM Client_Master WHERE sClientID IN (" +
