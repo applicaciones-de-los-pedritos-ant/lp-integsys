@@ -783,7 +783,11 @@ public class InvProdRequestController implements Initializable {
         JSONArray json_arr = new JSONArray();
         json_arr.clear();
         try {
+            data.clear();
+            /*ADD THE DETAIL*/
+
         for(int lnCtr = 1; lnCtr <= poTrans.getItemCount(); lnCtr ++){
+            System.out.println("Description = " + (String) poTrans.getDetail(lnCtr, 7));
             JSONObject json_obj = new JSONObject();
             json_obj.put("sField01", (String) poTrans.getDetail(lnCtr, 5));
             json_obj.put("sField02", (String) poTrans.getDetail(lnCtr, 7));
@@ -809,7 +813,10 @@ public class InvProdRequestController implements Initializable {
         params.put("sBranchNm", poGRider.getBranchName());
         params.put("sAddressx", poGRider.getAddress());
         params.put("sReportNm", "Inventory Product Request");
+        params.put("xRemarksx", poTrans.getMaster("sRemarksx"));
 //        params.put("sDestinat", lsSQL);
+
+
         
         params.put("sTransNox", poTrans.getMaster("sTransNox").toString().substring(1));
         params.put("sReportDt", CommonUtils.xsDateMedium((Date)poTrans.getMaster("dTransact")));

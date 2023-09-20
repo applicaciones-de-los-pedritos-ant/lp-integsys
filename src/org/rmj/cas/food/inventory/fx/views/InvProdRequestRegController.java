@@ -455,6 +455,7 @@ public class InvProdRequestRegController implements Initializable {
         params.put("sBranchNm", poGRider.getBranchName());
         params.put("sAddressx", poGRider.getAddress());
         params.put("sReportNm", "Inventory Product Request");
+        params.put("xRemarksx", poTrans.getMaster("sRemarksx"));
 //        params.put("sDestinat", lsSQL);
         
         params.put("sTransNox", poTrans.getMaster("sTransNox").toString().substring(1));

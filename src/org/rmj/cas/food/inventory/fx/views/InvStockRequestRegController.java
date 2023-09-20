@@ -639,6 +639,7 @@ public class InvStockRequestRegController implements Initializable {
         params.put("sTransNox", poTrans.getMaster("sTransNox").toString().substring(1));
         params.put("sReportDt", CommonUtils.xsDateMedium((Date)poTrans.getMaster("dTransact")));
         params.put("sPrintdBy", System.getProperty("user.name"));
+        params.put("xRemarksx", poTrans.getMaster("sRemarksx"));
                 
         try {
             InputStream stream = new ByteArrayInputStream(json_arr.toJSONString().getBytes("UTF-8"));
