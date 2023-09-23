@@ -40,6 +40,7 @@ public class FoodLedgerController implements Initializable {
     @FXML private TableColumn index05;
     @FXML private TableColumn index06;
     @FXML private TableColumn index07;
+    @FXML private TableColumn index08;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -80,6 +81,7 @@ public class FoodLedgerController implements Initializable {
         index05.setStyle("-fx-alignment: CENTER;");
         index06.setStyle("-fx-alignment: CENTER;");
         index07.setStyle("-fx-alignment: CENTER;");
+        index08.setStyle("-fx-alignment: CENTER-LEFT;");
      
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.child.TableModel,String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.child.TableModel,String>("index02"));
@@ -88,6 +90,7 @@ public class FoodLedgerController implements Initializable {
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.child.TableModel,String>("index05"));
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.child.TableModel,String>("index06"));
         index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.child.TableModel,String>("index07"));
+        index08.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.child.TableModel,String>("index08"));
         
         table.setItems(data);
     }
@@ -109,7 +112,7 @@ public class FoodLedgerController implements Initializable {
                                             poRS.getString("nQtyInxxx"),
                                             poRS.getString("nQtyOutxx"),
                                             poRS.getString("nQtyOnHnd"),
-                                            "",
+                                            poRS.getString("sBranchNm"),
                                             "",
                                             ""));
             }
