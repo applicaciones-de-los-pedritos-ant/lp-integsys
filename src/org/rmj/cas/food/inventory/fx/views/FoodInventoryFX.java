@@ -23,6 +23,7 @@ public class FoodInventoryFX extends Application {
     public final static String pxeStageIcon = "org/rmj/cas/food/inventory/fx/images/ic_launcher1.png";
     
     public final static String pxeMainForm = "MDIMain.fxml";
+    public final static String pxeARDelivery = "ARDeliveryService.fxml";
     /*Parameters*/
     public final static String pxeBrand = "Brand.fxml";
     public final static String pxeCategory = "Category.fxml";

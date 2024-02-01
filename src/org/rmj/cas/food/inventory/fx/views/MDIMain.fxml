@@ -24,7 +24,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="mnuMain" onKeyPressed="#mnuMain_KeyPressed" prefHeight="768.0" prefWidth="1366.0" stylesheets="@../styles/MainController.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane id="AnchorPane" fx:id="mnuMain" onKeyPressed="#mnuMain_KeyPressed" prefHeight="768.0" prefWidth="1366.0" stylesheets="@../styles/MainController.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -72,6 +72,18 @@
                                        <menus>
                                           <Menu fx:id="mnuFiles" mnemonicParsing="false" text="File">
                                              <items>
+                                                <MenuItem fx:id="mnuARDelivery" mnemonicParsing="false" onAction="#mnuARDelivery_Click" text="AR Delivery Service">
+                                                   <graphic>
+                                                      <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                                         <graphic>
+                                                            <FontAwesomeIconView glyphName="MONEY" size="14" />
+                                                         </graphic>
+                                                         <font>
+                                                            <Font size="1.0" />
+                                                         </font>
+                                                      </Button>
+                                                   </graphic>
+                                                </MenuItem>
                                                 <MenuItem fx:id="mnuInventory" mnemonicParsing="false" onAction="#mnuInventory_Click" text="Items Management">
                                                    <graphic>
                                                       <Button graphicTextGap="2.0" mnemonicParsing="false">
