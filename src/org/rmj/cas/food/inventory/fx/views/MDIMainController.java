@@ -140,6 +140,7 @@ public class MDIMainController implements Initializable {
     @FXML private MenuItem menu_InvAdjustment;
     @FXML private MenuItem mnu_InvAdjustmentReg;
     @FXML private MenuItem menuNotif;
+    @FXML private MenuItem mnuARDelivery;
     @FXML private TableView table;
     @FXML private TableColumn index01;
     @FXML private TableColumn index02;
@@ -338,6 +339,7 @@ public class MDIMainController implements Initializable {
 //        setDataPane(fadeAnimate(FoodInventoryFX.pxeInventory));
         loadScene(FoodInventoryFX.pxeInventory);
     }
+    
     
     @FXML
     private void mnuInvLocation_Click(ActionEvent event) throws IOException {
@@ -646,12 +648,22 @@ public class MDIMainController implements Initializable {
                 
                 return loProdRequestRegObj;
                 
+            case FoodInventoryFX.pxeARDelivery:
+                ARDeliveryServiceController loARDeliveryServiceObj = new ARDeliveryServiceController();
+                loARDeliveryServiceObj.setGRider(poGRider);
+                
+                return loARDeliveryServiceObj;
+                
             default:
                 return null;
         }
     }
 
-
+    @FXML
+    private void mnuARDelivery_Click(ActionEvent event) throws IOException {
+//        setDataPane(fadeAnimate(FoodInventoryFX.pxePOReceiving));
+        loadScene(FoodInventoryFX.pxeARDelivery);
+    }
     @FXML
     private void btnExit_Clicke(ActionEvent event) {
        if (ShowMessageFX.OkayCancel(null, "Confirm", "Do you want to exit?") == true)
