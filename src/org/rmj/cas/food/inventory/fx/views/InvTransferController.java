@@ -1048,9 +1048,15 @@ public class InvTransferController implements Initializable {
                         x = 0;
                         txtDetail.setText("0");
                     }
-                    poTrans.setDetail(pnRow, "nQuantity",  x);
                     
                     if (Double.parseDouble(x.toString()) > 0.00 & !txtDetail03.getText().isEmpty()) {
+                        ShowMessageFX.Warning("", pxeModuleName, "No inventory exists for the item or parent. \nWe'll set the quantity to the value of the quantity on hand.");
+                        System.out.println(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString());
+                        if(Double.parseDouble(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString()) == 0.0){
+                            poTrans.setDetail(pnRow, "nQuantity",  0.0);
+                        }else{
+                            poTrans.setDetail(pnRow, "nQuantity",  x);  
+                        }
                         poTrans.addDetail();
                         pnRow = poTrans.ItemCount()-1;
                         

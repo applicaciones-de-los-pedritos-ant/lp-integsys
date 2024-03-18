@@ -23,7 +23,7 @@
         </data>
         <references xmlns="http://www.netbeans.org/ns/ant-project-references/1">
             <reference>
-                <foreign-project>cas-client</foreign-project>
+                <foreign-project>lp-client</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
                 <target>jar</target>
@@ -31,63 +31,7 @@
                 <id>jar</id>
             </reference>
             <reference>
-                <foreign-project>cas-food-reports</foreign-project>
-                <artifact-type>jar</artifact-type>
-                <script>build.xml</script>
-                <target>jar</target>
-                <clean-target>clean</clean-target>
-                <id>jar</id>
-            </reference>
-            <reference>
-                <foreign-project>cas-inventory-base</foreign-project>
-                <artifact-type>jar</artifact-type>
-                <script>build.xml</script>
-                <target>jar</target>
-                <clean-target>clean</clean-target>
-                <id>jar</id>
-            </reference>
-            <reference>
-                <foreign-project>cas-purchasing-agent</foreign-project>
-                <artifact-type>jar</artifact-type>
-                <script>build.xml</script>
-                <target>jar</target>
-                <clean-target>clean</clean-target>
-                <id>jar</id>
-            </reference>
-            <reference>
-                <foreign-project>cas-purchasing-base</foreign-project>
-                <artifact-type>jar</artifact-type>
-                <script>build.xml</script>
-                <target>jar</target>
-                <clean-target>clean</clean-target>
-                <id>jar</id>
-            </reference>
-            <reference>
-                <foreign-project>cas-purchasing-pojo</foreign-project>
-                <artifact-type>jar</artifact-type>
-                <script>build.xml</script>
-                <target>jar</target>
-                <clean-target>clean</clean-target>
-                <id>jar</id>
-            </reference>
-            <reference>
-                <foreign-project>cas-stock-agent</foreign-project>
-                <artifact-type>jar</artifact-type>
-                <script>build.xml</script>
-                <target>jar</target>
-                <clean-target>clean</clean-target>
-                <id>jar</id>
-            </reference>
-            <reference>
-                <foreign-project>cas-stock-base</foreign-project>
-                <artifact-type>jar</artifact-type>
-                <script>build.xml</script>
-                <target>jar</target>
-                <clean-target>clean</clean-target>
-                <id>jar</id>
-            </reference>
-            <reference>
-                <foreign-project>cas-stock-pojo</foreign-project>
+                <foreign-project>lp-inventory-base</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
                 <target>jar</target>
@@ -120,6 +64,62 @@
             </reference>
             <reference>
                 <foreign-project>lp-parameter-pojo</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>jar</target>
+                <clean-target>clean</clean-target>
+                <id>jar</id>
+            </reference>
+            <reference>
+                <foreign-project>lp-purchasing-agent</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>jar</target>
+                <clean-target>clean</clean-target>
+                <id>jar</id>
+            </reference>
+            <reference>
+                <foreign-project>lp-purchasing-base</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>jar</target>
+                <clean-target>clean</clean-target>
+                <id>jar</id>
+            </reference>
+            <reference>
+                <foreign-project>lp-purchasing-pojo</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>jar</target>
+                <clean-target>clean</clean-target>
+                <id>jar</id>
+            </reference>
+            <reference>
+                <foreign-project>lp-reports</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>jar</target>
+                <clean-target>clean</clean-target>
+                <id>jar</id>
+            </reference>
+            <reference>
+                <foreign-project>lp-stock-agent</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>jar</target>
+                <clean-target>clean</clean-target>
+                <id>jar</id>
+            </reference>
+            <reference>
+                <foreign-project>lp-stock-base</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>jar</target>
+                <clean-target>clean</clean-target>
+                <id>jar</id>
+            </reference>
+            <reference>
+                <foreign-project>lp-stock-pojo</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
                 <target>jar</target>
