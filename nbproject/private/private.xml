@@ -10,13 +10,6 @@
             <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/FoodInventoryFX.java</file>
             <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/applications/LetMeIn.java</file>
         </group>
-        <group>
-            <file>file:/C:/Users/User/OneDrive/Documents/GitHub/Los%20Pedritos%20Integsys/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/PurchaseOrderController.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/GitHub/Los%20Pedritos%20Integsys/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/TableModel.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/GitHub/Los%20Pedritos%20Integsys/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/RawTable.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/GitHub/Los%20Pedritos%20Integsys/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/DailyProductionController.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/GitHub/Los%20Pedritos%20Integsys/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/POReceivingController.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/GitHub/Los%20Pedritos%20Integsys/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/POReturnController.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

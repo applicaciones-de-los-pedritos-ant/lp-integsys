@@ -439,8 +439,8 @@ public class InvTransferController implements Initializable {
                     }
                     
                     if (!txtDetail03.getText().isEmpty()){
-                        txtDetail06.requestFocus();
-                        txtDetail06.selectAll();
+                        txtDetail10.requestFocus();
+                        txtDetail10.selectAll();
                     } else{
                         txtDetail05.requestFocus();
                         txtDetail05.selectAll();
@@ -467,8 +467,8 @@ public class InvTransferController implements Initializable {
                     }
                     
                     if (!txtDetail03.getText().isEmpty()){
-                        txtDetail06.requestFocus();
-                        txtDetail06.selectAll();
+                        txtDetail10.requestFocus();
+                        txtDetail10.selectAll();
                     } else{
                         txtDetail05.requestFocus();
                         txtDetail05.selectAll();
@@ -1050,18 +1050,29 @@ public class InvTransferController implements Initializable {
                     }
                     
                     if (Double.parseDouble(x.toString()) > 0.00 & !txtDetail03.getText().isEmpty()) {
-                        ShowMessageFX.Warning("", pxeModuleName, "No inventory exists for the item or parent. \nWe'll set the quantity to the value of the quantity on hand.");
                         System.out.println(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString());
-                        if(Double.parseDouble(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString()) == 0.0){
-                            poTrans.setDetail(pnRow, "nQuantity",  0.0);
-                        }else{
-                            poTrans.setDetail(pnRow, "nQuantity",  x);  
-                        }
-                        poTrans.addDetail();
-                        pnRow = poTrans.ItemCount()-1;
+//                        if(Double.parseDouble(x.toString()) > Double.parseDouble(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString())){
+//                            ShowMessageFX.Warning("", pxeModuleName, "No inventory exists for the item or parent. \nWe'll set the quantity to the value of the quantity on hand.");
+//                        
+//                            poTrans.setDetail(pnRow, "nQuantity",  0.0);
+//                        }else{
+//                            ShowMessageFX.Warning("", pxeModuleName, "No inventory exists for the item or parent. \nWe'll set the quantity to the value of the quantity on hand.");
+//                        
+//                            poTrans.setDetail(pnRow, "nQuantity",  x);  
+//                        }
+
+                        poTrans.setDetail(pnRow, "nQuantity",  x);  
                         
-                        loadDetail();
-                        tableDetail.setItems(loadEmptyData());
+                        double lnVal = (poTrans.getDetailOthers(pnRow, "nQtyOnHnd") == null)? 0.0: Double.parseDouble(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString());
+                        System.out.println("lnVal = " + lnVal);
+                        if(lnVal > 0.0){
+                            poTrans.addDetail();
+                            pnRow = poTrans.ItemCount()-1;
+
+                            loadDetail();
+                            tableDetail.setItems(loadEmptyData());
+                        }
+//                        
                     }else{
                         if (txtDetail03.getText().isEmpty()) {
                             tableDetail.setItems(loadEmptyData());
@@ -1320,8 +1331,13 @@ public class InvTransferController implements Initializable {
 
                         //set the previous order numeber to the new ones.
 //                        poTrans.setDetail(pnRow, "sOrderNox", psOrderNox);
-                    }                           
-                    loadDetail();
+                    } 
+                     
+                    double lnVal = (poTrans.getDetailOthers(pnRow, "nQtyOnHnd") == null)? 0.0: Double.parseDouble(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString());
+                    System.out.println("lnVal = " + lnVal);
+                    if(lnVal > 0.0){
+                        loadDetail();
+                    }
                     if (!txtDetail03.getText().isEmpty()){
                         txtDetail08.requestFocus();
                         txtDetail08.selectAll();
