@@ -795,7 +795,7 @@ public class ARDeliveryServiceController implements Initializable {
                 try {
                     TableModel tableModel = event.getRowValue();
                     tableModel.setIndex02(event.getNewValue());
-                    if (aPaneMaster.isDisable()) {
+                    if (!aPaneMaster.isDisable()) {
                         if (oTrans.searchBranch(pnRow, tableModel.getIndex02(), true)) {
                             loadBranchData();
                         } else {
@@ -819,7 +819,7 @@ public class ARDeliveryServiceController implements Initializable {
                 try {
                     TableModel tableModel = event.getRowValue();
                     tableModel.setIndex03(event.getNewValue());
-                    if (aPaneMaster.isDisable()) {
+                    if (!aPaneMaster.isDisable()) {
                         if (oTrans.searchBranch(pnRow, tableModel.getIndex03(), false)) {
                             loadBranchData();
                         } else {

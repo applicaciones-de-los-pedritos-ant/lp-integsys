@@ -44,7 +44,7 @@
                      <children>
                         <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columnConstraints>
-                            <ColumnConstraints fillWidth="false" hgrow="NEVER" minWidth="10.0" prefWidth="110.0" />
+                            <ColumnConstraints fillWidth="false" hgrow="NEVER" minWidth="10.0" prefWidth="80.0" />
                             <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="150.0" />
                               <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="150.0" />
                               <ColumnConstraints hgrow="NEVER" />
@@ -64,30 +64,22 @@
                                     <Insets />
                                  </GridPane.margin>
                               </TextField>
-                              <Label text="Client" GridPane.halignment="RIGHT">
+                              <Label text="Client" GridPane.halignment="LEFT">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                                  <GridPane.margin>
-                                    <Insets right="20.0" />
+                                    <Insets left="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <FontAwesomeIconView glyphName="GROUP" size="22">
-                                 <GridPane.margin>
-                                    <Insets left="5.0" />
-                                 </GridPane.margin></FontAwesomeIconView>
-                              <Label alignment="CENTER_RIGHT" text="Branch" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                              <Label alignment="CENTER_RIGHT" text="Branch" GridPane.halignment="LEFT" GridPane.rowIndex="2">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                                  <GridPane.margin>
-                                    <Insets right="20.0" />
+                                    <Insets left="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <FontAwesomeIconView glyphName="BANK" size="22" GridPane.rowIndex="2">
-                                 <GridPane.margin>
-                                    <Insets left="5.0" />
-                                 </GridPane.margin></FontAwesomeIconView>
                               <TextField fx:id="txtField02" editable="false" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
                            </children>
                            <padding>

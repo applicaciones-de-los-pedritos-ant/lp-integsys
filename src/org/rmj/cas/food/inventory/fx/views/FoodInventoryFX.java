@@ -24,6 +24,8 @@ public class FoodInventoryFX extends Application {
     
     public final static String pxeMainForm = "MDIMain.fxml";
     public final static String pxeARDelivery = "ARDeliveryService.fxml";
+    public final static String pxeSOAEntry = "SOAEntry.fxml";
+    public final static String pxeSOATagging = "SOATagging.fxml";
     /*Parameters*/
     public final static String pxeBrand = "Brand.fxml";
     public final static String pxeCategory = "Category.fxml";

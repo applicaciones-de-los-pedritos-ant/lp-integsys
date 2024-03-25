@@ -53,7 +53,6 @@ public class LetMeIn {
             System.err.println(poGRider.getErrMsg());
             System.exit(1);
         }         
-        
 
         FoodInventoryFX foodInventory = new FoodInventoryFX();
         foodInventory.setGRider(poGRider);
