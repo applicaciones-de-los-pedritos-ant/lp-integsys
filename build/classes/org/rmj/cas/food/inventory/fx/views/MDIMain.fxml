@@ -72,6 +72,18 @@
                                        <menus>
                                           <Menu fx:id="mnuFiles" mnemonicParsing="false" text="File">
                                              <items>
+                                                <MenuItem fx:id="mnuARDelivery" mnemonicParsing="false" onAction="#mnuARDelivery_Click" text="AR Delivery Service">
+                                                   <graphic>
+                                                      <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                                         <graphic>
+                                                            <FontAwesomeIconView glyphName="MONEY" size="14" />
+                                                         </graphic>
+                                                         <font>
+                                                            <Font size="1.0" />
+                                                         </font>
+                                                      </Button>
+                                                   </graphic>
+                                                </MenuItem>
                                                 <MenuItem fx:id="mnuInventory" mnemonicParsing="false" onAction="#mnuInventory_Click" text="Items Management">
                                                    <graphic>
                                                       <Button graphicTextGap="2.0" mnemonicParsing="false">
@@ -309,6 +321,37 @@
                                           </Menu>
                                           <Menu fx:id="mnuTransactions" mnemonicParsing="false" text="Transactions" visible="true">
                                              <items>
+                                                <Menu mnemonicParsing="false" text="Billing">
+                                                   <graphic>
+                                                      <FontAwesomeIconView glyphName="TAG" size="14" />
+                                                   </graphic>
+                                                   <items>
+                                                      <MenuItem fx:id="mnuSOAEntry" mnemonicParsing="false" onAction="#mnuSOAEntry_Click" text="Billing Statement">
+                                                         <graphic>
+                                                            <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                                               <graphic>
+                                                                  <FontAwesomeIconView glyphName="TAG" size="14" />
+                                                               </graphic>
+                                                               <font>
+                                                                  <Font size="1.0" />
+                                                               </font>
+                                                            </Button>
+                                                         </graphic>
+                                                      </MenuItem>
+                                                      <MenuItem fx:id="mnuSOATagging" mnemonicParsing="false" onAction="#mnuSOATagging_Click" text="Statement of Account ">
+                                                         <graphic>
+                                                            <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                                               <graphic>
+                                                                  <FontAwesomeIconView glyphName="TAG" size="14" />
+                                                               </graphic>
+                                                               <font>
+                                                                  <Font size="1.0" />
+                                                               </font>
+                                                            </Button>
+                                                         </graphic>
+                                                      </MenuItem>
+                                                   </items>
+                                                </Menu>
                                                 <Menu mnemonicParsing="false" text="Purchasing">
                                                    <graphic>
                                                       <FontAwesomeIconView glyphName="TAG" size="14" />
@@ -412,6 +455,18 @@
                                                       </Button>
                                                    </graphic>
                                                 </MenuItem>
+                                                <MenuItem fx:id="menu_TransferDiscrepancyPosting" mnemonicParsing="false" onAction="#menu_TransferDiscrepancyPostingClick" text="Inventory Transfer Discrepancy Posting">
+                                                   <graphic>
+                                                      <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                                         <graphic>
+                                                            <FontAwesomeIconView glyphName="TAG" size="14" />
+                                                         </graphic>
+                                                         <font>
+                                                            <Font size="1.0" />
+                                                         </font>
+                                                      </Button>
+                                                   </graphic>
+                                                </MenuItem>
                                                 <MenuItem fx:id="menu_TransferPosting" mnemonicParsing="false" onAction="#menu_TransferPostingClick" text="Inventory Transfer Posting">
                                                    <graphic>
                                                       <Button graphicTextGap="2.0" mnemonicParsing="false">
@@ -467,6 +522,18 @@
                                                          <font>
                                                             <Font size="1.0" />
                                                          </font>
+                                                      </Button>
+                                                   </graphic>
+                                                </MenuItem>
+                                                <MenuItem fx:id="mnuSPRec" mnemonicParsing="false" onAction="#mnuSPRec_Click" text="SP Recalculate">
+                                                   <graphic>
+                                                      <Button mnemonicParsing="false">
+                                                         <font>
+                                                            <Font size="1.0" />
+                                                         </font>
+                                                         <graphic>
+                                                            <FontAwesomeIconView glyphName="WRENCH" size="12" />
+                                                         </graphic>
                                                       </Button>
                                                    </graphic>
                                                 </MenuItem>
@@ -594,6 +661,18 @@
                                                    </graphic>
                                                 </MenuItem>
                                                 <MenuItem fx:id="mnu_InvTransReg" mnemonicParsing="false" onAction="#mnu_InvTransRegClick" text="Inventory Transfer">
+                                                   <graphic>
+                                                      <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                                         <graphic>
+                                                            <FontAwesomeIconView glyphName="SLIDERS" size="14" />
+                                                         </graphic>
+                                                         <font>
+                                                            <Font size="1.0" />
+                                                         </font>
+                                                      </Button>
+                                                   </graphic>
+                                                </MenuItem>
+                                                <MenuItem fx:id="mnu_InvTransDiscrepancyReg" mnemonicParsing="false" onAction="#mnu_InvTransDiscrepancyRegClick" text="Inventory Transfer Discrepancy">
                                                    <graphic>
                                                       <Button graphicTextGap="2.0" mnemonicParsing="false">
                                                          <graphic>

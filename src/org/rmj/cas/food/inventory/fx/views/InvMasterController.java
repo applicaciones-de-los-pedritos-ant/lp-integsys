@@ -209,7 +209,7 @@ public class InvMasterController implements Initializable {
             data.clear();
             while(loRS.next()){
                 data.add(new TableModel(String.valueOf(rowCount +1),
-                    String.valueOf(CommonUtils.xsDateMedium(loRS.getDate("dExpiryDt"))),
+                    String.valueOf(FoodInventoryFX.xsRequestFormat(loRS.getDate("dExpiryDt"))),
                     String.valueOf(loRS.getDouble("nQtyOnHnd")),
                     "",
                     "",
@@ -232,7 +232,7 @@ public class InvMasterController implements Initializable {
         int lnIndex = Integer.parseInt(((TextField)event.getSource()).getId().substring(8, 10));
         String lsValue = txtField.getText();
         
-        if (event.getCode() == F3 || event.getCode() == ENTER){
+        if (event.getCode() == F3 ){
             switch (lnIndex){
                 case 50:
                     if (event.getCode() == F3) lsValue = txtField.getText() + "%"; 
@@ -286,7 +286,7 @@ public class InvMasterController implements Initializable {
         TextField txtOther = (TextField)event.getSource();
         int lnIndex = Integer.parseInt(((TextField)event.getSource()).getId().substring(8, 10));
         String lsValue = txtOther.getText();
-        if (event.getCode() == F3 || event.getCode() == ENTER){
+        if (event.getCode() == F3 ){
             switch (lnIndex){
                 case 3:
                     if(event.getCode() == F3) lsValue = txtOther.getText() + "%";
@@ -627,12 +627,12 @@ public class InvMasterController implements Initializable {
       if(poRecord.getMaster("dAcquired")==null){
         txtOther05.setText("");
       }else{
-        txtOther05.setText(CommonUtils.xsDateMedium((Date) poRecord.getMaster("dAcquired")));
+        txtOther05.setText(FoodInventoryFX.xsRequestFormat((Date) poRecord.getMaster("dAcquired")));
       }
       if(poRecord.getMaster("dBegInvxx")==null){
         txtOther06.setText("");
       }else{
-        txtOther06.setText(CommonUtils.xsDateMedium((Date) poRecord.getMaster("dBegInvxx")));
+        txtOther06.setText(FoodInventoryFX.xsRequestFormat((Date) poRecord.getMaster("dBegInvxx")));
       }
               
       txtOther07.setText(String.valueOf(poRecord.getMaster("nBegQtyxx")));
@@ -679,8 +679,8 @@ public class InvMasterController implements Initializable {
     public void setGRider(GRider foGRider){this.poGRider = foGRider;}
     
     private final String pxeModuleName = "InvMasterController";
-    private final String pxeDefaultDte = "1900-01-01";
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDefaultDte = "12/25/1945";
+    private final String pxeDateFormat = "MM/dd/yyyy";
     private final String pxeCurrentDate = java.time.LocalDate.now().toString();
     private ObservableList<TableModel> data = FXCollections.observableArrayList();
     private static GRider poGRider;
@@ -771,22 +771,22 @@ public class InvMasterController implements Initializable {
                     break;
                     
                 case 5:if (CommonUtils.isDate(lsValue, pxeDateFormat)){
-                            poRecord.setMaster("dAcquired", CommonUtils.toDate(lsValue));
+                            poRecord.setMaster("dAcquired", SQLUtil.toDate(lsValue, pxeDateFormat));
                         } else{
                             ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 1991-07-07)");
                             poRecord.setMaster("dAcquired", CommonUtils.toDate(pxeCurrentDate));
                         }
                 
-                        txtOther.setText(CommonUtils.xsDateLong((Date)poRecord.getMaster("dAcquired")));
+                        txtOther.setText(FoodInventoryFX.xsRequestFormat((Date)poRecord.getMaster("dAcquired")));
                         break;
                 case 6:
                         if (CommonUtils.isDate(lsValue, pxeDateFormat)){
-                            poRecord.setMaster("dBegInvxx", CommonUtils.toDate(lsValue));
+                            poRecord.setMaster("dBegInvxx", SQLUtil.toDate(lsValue, pxeDateFormat));
                         } else{
                             ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, "Date format must be yyyy-MM-dd (e.g. 1991-07-07)");
                             poRecord.setMaster("dBegInvxx", CommonUtils.toDate(pxeCurrentDate));
                         }
-                        txtOther.setText(CommonUtils.xsDateLong((Date)poRecord.getMaster("dBegInvxx")));
+                        txtOther.setText(FoodInventoryFX.xsRequestFormat((Date)poRecord.getMaster("dBegInvxx")));
                         break;
                 case 7:
                     int lnBegBal;
@@ -811,7 +811,7 @@ public class InvMasterController implements Initializable {
                 case 6: /*dRefernce*/
                     if(!txtOther.getText().equals(""))
                     try{
-                        txtOther.setText(CommonUtils.xsDateShort(lsValue));
+                        txtOther.setText(FoodInventoryFX.xsRequestFormat(lsValue));
                     }catch(ParseException e){
                         ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
                     }

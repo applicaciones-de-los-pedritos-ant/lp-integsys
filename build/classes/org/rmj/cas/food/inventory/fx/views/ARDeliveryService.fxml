@@ -247,16 +247,6 @@
                                                                               <Font name="Arial" size="12.0" />
                                                                            </font>
                                                                         </TextField>
-                                                                        <FontAwesomeIconView glyphName="MOTORCYCLE" size="22" />
-                                                                        <FontAwesomeIconView glyphName="CALENDAR" size="22" GridPane.rowIndex="6" />
-                                                                        <FontAwesomeIconView glyphName="CALENDAR" size="22" GridPane.rowIndex="2" />
-                                                                        <FontAwesomeIconView glyphName="BELL" size="22" text="" GridPane.rowIndex="3" />
-                                                                        <FontAwesomeIconView glyphName="CERTIFICATE" size="22" GridPane.rowIndex="4" />
-                                                                        <FontAwesomeIconView glyphName="MONEY" size="22" GridPane.columnIndex="2" GridPane.rowIndex="6">
-                                                                           <GridPane.margin>
-                                                                              <Insets left="10.0" />
-                                                                           </GridPane.margin>
-                                                                        </FontAwesomeIconView>
                                                                         <Label fx:id="lbStatus" alignment="CENTER" prefWidth="150.0" style="-fx-border-color: orange; -fx-border-radius: 5; -fx-border-width: 2; -fx-background-color: gray; -fx-text-fill: black; -fx-background-radius: 5;" text="ACTIVE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowSpan="2">
                                                                            <font>
                                                                               <Font name="System Bold" size="14.0" />
@@ -289,7 +279,7 @@
                                                                         <TableColumn fx:id="index03" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="-1.0" sortable="false" text="Branch" />
                                                                      </columns>
                                                                   </TableView>
-                                                                  <Button fx:id="btnAdd" graphicTextGap="12.0" layoutX="447.0" layoutY="154.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" style="-fx-background-radius: 5; -fx-border-color: orange; -fx-border-radius: 3;" text="ADD" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="5.0">
+                                                                  <Button fx:id="btnAdd" graphicTextGap="12.0" layoutX="447.0" layoutY="154.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" style="-fx-background-radius: 5; -fx-border-color: orange; -fx-border-radius: 3;" text="Add" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="5.0">
                                                                      <graphic>
                                                                         <FontAwesomeIconView glyphName="PLUS" />
                                                                      </graphic>
@@ -653,63 +643,6 @@
                                                                               <Insets right="10.0" />
                                                                            </GridPane.margin>
                                                                         </Label>
-                                                                        <FontAwesomeIconView glyphName="USER" size="22" GridPane.rowIndex="3" />
-                                                                        <FontAwesomeIconView glyphName="ENVELOPE" size="22" GridPane.rowIndex="10" />
-                                                                        <FontAwesomeIconView glyphName="CERTIFICATE" size="22" GridPane.columnIndex="3" GridPane.rowIndex="12">
-                                                                           <GridPane.margin>
-                                                                              <Insets left="10.0" />
-                                                                           </GridPane.margin>
-                                                                        </FontAwesomeIconView>
-                                                                        <FontAwesomeIconView glyphName="MAP" size="22" GridPane.rowIndex="7" />
-                                                                        <FontAwesomeIconView glyphName="LIST" size="22" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                                                                           <GridPane.margin>
-                                                                              <Insets left="10.0" />
-                                                                           </GridPane.margin>
-                                                                        </FontAwesomeIconView>
-                                                                        <FontAwesomeIconView glyphName="BANK" size="22" GridPane.rowIndex="2" />
-                                                                        <FontAwesomeIconView glyphName="MONEY" size="22" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                                                                           <GridPane.margin>
-                                                                              <Insets left="10.0" />
-                                                                           </GridPane.margin>
-                                                                        </FontAwesomeIconView>
-                                                                        <FontAwesomeIconView glyphName="MONEY" size="22" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                                                                           <GridPane.margin>
-                                                                              <Insets left="10.0" />
-                                                                           </GridPane.margin>
-                                                                        </FontAwesomeIconView>
-                                                                        <FontAwesomeIconView glyphName="MONEY" size="22" GridPane.columnIndex="3" GridPane.rowIndex="5">
-                                                                           <GridPane.margin>
-                                                                              <Insets left="10.0" />
-                                                                           </GridPane.margin>
-                                                                        </FontAwesomeIconView>
-                                                                        <FontAwesomeIconView glyphName="MONEY" size="22" GridPane.columnIndex="3" GridPane.rowIndex="6">
-                                                                           <GridPane.margin>
-                                                                              <Insets left="10.0" />
-                                                                           </GridPane.margin>
-                                                                        </FontAwesomeIconView>
-                                                                        <FontAwesomeIconView glyphName="MONEY" size="22" GridPane.columnIndex="3" GridPane.rowIndex="7">
-                                                                           <GridPane.margin>
-                                                                              <Insets left="10.0" />
-                                                                           </GridPane.margin>
-                                                                        </FontAwesomeIconView>
-                                                                        <FontAwesomeIconView glyphName="PHONE" size="22" GridPane.columnIndex="3" GridPane.rowIndex="10">
-                                                                           <GridPane.margin>
-                                                                              <Insets left="10.0" />
-                                                                           </GridPane.margin>
-                                                                        </FontAwesomeIconView>
-                                                                        <FontAwesomeIconView glyphName="FAX" size="22" GridPane.columnIndex="3" GridPane.rowIndex="11">
-                                                                           <GridPane.margin>
-                                                                              <Insets left="10.0" />
-                                                                           </GridPane.margin>
-                                                                        </FontAwesomeIconView>
-                                                                        <FontAwesomeIconView glyphName="CALENDAR" size="22" GridPane.columnIndex="3" GridPane.rowIndex="8">
-                                                                           <GridPane.margin>
-                                                                              <Insets left="10.0" />
-                                                                           </GridPane.margin>
-                                                                        </FontAwesomeIconView>
-                                                                        <FontAwesomeIconView glyphName="SUITCASE" size="22" GridPane.rowIndex="11" />
-                                                                        <FontAwesomeIconView glyphName="PENCIL" size="22" GridPane.rowIndex="12" />
-                                                                        <FontAwesomeIconView glyphName="GROUP" size="22" />
                                                                         <CheckBox fx:id="chkBox01" alignment="CENTER_RIGHT" focusTraversable="false" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#chkBox01_Click" prefHeight="18.0" prefWidth="60.0" text="Hold" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="13">
                                                                            <GridPane.margin>
                                                                               <Insets right="130.0" />
@@ -718,7 +651,7 @@
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <FontAwesomeIconView fx:id="fxIconHold" glyphName="STOP" size="22" GridPane.columnIndex="3" GridPane.rowIndex="13">
+                                                                        <FontAwesomeIconView fx:id="fxIconHold" glyphName="STOP" size="22" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="13">
                                                                            <GridPane.margin>
                                                                               <Insets left="10.0" />
                                                                            </GridPane.margin>

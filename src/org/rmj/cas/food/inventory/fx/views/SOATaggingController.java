@@ -142,8 +142,8 @@ public class SOATaggingController implements Initializable {
     private String pesoSign = "\u20B1";
     private String psSourceCd = "";
 
-    private final String pxeDateFormat = "MM-dd-yyyy";
-    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
+    private final String pxeDateFormat = "MM/dd/yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12/25/1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     private FilteredList<TableModel> filteredData;
 
@@ -457,7 +457,7 @@ public class SOATaggingController implements Initializable {
         try {
             String TranNo = (String) oTrans.getMaster("sTransNox");
             txtField01.setText(TranNo);
-            txtField02.setText(CommonUtils.xsDateLong((Date) oTrans.getMaster("dTransact")));
+            txtField02.setText(FoodInventoryFX.xsRequestFormat((Date) oTrans.getMaster("dTransact")));
             txtField04.setText((String) oTrans.getMaster("sCompnyNm"));
             txtField05.setText((String) oTrans.getMaster("sClientNm"));
             txtField06.setText((String) oTrans.getMaster("xAddressx"));
@@ -607,7 +607,7 @@ public class SOATaggingController implements Initializable {
                             (String) oTrans.getBillDetail(lnCtr, 2),
                             (String) oTrans.getBillDetail(lnCtr, "sBranchNm"),
                             (String) oTrans.getBillDetail(lnCtr, "sSourceNo"),
-                            CommonUtils.xsDateLong((Date) oTrans.getBillDetail(lnCtr, "dTransact")),
+                            FoodInventoryFX.xsRequestFormat((Date) oTrans.getBillDetail(lnCtr, "dTransact")),
                             oTrans.getBillDetail(lnCtr, "nAmountxx").toString(),
                             isPaid,
                             "",

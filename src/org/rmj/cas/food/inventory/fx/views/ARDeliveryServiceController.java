@@ -137,8 +137,8 @@ public class ARDeliveryServiceController implements Initializable {
     double xOffset = 0;
     double yOffset = 0;
 
-    private final String pxeDateFormat = "MM-dd-yyyy";
-    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
+    private final String pxeDateFormat = "MM/dd/yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM/dd/yyyy (e.g. 12/25/1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     private FilteredList<TableModel> filteredData;
 
@@ -160,7 +160,7 @@ public class ARDeliveryServiceController implements Initializable {
             public void MasterRetreive(int fnIndex, Object foValue) {
                 switch (fnIndex) {
                     case 2:
-                        txtField02.setText(CommonUtils.xsDateLong((Date) foValue));
+                        txtField02.setText(FoodInventoryFX.xsRequestFormat((Date) foValue));
                         break;
                     case 3:
                         txtField03.setText((String) foValue);
@@ -169,7 +169,7 @@ public class ARDeliveryServiceController implements Initializable {
                         txtField04.setText((String) foValue);
                         break;
                     case 5:
-                        txtField05.setText(CommonUtils.xsDateLong((Date) foValue));
+                        txtField05.setText(FoodInventoryFX.xsRequestFormat((Date) foValue));
                         break;
                     case 6:
                         txtField06.setText(CommonUtils.NumberFormat(((Number) foValue), "#,##0.00"));
@@ -215,10 +215,10 @@ public class ARDeliveryServiceController implements Initializable {
                         txtOthers14.setText(CommonUtils.NumberFormat(((Number) foValue), "#,##0.00"));
                         break;
                     case 15://dBalForwd
-                        txtOthers15.setText(CommonUtils.xsDateLong((Date) foValue));
+                        txtOthers15.setText(FoodInventoryFX.xsRequestFormat((Date) foValue));
                         break;
                     case 16://dCltSince
-                        txtOthers16.setText(CommonUtils.xsDateLong((Date) foValue));
+                        txtOthers16.setText(FoodInventoryFX.xsRequestFormat((Date) foValue));
                         break;
                     case 18://cHoldAcct
                         if (("1").equals(foValue.toString())) {
@@ -642,10 +642,10 @@ public class ARDeliveryServiceController implements Initializable {
 
         try {
             txtField01.setText((String) oTrans.getMaster("sRiderIDx"));
-            txtField02.setText(CommonUtils.xsDateLong((Date) oTrans.getMaster("dPartnerx")));
+            txtField02.setText(FoodInventoryFX.xsRequestFormat((Date) oTrans.getMaster("dPartnerx")));
             txtField03.setText((String) oTrans.getMaster("sBriefDsc"));
             txtField04.setText((String) oTrans.getMaster("sDescript"));
-            txtField05.setText(CommonUtils.xsDateLong((Date) oTrans.getMaster("dSrvcChrg")));
+            txtField05.setText(FoodInventoryFX.xsRequestFormat((Date) oTrans.getMaster("dSrvcChrg")));
             txtField06.setText(CommonUtils.NumberFormat((Number) oTrans.getMaster("nSrvcChrg"), "#,##0.00"));
 
             if (oTrans.getMaster("cRecdStat").toString().equals("1")) {
@@ -900,8 +900,8 @@ public class ARDeliveryServiceController implements Initializable {
             txtOthers12.setText(CommonUtils.NumberFormat((Number) oTrans.getARDetail(pnRow, "nABalance"), "#,##0.00"));//account bal
             txtOthers13.setText(CommonUtils.NumberFormat((Number) oTrans.getARDetail(pnRow, "nOBalance"), "#,##0.00"));//outstang bal
             txtOthers14.setText(CommonUtils.NumberFormat((Number) oTrans.getARDetail(pnRow, "nBalForwd"), "#,##0.00"));//amount bal. forw
-            txtOthers15.setText(CommonUtils.xsDateLong((Date) oTrans.getARDetail(pnRow, "dBalForwd")));//date bal.forw
-            txtOthers16.setText(CommonUtils.xsDateLong((Date) oTrans.getARDetail(pnRow, "dCltSince")));//clientsince
+            txtOthers15.setText(FoodInventoryFX.xsRequestFormat((Date) oTrans.getARDetail(pnRow, "dBalForwd")));//date bal.forw
+            txtOthers16.setText(FoodInventoryFX.xsRequestFormat((Date) oTrans.getARDetail(pnRow, "dCltSince")));//clientsince
 
             boolean lbCheck = oTrans.getARDetail(pnRow, "cHoldAcct").toString().equals("1");
 

@@ -163,7 +163,7 @@ public class ARLedgerController implements Initializable {
                     }
                     loRS.absolute(lnCtr);
                     ledger_data.add(new TableModel(String.valueOf(lnCtr),
-                            CommonUtils.xsDateLong((Date) loRS.getObject("dTransact")),
+                            FoodInventoryFX.xsRequestFormat((Date) loRS.getObject("dTransact")),
                             ((String) loRS.getObject("sSourceCd")),
                             ((String) loRS.getObject("sSourceNo")),
                             ((String) loRS.getObject("cReversex")),

@@ -90,8 +90,8 @@ public class InvProdRequestController implements Initializable {
     private ProductionRequest poTrans;
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
-    private final String pxeDateFormat = "MM-dd-yyyy";
-    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
+    private final String pxeDateFormat = "MM/dd/yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM/dd/yyyy (e.g. 12/25/1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
     private TableModel model;
@@ -258,7 +258,7 @@ public class InvProdRequestController implements Initializable {
     }
     
     private void txtFieldArea_KeyPressed(KeyEvent event){
-        if (event.getCode() == ENTER || event.getCode() == DOWN){ 
+        if (event.getCode() == DOWN){ 
             event.consume();
             CommonUtils.SetNextFocus((TextArea)event.getSource());
         }else if (event.getCode() ==KeyCode.UP){
@@ -339,7 +339,7 @@ public class InvProdRequestController implements Initializable {
         String lsValue = txtField.getText();
         
         try {
-            if (event.getCode() == ENTER || event.getCode() == F3){
+            if (event.getCode() == F3){
                 switch (lnIndex){
                     case 50: /*sTransNox*/
                         if(poTrans.SearchRecord(lsValue, true)==true){
@@ -393,7 +393,7 @@ public class InvProdRequestController implements Initializable {
                         return;
                     }
                     
-                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")== true){
                         if (!printTransfer()) return;
                             clearFields();
                             initGrid();
@@ -425,7 +425,7 @@ public class InvProdRequestController implements Initializable {
                         if (poTrans.CloseRecord()){
                             ShowMessageFX.Information(null, pxeModuleName, "Trnansaction closed successfully.");
 
-                            if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                            if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")== true){
                                 if (!printTransfer()) return;
                             }
 
@@ -439,7 +439,7 @@ public class InvProdRequestController implements Initializable {
                         if (poTrans.PostRecord()){
                             ShowMessageFX.Information(null, pxeModuleName, "Trnansaction posted successfully.");
 
-                            if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                            if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")== true){
                                 if (!printTransfer()) return;
                             }
 
@@ -552,7 +552,8 @@ public class InvProdRequestController implements Initializable {
         txtField01.setText((String) poTrans.getMaster("sTransNox"));
         txtField50.setText((String) poTrans.getMaster("sTransNox"));
         psTransNox = txtField50.getText();
-        txtField02.setText(CommonUtils.xsDateMedium((Date) poTrans.getMaster("dTransact")));
+        
+        txtField02.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getMaster("dTransact")));
         
         txtField07.setText((String) poTrans.getMaster("sRemarksx"));
         txtField11.setText((String) poTrans.getMaster("sBranchNm"));
@@ -658,7 +659,7 @@ public class InvProdRequestController implements Initializable {
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
                   
-                    txtField.setText(SQLUtil.dateFormat((Date) poTrans.getMaster("dTransact"), SQLUtil.FORMAT_MEDIUM_DATE));
+                    txtField.setText(SQLUtil.dateFormat(SQLUtil.toDate(txtField.getText(), pxeDateFormat), pxeDateFormat));
                     return;
                 case 11:
                     break;
@@ -870,7 +871,7 @@ public class InvProdRequestController implements Initializable {
         try {
         switch(fnIndex){
             case 2:
-                txtField02.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster("dTransact")));
+                txtField02.setText(FoodInventoryFX.xsRequestFormat((Date)poTrans.getMaster("dTransact")));
                 break;
 
         }

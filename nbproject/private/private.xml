@@ -11,12 +11,71 @@
             <file>file:/D:/Guanzon/GMC%20SEG%20Folder%20-%20Java/lp-integsys/src/org/rmj/cas/food/inventory/fx/applications/LetMeIn.java</file>
         </group>
         <group>
-            <file>file:/C:/Users/User/OneDrive/Documents/GitHub/Los%20Pedritos%20Integsys/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/PurchaseOrderController.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/GitHub/Los%20Pedritos%20Integsys/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/TableModel.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/GitHub/Los%20Pedritos%20Integsys/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/RawTable.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/GitHub/Los%20Pedritos%20Integsys/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/DailyProductionController.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/GitHub/Los%20Pedritos%20Integsys/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/POReceivingController.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/GitHub/Los%20Pedritos%20Integsys/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/POReturnController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvCountController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvTransferController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/PurchaseOrderController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvWasteController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvAdjustmentController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/NotifParamController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvStockRequestRegController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/SerialUploadController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/ModelController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/PurchaseOrderRegController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvCountRegController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvTransferRegController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/styles/Tables.css</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvTransPostingController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InventoryTypeController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InventoryLocationController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvMasterController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/applications/LetMeIn.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvAdjustmentRegController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/DailyProductionRegController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/MDIMainController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/POReceivingController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvWasteRegController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/POReceivingRegController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvProdRequestRegController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/MeasureController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvProdRequestController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/MDIMainControllerNeo.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/MDIMain_neoController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvStockRequestController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/POReturnController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InventoryController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/DailyProductionController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/POReturnRegController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/styles/Fields.css</file>
+        </group>
+        <group name="tabulation"/>
+        <group name="scanner">
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/SOAEntryController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/images/cancelled.png</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/ScannerExample.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/SOATaggingController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/images/RMJ.png</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/SOAEntry.fxml</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/images/void.png</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/images/guanzon.png</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/images/GFx.png</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/images/closed.png</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/images/check.png</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/images/ic_launcher2.png</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/images/unknown.png</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/ARDeliverySCHistoryController.java</file>
+        </group>
+        <group name="e-documentscanner">
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/MDIMainController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/ScannerMaintenanceController.java</file>
+        </group>
+        <group name="integsys-lp">
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvTransPostingController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/FoodInventoryFX.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/POReceivingController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/PurchaseOrderController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/applications/LetMeIn.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/SPRecalculateUtilityController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/applications/FoodInventoryFX.java</file>
         </group>
     </open-files>
 </project-private>

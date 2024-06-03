@@ -106,7 +106,7 @@ public class InvStockRequestRegController implements Initializable {
     private InvRequest poTrans;
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM/dd/yyyy";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
     private TableModel model;
@@ -301,7 +301,7 @@ public class InvStockRequestRegController implements Initializable {
     }
     
     private void txtFieldArea_KeyPressed(KeyEvent event){
-        if (event.getCode() == ENTER || event.getCode() == DOWN){ 
+        if (event.getCode() == DOWN){ 
             event.consume();
             CommonUtils.SetNextFocus((TextArea)event.getSource());
         }else if (event.getCode() ==KeyCode.UP){
@@ -311,7 +311,7 @@ public class InvStockRequestRegController implements Initializable {
     }
     
      private void txtDetailArea_KeyPressed(KeyEvent event){
-        if (event.getCode() == ENTER || event.getCode() == KeyCode.DOWN){
+        if ( event.getCode() == KeyCode.DOWN){
             event.consume();
             CommonUtils.SetNextFocus((TextArea)event.getSource());
         }else if (event.getCode() ==KeyCode.UP){
@@ -405,7 +405,7 @@ public class InvStockRequestRegController implements Initializable {
         TextField txtField = (TextField)event.getSource();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
         String lsValue = txtField.getText() + "%";
-            if (event.getCode() == ENTER || event.getCode() == F3){
+            if ( event.getCode() == F3){
                 switch(lnIndex){
                     case 50: /*sTransNox*/
                         if(poTrans.BrowseRecord(lsValue, true)==true){
@@ -451,7 +451,7 @@ public class InvStockRequestRegController implements Initializable {
                         return;
                     }
                     
-                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")== true){
                         if (!printTransfer()) return;
                             clearFields();
                             initGrid();
@@ -513,7 +513,7 @@ public class InvStockRequestRegController implements Initializable {
         XMInventoryType loInv = poTrans.GetInventoryType((String)poTrans.getMaster(4), true);
         if (loInv != null) txtField04.setText((String) loInv.getMaster("sDescript"));
         
-        txtField02.setText(CommonUtils.xsDateMedium((Date) poTrans.getMaster("dTransact")));
+        txtField02.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getMaster("dTransact")));
         txtField05.setText((String) poTrans.getMaster("sReferNox"));
         txtField06.setText((String) poTrans.getMaster("sIssNotes"));
         txtField07.setText((String) poTrans.getMaster("sRemarksx"));
@@ -612,6 +612,7 @@ public class InvStockRequestRegController implements Initializable {
             json_obj.put("sField06", (String) poTrans.getDetailOthers(lnCtr, "sBrandNme"));
             json_obj.put("sField05", (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"));
             json_obj.put("nField01", Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()));
+            json_obj.put("nField02", Double.valueOf(poTrans.getDetailOthers(lnCtr, "nQtyOnHnd").toString()));
             json_arr.add(json_obj);
         }
         
@@ -692,7 +693,7 @@ public class InvStockRequestRegController implements Initializable {
 //                    }
                     break;
 //                case 8:
-//                    txtDetail08.setText(CommonUtils.xsDateLong((Date)poTrans.getDetail(pnRow,"dExpiryDt")));
+//                    txtDetail08.setText(FoodInventoryFX.xsRequestFormat((Date)poTrans.getDetail(pnRow,"dExpiryDt")));
 //                    break;
                         
             }
@@ -702,7 +703,7 @@ public class InvStockRequestRegController implements Initializable {
     private void getMaster(int fnIndex){
         switch(fnIndex){
             case 2:
-                txtField02.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster("dTransact")));
+                txtField02.setText(FoodInventoryFX.xsRequestFormat((Date)poTrans.getMaster("dTransact")));
                 break;
             case 3:
                 XMBranch loBranch = poTrans.GetBranch((String)poTrans.getMaster(fnIndex), true);

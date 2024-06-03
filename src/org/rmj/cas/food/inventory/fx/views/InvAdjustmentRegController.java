@@ -201,7 +201,7 @@ public class InvAdjustmentRegController implements Initializable {
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
     
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM/dd/yyyy";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
     private TableModel model;
@@ -228,14 +228,14 @@ public class InvAdjustmentRegController implements Initializable {
                 dataDetail.clear();
                 loRS.first();
                     for( int rowCount = 0; rowCount <= MiscUtil.RecordCount(loRS) -1; rowCount++){
-                        if (CommonUtils.xsDateShort(loRS.getDate("dExpiryDt")).equals(CommonUtils.xsDateShort((Date) poTrans.getDetail(fnRow, "dExpiryDt")))){
+                        if (FoodInventoryFX.xsRequestFormat(loRS.getDate("dExpiryDt")).equals(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(fnRow, "dExpiryDt")))){
                             if(!pbFound) pbFound = true;
                             lnQuantity = loRS.getDouble("nQtyOnHnd") + Double.valueOf(poTrans.getDetail(fnRow, "nCredtQty").toString()) - Double.valueOf(poTrans.getDetail(fnRow, "nDebitQty").toString());
                         }else{
                             lnQuantity = 0;
                         }
                     dataDetail.add(new TableModel(String.valueOf(rowCount +1),
-                        String.valueOf(CommonUtils.xsDateMedium(loRS.getDate("dExpiryDt"))),
+                        String.valueOf(FoodInventoryFX.xsRequestFormat(loRS.getDate("dExpiryDt"))),
                         String.valueOf(loRS.getDouble("nQtyOnHnd")),
                         String.valueOf(lnQuantity),
                         "",
@@ -291,7 +291,7 @@ public class InvAdjustmentRegController implements Initializable {
     
     private void clearFields(){
         txtField01.setText("");
-        txtField02.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
+        txtField02.setText(FoodInventoryFX.xsRequestFormat((Date) java.sql.Date.valueOf(LocalDate.now())));
         txtField04.setText("");
         txtField50.setText("");
         
@@ -300,7 +300,7 @@ public class InvAdjustmentRegController implements Initializable {
         txtDetail05.setText("");
         txtDetail05.setText("0");
         txtDetail06.setText("0.00");
-        txtDetail07.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
+        txtDetail07.setText(FoodInventoryFX.xsRequestFormat((Date) java.sql.Date.valueOf(LocalDate.now())));
         txtDetail80.setText("");
         
         pnRow = -1;
@@ -322,7 +322,8 @@ public class InvAdjustmentRegController implements Initializable {
         TextField txtField = (TextField)event.getSource();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
         String lsValue = txtField.getText();
-        if (event.getCode() == ENTER || event.getCode() == F3){
+//        if (event.getCode() == ENTER || event.getCode() == DOWN) {
+        if ( event.getCode() == DOWN) {
             switch (lnIndex){
                 case 50: /*sTransNox*/
                     if(event.getCode() == F3) lsValue = txtField.getText() + "%";
@@ -379,7 +380,8 @@ public class InvAdjustmentRegController implements Initializable {
     }
      
     private void txtFieldArea_KeyPressed(KeyEvent event){
-        if (event.getCode() == ENTER || event.getCode() == DOWN){
+//        if (event.getCode() == ENTER || event.getCode() == DOWN){
+        if (event.getCode() == DOWN){
             event.consume();
             CommonUtils.SetNextFocus((TextArea)event.getSource());
         }else if (event.getCode() ==KeyCode.UP){
@@ -420,10 +422,10 @@ public class InvAdjustmentRegController implements Initializable {
         txtField01.setText((String) poTrans.getMaster("sTransNox"));
         txtField50.setText((String) poTrans.getMaster("sTransNox"));
         psTransNox = txtField50.getText();
-        txtField02.setText(CommonUtils.xsDateMedium((Date) poTrans.getMaster("dTransact")));
+        txtField02.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getMaster("dTransact")));
         try{
           
-          psdTransact = CommonUtils.xsDateMedium(CommonUtils.toDate(poTrans.getMaster("dTransact").toString()));
+          psdTransact = FoodInventoryFX.xsRequestFormat(CommonUtils.toDate(poTrans.getMaster("dTransact").toString()));
         }catch(NullPointerException e){
             e.printStackTrace();
         }
@@ -453,7 +455,7 @@ public class InvAdjustmentRegController implements Initializable {
                                     (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sDescript"),
                                     (String) poTrans.getDetail(lnCtr, "sBrandNme"),
-                                    CommonUtils.xsDateMedium((Date) poTrans.getDetail(lnCtr, "dExpiryDt")),
+                                    FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(lnCtr, "dExpiryDt")),
                                     String.valueOf(poTrans.getDetailOthers(lnCtr, "nQtyOnHnd")),
                                     String.valueOf(poTrans.getDetail(lnCtr, "nCredtQty")),
                                     String.valueOf(poTrans.getDetail(lnCtr, "nDebitQty")),
@@ -488,7 +490,7 @@ public class InvAdjustmentRegController implements Initializable {
     
     private void setDetailInfo(int fnRow){
         if (!poTrans.getDetail(fnRow, "sStockIDx").equals("")){
-            txtDetail07.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(fnRow, "dExpiryDt")));
+            txtDetail07.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(fnRow, "dExpiryDt")));
             txtDetail02.setText(String.valueOf(poTrans.getDetailOthers(fnRow, "nQtyOnHnd")));
             txtDetail03.setText((String) poTrans.getDetailOthers(fnRow, "sBarCodex"));
             txtDetail80.setText((String) poTrans.getDetailOthers(fnRow, "sDescript"));
@@ -502,7 +504,7 @@ public class InvAdjustmentRegController implements Initializable {
             txtDetail04.setText("0");
             txtDetail05.setText("0");
             txtDetail06.setText("0.00");
-            txtDetail07.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
+            txtDetail07.setText(FoodInventoryFX.xsRequestFormat((Date) java.sql.Date.valueOf(LocalDate.now())));
             txtDetail80.setText("");
             txtDetail03.requestFocus();
         }
@@ -552,7 +554,7 @@ public class InvAdjustmentRegController implements Initializable {
                     break;
                 case 7:
                     /*get the value from the class*/
-                    txtDetail07.setText(CommonUtils.xsDateLong((Date)poTrans.getDetail(pnRow,"dExpiryDt")));
+                    txtDetail07.setText(FoodInventoryFX.xsRequestFormat((Date)poTrans.getDetail(pnRow,"dExpiryDt")));
                     loadDetail();
                     break;
             }
@@ -563,7 +565,7 @@ public class InvAdjustmentRegController implements Initializable {
         if (poTrans.getDetail(pnRow, "sStockIDx").equals("")) return;
         TableModel newData = new TableModel();
         newData.setIndex01(String.valueOf(fnRow + 1));
-        newData.setIndex02(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
+        newData.setIndex02(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
         newData.setIndex03("0");
         
         if (Double.valueOf(poTrans.getDetail(pnRow, "nCredtQty").toString()) > 0.00){
@@ -592,7 +594,7 @@ public class InvAdjustmentRegController implements Initializable {
     private void getMaster(int fnIndex){
         switch(fnIndex){
             case 1:
-                txtField01.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster("dTransact")));
+                txtField01.setText(FoodInventoryFX.xsRequestFormat((Date)poTrans.getMaster("dTransact")));
                 break;
             case 3:
                 txtField02.setText(CommonUtils.TitleCase((String) poTrans.getMaster("sRemarksx")));

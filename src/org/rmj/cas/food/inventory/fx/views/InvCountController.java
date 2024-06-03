@@ -177,14 +177,14 @@ public class InvCountController implements Initializable {
                 dataDetail.clear();
                 loRS.first();
                     for( int rowCount = 0; rowCount <= MiscUtil.RecordCount(loRS) -1; rowCount++){
-                        if (CommonUtils.xsDateMedium(loRS.getDate("dExpiryDt")).equals(CommonUtils.xsDateMedium((Date) poTrans.getDetail(fnRow, "dExpiryDt")))){
+                        if (FoodInventoryFX.xsRequestFormat(loRS.getDate("dExpiryDt")).equals(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(fnRow, "dExpiryDt")))){
                             if(!pbFound) pbFound = true;
                             lnQuantity = (int)poTrans.getDetail(fnRow, "nFinalCtr");
                         }else{
                             lnQuantity = 0;
                         }
                     dataDetail.add(new TableModel(String.valueOf(rowCount +1),
-                        String.valueOf(CommonUtils.xsDateMedium(loRS.getDate("dExpiryDt"))),
+                        String.valueOf(FoodInventoryFX.xsRequestFormat(loRS.getDate("dExpiryDt"))),
                         String.valueOf(loRS.getDouble("nQtyOnHnd")),
                         String.valueOf(lnQuantity),
                         "",
@@ -224,7 +224,8 @@ public class InvCountController implements Initializable {
         TextField txtField = (TextField)event.getSource();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
         String lsValue = txtField.getText();
-        if (event.getCode() == ENTER || event.getCode() == F3){
+//        if (event.getCode() == ENTER || event.getCode() == F3){
+        if (event.getCode() == F3){
             switch (lnIndex){
                 case 2: /*sInvTypeCd*/
                     if(event.getCode() == F3) lsValue = txtField.getText() + "%";
@@ -275,7 +276,8 @@ public class InvCountController implements Initializable {
     }
     
     private void txtFieldArea_KeyPressed(KeyEvent event){
-        if (event.getCode() == ENTER || event.getCode() == DOWN){
+//        if (event.getCode() == ENTER || event.getCode() == DOWN){
+        if ( event.getCode() == DOWN){
             event.consume();
             CommonUtils.SetNextFocus((TextArea)event.getSource());
         }else if (event.getCode() ==KeyCode.UP){
@@ -285,7 +287,8 @@ public class InvCountController implements Initializable {
     }
     
     private void txtDetailArea_KeyPressed(KeyEvent event){
-        if (event.getCode() == ENTER || event.getCode() == KeyCode.DOWN){
+//        if (event.getCode() == ENTER || event.getCode() == KeyCode.DOWN){
+        if (event.getCode() == KeyCode.DOWN){
             event.consume();
             CommonUtils.SetNextFocus((TextArea)event.getSource());
         }else if (event.getCode() ==KeyCode.UP){
@@ -299,14 +302,16 @@ public class InvCountController implements Initializable {
         int lnIndex = Integer.parseInt(txtDetail.getId().substring(9, 11));
         String lsValue = txtDetail.getText();
         
-        if (event.getCode() == ENTER || event.getCode() == F3){
+//        if (event.getCode() == ENTER || event.getCode() == F3){
+        if (event.getCode() == F3){
+            
             switch (lnIndex){
                 case 3:
                     if (poTrans.SearchDetail(pnRow, 3, lsValue, true, true)){
                         txtDetail03.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
                         txtDetail80.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
                         txtDetail05.setText(poTrans.getDetail(pnRow, "nQtyOnHnd").toString());
-                        txtDetail11.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
+                        txtDetail11.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
                     } else {
                         txtDetail03.setText("");
                         txtDetail80.setText("");
@@ -321,7 +326,7 @@ public class InvCountController implements Initializable {
                         txtDetail03.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
                         txtDetail80.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
                         txtDetail05.setText(poTrans.getDetail(pnRow, "nQtyOnHnd").toString());
-                        txtDetail11.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
+                        txtDetail11.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
                     } else {
                         txtDetail03.setText("");
                         txtDetail80.setText("");
@@ -362,7 +367,7 @@ public class InvCountController implements Initializable {
         txtField01.setText((String) poTrans.getMaster("sTransNox"));
         txtField50.setText((String) poTrans.getMaster("sTransNox"));
         psTransNox = txtField50.getText();
-        txtField03.setText(CommonUtils.xsDateMedium((Date) poTrans.getMaster("dTransact")));
+        txtField03.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getMaster("dTransact")));
         txtField02.setText(poTrans.SearchMaster(2, (String) poTrans.getMaster("sInvTypCd"), true));
         txtField51.setText(poTrans.SearchMaster(2, (String) poTrans.getMaster("sInvTypCd"), true));
         psInvTypCd = txtField51.getText();
@@ -384,12 +389,13 @@ public class InvCountController implements Initializable {
         data.clear();
         /*ADD THE DETAIL*/
         for(lnCtr = 0; lnCtr <= pnlRow -1; lnCtr++){
+            System.out.println(poTrans.getDetailOthers(lnCtr, "sBrandNme").toString());
             data.add(new TableModel(String.valueOf(lnCtr + 1), 
                                     poTrans.getDetailOthers(lnCtr, "sBarCodex").toString(), 
                                     poTrans.getDetailOthers(lnCtr, "sDescript").toString(),
                                     poTrans.getDetailOthers(lnCtr, "sBrandNme").toString(),
                                     String.valueOf(poTrans.getDetail(lnCtr, "nFinalCtr")),
-                                    String.valueOf(CommonUtils.xsDateMedium((Date) poTrans.getDetail(lnCtr, "dExpiryDt"))),
+                                    String.valueOf(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(lnCtr, "dExpiryDt"))),
                                     (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"),
                                     "",
                                     "",
@@ -417,7 +423,7 @@ public class InvCountController implements Initializable {
             txtDetail05.setText(String.valueOf(poTrans.getDetail(fnRow, "nQtyOnHnd")));
             txtDetail09.setText(String.valueOf(poTrans.getDetail(fnRow, "nFinalCtr")));
             txtDetail10.setText(String.valueOf(poTrans.getDetail(fnRow, "sRemarksx")));
-            txtDetail11.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(fnRow, "dExpiryDt")));
+            txtDetail11.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(fnRow, "dExpiryDt")));
         } else{
             txtDetail03.setText("");
             txtDetail04.setText("");
@@ -433,7 +439,7 @@ public class InvCountController implements Initializable {
         if (poTrans.getDetail(pnRow, "sStockIDx").equals("")) return;
         TableModel newData = new TableModel();
         newData.setIndex01(String.valueOf(fnRow + 1));
-        newData.setIndex02(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
+        newData.setIndex02(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
         newData.setIndex03("0");
         newData.setIndex04(String.valueOf(poTrans.getDetail(pnRow, "nFinalCtr")));
         newData.setIndex05("");
@@ -487,7 +493,7 @@ public class InvCountController implements Initializable {
                         return;
                     }
                     
-                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transasction?")== true){
+                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?")== true){
                         if (poTrans.postTransaction(psOldRec)){
                         ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
                         clearFields();
@@ -798,8 +804,8 @@ public class InvCountController implements Initializable {
     TableColumn index03 = new TableColumn("On Hand");
     TableColumn index04 = new TableColumn("Count");
     
-    private final String pxeDateFormat = "MM-dd-yyyy";
-    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
+    private final String pxeDateFormat = "MM/dd/yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM/dd/yyyy (e.g. 12/25/1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     private TableModel model;
     private ObservableList<TableModel> data = FXCollections.observableArrayList();
@@ -841,7 +847,7 @@ public class InvCountController implements Initializable {
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
                     /*get the value from the class*/
-                    txtField.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster("dTransact")));
+                    txtField.setText(FoodInventoryFX.xsRequestFormat((Date)poTrans.getMaster("dTransact")));
                     return;
                 case 50:
                     if(lsValue.equals("") || lsValue.equals("%"))
@@ -939,11 +945,11 @@ public class InvCountController implements Initializable {
                 case 11: /*dReceived*/
                          if (CommonUtils.isDate(txtDetail.getText(), pxeDateFormat)){
                              poTrans.setDetail(pnRow, "dExpiryDt", SQLUtil.toDate(txtDetail.getText(), pxeDateFormat));
-                             txtDetail.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
+                             txtDetail.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
                          }else{
                              ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                              poTrans.setDetail(pnRow, "dExpiryDt" , CommonUtils.toDate(pxeDateDefault));
-                             txtDetail.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
+                             txtDetail.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
                          }
                          return;
                  }

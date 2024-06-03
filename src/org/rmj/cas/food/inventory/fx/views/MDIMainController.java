@@ -139,11 +139,15 @@ public class MDIMainController implements Initializable {
     @FXML
     private MenuItem mnu_InvTransReg;
     @FXML
+    private MenuItem mnu_InvTransDiscrepancyReg;
+    @FXML
     private MenuItem mnu_InvCountReg;
     @FXML
     private MenuItem mnu_InvDailyProdReg;
     @FXML
     private MenuItem menu_TransferPosting;
+    @FXML
+    private MenuItem menu_TransferDiscrepancyPosting;
     @FXML
     private ToggleButton btnRestoreDown;
     @FXML
@@ -296,8 +300,10 @@ public class MDIMainController implements Initializable {
 
             mnu_InvDailyProdReg.setVisible(poGRider.getBranchCode().contains("P"));
             mnu_InvTransReg.setVisible(poGRider.getBranchCode().contains("P"));
+            mnu_InvTransDiscrepancyReg.setVisible(poGRider.getBranchCode().contains("P"));
             mnu_InvWasteReg.setVisible(poGRider.getBranchCode().contains("P"));
             mnu_InvCountReg.setVisible(poGRider.getBranchCode().contains("P"));
+            menu_TransferDiscrepancyPosting.setVisible(poGRider.getBranchCode().contains("PHO1"));
         }
 
         if (!poGRider.getProductID().equalsIgnoreCase("general")) {
@@ -662,6 +668,17 @@ public class MDIMainController implements Initializable {
 
                 return loInvTransferRegObj;
 
+            case FoodInventoryFX.pxeInvTransferDiscrepancyReg:
+                InvTransferDiscrepancyRegController loInvTransferDiscrepancyRegObj = new InvTransferDiscrepancyRegController();
+                loInvTransferDiscrepancyRegObj.setGRider(poGRider);
+
+                return loInvTransferDiscrepancyRegObj;
+
+            case FoodInventoryFX.pxeInvTransDiscrepancyPosting:
+                InvTransferDiscrepancyPostingController loInvTransferDiscrepancyPostingObj = new InvTransferDiscrepancyPostingController();
+                loInvTransferDiscrepancyPostingObj.setGRider(poGRider);
+
+                return loInvTransferDiscrepancyPostingObj;
             case FoodInventoryFX.pxeInvCountReg:
                 InvCountRegController loInvCountRegObj = new InvCountRegController();
                 loInvCountRegObj.setGRider(poGRider);
@@ -864,6 +881,11 @@ public class MDIMainController implements Initializable {
     }
 
     @FXML
+    private void mnu_InvTransDiscrepancyRegClick(ActionEvent event) throws IOException {
+        loadScene(FoodInventoryFX.pxeInvTransferDiscrepancyReg);
+    }
+
+    @FXML
     private void mnu_InvCountRegClick(ActionEvent event) throws IOException {
 //        setDataPane(fadeAnimate(FoodInventoryFX.pxeInvCountReg));
         loadScene(FoodInventoryFX.pxeInvCountReg);
@@ -891,6 +913,12 @@ public class MDIMainController implements Initializable {
     private void menu_TransferPostingClick(ActionEvent event) throws IOException {
 //        setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransPosting));
         loadScene(FoodInventoryFX.pxeInvTransPosting);
+    }   
+    
+    @FXML
+    private void menu_TransferDiscrepancyPostingClick(ActionEvent event) throws IOException {
+//        setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransPosting));
+        loadScene(FoodInventoryFX.pxeInvTransDiscrepancyPosting);
     }
 
     @FXML
@@ -1100,7 +1128,6 @@ public class MDIMainController implements Initializable {
      * function to create system monitor public String getNotifKey(){ return
      * CommonUtils.getConfiguration(poGRider, "AppNotif"); }
      */
-
     private void getTime() {
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
 

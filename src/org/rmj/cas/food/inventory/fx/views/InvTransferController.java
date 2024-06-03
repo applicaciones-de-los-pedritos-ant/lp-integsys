@@ -115,8 +115,8 @@ public class InvTransferController implements Initializable {
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
     
-    private final String pxeDateFormat = "MM-dd-yyyy";
-    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
+    private final String pxeDateFormat = "MM/dd/yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM/dd/yyyy (e.g. 12/25/1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
     private TableModel model;
@@ -260,14 +260,14 @@ public class InvTransferController implements Initializable {
         txtField50.setText("");
         txtField51.setText("");
         txtOther02.setText("0");   
-        txtField18.setText(SQLUtil.dateFormat((Date) java.sql.Date.valueOf(LocalDate.now()), SQLUtil.FORMAT_MEDIUM_DATE));
+        txtField18.setText(SQLUtil.dateFormat((Date) java.sql.Date.valueOf(LocalDate.now()), pxeDateFormat));
         
         pbFound = false;
         txtDetail03.setText("");
         txtDetail04.setText("");
         txtDetail05.setText("");
         txtDetail07.setText("0.00");
-        txtDetail08.setText(SQLUtil.dateFormat((Date) java.sql.Date.valueOf(LocalDate.now()), SQLUtil.FORMAT_MEDIUM_DATE));
+        txtDetail08.setText(SQLUtil.dateFormat((Date) java.sql.Date.valueOf(LocalDate.now()), pxeDateFormat));
         txtDetail06.setText("0");
         txtDetail80.setText("");
         Label12.setText("0.00");
@@ -392,7 +392,7 @@ public class InvTransferController implements Initializable {
     }
     
     private void txtFieldArea_KeyPressed(KeyEvent event){
-        if (event.getCode() == ENTER || event.getCode() == DOWN){ 
+        if (event.getCode() == DOWN){ 
             event.consume();
             CommonUtils.SetNextFocus((TextArea)event.getSource());
         }else if (event.getCode() ==KeyCode.UP){
@@ -402,7 +402,7 @@ public class InvTransferController implements Initializable {
     }
     
      private void txtDetailArea_KeyPressed(KeyEvent event){
-        if (event.getCode() == ENTER || event.getCode() == KeyCode.DOWN){
+        if (event.getCode() == KeyCode.DOWN){
             event.consume();
             CommonUtils.SetNextFocus((TextArea)event.getSource());
         }else if (event.getCode() ==KeyCode.UP){
@@ -425,7 +425,7 @@ public class InvTransferController implements Initializable {
                         txtDetail80.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
                         txtDetail06.setText(poTrans.getDetail(pnRow, "nQuantity").toString());
                         txtDetail07.setText(poTrans.getDetail(pnRow, "nInvCostx").toString());
-                        txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), SQLUtil.FORMAT_MEDIUM_DATE));
+                        txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
                         txtOther02.setText(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString());
                         tableDetail.setItems(loadInitData(pnRow));
                     } else {
@@ -454,7 +454,7 @@ public class InvTransferController implements Initializable {
                         txtDetail06.setText(poTrans.getDetail(pnRow, "nQuantity").toString());
                         txtDetail07.setText(poTrans.getDetail(pnRow, "nInvCostx").toString());
                         txtOther02.setText(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString());
-                        txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), SQLUtil.FORMAT_MEDIUM_DATE));
+                        txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
                         tableDetail.setItems(loadInitData(pnRow));
                     } else {
                         txtDetail03.setText("");
@@ -509,7 +509,7 @@ public class InvTransferController implements Initializable {
         TextField txtField = (TextField)event.getSource();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
         String lsValue = txtField.getText();
-            if (event.getCode() == ENTER || event.getCode() == F3){
+            if ( event.getCode() == F3){
                 switch (lnIndex){
                     case 4: /*sDestinat*/
                         if (poTrans.SearchMaster(lnIndex, txtField.getText(), false)){
@@ -580,7 +580,7 @@ public class InvTransferController implements Initializable {
                         return;
                     }
                     
-                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")== true){
                         if ("0".equals((String) poTrans.getMaster("cTranStat"))){
                             if (poTrans.closeTransaction(psOldRec)){
                                 if (printTransfer()){                        
@@ -618,11 +618,11 @@ public class InvTransferController implements Initializable {
                         }
                     }  
                     
-                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transasction?")== true){
+                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?")== true){
                         if (poTrans.closeTransaction(psOldRec)){
                             ShowMessageFX.Information(null, pxeModuleName, "Transaction confirmed successfully.");
 
-                            if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                            if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")== true){
                                 if (!printTransfer()) return;
                             }
 
@@ -738,7 +738,7 @@ public class InvTransferController implements Initializable {
 //        txtField18.setText("");
         txtField06.setText("");
         
-        txtField03.setText(SQLUtil.dateFormat((Date) poTrans.getMaster("dTransact"), SQLUtil.FORMAT_MEDIUM_DATE));
+        txtField03.setText(SQLUtil.dateFormat((Date) poTrans.getMaster("dTransact"), pxeDateFormat));
         psDestina = txtField51.getText();
         txtField05.setText((String) poTrans.getMaster("sRemarksx"));
         
@@ -784,7 +784,7 @@ public class InvTransferController implements Initializable {
            
                 if(MiscUtil.RecordCount(loRS)==0){
                     dataDetail.add(new TableModel(String.valueOf(rowCount +1),
-                        SQLUtil.dateFormat(poGRider.getSysDate(), SQLUtil.FORMAT_MEDIUM_DATE),
+                        SQLUtil.dateFormat(poGRider.getSysDate(), pxeDateFormat),
                         String.valueOf(0),
                         String.valueOf(Double.valueOf(poTrans.getDetail(fnRow, "nQuantity").toString())),
                         String.valueOf((double) Math.round((0 - Double.valueOf( poTrans.getDetail(pnRow, "nQuantity").toString()))*100)/100),
@@ -809,7 +809,7 @@ public class InvTransferController implements Initializable {
                         }
                         if(lnQtyOut<=loRS.getDouble("nQtyOnHnd")){
                             dataDetail.add(new TableModel(String.valueOf(rowCount +1),
-                                        SQLUtil.dateFormat(loRS.getDate("dExpiryDt"), SQLUtil.FORMAT_MEDIUM_DATE),
+                                        SQLUtil.dateFormat(loRS.getDate("dExpiryDt"), pxeDateFormat),
                                         String.valueOf(loRS.getDouble("nQtyOnHnd")),
                                         String.valueOf(lnQtyOut),
                                         String.valueOf((double)Math.round((loRS.getDouble("nQtyOnHnd") -lnQtyOut)*100)/100),
@@ -823,7 +823,7 @@ public class InvTransferController implements Initializable {
                             lnQtyOut =  0;
                         }else{
                             dataDetail.add(new TableModel(String.valueOf(rowCount +1),
-                                        SQLUtil.dateFormat(loRS.getDate("dExpiryDt"), SQLUtil.FORMAT_MEDIUM_DATE),
+                                        SQLUtil.dateFormat(loRS.getDate("dExpiryDt"), pxeDateFormat),
                                         String.valueOf(loRS.getDouble("nQtyOnHnd")),
                                         String.valueOf(loRS.getDouble("nQtyOnHnd")),
                                         String.valueOf((double)Math.round((loRS.getDouble("nQtyOnHnd")-loRS.getDouble("nQtyOnHnd"))*100)/100),
@@ -867,7 +867,7 @@ public class InvTransferController implements Initializable {
                     }
                     
                     dataDetail.add(new TableModel(String.valueOf(rowCount +1),
-                            SQLUtil.dateFormat(loRS.getDate("dExpiryDt"), SQLUtil.FORMAT_MEDIUM_DATE),
+                            SQLUtil.dateFormat(loRS.getDate("dExpiryDt"), pxeDateFormat),
                         String.valueOf(loRS.getDouble("nQtyOnHnd")),
                         String.valueOf(lnQuantity),
                         String.valueOf((double) Math.round((loRS.getDouble("nQtyOnHnd")-lnQuantity)*100)/100),
@@ -926,7 +926,7 @@ public class InvTransferController implements Initializable {
             txtDetail80.setText((String) poTrans.getDetailOthers(fnRow, "sDescript"));
             txtDetail04.setText((String) poTrans.getDetailOthers(fnRow, "sOrigCode"));
             txtDetail07.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(fnRow, "nInvCostx").toString()), "0.00"));
-            txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(fnRow, "dExpiryDt"), SQLUtil.FORMAT_MEDIUM_DATE).toString());
+            txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(fnRow, "dExpiryDt"), pxeDateFormat).toString());
             txtDetail06.setText(String.valueOf(poTrans.getDetail(fnRow, "nQuantity")));
             txtDetail10.setText(String.valueOf(poTrans.getDetail(fnRow, "sNotesxxx")));
             txtOther02.setText(String.valueOf(poTrans.getDetailOthers(fnRow, "nQtyOnHnd")));
@@ -957,12 +957,13 @@ public class InvTransferController implements Initializable {
                 case 1: /*sTransNox*/
                     break;
                 case 3: /*dTransact*/
-                  if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)){
-                        poTrans.setMaster("dTransact", SQLUtil.toDate(txtField.getText(), pxeDateFormat));
+                  if (CommonUtils.isDate(lsValue, pxeDateFormat)){
+                        poTrans.setMaster("dTransact", SQLUtil.toDate(lsValue, pxeDateFormat));
                     } else{
                         ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
+                  
                     return;
                 case 4:/*sDestinat*/
                 case 6:/*sTruckIDx*/
@@ -1077,8 +1078,8 @@ public class InvTransferController implements Initializable {
                     break;
                 case 8: /*dExpiryDt*/
                     System.out.println("dExpiration after search " + txtDetail.getText());
-                    if (CommonUtils.isDate(txtDetail.getText(), pxeDateFormat) || 
-                            (CommonUtils.isDate(txtDetail.getText(), SQLUtil.FORMAT_MEDIUM_DATE))){
+                    if (CommonUtils.isDate(lsValue, pxeDateFormat) || 
+                            (CommonUtils.isDate(lsValue, pxeDateFormat))){
                         poTrans.setDetail(pnRow, "dExpiryDt",  SQLUtil.toDate(txtDetail.getText(), pxeDateFormat));
                         txtDetail06.requestFocus();
                         txtDetail06.selectAll();
@@ -1087,7 +1088,7 @@ public class InvTransferController implements Initializable {
                         poTrans.setDetail(pnRow, "dExpiryDt",CommonUtils.toDate(pxeDateDefault));
                     }
                     
-                    txtDetail.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), SQLUtil.FORMAT_MEDIUM_DATE));
+                    txtDetail.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
                     return;
             }
             pnOldRow = table.getSelectionModel().getSelectedIndex();
@@ -1191,7 +1192,7 @@ public class InvTransferController implements Initializable {
         
         TableModel newData = new TableModel();
         newData.setIndex01(String.valueOf(fnRow + 1));
-        newData.setIndex02(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), SQLUtil.FORMAT_MEDIUM_DATE));
+        newData.setIndex02(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
         newData.setIndex03("0");
         newData.setIndex04(String.valueOf(poTrans.getDetail(pnRow, "nQuantity")));
         newData.setIndex05("");
@@ -1328,7 +1329,7 @@ public class InvTransferController implements Initializable {
                     txtDetail07.setText(CommonUtils.NumberFormat((Double)poTrans.getDetail(pnRow,"nInvCostx"), "0.00")); 
                     break;
                 case 8:
-                    txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow,"dExpiryDt"), SQLUtil.FORMAT_MEDIUM_DATE));
+                    txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow,"dExpiryDt"), pxeDateFormat));
                     break;
                         
             }
@@ -1338,7 +1339,7 @@ public class InvTransferController implements Initializable {
     private void getMaster(int fnIndex){
         switch(fnIndex){
             case 3:
-                txtField03.setText(SQLUtil.dateFormat((Date) poTrans.getMaster("dTransact"), SQLUtil.FORMAT_MEDIUM_DATE));
+                txtField03.setText(SQLUtil.dateFormat((Date) poTrans.getMaster("dTransact"), pxeDateFormat));
                 break;
             case 4:
                 XMBranch loBranch = poTrans.GetBranch((String)poTrans.getMaster(fnIndex), true);

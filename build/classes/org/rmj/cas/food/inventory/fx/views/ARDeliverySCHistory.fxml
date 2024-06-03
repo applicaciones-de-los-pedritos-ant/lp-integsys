@@ -44,7 +44,7 @@
                      <children>
                         <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columnConstraints>
-                            <ColumnConstraints fillWidth="false" hgrow="NEVER" minWidth="10.0" prefWidth="130.0" />
+                            <ColumnConstraints fillWidth="false" hgrow="NEVER" minWidth="10.0" prefWidth="110.0" />
                             <ColumnConstraints fillWidth="false" hgrow="NEVER" minWidth="10.0" />
                               <ColumnConstraints fillWidth="false" hgrow="NEVER" minWidth="10.0" prefWidth="140.0" />
                               <ColumnConstraints fillWidth="false" hgrow="NEVER" minWidth="10.0" prefWidth="110.0" />
@@ -64,15 +64,14 @@
                                     <Insets />
                                  </GridPane.margin>
                               </TextField>
-                              <Label text="Rider ID" GridPane.halignment="RIGHT">
+                              <Label text="Rider ID" GridPane.halignment="LEFT">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                                  <GridPane.margin>
-                                    <Insets right="20.0" />
+                                    <Insets left="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <FontAwesomeIconView glyphName="MOTORCYCLE" size="22" />
                               <Label text="Service Charge" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
@@ -84,20 +83,14 @@
                                     <Insets left="-1.0" right="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <FontAwesomeIconView glyphName="MONEY" size="22" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                                 <GridPane.margin>
-                                    <Insets left="5.0" />
-                                 </GridPane.margin>
-                              </FontAwesomeIconView>
-                              <Label alignment="CENTER_RIGHT" text="Date Effective" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                              <Label alignment="CENTER_RIGHT" text="Date Effective" GridPane.halignment="LEFT" GridPane.rowIndex="2">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                                  <GridPane.margin>
-                                    <Insets right="20.0" />
+                                    <Insets left="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <FontAwesomeIconView glyphName="CALENDAR" size="22" GridPane.rowIndex="2" />
                               <TextField fx:id="txtField02" editable="false" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <TextField fx:id="txtField03" editable="false" prefHeight="26.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                  <GridPane.margin>

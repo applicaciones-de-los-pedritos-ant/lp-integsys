@@ -143,7 +143,7 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtField51" layoutX="440.0" layoutY="5.0" prefHeight="25.0" prefWidth="130.0" promptText="ex. 12-25-1945" AnchorPane.leftAnchor="480.0" AnchorPane.topAnchor="3.0">
+                        <TextField fx:id="txtField51" layoutX="440.0" layoutY="5.0" prefHeight="25.0" prefWidth="130.0" promptText="ex. 12/25/1945" AnchorPane.leftAnchor="480.0" AnchorPane.topAnchor="3.0">
                            <font>
                               <Font size="10.0" />
                            </font>

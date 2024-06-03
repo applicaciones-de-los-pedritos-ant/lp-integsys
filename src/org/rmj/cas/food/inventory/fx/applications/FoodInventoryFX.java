@@ -1,6 +1,8 @@
 
 package org.rmj.cas.food.inventory.fx.applications;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,8 @@ public class FoodInventoryFX extends Application {
     public final static String pxeMainForm = "../views/MDIMain.fxml";
     public final static String pxeStageIcon = "org/rmj/foodinventoryfx/images/ic_launcher1.png";
     public static GRider poGRider;
+    
+    
     
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader();

@@ -129,12 +129,12 @@ public class ARDeliverySCHistoryController implements Initializable {
                 for (int lnCtr = 1; lnCtr <= MiscUtil.RecordCount(loRS); lnCtr++) {
                     if (lnCtr == 1) {
                         txtField01.setText(loRS.getString("sRiderIDx"));
-                        txtField02.setText(CommonUtils.xsDateLong((Date) loRS.getObject("dSrvcChrg")));
+                        txtField02.setText(FoodInventoryFX.xsRequestFormat((Date) loRS.getObject("dSrvcChrg")));
                         txtField03.setText(CommonUtils.NumberFormat((Number) loRS.getObject("nSrvcChrg"), "#,##0.00"));
                     }
                     loRS.absolute(lnCtr);
                     history_data.add(new TableModel(String.valueOf(lnCtr),
-                            CommonUtils.xsDateLong((Date) loRS.getObject("dSrvcChrg")),
+                            FoodInventoryFX.xsRequestFormat((Date) loRS.getObject("dSrvcChrg")),
                             CommonUtils.NumberFormat((Number) loRS.getObject("nSrvcChrg"), "#,##0.00"),
                             "",
                             "",
