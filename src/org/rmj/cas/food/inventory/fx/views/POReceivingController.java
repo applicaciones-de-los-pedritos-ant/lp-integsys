@@ -623,7 +623,7 @@ public class POReceivingController implements Initializable {
         psMeasurNm = "";
 
         data.clear();
-        if (poGRider.getUserLevel() < UserRight.MANAGER) {
+        if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
             pbisEncoder = true;
         }
     }
