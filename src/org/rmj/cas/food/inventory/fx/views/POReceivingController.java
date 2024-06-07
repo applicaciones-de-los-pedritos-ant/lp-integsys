@@ -45,6 +45,7 @@ import org.rmj.lp.parameter.agent.XMDepartment;
 import org.rmj.lp.parameter.agent.XMTerm;
 import org.rmj.purchasing.agent.POReceiving;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
+import org.rmj.appdriver.agentfx.ui.showFXDialog;
 import org.rmj.appdriver.constants.UserRight;
 
 public class POReceivingController implements Initializable {
@@ -443,30 +444,59 @@ public class POReceivingController implements Initializable {
                     }
 
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?") == true) {
-                        if (poTrans.closeTransaction(psOldRec, "TOKENAPPROVL")) {
-                            ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
+                        if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
+                            JSONObject loJSON = showFXDialog.getApproval(poGRider);
 
-                            if (poTrans.openTransaction(psOldRec)) {
-                                clearFields();
-                                loadRecord();
+                            if (loJSON != null) {
+                                if ((int) loJSON.get("nUserLevl") < UserRight.SUPERVISOR) {
+                                    ShowMessageFX.Information("Only managerial accounts can approved transactions.", pxeModuleName, "Authentication failed!!!");
+                                    return;
+                                }
 
-                                psOldRec = (String) poTrans.getMaster("sTransNox");
+                                if (poTrans.closeTransaction(psOldRec, "TOKENAPPROVL")) {
+                                    ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
+
+                                    if (poTrans.openTransaction(psOldRec)) {
+                                        clearFields();
+                                        loadRecord();
+
+                                        psOldRec = (String) poTrans.getMaster("sTransNox");
 
 //                                if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
 //                                    poTrans.printRecord();
 //                                }
-                            }
+                                    }
 
-                            clearFields();
-                            initGrid();
-                            pnEditMode = EditMode.UNKNOWN;
+                                    clearFields();
+                                    initGrid();
+                                    pnEditMode = EditMode.UNKNOWN;
+                                }else poTrans.ShowMessageFX();
+                             }else poTrans.ShowMessageFX();
+                        } else {
+                        if (poTrans.closeTransaction(psOldRec, "TOKENAPPROVL")) {
+                                    ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
+
+                                    if (poTrans.openTransaction(psOldRec)) {
+                                        clearFields();
+                                        loadRecord();
+
+                                        psOldRec = (String) poTrans.getMaster("sTransNox");
+
+                                    clearFields();
+                                    initGrid();
+                                    pnEditMode = EditMode.UNKNOWN;
+                                }
+                        }else poTrans.ShowMessageFX();
+
                         }
                     }
-                } else {
-                    ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to confirm!");
-                }
-                break;
-            case "btnClose":
+                    } else {
+                        ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to confirm!");
+                    }
+                
+                    break;
+                
+                case "btnClose":
             case "btnExit":
                 unloadForm();
                 return;
@@ -545,7 +575,9 @@ public class POReceivingController implements Initializable {
         }
 
         initButton(pnEditMode);
-    }
+        }
+
+    
 
     private void loadRecord() {
         txtField01.setText((String) poTrans.getMaster(1));
@@ -740,7 +772,7 @@ public class POReceivingController implements Initializable {
 
         JSONObject loJSON;
 
-        if (event.getCode() == F3 ) {
+        if (event.getCode() == F3) {
             switch (lnIndex) {
                 case 3:
                     if (event.getCode() == F3) {
@@ -1003,7 +1035,7 @@ public class POReceivingController implements Initializable {
                         poTrans.setDetail(pnRow, "dExpiryDt", CommonUtils.toDate(pxeDateDefault));
                     }
 
-                    txtDetail.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(pnRow,"dExpiryDt")));
+                    txtDetail.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
                     return;
             }
             pnOldRow = table.getSelectionModel().getSelectedIndex();

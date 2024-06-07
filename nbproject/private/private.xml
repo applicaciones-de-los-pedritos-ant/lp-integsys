@@ -69,12 +69,7 @@
             <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/ScannerMaintenanceController.java</file>
         </group>
         <group name="integsys-lp">
-            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvTransferController.java</file>
-            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/POReceivingController.java</file>
-            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/POReceivingRegController.java</file>
-            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/PurchaseOrderRegController.java</file>
-            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/POReturnController.java</file>
-            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/PurchaseOrderController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/ARDeliveryServiceController.java</file>
         </group>
     </open-files>
 </project-private>
