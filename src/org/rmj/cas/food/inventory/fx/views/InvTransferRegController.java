@@ -364,8 +364,7 @@ public class InvTransferRegController implements Initializable {
     }
 
     private void txtFieldArea_KeyPressed(KeyEvent event) {
-        if (
-                event.getCode() == DOWN) {
+        if (event.getCode() == DOWN) {
             event.consume();
             CommonUtils.SetNextFocus((TextArea) event.getSource());
         } else if (event.getCode() == KeyCode.UP) {
@@ -398,7 +397,8 @@ public class InvTransferRegController implements Initializable {
                         txtDetail03.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
                         txtDetail80.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
                         txtDetail06.setText(poTrans.getDetail(pnRow, "nQuantity").toString());
-                        txtDetail07.setText(poTrans.getDetail(pnRow, "nInvCostx").toString());
+//                        txtDetail07.setText(poTrans.getDetail(pnRow, "nInvCostx").toString());
+                        txtDetail07.setText("0.00");
                         txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), SQLUtil.FORMAT_MEDIUM_DATE));
                         txtOther02.setText(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString());
                         tableDetail.setItems(loadInitData(pnRow));
@@ -427,7 +427,8 @@ public class InvTransferRegController implements Initializable {
                         txtDetail03.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
                         txtDetail80.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
                         txtDetail06.setText(poTrans.getDetail(pnRow, "nQuantity").toString());
-                        txtDetail07.setText(poTrans.getDetail(pnRow, "nInvCostx").toString());
+//                        txtDetail07.setText(poTrans.getDetail(pnRow, "nInvCostx").toString());
+                        txtDetail07.setText("0.00");
                         txtOther02.setText(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString());
                         txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), SQLUtil.FORMAT_MEDIUM_DATE));
                         tableDetail.setItems(loadInitData(pnRow));
@@ -791,7 +792,8 @@ public class InvTransferRegController implements Initializable {
                     (String) poTrans.getDetailOthers(lnCtr, "sDescript"),
                     (String) poTrans.getDetailOthers(lnCtr, "sBrandNme"),
                     (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"),
-                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nInvCostx").toString()), "0.00"),
+                    //                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nInvCostx").toString()), "0.00"),
+                    "0.00",
                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()), "0.00"),
                     "",
                     ""));
@@ -817,7 +819,8 @@ public class InvTransferRegController implements Initializable {
             txtDetail03.setText((String) poTrans.getDetailOthers(fnRow, "sBarCodex"));
             txtDetail80.setText((String) poTrans.getDetailOthers(fnRow, "sDescript"));
             txtDetail04.setText((String) poTrans.getDetailOthers(fnRow, "sOrigCode"));
-            txtDetail07.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(fnRow, "nInvCostx").toString()), "0.00"));
+//            txtDetail07.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(fnRow, "nInvCostx").toString()), "0.00"));
+            txtDetail07.setText("0.00");
             txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(fnRow, "dExpiryDt"), pxeDateFormat));
             txtDetail06.setText(String.valueOf(poTrans.getDetail(fnRow, "nQuantity")));
             txtDetail10.setText(String.valueOf(poTrans.getDetail(fnRow, "sNotesxxx")));
@@ -872,7 +875,6 @@ public class InvTransferRegController implements Initializable {
      *
      * @param fnRow -passing the detail
      */
-
     private void addDetailData(int fnRow) {
         if (poTrans.getDetail(pnRow, "sStockIDx").equals("")) {
             return;
@@ -1012,7 +1014,8 @@ public class InvTransferRegController implements Initializable {
                     }
                     break;
                 case 7:
-                    txtDetail07.setText(CommonUtils.NumberFormat((Double) poTrans.getDetail(pnRow, "nInvCostx"), "0.00"));
+//                    txtDetail07.setText(CommonUtils.NumberFormat((Double) poTrans.getDetail(pnRow, "nInvCostx"), "0.00"));
+                     txtDetail07.setText("0.00");
                     break;
                 case 8:
                     txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), SQLUtil.FORMAT_MEDIUM_DATE));

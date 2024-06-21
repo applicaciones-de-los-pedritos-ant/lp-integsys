@@ -64,12 +64,17 @@
             <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/images/unknown.png</file>
             <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/ARDeliverySCHistoryController.java</file>
         </group>
+        <group name="integsys-main">
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/ARDeliveryServiceController.java</file>
+        </group>
         <group name="e-documentscanner">
-            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/MDIMainController.java</file>
-            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/ScannerMaintenanceController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/ARDeliveryServiceController.java</file>
         </group>
         <group name="integsys-lp">
             <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/ARDeliveryServiceController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvTransferController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/DailyProductionRegController.java</file>
+            <file>file:/C:/Users/Maynard/Documents/GitHub/lp-integsys/src/org/rmj/cas/food/inventory/fx/views/InvTransferRegController.java</file>
         </group>
     </open-files>
 </project-private>
