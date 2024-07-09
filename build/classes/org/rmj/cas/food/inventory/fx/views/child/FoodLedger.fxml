@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="VBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="600.0" style="-fx-background-color: #B3B6B7; -fx-border-color: black;" stylesheets="@../../styles/child.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="VBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="600.0" style="-fx-background-color: #B3B6B7; -fx-border-color: black;" stylesheets="@../../styles/child.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="30.0" prefWidth="600.0" style="-fx-background-color: #000000;">
          <children>
@@ -110,7 +110,9 @@
               <columns>
                   <TableColumn fx:id="index01" prefWidth="40.0" text="No." />
                 <TableColumn fx:id="index02" editable="false" prefWidth="83.0" resizable="false" sortable="false" text="Date" />
+
                   <TableColumn fx:id="index08" editable="false" prefWidth="160.0" resizable="false" sortable="false" text="Destination/Supplier" />
+
                 <TableColumn fx:id="index03" editable="false" prefWidth="120.0" resizable="false" sortable="false" text="Source" />
                   <TableColumn fx:id="index04" editable="false" prefWidth="100.0" resizable="false" sortable="false" text="Source No." />
                   <TableColumn fx:id="index05" editable="false" prefWidth="50.0" resizable="false" sortable="false" text="IN" />

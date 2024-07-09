@@ -1158,6 +1158,7 @@ public class InvTransferController implements Initializable {
                         x = 0;
                         txtDetail.setText("0");
                     }
+
                     poTrans.setDetail(pnRow, "nQuantity", x);
 
                     if (Double.parseDouble(x.toString()) > 0.00 & !txtDetail03.getText().isEmpty()) {

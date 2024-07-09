@@ -47,11 +47,13 @@
                   <AnchorPane fx:id="anchorField" style="-fx-background-color: #B3B6B7;" BorderPane.alignment="CENTER">
                      <children>
                         <Separator layoutX="436.0" layoutY="43.0" orientation="VERTICAL" prefHeight="230.0" prefWidth="4.0" style="-fx-background-color: black;" />
+
                         <TableView fx:id="table" focusTraversable="false" layoutX="8.0" layoutY="280.0" onMouseClicked="#table_Clicked" prefHeight="129.0" prefWidth="625.0" stylesheets="@../styles/Tables.css">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy></TableView>
                         <TableView fx:id="tableData" focusTraversable="false" layoutX="635.0" layoutY="280.0" onMouseClicked="#tableData_Clicked" prefHeight="129.0" prefWidth="411.0" stylesheets="@../styles/Tables.css">
+
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy></TableView>
