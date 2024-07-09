@@ -388,7 +388,7 @@ public class SupplierController implements Initializable {
         
         txtField13.setText(String.valueOf(poRecord.getMaster(13)));
         txtField14.setText(String.valueOf(poRecord.getMaster(14)));
-        txtField16.setText(CommonUtils.xsDateMedium((Date) poRecord.getMaster(16)));
+        txtField16.setText(FoodInventoryFX.xsRequestFormat((Date) poRecord.getMaster(16)));
         
         JSONObject lsResult;
         /*sClientID*/
@@ -437,7 +437,7 @@ public class SupplierController implements Initializable {
     private String psClientNm;
     private String psTermName;
     
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM/dd/yyyy";
     private final String pxeDateDefault = "1900-01-01";
    
     final ChangeListener<? super Boolean> txtField_Focus = (o,ov,nv)->{
@@ -522,7 +522,7 @@ public class SupplierController implements Initializable {
                         poRecord.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
                     
-                    txtField.setText(CommonUtils.xsDateLong((Date)poRecord.getMaster(lnIndex))); /*get the value from the class*/
+                    txtField.setText(FoodInventoryFX.xsRequestFormat((Date)poRecord.getMaster(lnIndex))); /*get the value from the class*/
                     break;
                 default:
                     ShowMessageFX.Warning(null, pxeModuleName, "Text field with name " + txtField.getId() + " not registered.");
@@ -532,7 +532,7 @@ public class SupplierController implements Initializable {
             switch (lnIndex){
                 case 16: /*dCltSince*/
                     try{
-                        txtField.setText(CommonUtils.xsDateShort(lsValue));
+                        txtField.setText(FoodInventoryFX.xsRequestFormat(lsValue));
                     }catch(ParseException e){
                         ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
                     }

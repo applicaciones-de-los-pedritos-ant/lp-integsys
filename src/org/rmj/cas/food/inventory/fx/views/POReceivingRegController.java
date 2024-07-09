@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyBooleanPropertyBase;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -38,6 +39,7 @@ import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
+import org.rmj.appdriver.constants.UserRight;
 import org.rmj.cas.inventory.base.Inventory;
 import org.rmj.lp.parameter.agent.XMBranch;
 import org.rmj.lp.parameter.agent.XMDepartment;
@@ -95,6 +97,11 @@ public class POReceivingRegController implements Initializable {
         poTrans.setTranStat(1230);
         poTrans.setClientNm(System.getProperty("user.name"));
                 
+        
+         if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
+            pbisEncoder = true;
+        }
+         
         /*Set action event handler for the buttons*/
         btnVoid.setOnAction(this::cmdButton_Click);
         btnPrint.setOnAction(this::cmdButton_Click);
@@ -145,14 +152,14 @@ public class POReceivingRegController implements Initializable {
         txtDetail03.selectAll();
     }
     
-    private void setDetailInfo(){
-        if (pnRow >= 0){
-        String lsStockIDx = (String) poTrans.getDetail(pnRow, "sStockIDx");                   
+    private void setDetailInfo() {
+        if (pnRow >= 0) {
+            String lsStockIDx = (String) poTrans.getDetail(pnRow, "sStockIDx");
             txtDetail03.setText((String) poTrans.getDetail(pnRow, 3));
             
-            Inventory loInventory; 
+            Inventory loInventory;
             
-            if (!lsStockIDx.equals("")){    
+            if (!lsStockIDx.equals("")) {
                 loInventory = poTrans.GetInventory(lsStockIDx, true, false);
                 psBarCodex = (String) loInventory.getMaster("sBarCodex");
                 psDescript = (String) loInventory.getMaster("sDescript");
@@ -164,21 +171,27 @@ public class POReceivingRegController implements Initializable {
             txtDetail04.setText(psBarCodex);
             txtDetail80.setText(psDescript);
             txtDetail07.setText(String.valueOf(poTrans.getDetail(pnRow, "nQuantity")));
-            txtDetail08.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, 8).toString()), "0.00"));
+            
+            if (!pbisEncoder) {
+                txtDetail08.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, 8).toString()), "0.00"));
+            } else {
+                txtDetail08.setText("0.00");
+            }
+            
             txtDetail09.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, 9).toString()), "0.00"));
-            txtDetail10.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
-        } else{
+            txtDetail10.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt")));
+        } else {
             txtDetail03.setText("");
             txtDetail04.setText("");
             txtDetail07.setText("0");
             txtDetail08.setText("0.00");
             txtDetail09.setText("0.00");
-            txtDetail80.setText("");   
+            txtDetail80.setText("");
             txtDetail10.setText("");
         }
     }
         
-    private void initGrid(){
+       private void initGrid() {
         TableColumn index01 = new TableColumn("No.");
         TableColumn index02 = new TableColumn("Order No.");
         TableColumn index03 = new TableColumn("Bar Code");
@@ -192,34 +205,51 @@ public class POReceivingRegController implements Initializable {
         TableColumn index11 = new TableColumn("Freight");
         TableColumn index12 = new TableColumn("Total");
         
-        index01.setPrefWidth(28); index01.setStyle("-fx-alignment: CENTER;");
+        index01.setPrefWidth(28);
+        index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(90);
         index03.setPrefWidth(90);
         index04.setPrefWidth(115);
-        index05.setPrefWidth(123); 
-        index06.setPrefWidth(65); index06.setStyle("-fx-alignment: CENTER;");
+        index05.setPrefWidth(123);
+        index06.setPrefWidth(65);
+        index06.setStyle("-fx-alignment: CENTER;");
 //        index07.setPrefWidth(75); index07.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index08.setPrefWidth(68); index08.setStyle("-fx-alignment: CENTER;");
-        index09.setPrefWidth(60); index09.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index10.setPrefWidth(75); index10.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index11.setPrefWidth(60); index11.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index12.setPrefWidth(75); index12.setStyle("-fx-alignment: CENTER-RIGHT;");
-
+        index08.setPrefWidth(68);
+        index08.setStyle("-fx-alignment: CENTER;");
+        index09.setPrefWidth(60);
+        index09.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index10.setPrefWidth(75);
+        index10.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index11.setPrefWidth(60);
+        index11.setStyle("-fx-alignment: CENTER-RIGHT;");
+        index12.setPrefWidth(75);
+        index12.setStyle("-fx-alignment: CENTER-RIGHT;");
         
-        index01.setSortable(false); index01.setResizable(false);
-        index02.setSortable(false); index02.setResizable(false);
-        index03.setSortable(false); index03.setResizable(false);
-        index04.setSortable(false); index04.setResizable(false);
-        index05.setSortable(false); index05.setResizable(false);
-        index06.setSortable(false); index06.setResizable(false);
+        index01.setSortable(false);
+        index01.setResizable(false);
+        index02.setSortable(false);
+        index02.setResizable(false);
+        index03.setSortable(false);
+        index03.setResizable(false);
+        index04.setSortable(false);
+        index04.setResizable(false);
+        index05.setSortable(false);
+        index05.setResizable(false);
+        index06.setSortable(false);
+        index06.setResizable(false);
 //        index07.setSortable(false); index07.setResizable(false);
-        index08.setSortable(false); index08.setResizable(false);
-        index09.setSortable(false); index09.setResizable(false);
-        index10.setSortable(false); index10.setResizable(false);
-        index11.setSortable(false); index11.setResizable(false);
-        index12.setSortable(false); index12.setResizable(false);
-
-        table.getColumns().clear();        
+        index08.setSortable(false);
+        index08.setResizable(false);
+        index09.setSortable(false);
+        index09.setResizable(false);
+        index10.setSortable(false);
+        index10.setResizable(false);
+        index11.setSortable(false);
+        index11.setResizable(false);
+        index12.setSortable(false);
+        index12.setResizable(false);
+        
+        table.getColumns().clear();
         table.getColumns().add(index01);
         table.getColumns().add(index02);
         table.getColumns().add(index03);
@@ -233,33 +263,40 @@ public class POReceivingRegController implements Initializable {
         table.getColumns().add(index11);
         table.getColumns().add(index12);
         
-        index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index01"));
-        index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index02"));
-        index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index03"));
-        index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index04"));
-        index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index05"));
-        index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index06"));
+        index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index01"));
+        index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index02"));
+        index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index03"));
+        index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index04"));
+        index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index05"));
+        index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index06"));
 //        index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index07"));
-        index08.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index08"));
-        index09.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index09"));
-        index10.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index10"));
-        index11.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index11"));
-        index12.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel,String>("index12"));
+        index08.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index08"));
+        index09.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index09"));
         
+        if (!pbisEncoder) {
+            index10.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index10"));
+            index12.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index12"));
+        } else {
+            index10.setCellValueFactory(cellData -> new SimpleStringProperty("0.00"));
+            index12.setCellValueFactory(cellData -> new SimpleStringProperty("0.00"));
+        }
+        
+        index11.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index11"));
+
+
         /*making column's position uninterchangebale*/
-        table.widthProperty().addListener(new ChangeListener<Number>() {  
-            public void changed(ObservableValue<? extends Number> source, Number oldWidth, Number newWidth)
-            {
+        table.widthProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) {
                 TableHeaderRow header = (TableHeaderRow) table.lookup("TableHeaderRow");
                 header.reorderingProperty().addListener(new ChangeListener<Boolean>() {
                     @Override
                     public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                         header.setReordering(false);
-                            }
-                        });
                     }
                 });
-         /*Set data source to table*/
+            }
+        });
+        /*Set data source to table*/
         table.setItems(data);
     }
     
@@ -272,14 +309,15 @@ public class POReceivingRegController implements Initializable {
                 unloadForm();
                 return;   
             case "btnPrint":
-                if(!psOldRec.equals("")){
-                    if (poTrans.printRecord()){
-                        clearFields();
-                        initGrid();
-                        pnEditMode = EditMode.UNKNOWN;
-                    }
-                }else 
-                    ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
+                 ShowMessageFX.Information(null, pxeModuleName, "This feature is unavailable");
+//                if(!psOldRec.equals("")){
+//                    if (poTrans.printRecord()){
+//                        clearFields();
+//                        initGrid();
+//                        pnEditMode = EditMode.UNKNOWN;
+//                    }
+//                }else 
+//                    ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
             
                 break;
             case "btnBrowse":
@@ -322,11 +360,11 @@ public class POReceivingRegController implements Initializable {
     private void loadRecord(){
         txtField01.setText((String) poTrans.getMaster(1));
         
-        txtField03.setText(CommonUtils.xsDateMedium((Date) poTrans.getMaster("dTransact")));
+        txtField03.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getMaster("dTransact")));
         txtField06.setText((String) poTrans.getMaster(6));
         txtField50.setText((String) poTrans.getMaster(6));
         psReferNox = txtField50.getText();
-        txtField07.setText(CommonUtils.xsDateMedium((Date) (poTrans.getMaster("dRefernce") != null ? poTrans.getMaster("dRefernce"): CommonUtils.toDate(pxeDateDefault))));
+        txtField07.setText(FoodInventoryFX.xsRequestFormat((Date) (poTrans.getMaster("dRefernce") != null ? poTrans.getMaster("dRefernce"): CommonUtils.toDate(pxeDateDefault))));
         txtField10.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(10).toString()), "0.00"));
         txtField11.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(11).toString()), "#,##0.00"));
         txtField12.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(12).toString()), "0.00"));
@@ -354,6 +392,7 @@ public class POReceivingRegController implements Initializable {
     }
     
     private void clearFields(){
+        pbisEncoder = false;
         txtField01.setText("");
         txtField03.setText("");
         txtField05.setText("");
@@ -392,6 +431,9 @@ public class POReceivingRegController implements Initializable {
         psMeasurNm = "";
         
         data.clear();
+        if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
+            pbisEncoder = true;
+        }
     }
     
     private void unloadForm(){
@@ -451,7 +493,7 @@ public class POReceivingRegController implements Initializable {
     }
     
     private void txtFieldArea_KeyPressed(KeyEvent event){
-        if (event.getCode() == ENTER || event.getCode() == DOWN){ 
+        if (event.getCode() == DOWN){ 
             event.consume();
             CommonUtils.SetNextFocus((TextArea)event.getSource());
         }else if(event.getCode()== UP ){
@@ -469,7 +511,7 @@ public class POReceivingRegController implements Initializable {
         
         JSONObject loJSON;
         
-        if (event.getCode() == F3 || event.getCode() == ENTER){                    
+        if (event.getCode() == F3 ){                    
             switch (lnIndex){
                 case 3: 
                     if (event.getCode() == F3){
@@ -500,7 +542,7 @@ public class POReceivingRegController implements Initializable {
         }
     }
      
-    private void loadDetail(){
+private void loadDetail() {
         int lnCtr;
         int lnRow = poTrans.ItemCount();
         
@@ -509,62 +551,66 @@ public class POReceivingRegController implements Initializable {
         
         Inventory loInventory;
         String lsOldCode = "";
-        for(lnCtr = 0; lnCtr <= lnRow -1; lnCtr++){           
+        for (lnCtr = 0; lnCtr <= lnRow - 1; lnCtr++) {
+            
             if (!"".equals((String) poTrans.getDetail(lnCtr, "sStockIDx"))) {
                 loInventory = poTrans.GetInventory((String) poTrans.getDetail(lnCtr, "sStockIDx"), true, false);
                 psBarCodex = (String) loInventory.getMaster("sBarCodex");
                 psDescript = (String) loInventory.getMaster("sDescript");
                 psMeasurNm = loInventory.getMeasureMent((String) loInventory.getMaster("sMeasurID"));
                 
-                if (!"".equals((String) poTrans.getDetail(lnCtr, "sReplacID"))){
+                if (!"".equals((String) poTrans.getDetail(lnCtr, "sReplacID"))) {
                     loInventory = poTrans.GetInventory((String) poTrans.getDetail(lnCtr, "sReplacID"), true, false);
                     lsOldCode = (String) loInventory.getMaster("sBarCodex");
                 }
-                    
+                
                 data.add(new TableModel(String.valueOf(lnCtr + 1),
-                            (String) poTrans.getDetail(lnCtr, "sOrderNox"),
-                            psBarCodex, 
-                            psDescript,
-                            (String) poTrans.getDetail(lnCtr, "sBrandNme"),
-                            psMeasurNm,
-                            lsOldCode,
-                            cUnitType.get(Integer.parseInt((String) poTrans.getDetail(lnCtr, "cUnitType"))),
-                            String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
-                            CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()), "#,##0.00"),
-                            CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
-                            CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
+                        (String) poTrans.getDetail(lnCtr, "sOrderNox"),
+                        psBarCodex,
+                        psDescript,
+                        (String) poTrans.getDetail(lnCtr, "sBrandNme"),
+                        psMeasurNm,
+                        lsOldCode,
+                        cUnitType.get(Integer.parseInt((String) poTrans.getDetail(lnCtr, "cUnitType"))),
+                        String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
+                        CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()), "#,##0.00"),
+                        CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
+                        CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
                                 * Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()))
                                 + Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00")));
             } else {
-                data.add(new TableModel(String.valueOf(lnCtr + 1), 
-                            "",
-                            (String) poTrans.getDetail(lnCtr, 100), 
-                            (String) poTrans.getDetail(lnCtr, 101),
-                            (String) poTrans.getDetail(lnCtr, "sBrandNme"),
-                            (String) poTrans.getDetail(lnCtr, 102),
-                            "",
-                            cUnitType.get(Integer.parseInt((String) poTrans.getDetail(lnCtr, "cUnitType"))),
-                            String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
-                            CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()), "#,##0.00"),
-                            CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
-                            CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
+                data.add(new TableModel(String.valueOf(lnCtr + 1),
+                        "",
+                        (String) poTrans.getDetail(lnCtr, 100),
+                        (String) poTrans.getDetail(lnCtr, 101),
+                        (String) poTrans.getDetail(lnCtr, "sBrandNme"),
+                        (String) poTrans.getDetail(lnCtr, 102),
+                        "",
+                        cUnitType.get(Integer.parseInt((String) poTrans.getDetail(lnCtr, "cUnitType"))),
+                        String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
+                        CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()), "#,##0.00"),
+                        CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
+                        CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
                                 * Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()))
                                 + Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00")));
             }
         }
 
         /*FOCUS ON FIRST ROW*/
-        if (!data.isEmpty()){
+        if (!data.isEmpty()) {
             table.getSelectionModel().select(pnRow);
-            table.getFocusModel().focus(pnRow); 
-            pnRow = table.getSelectionModel().getSelectedIndex();           
+            table.getFocusModel().focus(pnRow);
+            pnRow = table.getSelectionModel().getSelectedIndex();
             
             setDetailInfo();
         }
-        
-        Label09.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(9).toString()) + Double.valueOf(poTrans.getMaster(11).toString()), "#,##0.00"));
+        if (!pbisEncoder) {
+            Label09.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(9).toString()) + Double.valueOf(poTrans.getMaster(11).toString()), "#,##0.00"));
+        } else {
+            Label09.setText("0.00");
+        }
         txtField11.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(11).toString()), "#,##0.00"));
-    }    
+    }
     
     public void setGRider(GRider foGRider){this.poGRider = foGRider;}
     
@@ -574,8 +620,9 @@ public class POReceivingRegController implements Initializable {
     
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
+    private boolean pbisEncoder = false;
     
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM/dd/yyyy";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
     private TableModel model;
@@ -632,7 +679,7 @@ public class POReceivingRegController implements Initializable {
                     loadDetail();
                     break;
                 case 10:
-                    txtDetail10.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, fnIndex)));
+                    txtDetail10.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(pnRow, fnIndex)));
                     loadDetail();
                     break;                
             }
@@ -653,10 +700,10 @@ public class POReceivingRegController implements Initializable {
             if (loTerm != null) txtField08.setText((String) loTerm.getMaster("sDescript"));
             break;
         case 3:
-            txtField03.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster(fnIndex)));
+            txtField03.setText(FoodInventoryFX.xsRequestFormat((Date)poTrans.getMaster(fnIndex)));
             break;
         case 7:
-            txtField07.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster(fnIndex)));
+            txtField07.setText(FoodInventoryFX.xsRequestFormat((Date)poTrans.getMaster(fnIndex)));
             break;
         case 12:
             txtField12.setText(CommonUtils.NumberFormat((Double)poTrans.getMaster(fnIndex), "0.00"));

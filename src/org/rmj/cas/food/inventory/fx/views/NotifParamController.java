@@ -26,7 +26,7 @@ public class NotifParamController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
     txtField02.setOnKeyPressed(this::txtField_KeyPressed);
-    txtField02.setText(CommonUtils.xsDateMedium(poGRider.getServerDate()));
+    txtField02.setText(FoodInventoryFX.xsRequestFormat(poGRider.getServerDate()));
     txtField02.requestFocus();
     
     txtField02.setText(String.valueOf(Integer.valueOf(getNotifKey())/pnMultiplier));

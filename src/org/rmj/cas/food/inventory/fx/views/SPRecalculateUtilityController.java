@@ -183,7 +183,7 @@ public class SPRecalculateUtilityController implements Initializable, IFXML {
         txtField03.setText(String.valueOf((BigDecimal) oTrans.getMaster("nQtyOnHnd"))); //Ending Inv.
         //txtField04.setText(""); //Record
         if ((Date) oTrans.getMaster("dBegInvxx") != null){
-            txtField05.setValue(strToDate(CommonUtils.xsDateShort((Date) oTrans.getMaster("dBegInvxx")))); //Beginning Inv. Date
+            txtField05.setValue(strToDate(FoodInventoryFX.xsRequestFormat((Date) oTrans.getMaster("dBegInvxx")))); //Beginning Inv. Date
         } else {
             txtField05.setValue(null);
         }
@@ -234,7 +234,7 @@ public class SPRecalculateUtilityController implements Initializable, IFXML {
     
     /*Convert Date to String*/
     private LocalDate strToDate(String val) {
-        DateTimeFormatter date_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter date_formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate localDate = LocalDate.parse(val, date_formatter);
         return localDate;
     }

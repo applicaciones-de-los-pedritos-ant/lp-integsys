@@ -4,7 +4,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyBooleanPropertyBase;
@@ -292,7 +291,7 @@ public class PurchaseOrderController implements Initializable {
                                     loadRecord(); 
                                     psOldRec = (String) poTrans.getMaster("sTransNox");
 
-                                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")== true){
                                         poTrans.printRecord();
                                     }
                             
@@ -320,7 +319,7 @@ public class PurchaseOrderController implements Initializable {
                                         loadRecord(); 
                                         psOldRec = (String) poTrans.getMaster("sTransNox");
 
-                                        if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                                        if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")== true){
                                             poTrans.printRecord();
                                         }
 
@@ -431,7 +430,7 @@ public class PurchaseOrderController implements Initializable {
     
     private void loadRecord(){
         txtField01.setText((String) poTrans.getMaster(1));
-        txtField03.setText(CommonUtils.xsDateMedium((Date) poTrans.getMaster(3)));
+        txtField03.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getMaster(3)));
         txtField07.setText((String) poTrans.getMaster(7));
         txtField50.setText((String) poTrans.getMaster(7));
         txtField10.setText((String) poTrans.getMaster(10));
@@ -694,9 +693,9 @@ public class PurchaseOrderController implements Initializable {
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
     
-    private final String pxeDateFormat = "MM-dd-yyyy";
-    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
-    private final String pxeDateDefault = "1900-01-01";
+    private final String pxeDateFormat = "MM/dd/yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12/25/1945)";
+    private final String pxeDateDefault = java.time.LocalDate.now().toString();
     private ObservableList<TableModel> data = FXCollections.observableArrayList();
     private TableModel model;
     
@@ -776,6 +775,7 @@ public class PurchaseOrderController implements Initializable {
                     poTrans.setDetail(pnRow, lnIndex, lnValue);
                     break;
                 case 5: /*UnitPrice*/
+                    if(poGRider.getUserLevel() >=4 ){
                     lnValue = 0;
                     try {
                         /*this must be numeric*/
@@ -785,6 +785,8 @@ public class PurchaseOrderController implements Initializable {
                         txtField.requestFocus();   
                     }
                     poTrans.setDetail(pnRow, lnIndex, lnValue);
+                    }
+                    break;
             }
             
             pnOldRow = table.getSelectionModel().getSelectedIndex();
@@ -902,7 +904,7 @@ public class PurchaseOrderController implements Initializable {
 //            if (loInv != null) txtField16.setText((String) loInv.getMaster("sDescript"));
 //            break;
         case 3:
-            txtField03.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster(fnIndex)));
+            txtField03.setText(FoodInventoryFX.xsRequestFormat((Date)poTrans.getMaster(fnIndex)));
             break;
         case 7:
             txtField07.setText((String)poTrans.getMaster(fnIndex));

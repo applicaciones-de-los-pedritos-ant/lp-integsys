@@ -1,8 +1,10 @@
-
 package org.rmj.cas.food.inventory.fx.views;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -15,14 +17,18 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.rmj.appdriver.GRider;
+import org.rmj.appdriver.agentfx.ShowMessageFX;
 import static org.rmj.cas.food.inventory.fx.applications.FoodInventoryFX.pxeMainFormTitle;
 
+public class FoodInventoryFX extends Application {
+    // public final static String pxeApplcName = "Food Inventory FX v1.0";
 
-public class FoodInventoryFX extends Application {   
-   // public final static String pxeApplcName = "Food Inventory FX v1.0";
     public final static String pxeStageIcon = "org/rmj/cas/food/inventory/fx/images/ic_launcher1.png";
-    
+
     public final static String pxeMainForm = "MDIMain.fxml";
+    public final static String pxeARDelivery = "ARDeliveryService.fxml";
+    public final static String pxeSOAEntry = "SOAEntry.fxml";
+    public final static String pxeSOATagging = "SOATagging.fxml";
     /*Parameters*/
     public final static String pxeBrand = "Brand.fxml";
     public final static String pxeCategory = "Category.fxml";
@@ -40,7 +46,7 @@ public class FoodInventoryFX extends Application {
     public final static String pxeTerm = "Term.fxml";
     public final static String pxeStocks = "InvMaster.fxml";
     public final static String pxeNotif = "NotifParam.fxml";
-    
+
     /*Transactions*/
     public final static String pxePurchaseOrder = "PurchaseOrder.fxml";
     public final static String pxePOReceiving = "POReceiving.fxml";
@@ -49,20 +55,22 @@ public class FoodInventoryFX extends Application {
     public final static String pxeInvStockRequest = "InvStockRequest.fxml";
     public final static String pxeInvCount = "InvCount.fxml";
     public final static String pxeDailyProd = "DailyProduction.fxml";
-    public final static String pxeDailyProdFG= "DailyProductionFG.fxml";
-    public final static String pxeDailyProdRM= "DailyProductionRM.fxml";
+    public final static String pxeDailyProdFG = "DailyProductionFG.fxml";
+    public final static String pxeDailyProdRM = "DailyProductionRM.fxml";
     public final static String pxeInvTransPosting = "InvTransPosting.fxml";
+    public final static String pxeInvTransDiscrepancyPosting = "InvTransferDiscrepancyPosting.fxml";
     public final static String pxeInvWaste = "InvWaste.fxml";
     public final static String pxeInvWasteReg = "InvWasteReg.fxml";
     public final static String pxeInvAdjustment = "InvAdjustment.fxml";
     public final static String pxeInvAdjustmentReg = "InvAdjustmentReg.fxml";
     public final static String pxeInvProdRequest = "InvProdRequest.fxml";
-    
+
     /*Register*/
     public final static String pxePOReceivingReg = "POReceivingReg.fxml";
     public final static String pxePOReturnReg = "POReturnReg.fxml";
     public final static String pxePurchaseOrderReg = "PurchaseOrderReg.fxml";
     public final static String pxeInvTransferReg = "InvTransferReg.fxml";
+    public final static String pxeInvTransferDiscrepancyReg = "InvTransferDiscrepancyReg.fxml";
     public final static String pxeInvCountReg = "InvCountReg.fxml";
     public final static String pxeDailyProdReg = "DailyProductionReg.fxml";
     public final static String pxeStockRequestReg = "InvStockRequestReg.fxml";
@@ -70,44 +78,44 @@ public class FoodInventoryFX extends Application {
     public final static String pxeSerialUpload = "SerialUpload.fxml";
 
     public static GRider poGRider;
-    
+
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource(pxeMainForm));
-        
+
         //get the controller of the main interface
         MDIMainController loControl = new MDIMainController();
         //set the GRider Application Driver to the controller
         loControl.setGRider(poGRider);
-        
+
         //the controller class to the main interface
         fxmlLoader.setController(loControl);
-        
+
         try {
             //load the main interface
             Parent parent = fxmlLoader.load();
-            
+
             //set the main interface as the scene
             Scene scene = new Scene(parent);
-            
+
             //get the screen size
             Screen screen = Screen.getPrimary();
             Rectangle2D bounds = screen.getVisualBounds();
-        
+
             stage.setScene(scene);
             stage.initStyle(StageStyle.UNDECORATED);
             stage.getIcons().add(new Image(pxeStageIcon));
-            
-            switch (poGRider.getClientID().substring(0, 3)){
-            case "GTC":
-                stage.setTitle(System.getProperty("app.product.id.telecom"));
-                break;
-            case "GGC":
-                stage.setTitle(System.getProperty("app.product.id.integsys"));
-                break;
-            default:
-                stage.setTitle(pxeMainFormTitle);
+
+            switch (poGRider.getClientID().substring(0, 3)) {
+                case "GTC":
+                    stage.setTitle(System.getProperty("app.product.id.telecom"));
+                    break;
+                case "GGC":
+                    stage.setTitle(System.getProperty("app.product.id.integsys"));
+                    break;
+                default:
+                    stage.setTitle(pxeMainFormTitle);
             }
 
             //set stage as maximized but not full screen
@@ -122,19 +130,40 @@ public class FoodInventoryFX extends Application {
             System.out.println("Something went wrong.");
         }
     }
-    
+
     public static void main(String[] args) {
         launch(args);
     }
-    
-    public void setGRider(GRider foGRider){
+
+    public void setGRider(GRider foGRider) {
         this.poGRider = foGRider;
     }
-    
+
     @Override
-    public void stop() throws Exception{
+    public void stop() throws Exception {
         super.stop();
         System.exit(0);
+    }
+
+    public static String xsRequestFormat(Date fdValue) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        String date = sdf.format(fdValue);
+        return date;
+    }
+
+    public static String xsRequestFormat(String fsValue) throws ParseException {
+        SimpleDateFormat fromUser = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String lsResult = "";
+
+        try {
+            lsResult = myFormat.format(fromUser.parse(fsValue));
+        } catch (ParseException e) {
+            ShowMessageFX.Error(e.getMessage(), "xsDateShort", "Please inform MIS Department.");
+            System.exit(1);
+        }
+
+        return lsResult;
     }
 
 }

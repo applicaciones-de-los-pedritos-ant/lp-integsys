@@ -109,8 +109,8 @@ public class InvStockRequestController implements Initializable {
     private InvRequest poTrans;
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
-    private final String pxeDateFormat = "MM-dd-yyyy";
-    private final String pxeDateFormatMsg = "Date format must be MM-dd-yyyy (e.g. 12-25-1945)";
+    private final String pxeDateFormat = "MM/dd/yyyy";
+    private final String pxeDateFormatMsg = "Date format must be MM/dd/yyyy (e.g. 12/25/1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
     
     private TableModel model;
@@ -335,7 +335,7 @@ public class InvStockRequestController implements Initializable {
     }
     
     private void txtFieldArea_KeyPressed(KeyEvent event){
-        if (event.getCode() == ENTER || event.getCode() == DOWN){ 
+        if (event.getCode() == DOWN){ 
             event.consume();
             CommonUtils.SetNextFocus((TextArea)event.getSource());
         }else if (event.getCode() ==KeyCode.UP){
@@ -345,7 +345,7 @@ public class InvStockRequestController implements Initializable {
     }
     
      private void txtDetailArea_KeyPressed(KeyEvent event){
-        if (event.getCode() == ENTER || event.getCode() == KeyCode.DOWN){
+        if (event.getCode() == KeyCode.DOWN){
             event.consume();
             CommonUtils.SetNextFocus((TextArea)event.getSource());
         }else if (event.getCode() ==KeyCode.UP){
@@ -366,7 +366,7 @@ public class InvStockRequestController implements Initializable {
                         txtDetail01.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
                         txtDetail02.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
                         txtDetail03.setText("");
-                        txtDetail05.setText(poTrans.getDetail(pnRow, "nQtyOnHnd").toString());
+                        txtDetail05.setText(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString());
                         txtDetail07.setText("0");
                     } else {
                         txtDetail01.setText("");
@@ -387,7 +387,7 @@ public class InvStockRequestController implements Initializable {
                     if (poTrans.SearchDetail(pnRow, 2, lsValue, false, false)){
                         txtDetail01.setText(poTrans.getDetailOthers(pnRow, "sBarCodex").toString());
                         txtDetail02.setText(poTrans.getDetailOthers(pnRow, "sDescript").toString());
-                        txtDetail05.setText(poTrans.getDetail(pnRow, "nQtyOnHnd").toString());
+                        txtDetail05.setText(poTrans.getDetailOthers(pnRow, "nQtyOnHnd").toString());
                         txtDetail07.setText("0");
                     } else {
                         txtDetail01.setText("");
@@ -439,7 +439,7 @@ public class InvStockRequestController implements Initializable {
         TextField txtField = (TextField)event.getSource();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
         String lsValue = txtField.getText() + "%";
-            if (event.getCode() == ENTER || event.getCode() == F3){
+            if (event.getCode() == F3){
                 switch (lnIndex){
                     case 3: /*sBranchCd*/
                         if (poTrans.SearchMaster(lnIndex, txtField.getText(), false)){
@@ -503,7 +503,7 @@ public class InvStockRequestController implements Initializable {
                         return;
                     }
                     
-                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")== true){
                         if (!printTransfer()) return;
                             clearFields();
                             initGrid();
@@ -536,7 +536,7 @@ public class InvStockRequestController implements Initializable {
                         }
                     }  
                     
-                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transasction?")== true){
+                    if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?")== true){
                         if (poTrans.closeTransaction(psOldRec)){
                             ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
                             
@@ -546,7 +546,7 @@ public class InvStockRequestController implements Initializable {
                                 
                                 psOldRec = (String) poTrans.getMaster("sTransNox");
                                 
-                                if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transasction?")== true){
+                                if( ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")== true){
                                     if (!printTransfer()) return;
                                 }
                             }
@@ -663,7 +663,7 @@ public class InvStockRequestController implements Initializable {
         XMInventoryType loInv = poTrans.GetInventoryType((String)poTrans.getMaster(4), true);
         if (loInv != null) txtField04.setText((String) loInv.getMaster("sDescript"));
         
-        txtField02.setText(CommonUtils.xsDateMedium((Date) poTrans.getMaster("dTransact")));
+        txtField02.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getMaster("dTransact")));
         txtField05.setText((String) poTrans.getMaster("sReferNox"));
         txtField06.setText((String) poTrans.getMaster("sIssNotes"));
         txtField07.setText((String) poTrans.getMaster("sRemarksx"));
@@ -704,7 +704,7 @@ public class InvStockRequestController implements Initializable {
                                     (String) poTrans.getDetailOthers(lnCtr, "sDescript"), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sBrandNme"), 
                                     (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"),
-                                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nQtyOnHnd").toString()), "0.00"),
+                                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetailOthers(lnCtr, "nQtyOnHnd").toString()), "0.00"),
                                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()), "0.00"),
                                     "",
                                     "",
@@ -728,7 +728,7 @@ public class InvStockRequestController implements Initializable {
             txtDetail01.setText((String) poTrans.getDetailOthers(fnRow, "sBarCodex"));
             txtDetail02.setText((String) poTrans.getDetailOthers(fnRow, "sDescript"));
             txtDetail03.setText((String) poTrans.getDetail(fnRow, "sNotesxxx"));
-            txtDetail05.setText(String.valueOf(poTrans.getDetail(fnRow, "nQtyOnHnd")));
+            txtDetail05.setText(String.valueOf(poTrans.getDetailOthers(fnRow, "nQtyOnHnd")));
             txtDetail07.setText(String.valueOf(poTrans.getDetail(fnRow, "nQuantity")));
         } else{
             txtDetail01.setText("");
@@ -835,7 +835,7 @@ public class InvStockRequestController implements Initializable {
             switch (lnIndex){
                 case 8: /*dExpiryDt*/
                     try{
-                        txtDetail.setText(CommonUtils.xsDateShort(lsValue));
+                        txtDetail.setText(FoodInventoryFX.xsRequestFormat(lsValue));
                     }catch(ParseException e){
                         ShowMessageFX.Error(e.getMessage(), pxeModuleName, null);
                     }
@@ -922,6 +922,7 @@ public class InvStockRequestController implements Initializable {
             json_obj.put("sField05", (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"));
             json_obj.put("sField06", (String) poTrans.getDetailOthers(lnCtr, "sBrandNme"));
             json_obj.put("nField01", Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()));
+            json_obj.put("nField02", Double.valueOf(poTrans.getDetailOthers(lnCtr, "nQtyOnHnd").toString()));
             json_arr.add(json_obj);
         }
         
@@ -1002,7 +1003,7 @@ public class InvStockRequestController implements Initializable {
 //                    }
                     break;
 //                case 8:
-//                    txtDetail08.setText(CommonUtils.xsDateLong((Date)poTrans.getDetail(pnRow,"dExpiryDt")));
+//                    txtDetail08.setText(FoodInventoryFX.xsRequestFormat((Date)poTrans.getDetail(pnRow,"dExpiryDt")));
 //                    break;
                         
             }
@@ -1012,7 +1013,7 @@ public class InvStockRequestController implements Initializable {
     private void getMaster(int fnIndex){
         switch(fnIndex){
             case 2:
-                txtField02.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster("dTransact")));
+                txtField02.setText(FoodInventoryFX.xsRequestFormat((Date)poTrans.getMaster("dTransact")));
                 break;
             case 3:
                 XMBranch loBranch = poTrans.GetBranch((String)poTrans.getMaster(fnIndex), true);

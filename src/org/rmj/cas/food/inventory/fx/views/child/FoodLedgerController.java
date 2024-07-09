@@ -20,8 +20,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.MiscUtil;
+import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
+import org.rmj.cas.food.inventory.fx.views.FoodInventoryFX;
 
 public class FoodLedgerController implements Initializable {
 
@@ -106,7 +108,7 @@ public class FoodLedgerController implements Initializable {
                
                     poRS.absolute(lnCtr);
                     data.add(new TableModel(String.valueOf(lnCtr), 
-                                            poRS.getString("dTransact"),
+                                            FoodInventoryFX.xsRequestFormat(poRS.getDate("dTransact")),
                                             poRS.getString("sDescript"),
                                             poRS.getString("sSourceNo"),
                                             poRS.getString("nQtyInxxx"),

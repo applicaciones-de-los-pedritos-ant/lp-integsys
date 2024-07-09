@@ -110,7 +110,9 @@
               <columns>
                   <TableColumn fx:id="index01" prefWidth="40.0" text="No." />
                 <TableColumn fx:id="index02" editable="false" prefWidth="83.0" resizable="false" sortable="false" text="Date" />
-                  <TableColumn fx:id="index08" editable="false" prefWidth="160.0" resizable="false" sortable="false" text="Destination" />
+
+                  <TableColumn fx:id="index08" editable="false" prefWidth="160.0" resizable="false" sortable="false" text="Destination/Supplier" />
+
                 <TableColumn fx:id="index03" editable="false" prefWidth="120.0" resizable="false" sortable="false" text="Source" />
                   <TableColumn fx:id="index04" editable="false" prefWidth="100.0" resizable="false" sortable="false" text="Source No." />
                   <TableColumn fx:id="index05" editable="false" prefWidth="50.0" resizable="false" sortable="false" text="IN" />

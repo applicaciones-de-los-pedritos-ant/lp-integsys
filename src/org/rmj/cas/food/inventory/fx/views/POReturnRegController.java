@@ -146,7 +146,7 @@ public class POReturnRegController implements Initializable {
             txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, 5))); /*Quantity*/
             txtDetail06.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, 6).toString()), "###0.00")); /*Unit Price*/
             txtDetail07.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, 7).toString()), "###0.00")); /*Freight*/
-            txtDetail08.setText(CommonUtils.xsDateMedium((Date) poTrans.getDetail(pnRow, "dExpiryDt"))); //date
+            txtDetail08.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"))); //date
         } else{
             txtDetail03.setText("");
             txtDetail05.setText("0");
@@ -294,7 +294,7 @@ public class POReturnRegController implements Initializable {
     
     private void loadRecord(){
         txtField01.setText((String) poTrans.getMaster(1));
-        txtField03.setText(CommonUtils.xsDateMedium((Date) poTrans.getMaster(3)));
+        txtField03.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getMaster(3)));
         
         XMPOReceiving loPORec = poTrans.GetPOReceving((String)poTrans.getMaster("sPOTransx"), true);
         if (loPORec != null) {
@@ -347,7 +347,7 @@ public class POReturnRegController implements Initializable {
         txtDetail05.setText("0");
         txtDetail06.setText("0.00");
         txtDetail07.setText("0.00");
-        txtDetail08.setText(CommonUtils.xsDateLong((Date) java.sql.Date.valueOf(LocalDate.now())));
+        txtDetail08.setText(FoodInventoryFX.xsRequestFormat((Date) java.sql.Date.valueOf(LocalDate.now())));
         
         
         Label06.setText("0.00");
@@ -415,10 +415,10 @@ public class POReturnRegController implements Initializable {
     }
     
     private void txtFieldArea_KeyPressed(KeyEvent event){
-        if (event.getCode() == ENTER){ 
-            event.consume();
-            CommonUtils.SetNextFocus((TextArea)event.getSource());
-        }
+//        if (event.getCode() == ENTER){ 
+//            event.consume();
+//            CommonUtils.SetNextFocus((TextArea)event.getSource());
+//        }
     }
     
     private void txtDetail_KeyPressed(KeyEvent event){
@@ -502,7 +502,7 @@ public class POReturnRegController implements Initializable {
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
     
-    private final String pxeDateFormat = "yyyy-MM-dd";
+    private final String pxeDateFormat = "MM/dd/yyyy";
     private final String pxeDateDefault = "1900-01-01";
     
     private TableModel model;
@@ -575,7 +575,7 @@ public class POReturnRegController implements Initializable {
                     loadDetail();
                     break;
                 case 8:
-                    txtDetail08.setText(CommonUtils.xsDateLong((Date)poTrans.getDetail(pnRow,"dExpiryDt")));
+                    txtDetail08.setText(FoodInventoryFX.xsRequestFormat((Date)poTrans.getDetail(pnRow,"dExpiryDt")));
                     loadDetail();
                     break;
             }
@@ -595,7 +595,7 @@ public class POReturnRegController implements Initializable {
             txtField16.setText((String) poTrans.getMaster("sPOTransx"));
             break;
         case 3:
-            txtField03.setText(CommonUtils.xsDateLong((Date)poTrans.getMaster(fnIndex)));
+            txtField03.setText(FoodInventoryFX.xsRequestFormat((Date)poTrans.getMaster(fnIndex)));
             break;
         case 6:
             Label06.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(6).toString()), "#,##0.00"));      
