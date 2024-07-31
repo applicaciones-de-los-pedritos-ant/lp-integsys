@@ -537,6 +537,18 @@
                                                       </Button>
                                                    </graphic>
                                                 </MenuItem>
+                                                <MenuItem fx:id="munStockRequestUpload" mnemonicParsing="false" onAction="#munStockRequestUpload_Click" text="Stock Request Upload">
+                                                   <graphic>
+                                                      <Button mnemonicParsing="false">
+                                                         <font>
+                                                            <Font size="1.0" />
+                                                         </font>
+                                                         <graphic>
+                                                            <FontAwesomeIconView glyphName="WRENCH" size="12" />
+                                                         </graphic>
+                                                      </Button>
+                                                   </graphic>
+                                                </MenuItem>
                                              </items>
                                           </Menu>
                                           <Menu fx:id="mnuReports" mnemonicParsing="false" text="Reports">

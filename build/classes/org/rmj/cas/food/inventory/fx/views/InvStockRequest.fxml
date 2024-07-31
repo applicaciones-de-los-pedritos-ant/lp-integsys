@@ -26,57 +26,9 @@
                <left>
                   <AnchorPane style="-fx-background-color: #686868;" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="btnDel" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="127.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Del. Detail" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="120.0">
-                           <graphic>
-                              <FontAwesomeIconView glyphName="DEDENT" size="30" text="" />
-                           </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnNew" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="56.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="New" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
-                           <graphic>
-                              <FontAwesomeIconView glyphName="FILE_ALT" size="30" />
-                           </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnSave" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="62.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Save" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
-                           <graphic>
-                              <FontAwesomeIconView glyphName="FLOPPY_ALT" size="30" />
-                           </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnCancel" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="194.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Cancel" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="180.0">
-                           <graphic>
-                              <FontAwesomeIconView glyphName="SIGN_OUT" size="30" />
-                           </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnClose" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="246.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Close" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="300.0">
-                           <graphic>
-                              <FontAwesomeIconView glyphName="POWER_OFF" size="30" />
-                           </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
-                        </Button>
                         <Button fx:id="btnSearch" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="1.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Search" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="SEARCH" size="30" />
-                           </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnPrint" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="129.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Print" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="180.0">
-                           <graphic>
-                              <FontAwesomeIconView glyphName="PRINT" size="30" />
                            </graphic>
                            <font>
                               <Font size="10.0" />
@@ -90,7 +42,71 @@
                               <Font size="10.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btnConfirm" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="2.0" layoutY="180.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Confirm" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="240.0">
+                        <Button fx:id="btnImport" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="59.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Import">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="DOWNLOAD" size="30" text="" />
+                           </graphic>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnNew" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="56.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="New" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="FILE_ALT" size="30" />
+                           </graphic>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnSave" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Save" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="120.0">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="FLOPPY_ALT" size="30" />
+                           </graphic>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnExport" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="119.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Export">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="DOWNLOAD" size="30" />
+                           </graphic>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnDel" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="176.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Del. Detail" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="176.0">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="DEDENT" size="30" text="" />
+                           </graphic>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnUpdate" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="176.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Update" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="176.0">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="EDIT" size="30" />
+                           </graphic>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnCancel" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="234.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Cancel" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="234.0">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="SIGN_OUT" size="30" />
+                           </graphic>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnPrint" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="234.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Print" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="234.0">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="PRINT" size="30" />
+                           </graphic>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnConfirm" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="292.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Confirm" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="292.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="CHECK" size="30" />
                            </graphic>
@@ -98,9 +114,9 @@
                               <Font size="10.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btnUpdate" alignment="BOTTOM_CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Update" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="120.0">
+                        <Button fx:id="btnClose" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="352.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Close" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="352.0">
                            <graphic>
-                              <FontAwesomeIconView glyphName="EDIT" size="30" />
+                              <FontAwesomeIconView glyphName="POWER_OFF" size="30" />
                            </graphic>
                            <font>
                               <Font size="10.0" />
