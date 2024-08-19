@@ -573,7 +573,16 @@ public class POReceivingController implements Initializable {
                         } else {
                             ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
                         }
-                    } else {
+                    }else if (!pbisEncoder){
+                         if (poTrans.updateRecord()) {
+                            loadRecord();
+                            pnEditMode = poTrans.getEditMode();
+                        } else {
+                            ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
+                        }
+                    
+                    }
+                    else {
                         ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction...");
                     }
                 }
