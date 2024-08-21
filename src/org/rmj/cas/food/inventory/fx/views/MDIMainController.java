@@ -125,7 +125,7 @@ public class MDIMainController implements Initializable {
     @FXML
     private CheckMenuItem chkLight;
     @FXML
-    private MenuItem mnu_StockRequest;
+    private MenuItem mnu_StockRequest, mnu_StockRequestApproval, mnu_StockRequestIssuance, mnu_StockRequestPO;
     @FXML
     private MenuItem mnu_InvStockReqReg;
     @FXML
@@ -685,6 +685,21 @@ public class MDIMainController implements Initializable {
                 InvStockRequestObj.setGRider(poGRider);
 
                 return InvStockRequestObj;
+            case FoodInventoryFX.pxeInvStockRequestApproval:
+                InvStockRequestApprovalController InvStockRequestApporvalObj = new InvStockRequestApprovalController();
+                InvStockRequestApporvalObj.setGRider(poGRider);
+
+                return InvStockRequestApporvalObj;
+            case FoodInventoryFX.pxeInvStockRequestIssuance:
+                InvStockRequestIssuanceController InvStockRequestIssuanceObj = new InvStockRequestIssuanceController();
+                InvStockRequestIssuanceObj.setGRider(poGRider);
+
+                return InvStockRequestIssuanceObj;
+            case FoodInventoryFX.pxeInvStockRequestPO:
+                InvStockRequestPurchaseController InvStockRequestPOObj = new InvStockRequestPurchaseController();
+                InvStockRequestPOObj.setGRider(poGRider);
+
+                return InvStockRequestPOObj;
 
             case FoodInventoryFX.pxeInvTransfer:
                 InvTransferController loInvTransferObj = new InvTransferController();
@@ -897,6 +912,27 @@ public class MDIMainController implements Initializable {
     private void mnu_StockRequestClick(ActionEvent event) throws IOException {
 //         setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransfer));
         loadScene(FoodInventoryFX.pxeInvStockRequest);
+
+    }
+
+    @FXML
+    private void mnu_StockRequestApprovalClick(ActionEvent event) throws IOException {
+//         setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransfer));
+        loadScene(FoodInventoryFX.pxeInvStockRequestApproval);
+
+    }
+
+    @FXML
+    private void mnu_StockRequestIssuanceClick(ActionEvent event) throws IOException {
+//         setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransfer));
+        loadScene(FoodInventoryFX.pxeInvStockRequestIssuance);
+
+    }
+
+    @FXML
+    private void mnu_StockRequestPOClick(ActionEvent event) throws IOException {
+//         setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransfer));
+        loadScene(FoodInventoryFX.pxeInvStockRequestPO);
 
     }
 

@@ -33,7 +33,7 @@ public class TableModel {
         this.index12 = new SimpleStringProperty("");
     }
     
-    TableModel(String index01, String index02, String index03, String index04, String index05,
+        TableModel(String index01, String index02, String index03, String index04, String index05,
                 String index06, String index07, String index08, String index09, String index10){
         this.index01 = new SimpleStringProperty(index01);
         this.index02 = new SimpleStringProperty(index02);
@@ -46,6 +46,15 @@ public class TableModel {
         this.index09 = new SimpleStringProperty(index09);
         this.index10 = new SimpleStringProperty(index10);
     }
+    
+    TableModel(String index01, String index02, String index03, String index04){
+        this.index01 = new SimpleStringProperty(index01);
+        this.index02 = new SimpleStringProperty(index02);
+        this.index03 = new SimpleStringProperty(index03);
+        this.index04 = new SimpleStringProperty(index04);
+    }
+    
+    
     TableModel(String index01, String index02, String index03, String index04, String index05,
                 String index06, String index07, String index08, String index09, String index10, String index11){
         this.index01 = new SimpleStringProperty(index01);

@@ -428,6 +428,7 @@ public class InvStockRequestController implements Initializable {
                         txtDetail02.setText("");
                         txtDetail05.setText("0");
                         txtDetail07.setText("0");
+                        
                     }
 
                     if (!txtDetail01.getText().isEmpty()) {
@@ -922,13 +923,13 @@ public class InvStockRequestController implements Initializable {
                     break;
 
                 case 7:/*nQuantity*/
-                    double x = 0;
+                    double x = 0.0;
                     try {
                         /*this must be numeric*/
                         x = Double.valueOf(lsValue);
                     } catch (NumberFormatException e) {
-                        x = 0;
-                        txtDetail.setText("0");
+                        x = 0.0;
+                        txtDetail.setText("0.0");
                     }
 
                     poTrans.setDetail(pnRow, "nQuantity", x);
