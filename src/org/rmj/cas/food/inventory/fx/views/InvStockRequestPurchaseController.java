@@ -1,3 +1,9 @@
+/**
+ * Maynard Valencia
+ *
+ * @since 2024-08-22
+ */
+
 package org.rmj.cas.food.inventory.fx.views;
 
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
@@ -40,28 +46,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.view.JasperViewer;
 import org.rmj.appdriver.constants.EditMode;
-import org.rmj.appdriver.constants.TransactionStatus;
 import org.rmj.appdriver.GRider;
-import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
-import org.rmj.cas.food.inventory.fx.views.child.InvStockRequestIssTransferController;
+import org.rmj.cas.food.inventory.fx.views.child.InvStockRequestPOController;
 import org.rmj.cas.inventory.base.InvMaster;
 import org.rmj.cas.inventory.base.InvRequest;
 import org.rmj.cas.inventory.base.InvRequestManager;
-import org.rmj.cas.inventory.base.InvTransfer;
-import org.rmj.cas.inventory.base.Inventory;
-import org.rmj.cas.inventory.constants.basefx.InvConstants;
 import org.rmj.lp.parameter.agent.XMBranch;
 import org.rmj.lp.parameter.agent.XMCategory;
-import org.rmj.lp.parameter.agent.XMInventory;
 import org.rmj.purchasing.agent.PurchaseOrders;
 
 public class InvStockRequestPurchaseController implements Initializable {
@@ -94,7 +89,7 @@ public class InvStockRequestPurchaseController implements Initializable {
     private TableColumn detailindex01, detailindex02, detailindex03, detailindex04, detailindex05,
             detailindex06, detailindex07, detailindex08, detailindex09, detailindex10, detailindex11;
 
-    private final String pxeModuleName = "InvProdRequestApprovalController";
+    private final String pxeModuleName = "InvProdRequestPurhcaseController";
 
     private static GRider poGRider;
     private InvRequestManager poTrans;
@@ -536,7 +531,22 @@ public class InvStockRequestPurchaseController implements Initializable {
             }
             pnIndex = lnIndex;
         } else {
+            switch (lnIndex) {
+             case 10:/*nOrderQty*/
+                    double x = 0;
+                    try {
+                        /*this must be numeric*/
+                        x = Double.valueOf(lsValue);
+                    } catch (NumberFormatException e) {
+                        x = 0;
+                        txtDetail.setText("0.0");
+                    }
 
+                    double orderitem = (Double) poTrans.getDetail(pnRow, pnRowDetail, "nOrderQty");
+                    poTrans.setDetail(pnRow, pnRowDetail, "nOrderQty", x - orderitem);
+
+                    poTrans.setDetailOther(pnRow, pnRowDetail, "nOrderQty", x);
+            }
             pnIndex = lnIndex;
             txtDetail.selectAll();
         }
@@ -790,10 +800,10 @@ public class InvStockRequestPurchaseController implements Initializable {
 
     private boolean showInvTransfer() {
         boolean lbHasTransfer = false;
-        InvStockRequestIssTransferController loInvStockReqIssTransController = new InvStockRequestIssTransferController();
-        InvTransfer loInvTransfer = new InvTransfer(poGRider, poGRider.getBranchCode(), true);
+        InvStockRequestPOController loInvStockRequestPOController = new InvStockRequestPOController();
+        PurchaseOrders loPurchaseOrders = new PurchaseOrders(poGRider, poGRider.getBranchCode(), false);
 
-        loInvTransfer.newTransaction();
+        loPurchaseOrders.newTransaction();
         String orderNo = (String) poTrans.getMaster(pnRow, "sTransNox");
 
         int lnItem = poTrans.ItemCount(pnRow);
@@ -802,15 +812,14 @@ public class InvStockRequestPurchaseController implements Initializable {
         for (int lnCtr = 0; lnCtr <= lnItem - 1; lnCtr++) {
             if ((Double) poTrans.getDetailOthers(pnRow, lnCtr, "nOrderQty") > 0) {
                 //to addnew row to end if not last
-                loInvTransfer.addDetail();
-                int lnRow = loInvTransfer.ItemCount() - 1;
+                loPurchaseOrders.addDetail();
+                int lnRow = loPurchaseOrders.ItemCount() - 1;
 
                 Double nOrderQty = (Double) poTrans.getDetailOthers(pnRow, lnCtr, "nOrderQty");
 
-//                loInvTransfer.setDetail(lnRow, "dExpiryDt", paDetail.get(lnCtr).getDateExpiry());
-                loInvTransfer.SearchDetail(lnRow, 3, ((String) poTrans.getDetail(pnRow, lnCtr, "sStockIDx")), false, true);
-                loInvTransfer.setDetail(lnRow, "nQuantity", nOrderQty);
-                loInvTransfer.setDetail(lnRow, "sOrderNox", orderNo);
+                loPurchaseOrders.SearchDetail(lnRow, 3, ((String) poTrans.getDetailOthers(pnRow, lnCtr, "sBarCodex")), false, true);
+                loPurchaseOrders.setDetail(lnRow, "nQuantity", nOrderQty);
+                loPurchaseOrders.setDetail(lnRow, "sOrderNox", orderNo);
                 lbHasTransfer = true;
 //
 //                if (lnCtr != paDetail.size() - 1) {
@@ -819,16 +828,17 @@ public class InvStockRequestPurchaseController implements Initializable {
         }
 
         if (lbHasTransfer) {
-            //set the required data
-            loInvTransfer.SearchMaster(4, (String) poTrans.getMaster(pnRow, "sBranchCd"), true);
-            loInvTransfer.setMaster("sOrderNox", orderNo);
+            //set the required master data
+            loPurchaseOrders.SearchMaster(2, (String) poGRider.getBranchCode(), true);
+            loPurchaseOrders.SearchMaster(5, (String) poTrans.getMaster(pnRow, "sBranchCd"), true);
+            loPurchaseOrders.setMaster("sReferNox", orderNo.substring(4));
 
-            loInvStockReqIssTransController.setGRider(poGRider);
-            loInvStockReqIssTransController.setInvTransfer(loInvTransfer);
+            loInvStockRequestPOController.setGRider(poGRider);
+            loInvStockRequestPOController.setPurchaseOrders(loPurchaseOrders);
 //            load modal
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("../views/child/InvStockRequestIssTransfer.fxml"));
-            fxmlLoader.setController(loInvStockReqIssTransController);
+            fxmlLoader.setLocation(getClass().getResource("../views/child/InvStockRequestPO.fxml"));
+            fxmlLoader.setController(loInvStockRequestPOController);
             try {
                 Parent parent = fxmlLoader.load();
 
@@ -856,7 +866,7 @@ public class InvStockRequestPurchaseController implements Initializable {
                 stage.setScene(scene);
                 stage.showAndWait();
 //
-                if (!loInvStockReqIssTransController.isCancelled()) {
+                if (!loInvStockRequestPOController.isCancelled()) {
 
                     double issueitem = (Double) poTrans.getDetail(pnRow, pnRowDetail, "nIssueQty");
                     poTrans.setDetail(pnRow, pnRowDetail, "nOnTranst", issueitem);

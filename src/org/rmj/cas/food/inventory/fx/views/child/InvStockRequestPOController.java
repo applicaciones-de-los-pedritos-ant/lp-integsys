@@ -1,23 +1,14 @@
 /**
  * Maynard Valencia
  *
- * @since 2024-08-21
+ * @since 2024-08-22
  */
 package org.rmj.cas.food.inventory.fx.views.child;
 
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyBooleanPropertyBase;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -35,32 +26,30 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import static javafx.scene.input.KeyCode.DOWN;
+import static javafx.scene.input.KeyCode.ENTER;
+import static javafx.scene.input.KeyCode.F3;
+import static javafx.scene.input.KeyCode.UP;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JsonDataSource;
-import net.sf.jasperreports.view.JasperViewer;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.rmj.appdriver.GRider;
-import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
-import org.rmj.appdriver.agentfx.ui.showFXDialog;
-import org.rmj.appdriver.constants.UserRight;
+import org.rmj.appdriver.constants.EditMode;
 import static org.rmj.cas.food.inventory.fx.views.FoodInventoryFX.xsRequestFormat;
-import org.rmj.cas.inventory.base.InvMaster;
-import org.rmj.cas.inventory.base.InvTransfer;
+import org.rmj.cas.inventory.base.Inventory;
 import org.rmj.lp.parameter.agent.XMBranch;
+import org.rmj.lp.parameter.agent.XMTerm;
+import org.rmj.purchasing.agent.PurchaseOrders;
 
-public class InvStockRequestIssTransferController implements Initializable {
+public class InvStockRequestPOController implements Initializable {
 
     private static GRider poGRider;
-    private final String pxeModuleName = "InvStockRequestIssTransferController";
+    private final String pxeModuleName = "InvStockRequestPOController";
 
-    private InvTransfer poTrans = null;
+    private PurchaseOrders poTrans = null;
     private boolean pbCancelled;
     private String psValue;
     private int pnRow;
@@ -106,6 +95,9 @@ public class InvStockRequestIssTransferController implements Initializable {
         txtField07.focusedProperty().addListener(txtField_Focus);
         txtField08.focusedProperty().addListener(txtArea_Focus);
 
+        txtField05.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField07.setOnKeyPressed(this::txtField_KeyPressed);
+
         pbLoaded = true;
     }
 
@@ -120,27 +112,12 @@ public class InvStockRequestIssTransferController implements Initializable {
                 break;
             case "btnOk":
                 if (poTrans.saveTransaction()) {
-                    if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
-                            if (poTrans.closeTransaction(psOldRec)) {
-                                if (printTransfer()) {
-                                    
-                                } else {
-                                    return;
-                                }
-                            } else {
-                                ShowMessageFX.Warning(null, pxeModuleName, "Unable to confirm transaction.");
-                            
-                        }
-                    }
+
                     pbCancelled = false;
                     CommonUtils.closeStage(btnOk);
                     break;
                 } else {
-                    if (!poTrans.getErrMsg().equals("")) {
-                        ShowMessageFX.Error(poTrans.getErrMsg(), pxeModuleName, "Please inform MIS Department.");
-                    } else {
-                        ShowMessageFX.Warning(poTrans.getMessage(), pxeModuleName, "Please verify your entry.");
-                    }
+                    poTrans.ShowMessageFX();
                     return;
                 }
 
@@ -184,17 +161,22 @@ public class InvStockRequestIssTransferController implements Initializable {
 
         table.setItems(data);
 
-//        index08.setCellFactory(TextFieldTableCell.forTableColumn());
-//        index08.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<TableModel, String>>() {
-//            @Override
-//            public void handle(TableColumn.CellEditEvent<TableModel, String> event) {
-//                TableModel tableModel = event.getRowValue();
-//                tableModel.setIndex08(event.getNewValue());
-//                poTrans.setDetail(pnRow, "nQuantity", Double.valueOf(tableModel.setIndex08()));
-//                loadDetail2Grid();
-//
-//            }
-//        });
+        index08.setCellFactory(TextFieldTableCell.forTableColumn());
+        index08.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<TableModel, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<TableModel, String> event) {
+                TableModel tableModel = event.getRowValue();
+                tableModel.setIndex08(event.getNewValue());
+                if (poGRider.getUserLevel() >= 2) {
+                    poTrans.setDetail(pnRow, "nUnitPrce", Double.valueOf(tableModel.getIndex08()));
+                } else {
+                    poTrans.setDetail(pnRow, "nUnitPrce", 1.0);
+                }
+
+                loadDetail2Grid();
+
+            }
+        });
     }
 
     public void loadDetail2Grid() {
@@ -205,18 +187,22 @@ public class InvStockRequestIssTransferController implements Initializable {
         }
 
         int lnRow = poTrans.ItemCount();
+        Inventory loInventory;
         for (lnCtr = 0; lnCtr <= lnRow - 1; lnCtr++) {
+
+            loInventory = poTrans.GetInventory((String) poTrans.getDetail(lnCtr, "sStockIDx"), true, false);
+
             data.add(new TableModel(String.valueOf(lnCtr + 1),
-                    (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"),
-                    (String) poTrans.getDetailOthers(lnCtr, "sDescript"),
-                    (String) poTrans.getDetailOthers(lnCtr, "sBrandNme"),
-                    (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"),
-                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetailOthers(lnCtr, "nQtyOnHnd").toString()), "0.00"),
+                    (String) loInventory.getMaster("sBarCodex"),
+                    (String) poTrans.getDetail(lnCtr, "sBrandNme"),
+                    (String) loInventory.getMaster("sDescript"),
+                    loInventory.getMeasureMent((String) loInventory.getMaster("sMeasurID")),
+                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nQtyOnHnd").toString()), "0.00"),
                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()), "0.00"),
-                    "0.00",
-                    "0.00",
+                    String.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce")),
+                    CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
+                            * Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString())), "#,##0.00"),
                     (String) poTrans.getDetail(lnCtr, "sOrderNox")));
-            System.out.println(poTrans.getDetailOthers(lnCtr, "sBrandNme"));
         }
         /*FOCUS ON FIRST ROW*/
         if (!data.isEmpty()) {
@@ -226,7 +212,7 @@ public class InvStockRequestIssTransferController implements Initializable {
             pnRow = table.getSelectionModel().getSelectedIndex();
         }
 //        Label12.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster("nTranTotl").toString()), "#,##0.00"));
-        Label12.setText("0.00");
+        Label12.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(9).toString()), "#,##0.00"));
 
     }
 
@@ -234,17 +220,20 @@ public class InvStockRequestIssTransferController implements Initializable {
         txtField01.setText((String) poTrans.getMaster("sTransNox"));
         txtField02.setText(xsRequestFormat((Date) poTrans.getMaster("dTransact")));
 
-        XMBranch loBranch = poTrans.GetBranch((String) poTrans.getMaster(4), true);
+        XMBranch loBranch = null;
+        loBranch = poTrans.GetBranch((String) poTrans.getMaster(2), true);
         if (loBranch != null) {
             txtField03.setText((String) loBranch.getMaster("sBranchNm"));
         }
 
-        txtField04.setText((String) poTrans.getMaster("sOrderNox"));
-        txtField05.setText(poTrans.getMaster("nDiscount").toString());
-        txtField06.setText((String) poTrans.getMaster("sTruckIDx"));
-        txtField07.setText((String) poTrans.getMaster("nFreightx").toString());
+        loBranch = poTrans.GetBranch((String) poTrans.getMaster(5), true);
+        if (loBranch != null) {
+            txtField04.setText((String) loBranch.getMaster("sBranchNm"));
+        }
+
+        txtField06.setText((String) poTrans.getMaster("sReferNox"));
         txtField08.setText((String) poTrans.getMaster("sRemarksx"));
-        Label12.setText("0.00");
+        Label12.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(9).toString()), "#,##0.00"));
         psOldRec = (String) poTrans.getMaster("sTransNox");
 
     }
@@ -268,7 +257,7 @@ public class InvStockRequestIssTransferController implements Initializable {
         return pbCancelled;
     }
 
-    public void setInvTransfer(InvTransfer foRS) {
+    public void setPurchaseOrders(PurchaseOrders foRS) {
         this.poTrans = foRS;
     }
 
@@ -290,42 +279,6 @@ public class InvStockRequestIssTransferController implements Initializable {
 
         if (!nv) {
             /*Lost Focus*/
-            switch (lnIndex) {
-                case 5:
-                    /*nDiscount*/
-
-                    double x = 0;
-                    try {
-                        /*this must be numeric*/
-                        x = Double.valueOf(lsValue);
-                    } catch (NumberFormatException e) {
-                        x = 0;
-                        txtField.setText("0.0");
-                    }
-                    if (x > 100.00) {
-                        x = 100.0;
-                    }
-                    poTrans.setMaster("nDiscount", x);
-                    txtField.setText(poTrans.getMaster("nDiscount").toString());
-                    break;
-                case 7:
-                    /*nFreightx*/
-
-                    double y = 0;
-                    try {
-                        /*this must be numeric*/
-                        y = Double.valueOf(lsValue);
-                    } catch (NumberFormatException e) {
-                        y = 0;
-                        txtField.setText("0.0");
-                    }
-                    if (y > 100.00) {
-                        y = 100.0;
-                    }
-                    poTrans.setMaster("nFreightx", y);
-                    txtField.setText(poTrans.getMaster("nFreightx").toString());
-                    break;
-            }
         } else {
             pnIndex = -1;
             txtField.selectAll();
@@ -363,63 +316,47 @@ public class InvStockRequestIssTransferController implements Initializable {
         }
     };
 
-   private boolean printTransfer() {
-        JSONArray json_arr = new JSONArray();
-        json_arr.clear();
+    private void txtField_KeyPressed(KeyEvent event) {
+        TextField txtField = (TextField) event.getSource();
+        int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
 
-        for (int lnCtr = 0; lnCtr <= poTrans.ItemCount() - 1; lnCtr++) {
-            JSONObject json_obj = new JSONObject();
-            json_obj.put("sField01", (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"));
-            json_obj.put("sField02", (String) poTrans.getDetailOthers(lnCtr, "sDescript"));
-            json_obj.put("sField03", (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"));
-            json_obj.put("sField04", (String) poTrans.getDetailOthers(lnCtr, "sBrandNme"));
-            json_obj.put("lField01", (Double) poTrans.getDetail(lnCtr, "nQuantity"));
-            json_arr.add(json_obj);
+        switch (event.getCode()) {
+            case F3:
+                switch (lnIndex) {
+
+                    case 5:
+                        /*sSupplier*/
+                        if (poTrans.SearchMaster(6, txtField.getText(), false) == true) {
+
+                            JSONObject loSupplier = poTrans.GetSupplier((String) poTrans.getMaster(6), true);
+                            if (loSupplier != null) {
+                                txtField.setText((String) loSupplier.get("sClientNm"));
+                            }
+                        } else {
+                            txtField.setText("");
+                        }
+                        break;
+                    case 7:
+                        /*sTermCode*/
+                        if (poTrans.SearchMaster(8, txtField.getText(), false) == true) {
+                            XMTerm loTerm = poTrans.GetTerm((String) poTrans.getMaster(8), true);
+
+                            if (loTerm != null) {
+                                txtField.setText((String) loTerm.getMaster("sDescript"));
+                            }
+                        } else {
+                            txtField.setText("");
+                        }
+                        break;
+
+                }
+            case ENTER:
+            case DOWN:
+                CommonUtils.SetNextFocus(txtField);
+                break;
+            case UP:
+                CommonUtils.SetPreviousFocus(txtField);
         }
-
-        String lsSQL = "SELECT sBranchNm FROM Branch WHERE sBranchCD = " + SQLUtil.toSQL((String) poTrans.getMaster("sDestinat"));
-        ResultSet loRS = poGRider.executeQuery(lsSQL);
-
-        try {
-            if (loRS.next()) {
-                lsSQL = loRS.getString("sBranchNm");
-            } else {
-                lsSQL = (String) poTrans.getMaster("sDestinat");
-            }
-
-            //Create the parameter
-            Map<String, Object> params = new HashMap<>();
-            params.put("sReportNm", "Inventory Transfer");
-            params.put("sBranchNm", poGRider.getBranchName());
-            params.put("sBranchCd", poGRider.getBranchCode());
-            params.put("sDestinat", lsSQL);
-            params.put("sTransNox", poTrans.getMaster("sTransNox").toString().substring(1));
-            params.put("sReportDt", CommonUtils.xsDateMedium((Date) poTrans.getMaster("dTransact")));
-            params.put("sPrintdBy", System.getProperty("user.name"));
-            params.put("xRemarksx", poTrans.getMaster("sRemarksx"));
-
-            lsSQL = "SELECT sClientNm FROM Client_Master WHERE sClientID IN ("
-                    + "SELECT sEmployNo FROM xxxSysUser WHERE sUserIDxx = " + SQLUtil.toSQL(poGRider.getUserID()) + ")";
-            loRS = poGRider.executeQuery(lsSQL);
-
-            if (loRS.next()) {
-                params.put("sPrepared", loRS.getString("sClientNm"));
-            } else {
-                params.put("sPrepared", "");
-            }
-
-            InputStream stream = new ByteArrayInputStream(json_arr.toJSONString().getBytes("UTF-8"));
-            JsonDataSource jrjson = new JsonDataSource(stream);
-
-            JasperPrint _jrprint = JasperFillManager.fillReport("d:/GGC_Java_Systems/reports/InvTransferPrint.jasper", params, jrjson);
-            JasperViewer jv = new JasperViewer(_jrprint, false);
-            jv.setVisible(true);
-            jv.setAlwaysOnTop(true);
-        } catch (JRException | UnsupportedEncodingException | SQLException ex) {
-            Logger.getLogger(InvStockRequestIssTransferController.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-
-        return true;
     }
+
 }

@@ -1,3 +1,9 @@
+/**
+ * Maynard Valencia
+ *
+ * @since 2024-08-21
+ */
+
 package org.rmj.cas.food.inventory.fx.views;
 
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
@@ -540,6 +546,22 @@ public class InvStockRequestIssuanceController implements Initializable {
             }
             pnIndex = lnIndex;
         } else {
+            switch (lnIndex) {
+             case 10:/*nOrderQty*/
+                    double x = 0;
+                    try {
+                        /*this must be numeric*/
+                        x = Double.valueOf(lsValue);
+                    } catch (NumberFormatException e) {
+                        x = 0;
+                        txtDetail.setText("0.0");
+                    }
+                      //return the original issueqty
+                    double issueitem = (Double) poTrans.getDetail(pnRow, pnRowDetail, "nIssueQty");
+                    poTrans.setDetail(pnRow, pnRowDetail, "nIssueQty", x - issueitem);
+
+                    poTrans.setDetailOther(pnRow, pnRowDetail, "nIssueQty", x);
+            }
 
             pnIndex = lnIndex;
             txtDetail.selectAll();

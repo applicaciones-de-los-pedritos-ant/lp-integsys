@@ -74,7 +74,7 @@
                <top>
                   <AnchorPane prefHeight="30.0" style="-fx-background-color: #000000;" BorderPane.alignment="CENTER">
                      <children>
-                        <Label layoutX="5.0" layoutY="4.0" text="Inventory Stock Request Approval" textFill="WHITE" AnchorPane.leftAnchor="5.0">
+                        <Label layoutX="5.0" layoutY="4.0" text="Inventory Stock Request Purchase" textFill="WHITE" AnchorPane.leftAnchor="5.0">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>

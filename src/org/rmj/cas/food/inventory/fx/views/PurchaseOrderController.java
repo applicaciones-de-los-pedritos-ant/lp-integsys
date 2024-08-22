@@ -775,7 +775,7 @@ public class PurchaseOrderController implements Initializable {
                     poTrans.setDetail(pnRow, lnIndex, lnValue);
                     break;
                 case 5: /*UnitPrice*/
-                    if(poGRider.getUserLevel() >=4 ){
+                    if(poGRider.getUserLevel() >=2 ){
                     lnValue = 0;
                     try {
                         /*this must be numeric*/
@@ -785,6 +785,8 @@ public class PurchaseOrderController implements Initializable {
                         txtField.requestFocus();   
                     }
                     poTrans.setDetail(pnRow, lnIndex, lnValue);
+                    }else {
+                    poTrans.setDetail(pnRow, lnIndex, 1.00);
                     }
                     break;
             }

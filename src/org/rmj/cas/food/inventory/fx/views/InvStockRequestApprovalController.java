@@ -1,3 +1,9 @@
+/**
+ * Maynard Valencia
+ *
+ * @since 2024-08-20
+ */
+
 package org.rmj.cas.food.inventory.fx.views;
 
 import com.sun.javafx.scene.control.skin.TableHeaderRow;

@@ -70,17 +70,17 @@
                                  <children>
                                     <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="80.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                       </columnConstraints>
                                       <rowConstraints>
                                         <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                         <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                         <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
                                           <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
@@ -94,7 +94,7 @@
                                                 <Insets right="5.0" />
                                              </padding>
                                           </Label>
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Supplier" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Supplier" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                                              <font>
                                                 <Font name="Arial" size="12.0" />
                                              </font>
@@ -110,15 +110,7 @@
                                                 <Insets right="5.0" />
                                              </padding>
                                           </Label>
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Order No." GridPane.rowIndex="3">
-                                             <font>
-                                                <Font name="Arial" size="12.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets right="5.0" />
-                                             </padding>
-                                          </Label>
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Term" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Term" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Reference No." GridPane.rowIndex="4">
                                              <font>
                                                 <Font name="Arial" size="12.0" />
@@ -127,7 +119,6 @@
                                                 <Insets right="5.0" />
                                              </padding>
                                           </Label>
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Reference Date" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                                           <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Remarks" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                                              <font>
                                                 <Font name="Arial" size="12.0" />
@@ -141,37 +132,27 @@
                                                 <Font name="Arial" size="12.0" />
                                              </font>
                                           </TextField>
-                                          <TextField fx:id="txtField03" disable="true" editable="false" prefHeight="25.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
+                                          <TextField fx:id="txtField05" prefHeight="25.0" promptText="Press F3 to Search" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
                                              <font>
                                                 <Font name="Arial" size="12.0" />
                                              </font>
                                           </TextField>
-                                          <TextField fx:id="txtField031" disable="true" editable="false" prefHeight="25.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
+                                          <TextField fx:id="txtField04" disable="true" editable="false" prefHeight="25.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
                                              <font>
                                                 <Font name="Arial" size="12.0" />
                                              </font>
                                           </TextField>
-                                          <TextField fx:id="txtField021" disable="true" editable="false" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                          <TextField fx:id="txtField07" prefHeight="25.0" promptText="Press F3 to Search" GridPane.columnIndex="3" GridPane.rowIndex="4">
                                              <font>
                                                 <Font name="Arial" size="12.0" />
                                              </font>
                                           </TextField>
-                                          <TextField fx:id="txtField0211" editable="false" prefHeight="25.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                          <TextField fx:id="txtField06" disable="true" editable="false" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                              <font>
                                                 <Font name="Arial" size="12.0" />
                                              </font>
                                           </TextField>
-                                          <TextField fx:id="txtField0212" editable="false" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                             <font>
-                                                <Font name="Arial" size="12.0" />
-                                             </font>
-                                          </TextField>
-                                          <TextField fx:id="txtField02111" editable="false" prefHeight="25.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                                             <font>
-                                                <Font name="Arial" size="12.0" />
-                                             </font>
-                                          </TextField>
-                                          <TextArea fx:id="txtField04" prefHeight="46.0" prefWidth="293.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5" GridPane.rowSpan="2">
+                                          <TextArea fx:id="txtField08" prefHeight="46.0" prefWidth="293.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5" GridPane.rowSpan="2">
                                              <font>
                                                 <Font size="10.0" />
                                              </font>
@@ -179,6 +160,19 @@
                                                 <Insets top="3.0" />
                                              </GridPane.margin>
                                           </TextArea>
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Branch" GridPane.rowIndex="1">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets right="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <TextField fx:id="txtField03" disable="true" editable="false" prefHeight="25.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </TextField>
                                        </children>
                                     </GridPane>
                                  </children>
@@ -206,8 +200,8 @@
                               <Font name="Arial" size="12.0" />
                            </font>
                         </Button>
-                        <Separator layoutX="900.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="152.0" prefWidth="0.0" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="0.0" />
-                        <Separator layoutY="150.0" prefHeight="3.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Separator layoutX="900.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="152.0" prefWidth="0.0" style="-fx-background-color: orange;" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="0.0" />
+                        <Separator layoutY="150.0" prefHeight="3.0" prefWidth="650.0" style="-fx-background-color: orange;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                      </children>
                   </AnchorPane>
                </center>
@@ -216,17 +210,15 @@
                      <children>
                         <TableView fx:id="table" editable="true" layoutX="6.0" layoutY="13.0" onMouseClicked="#table_Clicked" prefHeight="250.0" styleClass="..\styles\Tables.css" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
                           <columns>
-                              <TableColumn fx:id="index01" editable="false" maxWidth="1.7976931348623157E308" prefWidth="36.0" text="No." />
-                            <TableColumn fx:id="index02" editable="false" maxWidth="1.7976931348623157E308" prefWidth="100.0" resizable="false" sortable="false" text="Barcode" />
-                              <TableColumn fx:id="index03" editable="false" maxWidth="1.7976931348623157E308" prefWidth="200.0" resizable="false" sortable="false" text="Description" />
-                              <TableColumn fx:id="index04" editable="false" maxWidth="1.7976931348623157E308" prefWidth="110.0" resizable="false" sortable="false" text="Brand" />
-                              <TableColumn fx:id="index05" editable="false" maxWidth="1.7976931348623157E308" prefWidth="100.0" resizable="false" sortable="false" text="Measure" />
-                              <TableColumn fx:id="index052" editable="false" maxWidth="1.7976931348623157E308" prefWidth="100.0" resizable="false" sortable="false" text="Unit Type" />
-                              <TableColumn fx:id="index061" editable="false" maxWidth="1.7976931348623157E308" prefWidth="100.0" resizable="false" sortable="false" text="Superseded" />
-                              <TableColumn fx:id="index06" editable="false" maxWidth="1.7976931348623157E308" prefWidth="60.0" resizable="false" sortable="false" text="Qty" />
-                              <TableColumn fx:id="index051" editable="false" maxWidth="1.7976931348623157E308" prefWidth="100.0" resizable="false" sortable="false" text="Purchase Price" />
-                              <TableColumn fx:id="index07" maxWidth="1.7976931348623157E308" prefWidth="100.0" resizable="false" sortable="false" text="Freight" />
-                              <TableColumn fx:id="index0511" editable="false" maxWidth="1.7976931348623157E308" prefWidth="100.0" resizable="false" sortable="false" text="Sub-Total" />
+                              <TableColumn fx:id="index01" editable="false" maxWidth="-Infinity" minWidth="30.0" prefWidth="30.0" text="No." />
+                            <TableColumn fx:id="index02" editable="false" maxWidth="1.7976931348623157E308" minWidth="110.0" prefWidth="110.0" resizable="false" sortable="false" text="Barcode" />
+                              <TableColumn fx:id="index03" editable="false" maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="150.0" resizable="false" sortable="false" text="Description" />
+                              <TableColumn fx:id="index04" editable="false" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="100.0" resizable="false" sortable="false" text="Brand" />
+                              <TableColumn fx:id="index05" editable="false" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="100.0" resizable="false" sortable="false" text="Measure" />
+                              <TableColumn fx:id="index06" editable="false" maxWidth="1.7976931348623157E308" minWidth="80.0" resizable="false" sortable="false" text="QOH" />
+                              <TableColumn fx:id="index07" editable="false" maxWidth="1.7976931348623157E308" minWidth="80.0" resizable="false" sortable="false" text="Qty" />
+                              <TableColumn fx:id="index08" maxWidth="1.7976931348623157E308" minWidth="80.0" resizable="false" sortable="false" text="P. Price" />
+                              <TableColumn fx:id="index09" editable="false" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="100.0" resizable="false" sortable="false" text="Sub-Total" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
