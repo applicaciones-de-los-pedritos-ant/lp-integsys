@@ -439,17 +439,18 @@ public class InvStockRequestPurchaseController implements Initializable {
                         txtField.setText(transno);
                         boolean lbfound = false;
                         if (ListData.size() > 0) {
-                            for (int lnCtr = 0; lnCtr < ListData.size() - 1; lnCtr++) {
+                            for (int lnCtr = 0; lnCtr <= ListData.size() - 1; lnCtr++) {
                                 String listTransNo = ListData.get(lnCtr).getIndex02();
 
                                 if (listTransNo.equals(transno)) {
                                     // Transaction found, select the row
                                     tblRequestList.getSelectionModel().select(lnCtr);
-                                    tblDetail.getSelectionModel().select(0);
-                                    pnRow = tblRequestList.getSelectionModel().getSelectedIndex();
-                                    pnRowDetail = tblDetail.getSelectionModel().getSelectedIndex();
-                                    tblRequestList.scrollTo(lnCtr);
 
+                                    pnRow = tblRequestList.getSelectionModel().getSelectedIndex();
+                                    tblRequestList.scrollTo(lnCtr);
+                                    loadRecord();
+                                    tblDetail.getSelectionModel().select(0);
+                                    pnRowDetail = tblDetail.getSelectionModel().getSelectedIndex();
                                     setDetailInfo();
 
                                     lbfound = true;
@@ -458,7 +459,8 @@ public class InvStockRequestPurchaseController implements Initializable {
                             }
 
                             if (!lbfound) {
-                                ShowMessageFX.Error("The transaction might have already exceeded the approved quantity or has no approved quantity.", pxeModuleName, "Please verify the Transaction");
+                                ShowMessageFX.Error("The transaction might have already "
+                                        + "exceeded the approved quantity or has no approved quantity.", pxeModuleName, "Please verify the Transaction");
                             }
                         }
                     } else {
@@ -595,7 +597,7 @@ public class InvStockRequestPurchaseController implements Initializable {
                         }
                         break;
 
-                    case 51:
+                   case 51:
                         InvRequest loInvRequest = poTrans.GetInvRequest(txtField51.getText(), true);
 
                         if (loInvRequest != null) {
@@ -605,17 +607,18 @@ public class InvStockRequestPurchaseController implements Initializable {
                             txtField51.setText(transno);
                             boolean lbfound = false;
                             if (ListData.size() > 0) {
-                                for (int lnCtr = 0; lnCtr < ListData.size() - 1; lnCtr++) {
+                                for (int lnCtr = 0; lnCtr <= ListData.size() - 1; lnCtr++) {
                                     String listTransNo = ListData.get(lnCtr).getIndex02();
 
                                     if (listTransNo.equals(transno)) {
                                         // Transaction found, select the row
                                         tblRequestList.getSelectionModel().select(lnCtr);
-                                        tblDetail.getSelectionModel().select(0);
-                                        pnRow = tblRequestList.getSelectionModel().getSelectedIndex();
-                                        pnRowDetail = tblDetail.getSelectionModel().getSelectedIndex();
-                                        tblRequestList.scrollTo(lnCtr);
 
+                                        pnRow = tblRequestList.getSelectionModel().getSelectedIndex();
+                                        tblRequestList.scrollTo(lnCtr);
+                                        loadRecord();
+                                        tblDetail.getSelectionModel().select(0);
+                                        pnRowDetail = tblDetail.getSelectionModel().getSelectedIndex();
                                         setDetailInfo();
 
                                         lbfound = true;
