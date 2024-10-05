@@ -3,7 +3,6 @@
  *
  * @since 2024-08-21
  */
-
 package org.rmj.cas.food.inventory.fx.views;
 
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
@@ -52,9 +51,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import org.rmj.appdriver.constants.EditMode;
-import org.rmj.appdriver.constants.TransactionStatus;
 import org.rmj.appdriver.GRider;
-import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
@@ -63,12 +60,8 @@ import org.rmj.cas.inventory.base.InvMaster;
 import org.rmj.cas.inventory.base.InvRequest;
 import org.rmj.cas.inventory.base.InvRequestManager;
 import org.rmj.cas.inventory.base.InvTransfer;
-import org.rmj.cas.inventory.base.Inventory;
-import org.rmj.cas.inventory.constants.basefx.InvConstants;
 import org.rmj.lp.parameter.agent.XMBranch;
 import org.rmj.lp.parameter.agent.XMCategory;
-import org.rmj.lp.parameter.agent.XMInventory;
-import org.rmj.purchasing.agent.PurchaseOrders;
 
 public class InvStockRequestIssuanceController implements Initializable {
 
@@ -516,7 +509,7 @@ public class InvStockRequestIssuanceController implements Initializable {
             return;
         }
 //        try {
-        int lnRow = poTrans.ItemCount(pnRow);
+//        int lnRow = poTrans.ItemCount(pnRow);
         if (!nv) {
             /*Lost Focus*/
             switch (lnIndex) {
@@ -525,13 +518,18 @@ public class InvStockRequestIssuanceController implements Initializable {
                     try {
                         /*this must be numeric*/
                         x = Double.valueOf(lsValue);
+
+                        if (x < 0) {
+                            x = 0;
+                            txtDetail.setText("0.0");
+                        }
                     } catch (NumberFormatException e) {
                         x = 0;
                         txtDetail.setText("0.0");
                     }
 
                     double issueitem = (Double) poTrans.getDetail(pnRow, pnRowDetail, "nIssueQty");
-                    poTrans.setDetail(pnRow, pnRowDetail, "nIssueQty", x + issueitem);
+                    poTrans.setDetail(pnRow, pnRowDetail, "nIssueQty", issueitem + x);
 
                     poTrans.setDetailOther(pnRow, pnRowDetail, "nIssueQty", x);
 
@@ -547,7 +545,7 @@ public class InvStockRequestIssuanceController implements Initializable {
             pnIndex = lnIndex;
         } else {
             switch (lnIndex) {
-             case 10:/*nOrderQty*/
+                case 10:/*nOrderQty*/
                     double x = 0;
                     try {
                         /*this must be numeric*/
@@ -556,9 +554,9 @@ public class InvStockRequestIssuanceController implements Initializable {
                         x = 0;
                         txtDetail.setText("0.0");
                     }
-                      //return the original issueqty
+                    //return the original issueqty
                     double issueitem = (Double) poTrans.getDetail(pnRow, pnRowDetail, "nIssueQty");
-                    poTrans.setDetail(pnRow, pnRowDetail, "nIssueQty", x - issueitem);
+                    poTrans.setDetail(pnRow, pnRowDetail, "nIssueQty", issueitem - x);
 
                     poTrans.setDetailOther(pnRow, pnRowDetail, "nIssueQty", x);
             }
@@ -882,7 +880,7 @@ public class InvStockRequestIssuanceController implements Initializable {
 
         //validate if has item to save and add to detail
         for (int lnCtr = 0; lnCtr <= lnItem - 1; lnCtr++) {
-            if ((Double) poTrans.getDetailOthers(pnRow, lnCtr, "nIssueQty") > 0) {
+            if ((Double) poTrans.getDetailOthers(pnRow, lnCtr, "nIssueQty") > 0.0) {
                 //to addnew row to end if not last
                 loInvTransfer.addDetail();
                 int lnRow = loInvTransfer.ItemCount() - 1;
@@ -900,6 +898,12 @@ public class InvStockRequestIssuanceController implements Initializable {
             }
         }
 
+        if (loInvTransfer.ItemCount() <= 0) {
+            ShowMessageFX.Error("Unable to fetch item into transfer", pxeModuleName, "Please inform MIS department.");
+
+            return false;
+        }
+
         if (lbHasTransfer) {
             //set the required data
             loInvTransfer.SearchMaster(4, (String) poTrans.getMaster(pnRow, "sBranchCd"), true);
@@ -909,7 +913,7 @@ public class InvStockRequestIssuanceController implements Initializable {
             loInvStockReqIssTransController.setInvTransfer(loInvTransfer);
 //            load modal
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("../views/child/InvStockRequestIssTransfer.fxml"));
+            fxmlLoader.setLocation(getClass().getResource("child/InvStockRequestIssTransfer.fxml"));
             fxmlLoader.setController(loInvStockReqIssTransController);
             try {
                 Parent parent = fxmlLoader.load();
@@ -940,7 +944,7 @@ public class InvStockRequestIssuanceController implements Initializable {
 //
                 if (!loInvStockReqIssTransController.isCancelled()) {
 
-                    double issueitem = (Double) poTrans.getDetail(pnRow, pnRowDetail, "nIssueQty");
+                    double issueitem = (Double) poTrans.getDetail(pnRow, pnRowDetail, "nIssueQty") + (Double) poTrans.getDetail(pnRow, pnRowDetail, "nOrderQty");
                     poTrans.setDetail(pnRow, pnRowDetail, "nOnTranst", issueitem);
                     return true;
                 } else {

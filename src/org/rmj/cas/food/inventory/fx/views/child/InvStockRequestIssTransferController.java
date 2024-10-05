@@ -121,6 +121,7 @@ public class InvStockRequestIssTransferController implements Initializable {
             case "btnOk":
                 if (poTrans.saveTransaction()) {
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
+                        
                             if (poTrans.closeTransaction(psOldRec)) {
                                 if (printTransfer()) {
                                     
@@ -128,8 +129,11 @@ public class InvStockRequestIssTransferController implements Initializable {
                                     return;
                                 }
                             } else {
-                                ShowMessageFX.Warning(null, pxeModuleName, "Unable to confirm transaction.");
-                            
+                                if  (poTrans.getErrMsg().isEmpty()){
+                                ShowMessageFX.Warning(poTrans.getMessage() , pxeModuleName, "Unable to confirm transaction.");
+                                }else {
+                                ShowMessageFX.Error(poTrans.getErrMsg(),pxeModuleName, "Unable to confirm transaction.");
+                                }
                         }
                     }
                     pbCancelled = false;

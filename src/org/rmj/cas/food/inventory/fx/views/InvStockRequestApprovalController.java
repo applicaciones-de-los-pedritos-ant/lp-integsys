@@ -3,7 +3,6 @@
  *
  * @since 2024-08-20
  */
-
 package org.rmj.cas.food.inventory.fx.views;
 
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
@@ -46,18 +45,14 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import org.rmj.appdriver.constants.EditMode;
-import org.rmj.appdriver.constants.TransactionStatus;
 import org.rmj.appdriver.GRider;
-import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
 import org.rmj.cas.inventory.base.InvMaster;
 import org.rmj.cas.inventory.base.InvRequestManager;
-import org.rmj.cas.inventory.base.Inventory;
 import org.rmj.lp.parameter.agent.XMBranch;
 import org.rmj.lp.parameter.agent.XMCategory;
-import org.rmj.lp.parameter.agent.XMInventory;
 
 public class InvStockRequestApprovalController implements Initializable {
 
@@ -143,7 +138,11 @@ public class InvStockRequestApprovalController implements Initializable {
     @FXML
     void tblRequestList_Clicked(MouseEvent event) {
         pnRow = tblRequestList.getSelectionModel().getSelectedIndex();
+        int selectedIndex = tblRequestList.getSelectionModel().getSelectedIndex();
 
+        TableModel selectedItem = (TableModel) tblRequestList.getItems().get(selectedIndex);
+
+        pnRow = ListData.indexOf(selectedItem);
         if (pnRow < 0) {
             return;
         }

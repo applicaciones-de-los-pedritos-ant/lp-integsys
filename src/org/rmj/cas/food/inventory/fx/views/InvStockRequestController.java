@@ -275,6 +275,10 @@ public class InvStockRequestController implements Initializable {
         } else {
             txtField51.requestFocus();
         }
+
+        if (!poGRider.getBranchCode().contains("P0W1")) {
+            txtField03.setDisable(true);
+        }
     }
 
     private void clearFields() {
@@ -428,7 +432,7 @@ public class InvStockRequestController implements Initializable {
                         txtDetail02.setText("");
                         txtDetail05.setText("0");
                         txtDetail07.setText("0");
-                        
+
                     }
 
                     if (!txtDetail01.getText().isEmpty()) {
@@ -723,6 +727,13 @@ public class InvStockRequestController implements Initializable {
             case "btnImport":
                 if (poTrans.ImportData((Stage) anchorField.getScene().getWindow(), false)) {
                     loadDetail();
+                } else {
+                    if (poTrans.getErrMsg().isEmpty()) {
+                        ShowMessageFX.Warning(poTrans.getMessage(), pxeModuleName, "Unable to import manual Encode.");
+                    } else {
+                        ShowMessageFX.Error(poTrans.getErrMsg(), pxeModuleName, "Unable to import manual Encode");
+                    }
+
                 }
                 break;
             case "btnExport":
@@ -1088,6 +1099,8 @@ public class InvStockRequestController implements Initializable {
         params.put("sReportDt", CommonUtils.xsDateMedium((Date) poTrans.getMaster("dTransact")));
         params.put("sPrintdBy", System.getProperty("user.name"));
         params.put("xRemarksx", poTrans.getMaster("sRemarksx"));
+        params.put("sApprval1", poGRider.getClientName());
+        params.put("sApprval2", "");
 
         try {
             InputStream stream = new ByteArrayInputStream(json_arr.toJSONString().getBytes("UTF-8"));

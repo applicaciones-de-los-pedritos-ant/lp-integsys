@@ -3,7 +3,6 @@
  *
  * @since 2024-08-22
  */
-
 package org.rmj.cas.food.inventory.fx.views;
 
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
@@ -11,8 +10,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyBooleanPropertyBase;
 import javafx.beans.value.ChangeListener;
@@ -512,13 +509,19 @@ public class InvStockRequestPurchaseController implements Initializable {
                     try {
                         /*this must be numeric*/
                         x = Double.valueOf(lsValue);
+
+                        if (x < 0) {
+                            x = 0;
+                            txtDetail.setText("0.0");
+                        }
                     } catch (NumberFormatException e) {
                         x = 0;
                         txtDetail.setText("0.0");
                     }
 
                     double orderitem = (Double) poTrans.getDetail(pnRow, pnRowDetail, "nOrderQty");
-                    poTrans.setDetail(pnRow, pnRowDetail, "nOrderQty", x + orderitem);
+                    double total = orderitem + x;
+                    poTrans.setDetail(pnRow, pnRowDetail, "nOrderQty", total);
 
                     poTrans.setDetailOther(pnRow, pnRowDetail, "nOrderQty", x);
 
@@ -534,7 +537,7 @@ public class InvStockRequestPurchaseController implements Initializable {
             pnIndex = lnIndex;
         } else {
             switch (lnIndex) {
-             case 10:/*nOrderQty*/
+                case 10:/*nOrderQty*/
                     double x = 0;
                     try {
                         /*this must be numeric*/
@@ -545,7 +548,7 @@ public class InvStockRequestPurchaseController implements Initializable {
                     }
 
                     double orderitem = (Double) poTrans.getDetail(pnRow, pnRowDetail, "nOrderQty");
-                    poTrans.setDetail(pnRow, pnRowDetail, "nOrderQty", x - orderitem);
+                    poTrans.setDetail(pnRow, pnRowDetail, "nOrderQty", orderitem - x);
 
                     poTrans.setDetailOther(pnRow, pnRowDetail, "nOrderQty", x);
             }
@@ -597,7 +600,7 @@ public class InvStockRequestPurchaseController implements Initializable {
                         }
                         break;
 
-                   case 51:
+                    case 51:
                         InvRequest loInvRequest = poTrans.GetInvRequest(txtField51.getText(), true);
 
                         if (loInvRequest != null) {
@@ -653,7 +656,7 @@ public class InvStockRequestPurchaseController implements Initializable {
 
             case "btnSave":
                 if (poTrans.isEntryOkay(pnRow)) {
-                    if (showInvTransfer()) {
+                    if (showPurchaseOrder()) {
                         if (poTrans.saveTransaction(pnRow)) {
                             ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
                             clearFields();
@@ -772,7 +775,7 @@ public class InvStockRequestPurchaseController implements Initializable {
             } else {
                 txtDetail03.setText("");
             }
-            
+
             txtDetail04.setText(poTrans.getDetail(pnRow, pnRowDetail, "nQtyOnHnd").toString());
             txtDetail05.setText(poTrans.getDetail(pnRow, pnRowDetail, "nRecOrder").toString());
             InvMaster loInventory = poTrans.GetIssueInventory((String) poTrans.getDetailOthers(pnRow, pnRowDetail, "sStockIDx"), true);
@@ -801,7 +804,7 @@ public class InvStockRequestPurchaseController implements Initializable {
         }
     }
 
-    private boolean showInvTransfer() {
+    private boolean showPurchaseOrder() {
         boolean lbHasTransfer = false;
         InvStockRequestPOController loInvStockRequestPOController = new InvStockRequestPOController();
         PurchaseOrders loPurchaseOrders = new PurchaseOrders(poGRider, poGRider.getBranchCode(), false);
@@ -813,9 +816,9 @@ public class InvStockRequestPurchaseController implements Initializable {
 
         //validate if has item to save and add to detail
         for (int lnCtr = 0; lnCtr <= lnItem - 1; lnCtr++) {
-            if ((Double) poTrans.getDetailOthers(pnRow, lnCtr, "nOrderQty") > 0) {
+            if ((Double) poTrans.getDetailOthers(pnRow, lnCtr, "nOrderQty") > 0.0) {
                 //to addnew row to end if not last
-                loPurchaseOrders.addDetail();
+//                loPurchaseOrders.addDetail();
                 int lnRow = loPurchaseOrders.ItemCount() - 1;
 
                 Double nOrderQty = (Double) poTrans.getDetailOthers(pnRow, lnCtr, "nOrderQty");
@@ -829,7 +832,7 @@ public class InvStockRequestPurchaseController implements Initializable {
 //                }
             }
         }
-
+        loPurchaseOrders.deleteDetail(loPurchaseOrders.ItemCount() - 1);
         if (lbHasTransfer) {
             //set the required master data
             loPurchaseOrders.SearchMaster(2, (String) poGRider.getBranchCode(), true);
@@ -840,7 +843,7 @@ public class InvStockRequestPurchaseController implements Initializable {
             loInvStockRequestPOController.setPurchaseOrders(loPurchaseOrders);
 //            load modal
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("../views/child/InvStockRequestPO.fxml"));
+            fxmlLoader.setLocation(getClass().getResource("child/InvStockRequestPO.fxml"));
             fxmlLoader.setController(loInvStockRequestPOController);
             try {
                 Parent parent = fxmlLoader.load();
@@ -871,7 +874,7 @@ public class InvStockRequestPurchaseController implements Initializable {
 //
                 if (!loInvStockRequestPOController.isCancelled()) {
 
-                    double issueitem = (Double) poTrans.getDetail(pnRow, pnRowDetail, "nIssueQty");
+                    double issueitem = (Double) poTrans.getDetail(pnRow, pnRowDetail, "nIssueQty") + (Double) poTrans.getDetail(pnRow, pnRowDetail, "nOrderQty");
                     poTrans.setDetail(pnRow, pnRowDetail, "nOnTranst", issueitem);
                     return true;
                 } else {

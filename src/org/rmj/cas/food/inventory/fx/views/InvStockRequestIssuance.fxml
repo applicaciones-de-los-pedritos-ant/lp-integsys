@@ -276,17 +276,17 @@
                                                                         <Insets right="10.0" />
                                                                      </padding>
                                                                   </Label>
-                                                                  <TextField fx:id="txtDetail01" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1">
+                                                                  <TextField fx:id="txtDetail01" editable="false" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1">
                                                                      <font>
                                                                         <Font size="10.0" />
                                                                      </font>
                                                                   </TextField>
-                                                                  <TextField fx:id="txtDetail02" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+                                                                  <TextField fx:id="txtDetail02" editable="false" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
                                                                      <font>
                                                                         <Font size="10.0" />
                                                                      </font>
                                                                   </TextField>
-                                                                  <TextField fx:id="txtDetail03" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                                  <TextField fx:id="txtDetail03" editable="false" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                                      <font>
                                                                         <Font size="10.0" />
                                                                      </font>
@@ -326,12 +326,12 @@
                                                                                     <Font name="System Bold" size="12.0" />
                                                                                  </font>
                                                                               </Label>
-                                                                              <TextField fx:id="txtDetail04" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1">
+                                                                              <TextField fx:id="txtDetail04" editable="false" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1">
                                                                                  <font>
                                                                                     <Font size="10.0" />
                                                                                  </font>
                                                                               </TextField>
-                                                                              <TextField fx:id="txtDetail05" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="3">
+                                                                              <TextField fx:id="txtDetail05" editable="false" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="3">
                                                                                  <font>
                                                                                     <Font size="10.0" />
                                                                                  </font>
@@ -378,12 +378,12 @@
                                                                                     <Font name="System Bold Italic" size="12.0" />
                                                                                  </font>
                                                                               </Label>
-                                                                              <TextField fx:id="txtDetail06" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1">
+                                                                              <TextField fx:id="txtDetail06" editable="false" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1">
                                                                                  <font>
                                                                                     <Font size="10.0" />
                                                                                  </font>
                                                                               </TextField>
-                                                                              <TextField fx:id="txtDetail07" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="3">
+                                                                              <TextField fx:id="txtDetail07" editable="false" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="3">
                                                                                  <font>
                                                                                     <Font size="10.0" />
                                                                                  </font>
@@ -441,7 +441,7 @@
                                                                                     <Font size="10.0" />
                                                                                  </font>
                                                                               </TextField>
-                                                                              <TextField fx:id="txtDetail09" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                                              <TextField fx:id="txtDetail09" editable="false" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                                                  <font>
                                                                                     <Font size="10.0" />
                                                                                  </font>

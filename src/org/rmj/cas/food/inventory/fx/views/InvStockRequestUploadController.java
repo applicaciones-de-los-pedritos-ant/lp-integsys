@@ -1,39 +1,24 @@
 package org.rmj.cas.food.inventory.fx.views;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import java.math.BigDecimal;
 import java.net.URL;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
-import javafx.beans.property.ReadOnlyBooleanPropertyBase;
-import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import org.apache.poi.hpsf.Decimal;
 import org.rmj.appdriver.GRider;
-import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.callback.IFXML;
 import org.rmj.appdriver.constants.EditMode;
-import org.rmj.cas.inventory.base.InvMaster;
 import org.rmj.cas.inventory.base.InvRequest;
 import org.rmj.lp.parameter.agent.XMBranch;
 import org.rmj.lp.parameter.agent.XMInventoryType;
@@ -131,6 +116,9 @@ public class InvStockRequestUploadController implements Initializable, IFXML {
                 if (oTrans.ImportData((Stage) anchorField.getScene().getWindow(), true)) {
                     clearFields();
                     loadExcelDetail();
+                }else{
+                
+                 ShowMessageFX.Warning(oTrans.getMessage()+ " " + oTrans.getErrMsg(), pxeModuleName, "Please check the file for uploading");
                 }
                 break;
             case "btnClose":
