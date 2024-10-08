@@ -142,6 +142,10 @@ public class POReceivingController implements Initializable {
         if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
             pbisEncoder = true;
         }
+
+        if (!pbisEncoder) {
+            poTrans.setTranStat(10);
+        }
         /*Set action event handler for the buttons*/
         btnCancel.setOnAction(this::cmdButton_Click);
         btnSearch.setOnAction(this::cmdButton_Click);
@@ -470,33 +474,39 @@ public class POReceivingController implements Initializable {
                                     clearFields();
                                     initGrid();
                                     pnEditMode = EditMode.UNKNOWN;
-                                }else poTrans.ShowMessageFX();
-                             }else poTrans.ShowMessageFX();
+                                } else {
+                                    poTrans.ShowMessageFX();
+                                }
+                            } else {
+                                poTrans.ShowMessageFX();
+                            }
                         } else {
-                        if (poTrans.closeTransaction(psOldRec, "TOKENAPPROVL")) {
-                                    ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
+                            if (poTrans.closeTransaction(psOldRec, "TOKENAPPROVL")) {
+                                ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
 
-                                    if (poTrans.openTransaction(psOldRec)) {
-                                        clearFields();
-                                        loadRecord();
+                                if (poTrans.openTransaction(psOldRec)) {
+                                    clearFields();
+                                    loadRecord();
 
-                                        psOldRec = (String) poTrans.getMaster("sTransNox");
+                                    psOldRec = (String) poTrans.getMaster("sTransNox");
 
                                     clearFields();
                                     initGrid();
                                     pnEditMode = EditMode.UNKNOWN;
                                 }
-                        }else poTrans.ShowMessageFX();
+                            } else {
+                                poTrans.ShowMessageFX();
+                            }
 
                         }
                     }
-                    } else {
-                        ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to confirm!");
-                    }
-                
-                    break;
-                
-                case "btnClose":
+                } else {
+                    ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to confirm!");
+                }
+
+                break;
+
+            case "btnClose":
             case "btnExit":
                 unloadForm();
                 return;
@@ -563,6 +573,14 @@ public class POReceivingController implements Initializable {
                         } else {
                             ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
                         }
+                    } else if (!pbisEncoder) {
+                        if (poTrans.updateRecord()) {
+                            loadRecord();
+                            pnEditMode = poTrans.getEditMode();
+                        } else {
+                            ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
+                        }
+
                     } else {
                         ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction...");
                     }
@@ -575,9 +593,7 @@ public class POReceivingController implements Initializable {
         }
 
         initButton(pnEditMode);
-        }
-
-    
+    }
 
     private void loadRecord() {
         txtField01.setText((String) poTrans.getMaster(1));
@@ -669,7 +685,11 @@ public class POReceivingController implements Initializable {
         TextField txtField = (TextField) event.getSource();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
         String lsValue = txtField.getText();
+
         if (event.getCode() == F3) {
+            if (poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
+                return;
+            }
             switch (lnIndex) {
                 case 5:
                     /*sSupplier*/
@@ -773,6 +793,9 @@ public class POReceivingController implements Initializable {
         JSONObject loJSON;
 
         if (event.getCode() == F3) {
+            if (poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
+                return;
+            }
             switch (lnIndex) {
                 case 3:
                     if (event.getCode() == F3) {
@@ -970,8 +993,15 @@ public class POReceivingController implements Initializable {
         }
 
         if (!nv) {
+
+            if (poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
+                if (lnIndex != 8) {
+                    return;
+                }
+            }
             /*Lost Focus*/
             switch (lnIndex) {
+
                 case 3:
                 /*Order No*/
                 case 5:
@@ -1057,6 +1087,9 @@ public class POReceivingController implements Initializable {
 
     final ChangeListener<? super Boolean> txtField_Focus = (o, ov, nv) -> {
         if (!pbLoaded) {
+            return;
+        }
+        if (poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
             return;
         }
 

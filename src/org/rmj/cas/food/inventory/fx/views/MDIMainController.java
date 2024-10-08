@@ -125,7 +125,7 @@ public class MDIMainController implements Initializable {
     @FXML
     private CheckMenuItem chkLight;
     @FXML
-    private MenuItem mnu_StockRequest;
+    private MenuItem mnu_StockRequest, mnu_StockRequestApproval, mnu_StockRequestIssuance, mnu_StockRequestPO;
     @FXML
     private MenuItem mnu_InvStockReqReg;
     @FXML
@@ -148,6 +148,8 @@ public class MDIMainController implements Initializable {
     private MenuItem menu_TransferPosting;
     @FXML
     private MenuItem menu_TransferDiscrepancyPosting;
+    @FXML
+    private MenuItem munStockRequestUpload;
     @FXML
     private ToggleButton btnRestoreDown;
     @FXML
@@ -304,6 +306,7 @@ public class MDIMainController implements Initializable {
             mnu_InvWasteReg.setVisible(poGRider.getBranchCode().contains("P"));
             mnu_InvCountReg.setVisible(poGRider.getBranchCode().contains("P"));
             menu_TransferDiscrepancyPosting.setVisible(poGRider.getBranchCode().contains("PHO1"));
+
         }
 
         if (!poGRider.getProductID().equalsIgnoreCase("general")) {
@@ -521,9 +524,6 @@ public class MDIMainController implements Initializable {
         }
     }
 
-    private double xOffset = 0;
-    private double yOffset = 0;
-
     private void loadSPRecalculateWindow() throws SQLException {
         try {
             Stage stage = new Stage();
@@ -532,6 +532,63 @@ public class MDIMainController implements Initializable {
             fxmlLoader.setLocation(getClass().getResource("SPRecalculateUtility.fxml"));
 
             SPRecalculateUtilityController loControl = new SPRecalculateUtilityController();
+            loControl.setGRider(poGRider);
+            fxmlLoader.setController(loControl);
+
+            //load the main interface
+            Parent parent = fxmlLoader.load();
+
+            parent.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+
+            parent.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    stage.setX(event.getScreenX() - xOffset);
+                    stage.setY(event.getScreenY() - yOffset);
+                }
+            });
+
+            //set the main interface as the scene
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("");
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            ShowMessageFX.Warning(null, e.getMessage(), "Warning", null);
+            System.exit(1);
+        }
+    }
+
+    @FXML
+    private void munStockRequestUpload_Click(ActionEvent event) throws IOException {
+        try {
+            loadStockReqUpload();
+        } catch (SQLException ex) {
+            Logger.getLogger(MDIMainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private double xOffset = 0;
+    private double yOffset = 0;
+
+    private void loadStockReqUpload() throws SQLException {
+        try {
+            Stage stage = new Stage();
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("InvStockRequestUpload.fxml"));
+
+            InvStockRequestUploadController loControl = new InvStockRequestUploadController();
             loControl.setGRider(poGRider);
             fxmlLoader.setController(loControl);
 
@@ -628,6 +685,21 @@ public class MDIMainController implements Initializable {
                 InvStockRequestObj.setGRider(poGRider);
 
                 return InvStockRequestObj;
+            case FoodInventoryFX.pxeInvStockRequestApproval:
+                InvStockRequestApprovalController InvStockRequestApporvalObj = new InvStockRequestApprovalController();
+                InvStockRequestApporvalObj.setGRider(poGRider);
+
+                return InvStockRequestApporvalObj;
+            case FoodInventoryFX.pxeInvStockRequestIssuance:
+                InvStockRequestIssuanceController InvStockRequestIssuanceObj = new InvStockRequestIssuanceController();
+                InvStockRequestIssuanceObj.setGRider(poGRider);
+
+                return InvStockRequestIssuanceObj;
+            case FoodInventoryFX.pxeInvStockRequestPO:
+                InvStockRequestPurchaseController InvStockRequestPOObj = new InvStockRequestPurchaseController();
+                InvStockRequestPOObj.setGRider(poGRider);
+
+                return InvStockRequestPOObj;
 
             case FoodInventoryFX.pxeInvTransfer:
                 InvTransferController loInvTransferObj = new InvTransferController();
@@ -844,6 +916,27 @@ public class MDIMainController implements Initializable {
     }
 
     @FXML
+    private void mnu_StockRequestApprovalClick(ActionEvent event) throws IOException {
+//         setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransfer));
+        loadScene(FoodInventoryFX.pxeInvStockRequestApproval);
+
+    }
+
+    @FXML
+    private void mnu_StockRequestIssuanceClick(ActionEvent event) throws IOException {
+//         setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransfer));
+        loadScene(FoodInventoryFX.pxeInvStockRequestIssuance);
+
+    }
+
+    @FXML
+    private void mnu_StockRequestPOClick(ActionEvent event) throws IOException {
+//         setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransfer));
+        loadScene(FoodInventoryFX.pxeInvStockRequestPO);
+
+    }
+
+    @FXML
     private void mnu_ProductionRequestClick(ActionEvent event) throws IOException {
 //         setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransfer));
         loadScene(FoodInventoryFX.pxeInvProdRequest);
@@ -913,8 +1006,8 @@ public class MDIMainController implements Initializable {
     private void menu_TransferPostingClick(ActionEvent event) throws IOException {
 //        setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransPosting));
         loadScene(FoodInventoryFX.pxeInvTransPosting);
-    }   
-    
+    }
+
     @FXML
     private void menu_TransferDiscrepancyPostingClick(ActionEvent event) throws IOException {
 //        setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransPosting));

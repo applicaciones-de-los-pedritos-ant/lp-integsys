@@ -407,18 +407,58 @@
                                                       </Button>
                                                    </graphic>
                                                 </MenuItem>
-                                                <MenuItem fx:id="mnu_StockRequest" mnemonicParsing="false" onAction="#mnu_StockRequestClick" text="Stock Request">
-                                                   <graphic>
-                                                      <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                                <Menu mnemonicParsing="false" text="Stock Request">
+                                                  <items>
+                                                      <MenuItem fx:id="mnu_StockRequest" mnemonicParsing="false" onAction="#mnu_StockRequestClick" text="Stock Request">
                                                          <graphic>
-                                                            <FontAwesomeIconView glyphName="TAG" size="14" />
+                                                            <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                                               <graphic>
+                                                                  <FontAwesomeIconView glyphName="TAG" size="14" />
+                                                               </graphic>
+                                                               <font>
+                                                                  <Font size="1.0" />
+                                                               </font>
+                                                            </Button>
                                                          </graphic>
-                                                         <font>
-                                                            <Font size="1.0" />
-                                                         </font>
-                                                      </Button>
+                                                      </MenuItem>
+                                                    <MenuItem fx:id="mnu_StockRequestApproval" mnemonicParsing="false" onAction="#mnu_StockRequestApprovalClick" text="Stock Request Approval">
+                                                         <graphic>
+                                                            <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                                               <graphic>
+                                                                  <FontAwesomeIconView glyphName="TAG" size="14" />
+                                                               </graphic>
+                                                               <font>
+                                                                  <Font size="1.0" />
+                                                               </font>
+                                                            </Button>
+                                                         </graphic></MenuItem>
+                                                      <MenuItem fx:id="mnu_StockRequestIssuance" mnemonicParsing="false" onAction="#mnu_StockRequestIssuanceClick" text="Stock Request Issuance">
+                                                         <graphic>
+                                                            <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                                               <graphic>
+                                                                  <FontAwesomeIconView glyphName="TAG" size="14" />
+                                                               </graphic>
+                                                               <font>
+                                                                  <Font size="1.0" />
+                                                               </font>
+                                                            </Button>
+                                                         </graphic></MenuItem>
+                                                      <MenuItem fx:id="mnu_StockRequestPO" mnemonicParsing="false" onAction="#mnu_StockRequestPOClick" text="Stock Request PO">
+                                                         <graphic>
+                                                            <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                                               <graphic>
+                                                                  <FontAwesomeIconView glyphName="TAG" size="14" />
+                                                               </graphic>
+                                                               <font>
+                                                                  <Font size="1.0" />
+                                                               </font>
+                                                            </Button>
+                                                         </graphic></MenuItem>
+                                                  </items>
+                                                   <graphic>
+                                                      <FontAwesomeIconView glyphName="TAG" size="14" />
                                                    </graphic>
-                                                </MenuItem>
+                                                </Menu>
                                                 <MenuItem fx:id="mnu_ProductionRequest" mnemonicParsing="false" onAction="#mnu_ProductionRequestClick" text="Product Request">
                                                    <graphic>
                                                       <Button graphicTextGap="2.0" mnemonicParsing="false">
@@ -526,6 +566,18 @@
                                                    </graphic>
                                                 </MenuItem>
                                                 <MenuItem fx:id="mnuSPRec" mnemonicParsing="false" onAction="#mnuSPRec_Click" text="SP Recalculate">
+                                                   <graphic>
+                                                      <Button mnemonicParsing="false">
+                                                         <font>
+                                                            <Font size="1.0" />
+                                                         </font>
+                                                         <graphic>
+                                                            <FontAwesomeIconView glyphName="WRENCH" size="12" />
+                                                         </graphic>
+                                                      </Button>
+                                                   </graphic>
+                                                </MenuItem>
+                                                <MenuItem fx:id="munStockRequestUpload" mnemonicParsing="false" onAction="#munStockRequestUpload_Click" text="Stock Request Upload">
                                                    <graphic>
                                                       <Button mnemonicParsing="false">
                                                          <font>

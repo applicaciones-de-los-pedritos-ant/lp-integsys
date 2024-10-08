@@ -38,6 +38,8 @@ import org.rmj.cas.inventory.base.Inventory;
 import org.rmj.purchasing.agent.XMPOReceiving;
 import org.rmj.purchasing.agent.POReturn;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
+import org.rmj.appdriver.agentfx.ui.showFXDialog;
+import org.rmj.appdriver.constants.UserRight;
 
 public class POReturnController implements Initializable {
 
@@ -378,33 +380,65 @@ public class POReturnController implements Initializable {
                 break;
             case "btnConfirm":
                 if (!psOldRec.equals("")) {
+
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?") == true) {
-                        if (poTrans.closeTransaction(psOldRec)) {
-                            ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
+                        if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
+                            JSONObject loJSON = showFXDialog.getApproval(poGRider);
 
-                            if (poTrans.openTransaction(psOldRec)) {
-                                clearFields();
-                                loadRecord();
-
-                                psOldRec = (String) poTrans.getMaster("sTransNox");
-
-                                if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
-                                    poTrans.printRecord();
+                            if (loJSON != null) {
+                                if ((int) loJSON.get("nUserLevl") < UserRight.SUPERVISOR) {
+                                    ShowMessageFX.Information("Only managerial accounts can approved transactions.", pxeModuleName, "Authentication failed!!!");
+                                    return;
                                 }
+
+                                if (poTrans.closeTransaction(psOldRec)) {
+                                    ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
+
+                                    if (poTrans.openTransaction(psOldRec)) {
+                                        clearFields();
+                                        loadRecord();
+
+                                        psOldRec = (String) poTrans.getMaster("sTransNox");
+
+//                                if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
+//                                    poTrans.printRecord();
+//                                }
+                                    }
+
+                                    clearFields();
+                                    initGrid();
+                                    pnEditMode = EditMode.UNKNOWN;
+                                } else {
+                                    poTrans.ShowMessageFX();
+                                }
+                            } else {
+                                poTrans.ShowMessageFX();
+                            }
+                        } else {
+                            if (poTrans.closeTransaction(psOldRec)) {
+                                ShowMessageFX.Information(null, pxeModuleName, "Transaction CONFIRMED successfully.");
+
+                                if (poTrans.openTransaction(psOldRec)) {
+                                    clearFields();
+                                    loadRecord();
+
+                                    psOldRec = (String) poTrans.getMaster("sTransNox");
+
+                                    clearFields();
+                                    initGrid();
+                                    pnEditMode = EditMode.UNKNOWN;
+                                }
+                            } else {
+                                poTrans.ShowMessageFX();
                             }
 
-                            clearFields();
-                            initGrid();
-                            pnEditMode = EditMode.UNKNOWN;
-                        } else {
-                            poTrans.ShowMessageFX();
                         }
                     }
-
-                    return;
                 } else {
-                    ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
+                    ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to confirm!");
                 }
+
+                break;
             case "btnClose":
             case "btnExit":
                 unloadForm();
@@ -1017,7 +1051,7 @@ public class POReturnController implements Initializable {
                     if (txtDetail03.getText().isEmpty()) {
                         txtDetail03.requestFocus();
                         txtDetail03.selectAll();
-                    } 
+                    }
                     break;
                 case 6:
                     txtDetail06.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, fnIndex).toString()), "0.00"));
