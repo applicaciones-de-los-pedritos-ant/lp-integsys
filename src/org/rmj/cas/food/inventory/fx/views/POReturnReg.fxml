@@ -50,8 +50,8 @@
                               <ImageView fx:id="imgTranStat" fitHeight="25.0" fitWidth="150.0" layoutX="291.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="3.0" />
                            </children>
                         </AnchorPane>
-                        <Separator layoutX="436.0" layoutY="45.0" orientation="VERTICAL" prefHeight="250.0" prefWidth="0.0" style="-fx-background-color: black;" />
-                        <TableView fx:id="table" focusTraversable="false" layoutX="445.0" layoutY="245.0" onMouseClicked="#table_Clicked" prefHeight="160.0" prefWidth="855.0" stylesheets="@../styles/Tables.css">
+                        <Separator layoutX="436.0" layoutY="45.0" orientation="VERTICAL" prefHeight="250.0" prefWidth="0.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="42.0" />
+                        <TableView fx:id="table" focusTraversable="false" layoutX="445.0" layoutY="245.0" onMouseClicked="#table_Clicked" prefHeight="160.0" prefWidth="900.0" stylesheets="@../styles/Tables.css" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="245.0">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy></TableView>
@@ -297,33 +297,21 @@
                            <graphic>
                               <FontAwesomeIconView glyphName="POWER_OFF" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnBrowse" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="1.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Browse" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="FOLDER_OPEN" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnVoid" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="60.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Void">
                            <graphic>
                               <FontAwesomeIconView glyphName="TRASH" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnPrint" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Print">
                            <graphic>
                               <FontAwesomeIconView glyphName="PRINT" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                      </children>
                   </AnchorPane>

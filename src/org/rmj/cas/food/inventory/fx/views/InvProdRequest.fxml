@@ -31,81 +31,51 @@
                            <graphic>
                               <FontAwesomeIconView glyphName="DEDENT" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnNew" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="56.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="New" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="FILE_ALT" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnSave" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="62.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Save" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="FLOPPY_ALT" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnCancel" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="194.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Cancel" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="180.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="SIGN_OUT" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnClose" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="246.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Close" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="300.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="POWER_OFF" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnSearch" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="128.0" layoutY="1.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Search" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="SEARCH" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnPrint" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="129.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Print" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="180.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="PRINT" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnBrowse" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="1.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Browse" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="FOLDER_OPEN" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnConfirm" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="2.0" layoutY="180.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Confirm" AnchorPane.topAnchor="240.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="CHECK" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnUpdate" alignment="BOTTOM_CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Update" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="120.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="EDIT" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                      </children>
                   </AnchorPane>
@@ -133,7 +103,7 @@
                <center>
                   <AnchorPane fx:id="anchorField" style="-fx-background-color: #B3B6B7;" BorderPane.alignment="CENTER">
                      <children>
-                        <TableView fx:id="table" layoutX="175.0" layoutY="209.0" onMouseClicked="#table_Clicked" prefHeight="200.0" prefWidth="680.0" stylesheets="@../styles/Tables.css">
+                        <TableView fx:id="table" layoutX="175.0" layoutY="209.0" onMouseClicked="#table_Clicked" prefWidth="680.0" stylesheets="@../styles/Tables.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="450.0" AnchorPane.topAnchor="160.0">
                            <columns>
                               <TableColumn fx:id="index01" maxWidth="30.0" prefWidth="30.0" text="NO" />
                               <TableColumn fx:id="index02" maxWidth="120.0" prefWidth="120.0" text="BARCODE" />
@@ -146,7 +116,7 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <Separator layoutX="436.0" layoutY="42.0" orientation="VERTICAL" prefHeight="160.0" prefWidth="1.0" style="-fx-background-color: black;" />
+                        <Separator layoutX="436.0" layoutY="42.0" orientation="VERTICAL" prefWidth="1.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="436.0" AnchorPane.topAnchor="42.0" />
                         <AnchorPane layoutX="4.0" layoutY="1.0" prefHeight="35.0" style="-fx-background-color: #686868;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <TextField fx:id="txtField50" layoutX="115.0" prefHeight="27.0" prefWidth="149.0" promptText="Press F3 to search" AnchorPane.topAnchor="3.0">
@@ -210,7 +180,7 @@
                               </TextArea>
                            </children>
                         </GridPane>
-                        <GridPane layoutX="440.0" layoutY="175.0" AnchorPane.topAnchor="40.0">
+                        <GridPane layoutX="440.0" layoutY="175.0" AnchorPane.leftAnchor="440.0" AnchorPane.topAnchor="40.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="110.0" />
@@ -257,7 +227,6 @@
                               </Label>
                            </children>
                         </GridPane>
-                        <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="209.0" prefHeight="40.0" prefWidth="83.0" text="Transaction Detail" textAlignment="RIGHT" wrapText="true" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="215.0" />
                      </children>
                   </AnchorPane>
                </center>

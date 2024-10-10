@@ -41,7 +41,7 @@
 
 .combo-box-base {
     -fx-font-family: "System"; 
-    -fx-font-size: 12px; 
+    -fx-font-size: 13px; 
     -fx-padding: 0em;
     -fx-prompt-text-fill: #999999; 
     -fx-background-color: #f5f5f5; 
