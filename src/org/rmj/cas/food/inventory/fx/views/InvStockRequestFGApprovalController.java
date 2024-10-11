@@ -174,7 +174,7 @@ public class InvStockRequestFGApprovalController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new InvRequestManager(poGRider, poGRider.getBranchCode(), false);
         poTrans.setTranStat(10);
-        poTrans.setFormType(0);//0 Approval Form(Default)//1 Issuance Form//2 Purchase From
+        poTrans.setFormType(3);//0 Approval Form(Default)//1 Issuance Form//2 Purchase From//FG Approval
         initMasterGrid();
         initDetailGrid();
         initActionButton();
@@ -577,7 +577,7 @@ public class InvStockRequestFGApprovalController implements Initializable {
                 break;
 
             case "btnSave":
-                if (poTrans.saveTransaction(pnRow)) {
+                if (poTrans.saveTransactionProduct()) {
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
                     clearFields();
                     initMasterGrid();

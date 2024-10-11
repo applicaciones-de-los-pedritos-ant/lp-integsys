@@ -379,16 +379,16 @@ public class InvProdRequestRegController implements Initializable {
 
             for(lnCtr = 1; lnCtr <= poTrans.getItemCount(); lnCtr++){
                 data.add(new TableModel(String.valueOf(lnCtr), 
-                                        (String) poTrans.getDetailI(lnCtr, "sBarCodex"),
+                                        (String) poTrans.getDetail(lnCtr, "sBarCodex"),
                                         (String) poTrans.getDetail(lnCtr, 7), 
                                         CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, 6).toString()), "0.00"),
                                         CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, 3).toString()), "0.00"),
-                                        (String) poTrans.getDetailI(lnCtr, "xBrandNme"),
+                                        (String) poTrans.getDetail(lnCtr, "xBrandNme"),
                                         "",
                                         "",
                                         "",
                                         ""));
-                System.out.println((String) poTrans.getDetailI(lnCtr, "xBrandNme"));
+                System.out.println((String) poTrans.getDetail(lnCtr, "xBrandNme"));
             }
              initGrid();
             /*FOCUS ON FIRST ROW*/
@@ -433,7 +433,7 @@ public class InvProdRequestRegController implements Initializable {
             JSONObject json_obj = new JSONObject();
             json_obj.put("sField01", (String) poTrans.getDetail(lnCtr, 5));
             json_obj.put("sField02", (String) poTrans.getDetail(lnCtr, 7));
-            json_obj.put("sField03", (String) poTrans.getDetailI(lnCtr, "xBrandNme"));
+            json_obj.put("sField03", (String) poTrans.getDetail(lnCtr, "xBrandNme"));
             json_obj.put("sField05", (String) poTrans.getDetail(lnCtr, 10));
             json_obj.put("nField01", (BigDecimal) poTrans.getDetail(lnCtr, 6));
             json_arr.add(json_obj);

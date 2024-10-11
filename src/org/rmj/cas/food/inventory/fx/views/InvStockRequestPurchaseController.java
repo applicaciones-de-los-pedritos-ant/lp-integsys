@@ -657,7 +657,7 @@ public class InvStockRequestPurchaseController implements Initializable {
             case "btnSave":
                 if (poTrans.isEntryOkay(pnRow)) {
                     if (showPurchaseOrder()) {
-                        if (poTrans.saveTransaction(pnRow)) {
+                        if (poTrans.saveTransactionStock(pnRow)) {
                             ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
                             clearFields();
                             initMasterGrid();
