@@ -53,6 +53,7 @@ public class FoodInventoryFX extends Application {
     public final static String pxePOReturn = "POReturn.fxml";
     public final static String pxeInvTransfer = "InvTransfer.fxml";
     public final static String pxeInvStockRequest = "InvStockRequest.fxml";
+    public final static String pxeInvStockRequestApprovalFG = "InvStockRequestApprovalFG.fxml";
     public final static String pxeInvStockRequestApproval = "InvStockRequestApproval.fxml";
     public final static String pxeInvStockRequestIssuance = "InvStockRequestIssuance.fxml";
     public final static String pxeInvStockRequestPO = "InvStockRequestPurchase.fxml";

@@ -11,6 +11,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyBooleanPropertyBase;
@@ -54,37 +55,34 @@ import org.rmj.cas.inventory.base.InvRequestManager;
 import org.rmj.lp.parameter.agent.XMBranch;
 import org.rmj.lp.parameter.agent.XMCategory;
 
-public class InvStockRequestFGApprovalController implements Initializable {
+public class InvStockRequestApprovalFGController implements Initializable {
 
     @FXML
-    private AnchorPane MainAnchorPane,anchorField,apLoadFilter,apLoadList,apDetail,apDetailField;
+    private AnchorPane MainAnchorPane, anchorField, apLoadFilter, apLoadList, apDetail, apDetailField;
     @FXML
-    private Button btnRetrieve,btnSave,btnCancel,btnUpdate,btnPrint,btnClose,btnExit;
+    private Button btnRetrieve, btnSave, btnCancel, btnUpdate, btnPrint, btnClose, btnExit;
     @FXML
     private FontAwesomeIconView glyphExit;
     @FXML
-    private TextField txtField50,txtField51;
+    private TextField txtField50, txtField51;
     @FXML
     private ImageView imgTranStat;
     @FXML
-    private TableColumn index01,index02,index03,index04;
+    private TableColumn index01, index02, index03, index04;
     @FXML
     private Label lblHeader;
     @FXML
     private TextField txtField01;
     @FXML
-    private TextField txtDetail01,txtDetail02,txtDetail03,txtDetail04,txtDetail05,txtDetail06;
+    private TextField txtDetail01, txtDetail02, txtDetail03, txtDetail04, txtDetail05, txtDetail06;
     @FXML
-    private AnchorPane apDetailTable,apDetailOthers;
+    private AnchorPane apDetailTable, apDetailOthers;
     @FXML
-    private TableView tblRequestList,tblDetail,tblDetailOther;
+    private TableView tblRequestList, tblDetail, tblDetailOther;
     @FXML
-    private TableColumn detailindex01,detailindex02,detailindex03,detailindex04,detailindex05;
+    private TableColumn detailindex01, detailindex02, detailindex03, detailindex04, detailindex05;
     @FXML
-    private TableColumn DetOtherIndex01,DetOtherIndex02,DetOtherIndex03
-            ,DetOtherIndex04,DetOtherIndex05,DetOtherIndex06,DetOtherIndex07;
-
-
+    private TableColumn DetOtherIndex01, DetOtherIndex02, DetOtherIndex03, DetOtherIndex04, DetOtherIndex05, DetOtherIndex06, DetOtherIndex07;
 
     private final String pxeModuleName = "InvStockRequestApprovalController";
 
@@ -174,7 +172,7 @@ public class InvStockRequestFGApprovalController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new InvRequestManager(poGRider, poGRider.getBranchCode(), false);
         poTrans.setTranStat(10);
-        poTrans.setFormType(3);//0 Approval Form(Default)//1 Issuance Form//2 Purchase From//FG Approval
+        poTrans.setFormType(3);//0 Approval Form(Default)//1 Issuance Form//2 Purchase From//3 FG Approval
         initMasterGrid();
         initDetailGrid();
         initActionButton();
@@ -309,7 +307,6 @@ public class InvStockRequestFGApprovalController implements Initializable {
         detailindex04.setStyle("-fx-alignment: CENTER-RIGHT;-fx-padding: 0 5 0 0;");
         detailindex05.setStyle("-fx-alignment: CENTER-RIGHT;-fx-padding: 0 5 0 0;");
 
-
         detailindex01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index01"));
         detailindex02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index02"));
         detailindex03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index03"));
@@ -333,10 +330,45 @@ public class InvStockRequestFGApprovalController implements Initializable {
         tblDetail.setItems(DetailData);
     }
 
+    private void initDetailGridOthers() {
+        DetOtherIndex01.setStyle("-fx-alignment: CENTER;");
+        DetOtherIndex02.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
+        DetOtherIndex03.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
+        DetOtherIndex04.setStyle("-fx-alignment: CENTER-RIGHT;-fx-padding: 0 5 0 0;");
+        DetOtherIndex05.setStyle("-fx-alignment: CENTER-RIGHT;-fx-padding: 0 5 0 0;");
+        DetOtherIndex06.setStyle("-fx-alignment: CENTER-RIGHT;-fx-padding: 0 5 0 0;");
+        DetOtherIndex07.setStyle("-fx-alignment: CENTER-RIGHT;-fx-padding: 0 5 0 0;");
+
+        DetOtherIndex01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index01"));
+        DetOtherIndex02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index02"));
+        DetOtherIndex03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index03"));
+        DetOtherIndex04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index04"));
+        DetOtherIndex05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index05"));
+        DetOtherIndex06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index06"));
+        DetOtherIndex07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index07"));
+
+        /*making column's position uninterchangebale*/
+        tblDetailOther.widthProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) {
+                TableHeaderRow header = (TableHeaderRow) tblRequestList.lookup("TableHeaderRow");
+                header.reorderingProperty().addListener(new ChangeListener<Boolean>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                        header.setReordering(false);
+                    }
+                });
+            }
+        });
+
+        /*Set data source to table*/
+        tblDetailOther.setItems(DetailOthers);
+    }
+
     private void clearFields() {
 
         DetailData.clear();
         ListData.clear();
+        DetailOthers.clear();
 
         txtField01.setText("");
         txtDetail01.setText("");
@@ -382,13 +414,13 @@ public class InvStockRequestFGApprovalController implements Initializable {
         btnUpdate.setVisible(!lbShow);
         btnPrint.setVisible(!lbShow);
         btnClose.setVisible(!lbShow);
-        apLoadList.setDisable(lbShow);
-        apLoadFilter.setDisable(lbShow);
 
         //updatemode
         btnSave.setVisible(lbShow);
         btnCancel.setVisible(lbShow);
         apDetailField.setDisable(!lbShow);
+        apLoadList.setDisable(false);
+        apLoadFilter.setDisable(!lbShow);
 
     }
 
@@ -476,6 +508,7 @@ public class InvStockRequestFGApprovalController implements Initializable {
 
                     }
                     loadDetail();
+                    loadDetailOthers();
 
                     txtDetail01.requestFocus();
                     txtDetail01.selectAll();
@@ -566,8 +599,15 @@ public class InvStockRequestFGApprovalController implements Initializable {
                 break;
 
             case "btnUpdate":
-                if (!txtField01.getText().trim().equalsIgnoreCase("")) {
-                    if (poTrans.updateRecord(pnRow)) {
+                if (poTrans.getInvRequestCount() > 0) {
+                    if (poTrans.updateRecord()) {
+                        if (pnRow < 0) {
+
+                            tblRequestList.getSelectionModel().select(0);
+                            tblRequestList.getFocusModel().focus(0);
+                            pnRow = tblDetail.getSelectionModel().getSelectedIndex();
+
+                        }
                         loadRecord();
                         pnEditMode = poTrans.getEditMode();
                     } else {
@@ -654,15 +694,12 @@ public class InvStockRequestFGApprovalController implements Initializable {
             DetailData.add(new TableModel(String.valueOf(lnCtr + 1),
                     (String) poTrans.getDetailOthers(pnRow, lnCtr, "sBarCodex"),
                     (String) poTrans.getDetailOthers(pnRow, lnCtr, "sDescript"),
-                    (String) poTrans.getDetailOthers(pnRow, lnCtr, "sBrandNme"),
-                    (String) poTrans.getDetailOthers(pnRow, lnCtr, "sMeasurNm"),
-                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetailOthers(pnRow, lnCtr, "nQtyOnHnd").toString()), "0.00"),
                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, lnCtr, "nQuantity").toString()), "0.00"),
-                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, lnCtr, "nRecOrder").toString()), "0.00"),
                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, lnCtr, "nApproved").toString()), "0.00"),
-                    ""));
+                    "", "", "", "", ""));
         }
         initDetailGrid();
+        loadDetailOthers();
 
         if (pnRowDetail < 0 || pnRowDetail >= DetailData.size()) {
             if (!DetailData.isEmpty()) {
@@ -679,6 +716,63 @@ public class InvStockRequestFGApprovalController implements Initializable {
             setDetailInfo();
         }
 
+    }
+
+    private void loadDetailOthers() {
+        LinkedHashMap<String, TableModel> collationDetail = new LinkedHashMap<>();
+        DetailOthers.clear();
+
+        for (int lnRow = 0; lnRow <= poTrans.getInvRequestCount() - 1; lnRow++) {
+            int lnItem = poTrans.ItemCount(lnRow);
+
+            if (lnItem <= 0) {
+                continue;
+            }
+            for (int lnCtr = 0; lnCtr <= lnItem - 1; lnCtr++) {
+                String lsBarCodex = (String) poTrans.getDetailOthers(lnRow, lnCtr, "sBarCodex");
+                String lsDescript = (String) poTrans.getDetailOthers(lnRow, lnCtr, "sDescript");
+
+                double lnQuantity = Double.valueOf(poTrans.getDetail(lnRow, lnCtr, "nQuantity").toString());
+                double lnApproved = Double.valueOf(poTrans.getDetail(lnRow, lnCtr, "nApproved").toString());
+                double lnCancelled = Double.valueOf(poTrans.getDetail(lnRow, lnCtr, "nCancelld").toString());
+
+                // Only process if nApproved > 0 
+                if (lnApproved > 0) {
+                    // Check if barcode already exists in the map
+                    if (collationDetail.containsKey(lsBarCodex)) {
+                        // If exists, sum the quantities
+                        TableModel existingModel = collationDetail.get(lsBarCodex);
+                        double lnnewQuantity = Double.valueOf(existingModel.getIndex04()) + lnQuantity;
+                        double lnnewApproved = Double.valueOf(existingModel.getIndex05()) + lnApproved;
+                        double lnnewCancelled = Double.valueOf(existingModel.getIndex06()) + lnCancelled;
+                        double lnnewNetQty = Double.valueOf(existingModel.getIndex07()) + lnApproved;
+
+                        // Update the existing entry with new values
+                        existingModel.setIndex04(CommonUtils.NumberFormat(lnnewQuantity, "0.00"));
+                        existingModel.setIndex05(CommonUtils.NumberFormat(lnnewApproved, "0.00"));
+                        existingModel.setIndex06(CommonUtils.NumberFormat(lnnewCancelled, "0.00"));
+                        existingModel.setIndex07(CommonUtils.NumberFormat(lnnewNetQty, "0.00"));
+                    } else {
+                        // If not exists, add a new entry
+                        collationDetail.put(lsBarCodex, new TableModel(
+                                String.valueOf(collationDetail.size() + 1),
+                                lsBarCodex,
+                                lsDescript,
+                                CommonUtils.NumberFormat(lnQuantity, "0.00"),
+                                CommonUtils.NumberFormat(lnApproved, "0.00"),
+                                CommonUtils.NumberFormat(lnCancelled, "0.00"),
+                                CommonUtils.NumberFormat(lnApproved, "0.00"),
+                                "", "", ""
+                        ));
+                    }
+                }
+            }
+        }
+
+        // Add all collated items to DetailOthers
+        DetailOthers.addAll(collationDetail.values());
+
+        initDetailGridOthers();
     }
 
     private void setDetailInfo() {
@@ -698,7 +792,7 @@ public class InvStockRequestFGApprovalController implements Initializable {
             } else {
                 txtDetail03.setText("");
             }
-              
+
             txtDetail04.setText((String) poTrans.getDetail(pnRow, pnRowDetail, "sNotesxxx"));
             txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, pnRowDetail, "nQuantity")));
             txtDetail06.setText(String.valueOf(poTrans.getDetail(pnRow, pnRowDetail, "nApproved")));

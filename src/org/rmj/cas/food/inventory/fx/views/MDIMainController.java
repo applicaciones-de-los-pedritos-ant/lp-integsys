@@ -690,6 +690,12 @@ public class MDIMainController implements Initializable {
                 InvStockRequestApporvalObj.setGRider(poGRider);
 
                 return InvStockRequestApporvalObj;
+
+            case FoodInventoryFX.pxeInvStockRequestApprovalFG:
+                InvStockRequestApprovalFGController InvStockRequestApporvalFGObj = new InvStockRequestApprovalFGController();
+                InvStockRequestApporvalFGObj.setGRider(poGRider);
+
+                return InvStockRequestApporvalFGObj;
             case FoodInventoryFX.pxeInvStockRequestIssuance:
                 InvStockRequestIssuanceController InvStockRequestIssuanceObj = new InvStockRequestIssuanceController();
                 InvStockRequestIssuanceObj.setGRider(poGRider);
@@ -919,6 +925,13 @@ public class MDIMainController implements Initializable {
     private void mnu_StockRequestApprovalClick(ActionEvent event) throws IOException {
 //         setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransfer));
         loadScene(FoodInventoryFX.pxeInvStockRequestApproval);
+
+    }
+
+    @FXML
+    private void mnu_StockRequestApprovalFGClick(ActionEvent event) throws IOException {
+//         setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransfer));
+        loadScene(FoodInventoryFX.pxeInvStockRequestApprovalFG);
 
     }
 
