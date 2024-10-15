@@ -485,18 +485,18 @@ public class InvStockRequestApprovalFGController implements Initializable {
             /*Lost Focus*/
             switch (lnIndex) {
                 case 06:/*nApproved*/
-                    double x = 0.0;
+                    int x = 0;
                     try {
                         /*this must be numeric*/
-                        x = Double.valueOf(lsValue);
+                        x = Integer.valueOf(lsValue);
                     } catch (NumberFormatException e) {
-                        x = 0.0;
-                        txtDetail.setText("0.0");
+                        x = 0;
+                        txtDetail.setText("0");
                     }
                     double z = (Double) poTrans.getDetail(pnRow, pnRowDetail, "nQuantity");
                     if (z > x) {
-                        if (x > 0.0) {
-                            double y = 0.0;
+                        if (x > 0) {
+                            double y = 0;
 
                             y = z - x;
                             poTrans.setDetail(pnRow, pnRowDetail, "nCancelld", y);
@@ -504,7 +504,7 @@ public class InvStockRequestApprovalFGController implements Initializable {
                     }
                     poTrans.setDetail(pnRow, pnRowDetail, "nApproved", x);
 
-                    if (x > 0.00 & !txtDetail06.getText().isEmpty()) {
+                    if (x > 0 & !txtDetail06.getText().isEmpty()) {
 
                     }
                     loadDetail();
@@ -602,13 +602,14 @@ public class InvStockRequestApprovalFGController implements Initializable {
                 if (poTrans.getInvRequestCount() > 0) {
                     if (poTrans.updateRecord()) {
                         if (pnRow < 0) {
+                            if (!ListData.isEmpty()) {
+                                tblRequestList.getSelectionModel().select(0);
+                                tblRequestList.getFocusModel().focus(0);
+                                pnRow = tblRequestList.getSelectionModel().getSelectedIndex();
 
-                            tblRequestList.getSelectionModel().select(0);
-                            tblRequestList.getFocusModel().focus(0);
-                            pnRow = tblDetail.getSelectionModel().getSelectedIndex();
-
+                                loadRecord();
+                            }
                         }
-                        loadRecord();
                         pnEditMode = poTrans.getEditMode();
                     } else {
                         ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
@@ -617,15 +618,20 @@ public class InvStockRequestApprovalFGController implements Initializable {
                 break;
 
             case "btnSave":
-                if (poTrans.saveTransactionProduct()) {
-                    ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
-                    clearFields();
-                    initMasterGrid();
+                if (poTrans.isEntryOkay(poTrans.getInvRequestCount() - 1)) {
+                    if (poTrans.saveTransactionProduct()) {
+                        ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
+                        clearFields();
+                        initMasterGrid();
 
-                    loadInvRequestList();
-                    pnEditMode = EditMode.UNKNOWN;
-                    initButton(pnEditMode);
-                    break;
+                        loadInvRequestList();
+                        pnEditMode = EditMode.UNKNOWN;
+                        initButton(pnEditMode);
+                        break;
+                    } else {
+                        ShowMessageFX.Error(poTrans.getMessage(), pxeModuleName, "Please inform MIS Department.");
+                        return;
+                    }
                 } else {
                     ShowMessageFX.Error(poTrans.getMessage(), pxeModuleName, "Please inform MIS Department.");
                     return;
@@ -803,8 +809,8 @@ public class InvStockRequestApprovalFGController implements Initializable {
             txtDetail02.setText("");
             txtDetail03.setText("");
             txtDetail04.setText("");
-            txtDetail05.setText("0.00");
-            txtDetail06.setText("0.00");
+            txtDetail05.setText("0");
+            txtDetail06.setText("0");
 
         }
     }

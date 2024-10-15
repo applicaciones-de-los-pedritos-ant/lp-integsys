@@ -349,7 +349,7 @@
                                     <Separator prefHeight="1.0" style="-fx-background-color: orange;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0" />
                                     <AnchorPane AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
                                        <children>
-                                          <TableView fx:id="tblDetailOther" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                                          <TableView fx:id="tblDetailOther" focusTraversable="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                                              <columns>
                                                 <TableColumn fx:id="DetOtherIndex01" maxWidth="30.0" prefWidth="28.0" resizable="false" text="NO" />
                                                 <TableColumn fx:id="DetOtherIndex02" maxWidth="120.0" prefWidth="120.0" resizable="false" text="BARCODE" />
@@ -359,6 +359,9 @@
                                                 <TableColumn fx:id="DetOtherIndex06" maxWidth="80.0" resizable="false" text="CANCELLED" />
                                                 <TableColumn fx:id="DetOtherIndex07" maxWidth="65.0" prefWidth="65.0" resizable="false" text="NET QTY" />
                                              </columns>
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
                                           </TableView>
                                        </children>
                                     </AnchorPane>
