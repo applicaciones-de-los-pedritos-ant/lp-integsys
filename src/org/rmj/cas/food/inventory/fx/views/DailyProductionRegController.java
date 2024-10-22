@@ -65,7 +65,7 @@ public class DailyProductionRegController implements Initializable {
     @FXML
     private TextField txtDetail80;
     @FXML
-    private TextField txtDetail05;
+    private TextField txtDetail05,txtDetail08;
     @FXML
     private TextField txtDetail04;
     @FXML
@@ -134,16 +134,22 @@ public class DailyProductionRegController implements Initializable {
         TableColumn index01 = new TableColumn("No.");
         TableColumn index02 = new TableColumn("Barcode");
         TableColumn index03 = new TableColumn("Description");
-        TableColumn index04 = new TableColumn("Unit");
-        TableColumn index05 = new TableColumn("Qty");
+        TableColumn index04 = new TableColumn("Measure");
+        TableColumn index05 = new TableColumn("Goal Qty");
+        TableColumn index06 = new TableColumn("Order Qty");
+        TableColumn index07 = new TableColumn("Qty");
 
         index01.setPrefWidth(40);
         index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(90);
         index03.setPrefWidth(150);
         index04.setPrefWidth(85);
-        index05.setPrefWidth(50);
+        index05.setPrefWidth(65);
         index05.setStyle("-fx-alignment: CENTER;");
+        index06.setPrefWidth(65);
+        index06.setStyle("-fx-alignment: CENTER;");
+        index07.setPrefWidth(65);
+        index07.setStyle("-fx-alignment: CENTER;");
 
         index01.setSortable(false);
         index01.setResizable(false);
@@ -155,6 +161,10 @@ public class DailyProductionRegController implements Initializable {
         index04.setResizable(false);
         index05.setSortable(false);
         index05.setResizable(false);
+        index06.setSortable(false);
+        index06.setResizable(false);
+        index07.setSortable(false);
+        index07.setResizable(false);
 
         table.getColumns().clear();
         table.getColumns().add(index01);
@@ -162,12 +172,16 @@ public class DailyProductionRegController implements Initializable {
         table.getColumns().add(index03);
         table.getColumns().add(index04);
         table.getColumns().add(index05);
+        table.getColumns().add(index06);
+        table.getColumns().add(index07);
 
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index02"));
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index03"));
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index05"));
+        index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index06"));
+        index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index07"));
 
         /*making column's position uninterchangebale*/
         table.widthProperty().addListener(new ChangeListener<Number>() {
@@ -282,18 +296,30 @@ public class DailyProductionRegController implements Initializable {
 
             case "btnPrint":
                 if (!psOldRec.equals("")) {
-                    ShowMessageFX.Information(null, pxeModuleName, "This feature is coming soon!.");
+//                    ShowMessageFX.Information(null, pxeModuleName, "This feature is coming soon!.");
+//
+////                if(!psOldRec.equals("")){
+////                    if(ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")==true){
+//////                        if (poTrans.printTransaction(psOldRec))
+////                        ShowMessageFX.Information(null, pxeModuleName, "Transaction printed successfully.");
+////                    clearFields();
+////                        initGrid();
+////                    pnEditMode = EditMode.UNKNOWN;
+////                    break;
+////                    }else
+////                    return;
 
-//                if(!psOldRec.equals("")){
-//                    if(ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?")==true){
-////                        if (poTrans.printTransaction(psOldRec))
-//                        ShowMessageFX.Information(null, pxeModuleName, "Transaction printed successfully.");
-//                    clearFields();
-//                        initGrid();
-//                    pnEditMode = EditMode.UNKNOWN;
-//                    break;
-//                    }else
-//                    return;
+                    if (poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)
+                            || poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_CANCELLED)
+                            || poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_VOID)) {
+                        ShowMessageFX.Information(null, pxeModuleName, "Unable to Print OPEN/VOID/CANCELLED Transaction.");
+                        return;
+                    }
+                    if (!poTrans.printTransfer()) {
+                        ShowMessageFX.Information(null, pxeModuleName, "Unable to print Transaction");
+                    }
+
+                    return;
                 } else {
                     ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
                 }
@@ -407,7 +433,7 @@ public class DailyProductionRegController implements Initializable {
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
         String lsValue = txtField.getText();
 //        if (event.getCode() == ENTER || event.getCode() == F3) {
-        if ( event.getCode() == F3) {
+        if (event.getCode() == F3) {
             switch (lnIndex) {
                 case 50:
                     /*sTransNox*/
@@ -432,10 +458,10 @@ public class DailyProductionRegController implements Initializable {
                     if (CommonUtils.isDate(lsValue, pxeDateFormat)) {
                         String ldValue = SQLUtil.dateFormat(SQLUtil.toDate(lsValue, pxeDateFormat), "yyyy-MM-dd");
                         if (poTrans.BrowseRecord(ldValue, false) == true) {
-                        loadRecord();
-                        pnEditMode = poTrans.getEditMode();
-                        break;
-                    }
+                            loadRecord();
+                            pnEditMode = poTrans.getEditMode();
+                            break;
+                        }
                     }
                     if (!txtField51.getText().equals(psdTransact)) {
                         clearFields();
@@ -533,9 +559,9 @@ public class DailyProductionRegController implements Initializable {
                     (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"),
                     (String) poTrans.getDetailOthers(lnCtr, "sDescript"),
                     (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"),
+                    String.valueOf(poTrans.getDetail(lnCtr, "nGoalQtyx")),
+                    String.valueOf(poTrans.getDetail(lnCtr, "nOrderQty")),
                     String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
-                    "",
-                    "",
                     "",
                     "",
                     ""));
@@ -589,10 +615,12 @@ public class DailyProductionRegController implements Initializable {
             txtDetail06.setText(SQLUtil.dateFormat(poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
             txtDetail04.setText(String.valueOf(poTrans.getDetail(pnRow, "nQuantity")));
             txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, "nGoalQtyx")));
+            txtDetail08.setText(String.valueOf(poTrans.getDetail(pnRow, "nOrderQty")));
         } else {
             txtDetail03.setText("");
             txtDetail04.setText("0");
             txtDetail05.setText("0");
+            txtDetail08.setText("0");
             txtDetail06.setText(FoodInventoryFX.xsRequestFormat((Date) java.sql.Date.valueOf(LocalDate.now())));
             txtDetail80.setText("");
         }

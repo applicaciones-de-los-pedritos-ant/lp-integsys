@@ -560,16 +560,16 @@ public class InvStockRequestApprovalFGController implements Initializable {
             params.put("sCompnyNm", "Los Pedritos");
             params.put("sBranchNm", poGRider.getBranchName());
             params.put("sAddressx", poGRider.getAddress());
-            params.put("sReportNm", "Inventory Stock Request");
-            params.put("xRemarksx", poTrans.getMaster(pnRow, "sRemarksx"));
+            params.put("sReportNm", "Inventory Stock Request - FG");
+            params.put("xRemarksx", "");
 
-            params.put("sDestinat", ListData.get(pnRow).getIndex02());
-            params.put("sReportDt", ListData.get(pnRow).getIndex04());
+            params.put("sDestinat", "LP General Warehouse");
+            params.put("sReportDt", CommonUtils.xsDateLong(poGRider.getServerDate()));
             params.put("sTransNox", poTrans.getMaster(pnRow, "sTransNox").toString().substring(1));
             params.put("sPrintdBy", System.getProperty("user.name"));
 
             String sourceFileName = "D://GGC_Java_Systems/reports/InvStockRequestApproval.jasper";
-            JRBeanCollectionDataSource beanColDataSource1 = new JRBeanCollectionDataSource(DetailData);
+            JRBeanCollectionDataSource beanColDataSource1 = new JRBeanCollectionDataSource(DetailOthers);
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(
                     sourceFileName, params, beanColDataSource1);
