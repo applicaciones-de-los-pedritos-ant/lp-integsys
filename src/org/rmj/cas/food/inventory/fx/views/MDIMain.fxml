@@ -421,6 +421,18 @@
                                                             </Button>
                                                          </graphic>
                                                       </MenuItem>
+                                                      <MenuItem fx:id="mnu_StockRequestApprovalFG" mnemonicParsing="false" onAction="#mnu_StockRequestApprovalFGClick" text="Stock Request Approval- (Finished Goods)">
+                                                         <graphic>
+                                                            <Button graphicTextGap="2.0" mnemonicParsing="false">
+                                                               <graphic>
+                                                                  <FontAwesomeIconView glyphName="TAG" size="14" />
+                                                               </graphic>
+                                                               <font>
+                                                                  <Font size="1.0" />
+                                                               </font>
+                                                            </Button>
+                                                         </graphic>
+                                                      </MenuItem>
                                                     <MenuItem fx:id="mnu_StockRequestApproval" mnemonicParsing="false" onAction="#mnu_StockRequestApprovalClick" text="Stock Request Approval">
                                                          <graphic>
                                                             <Button graphicTextGap="2.0" mnemonicParsing="false">

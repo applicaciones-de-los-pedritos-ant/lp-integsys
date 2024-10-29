@@ -85,6 +85,8 @@ public class LetMeIn {
             System.setProperty("store.commissary", po_props.getProperty("store.commissary"));
             System.setProperty("store.inventory.type", po_props.getProperty("store.inventory.type"));
             System.setProperty("store.inventory.strict.type", po_props.getProperty("store.inventory.strict.type"));
+            System.setProperty("store.inventory.type.stock", po_props.getProperty("store.inventory.type.stock"));
+            System.setProperty("store.inventory.type.product", po_props.getProperty("store.inventory.type.product"));
 
             //UI
             System.setProperty("app.product.id.grider", po_props.getProperty("app.product.id.grider"));

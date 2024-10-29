@@ -71,8 +71,8 @@
                               <ImageView fx:id="imgTranStat" fitHeight="25.0" fitWidth="150.0" layoutX="694.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="3.0" />
                            </children>
                         </AnchorPane>
-                        <Separator layoutX="436.0" layoutY="45.0" orientation="VERTICAL" prefHeight="350.0" prefWidth="1.0" style="-fx-background-color: black;" />
-                        <TableView fx:id="table" focusTraversable="false" layoutX="445.0" layoutY="245.0" onMouseClicked="#table_Clicked" prefHeight="160.0" prefWidth="855.0" stylesheets="@../styles/Tables.css">
+                        <Separator layoutX="436.0" layoutY="45.0" orientation="VERTICAL" prefHeight="350.0" prefWidth="1.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="42.0" />
+                        <TableView fx:id="table" focusTraversable="false" layoutX="445.0" layoutY="245.0" onMouseClicked="#table_Clicked" prefHeight="160.0" prefWidth="900.0" stylesheets="@../styles/Tables.css" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="245.0">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy></TableView>

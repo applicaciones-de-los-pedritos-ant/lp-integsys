@@ -46,11 +46,11 @@
                <center>
                   <AnchorPane fx:id="anchorField" style="-fx-background-color: #B3B6B7;" BorderPane.alignment="CENTER">
                      <children>
-                        <TableView fx:id="table" layoutX="445.0" layoutY="285.0" onMouseClicked="#table_Clicked" prefHeight="124.0" prefWidth="560.0" stylesheets="@../styles/Tables.css">
+                        <TableView fx:id="table" layoutX="445.0" layoutY="285.0" onMouseClicked="#table_Clicked" prefHeight="124.0" prefWidth="600.0" stylesheets="@../styles/Tables.css" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="278.0">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy></TableView>
-                        <Separator layoutX="435.0" layoutY="42.0" orientation="VERTICAL" prefHeight="360.0" prefWidth="1.0" style="-fx-background-color: black;" />
+                        <Separator layoutX="435.0" layoutY="42.0" orientation="VERTICAL" prefHeight="360.0" prefWidth="1.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="42.0" />
                         <AnchorPane layoutX="4.0" layoutY="1.0" prefHeight="35.0" prefWidth="829.0" style="-fx-background-color: #686868;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <ImageView fx:id="imgTranStat" fitHeight="25.0" fitWidth="158.0" layoutX="716.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="3.0" />
@@ -217,33 +217,21 @@
                            <graphic>
                               <FontAwesomeIconView glyphName="POWER_OFF" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnBrowse" alignment="BOTTOM_CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Browse" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="FOLDER_OPEN" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnPrint" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="116.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Print">
                            <graphic>
                               <FontAwesomeIconView glyphName="PRINT" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnConfirm" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="58.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Confirm">
                            <graphic>
                               <FontAwesomeIconView glyphName="CHECK" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                      </children>
                   </AnchorPane>
