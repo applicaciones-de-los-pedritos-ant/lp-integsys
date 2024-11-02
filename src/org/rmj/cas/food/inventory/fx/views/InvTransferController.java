@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -732,6 +733,25 @@ public class InvTransferController implements Initializable {
             case "btnSearch":
                 return;
             case "btnSave":
+                Date utilDate = (Date) poTrans.getMaster("dTransact");
+                LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                Date todayDate = poGRider.getServerDate();
+                LocalDate localToday = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                if (!localDate.isBefore(localToday.minusDays(2))) {
+                    if (poGRider.getUserLevel() <= UserRight.ENCODER) {
+                        JSONObject loJSON = showFXDialog.getApproval(poGRider);
+
+                        if (loJSON == null) {
+                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to post transaction");
+                        }
+
+                        if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
+                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
+                            return;
+                        }
+                    }
+                }
+
                 if (poTrans.saveTransaction()) {
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
                     clearFields();
@@ -988,8 +1008,8 @@ public class InvTransferController implements Initializable {
                     (String) poTrans.getDetailOthers(lnCtr, "sDescript"),
                     (String) poTrans.getDetailOthers(lnCtr, "sBrandNme"),
                     (String) poTrans.getDetailOthers(lnCtr, "sMeasurNm"),
-//                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nInvCostx").toString()), "0.00"),
-                "0.00",
+                    //                    CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nInvCostx").toString()), "0.00"),
+                    "0.00",
                     CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()), "0.00"),
                     "",
                     ""));
@@ -1317,7 +1337,6 @@ public class InvTransferController implements Initializable {
      *
      * @param fnRow -passing the detail
      */
-
     private void addDetailData(int fnRow) {
         if (poTrans.getDetail(pnRow, "sStockIDx").equals("")) {
             return;
