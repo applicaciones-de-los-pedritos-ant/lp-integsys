@@ -224,25 +224,16 @@
                            <graphic>
                               <FontAwesomeIconView glyphName="POWER_OFF" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnPrint" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="60.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Print" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="PRINT" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnBrowse" alignment="BOTTOM_CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Browse" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="FOLDER_OPEN" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                      </children>
                   </AnchorPane>

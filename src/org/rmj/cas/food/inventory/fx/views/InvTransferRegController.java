@@ -173,6 +173,7 @@ public class InvTransferRegController implements Initializable {
 
         /*Add keypress event for field with search*/
         txtField01.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField02.setOnKeyPressed(this::txtField_KeyPressed);
         txtField03.setOnKeyPressed(this::txtField_KeyPressed);
         txtField04.setOnKeyPressed(this::txtField_KeyPressed);
         txtField06.setOnKeyPressed(this::txtField_KeyPressed);
@@ -206,6 +207,7 @@ public class InvTransferRegController implements Initializable {
 
     private void clearFields() {
         txtField01.setText("");
+        txtField02.setText("");
         txtField03.setText("");
         txtField04.setText("");
         txtField05.setText("");
@@ -258,7 +260,7 @@ public class InvTransferRegController implements Initializable {
         index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(120);
         index03.setPrefWidth(90);
-        index04.setPrefWidth(120);
+        index04.setPrefWidth(185);
         index05.setPrefWidth(130);
         index06.setPrefWidth(65);
         index07.setPrefWidth(55);
@@ -321,7 +323,7 @@ public class InvTransferRegController implements Initializable {
 
         index01.setPrefWidth(30);
         index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(90);
+        index02.setPrefWidth(110);
         index02.setStyle("-fx-alignment: CENTER;");
         index03.setPrefWidth(65);
         index03.setStyle("-fx-alignment: CENTER;");
@@ -610,11 +612,16 @@ public class InvTransferRegController implements Initializable {
     }
 
     private void loadRecord() {
+        XMBranch loBranch;
         txtField01.setText((String) poTrans.getMaster("sTransNox"));
         txtField50.setText((String) poTrans.getMaster("sTransNox"));
         psTransNox = txtField50.getText();
-
-        XMBranch loBranch = poTrans.GetBranch((String) poTrans.getMaster(4), true);
+        loBranch = poTrans.GetBranch((String) poTrans.getMaster(2), true);
+        if (loBranch != null) {
+            txtField02.setText((String) loBranch.getMaster("sBranchNm"));
+            txtField51.setText((String) loBranch.getMaster("sBranchNm"));
+        }
+        loBranch = poTrans.GetBranch((String) poTrans.getMaster(4), true);
         if (loBranch != null) {
             txtField04.setText((String) loBranch.getMaster("sBranchNm"));
             txtField51.setText((String) loBranch.getMaster("sBranchNm"));
@@ -1015,7 +1022,7 @@ public class InvTransferRegController implements Initializable {
                     break;
                 case 7:
 //                    txtDetail07.setText(CommonUtils.NumberFormat((Double) poTrans.getDetail(pnRow, "nInvCostx"), "0.00"));
-                     txtDetail07.setText("0.00");
+                    txtDetail07.setText("0.00");
                     break;
                 case 8:
                     txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), SQLUtil.FORMAT_MEDIUM_DATE));
@@ -1026,12 +1033,18 @@ public class InvTransferRegController implements Initializable {
     };
 
     private void getMaster(int fnIndex) {
+        XMBranch loBranch;
         switch (fnIndex) {
             case 3:
                 txtField03.setText(SQLUtil.dateFormat((Date) poTrans.getMaster("dTransact"), SQLUtil.FORMAT_MEDIUM_DATE));
                 break;
+            case 2:
+                loBranch = poTrans.GetBranch((String) poTrans.getMaster(fnIndex), true);
+                if (loBranch != null) {
+                    txtField02.setText((String) loBranch.getMaster("sBranchNm"));
+                }
             case 4:
-                XMBranch loBranch = poTrans.GetBranch((String) poTrans.getMaster(fnIndex), true);
+                loBranch = poTrans.GetBranch((String) poTrans.getMaster(fnIndex), true);
                 if (loBranch != null) {
                     txtField04.setText((String) loBranch.getMaster("sBranchNm"));
                 }

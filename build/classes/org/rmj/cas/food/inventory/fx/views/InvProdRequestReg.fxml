@@ -47,7 +47,7 @@
                <center>
                   <AnchorPane fx:id="anchorField" style="-fx-background-color: #B3B6B7;" BorderPane.alignment="CENTER">
                      <children>
-                        <TableView fx:id="table" layoutX="175.0" layoutY="209.0" onMouseClicked="#table_Clicked" prefHeight="200.0" prefWidth="680.0" stylesheets="@../styles/Tables.css">
+                        <TableView fx:id="table" layoutX="175.0" layoutY="209.0" onMouseClicked="#table_Clicked" prefWidth="680.0" stylesheets="@../styles/Tables.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="450.0" AnchorPane.topAnchor="160.0">
                            <columns>
                               <TableColumn fx:id="index01" maxWidth="30.0" prefWidth="30.0" text="NO" />
                               <TableColumn fx:id="index02" maxWidth="120.0" prefWidth="120.0" text="BARCODE" />
@@ -60,7 +60,7 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <Separator layoutX="436.0" layoutY="42.0" orientation="VERTICAL" prefHeight="160.0" prefWidth="1.0" style="-fx-background-color: black;" />
+                        <Separator layoutX="436.0" layoutY="42.0" orientation="VERTICAL" prefHeight="160.0" prefWidth="1.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="42.0" />
                         <AnchorPane layoutX="4.0" layoutY="1.0" prefHeight="35.0" style="-fx-background-color: #686868;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <TextField fx:id="txtField50" layoutX="115.0" prefHeight="27.0" prefWidth="149.0" promptText="Press F3 to search" AnchorPane.topAnchor="3.0">
@@ -171,7 +171,6 @@
                               </Label>
                            </children>
                         </GridPane>
-                        <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="209.0" prefHeight="40.0" prefWidth="83.0" text="Transaction Detail" textAlignment="RIGHT" wrapText="true" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="215.0" />
                      </children>
                   </AnchorPane>
                </center>
@@ -182,25 +181,16 @@
                            <graphic>
                               <FontAwesomeIconView glyphName="POWER_OFF" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnPrint" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="67.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Print" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="67.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="PRINT" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                         <Button fx:id="btnBrowse" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="7.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Browse" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="7.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="FOLDER_OPEN" size="30" />
                            </graphic>
-                           <font>
-                              <Font size="10.0" />
-                           </font>
                         </Button>
                      </children>
                   </AnchorPane>
