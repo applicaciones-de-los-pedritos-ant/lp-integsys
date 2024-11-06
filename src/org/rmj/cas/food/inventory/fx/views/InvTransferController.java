@@ -41,6 +41,7 @@ import static javafx.scene.input.KeyCode.F3;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.RowConstraints;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -140,6 +141,12 @@ public class InvTransferController implements Initializable {
     @FXML
     private Button btnUpdate;
 
+    @FXML
+    private RowConstraints rcGridRow03;
+
+    @FXML
+    private TextField txtField02;
+
     TableColumn index01 = new TableColumn("No.");
     TableColumn index02 = new TableColumn("Expiration");
     TableColumn index03 = new TableColumn("OnHnd");
@@ -192,6 +199,7 @@ public class InvTransferController implements Initializable {
         btnUpdate.setOnAction(this::cmdButton_Click);
 
         txtField01.focusedProperty().addListener(txtField_Focus);
+        txtField02.focusedProperty().addListener(txtField_Focus);
         txtField03.focusedProperty().addListener(txtField_Focus);
         txtField04.focusedProperty().addListener(txtField_Focus);
         txtField05.focusedProperty().addListener(txtArea_Focus);
@@ -213,6 +221,7 @@ public class InvTransferController implements Initializable {
 
         /*Add keypress event for field with search*/
         txtField01.setOnKeyPressed(this::txtField_KeyPressed);
+        txtField02.setOnKeyPressed(this::txtField_KeyPressed);
         txtField03.setOnKeyPressed(this::txtField_KeyPressed);
         txtField04.setOnKeyPressed(this::txtField_KeyPressed);
         txtField06.setOnKeyPressed(this::txtField_KeyPressed);
@@ -265,6 +274,7 @@ public class InvTransferController implements Initializable {
         btnUpdate.setVisible(!lbShow);
 
         txtField01.setDisable(!lbShow);
+//        txtField02.setDisable(!lbShow);
         txtField03.setDisable(!lbShow);
         txtField04.setDisable(!lbShow);
         txtField05.setDisable(!lbShow);
@@ -281,6 +291,8 @@ public class InvTransferController implements Initializable {
         txtDetail80.setDisable(!lbShow);
         txtDetail08.setDisable(!lbShow);
 
+        txtField02.setDisable(!poGRider.isWarehouse());
+
         if (lbShow) {
             txtField03.requestFocus();
         } else {
@@ -290,6 +302,7 @@ public class InvTransferController implements Initializable {
 
     private void clearFields() {
         txtField01.setText("");
+        txtField02.setText("");
         txtField03.setText("");
         txtField04.setText("");
         txtField05.setText("");
@@ -343,7 +356,7 @@ public class InvTransferController implements Initializable {
         index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(120);
         index03.setPrefWidth(90);
-        index04.setPrefWidth(120);
+        index04.setPrefWidth(185);
         index05.setPrefWidth(130);
         index06.setPrefWidth(65);
         index07.setPrefWidth(55);
@@ -406,7 +419,7 @@ public class InvTransferController implements Initializable {
 
         index01.setPrefWidth(30);
         index01.setStyle("-fx-alignment: CENTER;");
-        index02.setPrefWidth(90);
+        index02.setPrefWidth(110);
         index02.setStyle("-fx-alignment: CENTER;");
         index03.setPrefWidth(65);
         index03.setStyle("-fx-alignment: CENTER;");
@@ -572,6 +585,14 @@ public class InvTransferController implements Initializable {
         String lsValue = txtField.getText();
         if (event.getCode() == F3) {
             switch (lnIndex) {
+                case 2:
+                    /*Orgin*/
+                    if (poTrans.SearchMaster(lnIndex, txtField.getText(), false)) {
+                        CommonUtils.SetNextFocus(txtField);
+                    } else {
+                        txtField.setText("");
+                    }
+                    break;
                 case 4:
                     /*sDestinat*/
                     if (poTrans.SearchMaster(lnIndex, txtField.getText(), false)) {
@@ -826,11 +847,16 @@ public class InvTransferController implements Initializable {
     }
 
     private void loadRecord() {
+        XMBranch loBranch;
         txtField01.setText((String) poTrans.getMaster("sTransNox"));
         txtField50.setText((String) poTrans.getMaster("sTransNox"));
         psTransNox = txtField50.getText();
-
-        XMBranch loBranch = poTrans.GetBranch((String) poTrans.getMaster(4), true);
+        loBranch = poTrans.GetBranch((String) poTrans.getMaster(2), true);
+        if (loBranch != null) {
+            txtField02.setText((String) loBranch.getMaster("sBranchNm"));
+            txtField51.setText((String) loBranch.getMaster("sBranchNm"));
+        }
+        loBranch = poTrans.GetBranch((String) poTrans.getMaster(4), true);
         if (loBranch != null) {
             txtField04.setText((String) loBranch.getMaster("sBranchNm"));
             txtField51.setText((String) loBranch.getMaster("sBranchNm"));
@@ -1083,6 +1109,7 @@ public class InvTransferController implements Initializable {
                     }
 
                     return;
+                case 2:/*Origin*/
                 case 4:/*sDestinat*/
                 case 6:/*sTruckIDx*/
                 case 18:/*sOrderNox*/
@@ -1489,12 +1516,19 @@ public class InvTransferController implements Initializable {
     };
 
     private void getMaster(int fnIndex) {
+        XMBranch loBranch;
         switch (fnIndex) {
             case 3:
                 txtField03.setText(SQLUtil.dateFormat((Date) poTrans.getMaster("dTransact"), pxeDateFormat));
                 break;
+            case 2:
+                loBranch = poTrans.GetBranch((String) poTrans.getMaster(fnIndex), true);
+                if (loBranch != null) {
+                    txtField02.setText((String) loBranch.getMaster("sBranchNm"));
+                }
+                break;
             case 4:
-                XMBranch loBranch = poTrans.GetBranch((String) poTrans.getMaster(fnIndex), true);
+                loBranch = poTrans.GetBranch((String) poTrans.getMaster(fnIndex), true);
                 if (loBranch != null) {
                     txtField04.setText((String) loBranch.getMaster("sBranchNm"));
                 }

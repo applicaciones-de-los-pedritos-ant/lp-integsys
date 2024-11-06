@@ -19,13 +19,13 @@
 
 .table-view .column-header-background .label{
     -fx-background-color: transparent;
-    -fx-font-size: 11px;
+    -fx-font-size: 12px;
     -fx-text-fill: white;
 }
 
 .table-view .filler, .table-view .column-header {
     -fx-background-color: transparent;
-    -fx-size: 23px;
+    -fx-size: 24px;
 }
 
 .table-view .table-cell{
@@ -36,7 +36,7 @@
 }
 .table-row-cell{
     -fx-padding: 0.0em;
-    -fx-cell-size: 22px;
+    -fx-cell-size: 24px;
 }
 .table-row-cell:selected {
     -fx-background-color: #B3B6B7;
