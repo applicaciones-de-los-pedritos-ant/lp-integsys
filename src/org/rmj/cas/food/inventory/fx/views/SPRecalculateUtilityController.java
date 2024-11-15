@@ -86,7 +86,6 @@ public class SPRecalculateUtilityController implements Initializable, IFXML {
         btnExit.setOnAction(this::cmdButton_Click);
         btnClose.setOnAction(this::cmdButton_Click);
         btnRecal.setOnAction(this::cmdButton_Click);
-
         pnEditMode = EditMode.UNKNOWN;
         initbutton(pnEditMode);
     }   
@@ -101,19 +100,26 @@ public class SPRecalculateUtilityController implements Initializable, IFXML {
             String lsButton = ((Button) event.getSource()).getId();
             switch (lsButton) {
                 case "btnRecal": 
-                    if ((Date) oTrans.getMaster("dBegInvxx") == null){
+                    if(oTrans.getMaster("sStockIDx") == null){
+                        
+                        if (oTrans.recalculate()) {
+                            ShowMessageFX.Information(oTrans.getMessage(), pxeModuleName, "Recalculate successful!");
+                        }
+                    }else{
+                        if ((Date) oTrans.getMaster("dBegInvxx") == null){
                         ShowMessageFX.Warning(null, pxeModuleName, "Beginning Inventory Date cannot be empty.");
                         txtField05.requestFocus();
                         return;
-                    }
-                    if (oTrans.recalculate((String) oTrans.getMaster("sStockIDx"))) {
-                        ShowMessageFX.Information(oTrans.getMessage(), pxeModuleName, "Recalculate successful!");
-                        oTrans.SearchStock((String) oTrans.getMaster("sStockIDx"),"",false,true);
-                        loadDetails();
-                        pnEditMode = oTrans.getEditMode();
-                    } else {
-                        ShowMessageFX.Warning(null, pxeModuleName, oTrans.getMessage());
-                        return;
+                        }
+                        if (oTrans.recalculate((String) oTrans.getMaster("sStockIDx"))) {
+                            ShowMessageFX.Information(oTrans.getMessage(), pxeModuleName, "Recalculate successful!");
+                            oTrans.SearchStock((String) oTrans.getMaster("sStockIDx"),"",false,true);
+                            loadDetails();
+                            pnEditMode = oTrans.getEditMode();
+                        } else {
+                            ShowMessageFX.Warning(null, pxeModuleName, oTrans.getMessage());
+                            return;
+                        }
                     }
                     break;
                 case "btnClose":
@@ -252,9 +258,9 @@ public class SPRecalculateUtilityController implements Initializable, IFXML {
         boolean lbShow = (fnValue == EditMode.ADDNEW || fnValue == EditMode.UPDATE);
         txtField03.setDisable(true);
         txtField04.setDisable(true);
-        txtField05.setDisable(!lbShow);
-        txtField06.setDisable(!lbShow);
-        btnRecal.setDisable(!lbShow);
+//        txtField05.setDisable(!lbShow);
+//        txtField06.setDisable(!lbShow);
+//        btnRecal.setDisable(!lbShow);
     }
     
 }
