@@ -151,6 +151,8 @@ public class MDIMainController implements Initializable {
     @FXML
     private MenuItem munStockRequestUpload;
     @FXML
+    private MenuItem munAutoVoidTrans;
+    @FXML
     private ToggleButton btnRestoreDown;
     @FXML
     private FontAwesomeIconView cmdRestore;
@@ -577,10 +579,62 @@ public class MDIMainController implements Initializable {
             Logger.getLogger(MDIMainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    @FXML
+    private void munAutoVoidTrans_Click(ActionEvent event) throws IOException {
+        try {
+            loadAutoVoidTrans();
+        } catch (SQLException ex) {
+            Logger.getLogger(MDIMainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private double xOffset = 0;
     private double yOffset = 0;
 
+    private void loadAutoVoidTrans() throws SQLException {
+        try {
+            Stage stage = new Stage();
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("AutoVoidTrans.fxml"));
+
+            AutoVoidTransController loControl = new AutoVoidTransController();
+            loControl.setGRider(poGRider);
+            fxmlLoader.setController(loControl);
+
+            //load the main interface
+            Parent parent = fxmlLoader.load();
+
+            parent.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+
+            parent.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    stage.setX(event.getScreenX() - xOffset);
+                    stage.setY(event.getScreenY() - yOffset);
+                }
+            });
+
+            //set the main interface as the scene
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("");
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            ShowMessageFX.Warning(null, e.getMessage(), "Warning", null);
+            System.exit(1);
+        }
+    }
     private void loadStockReqUpload() throws SQLException {
         try {
             Stage stage = new Stage();
