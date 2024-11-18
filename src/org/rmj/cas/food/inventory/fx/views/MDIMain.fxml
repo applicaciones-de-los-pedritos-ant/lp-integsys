@@ -24,7 +24,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="mnuMain" onKeyPressed="#mnuMain_KeyPressed" prefHeight="768.0" prefWidth="1366.0" stylesheets="@../styles/MainController.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" fx:id="mnuMain" onKeyPressed="#mnuMain_KeyPressed" prefHeight="768.0" prefWidth="1366.0" stylesheets="@../styles/MainController.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -590,6 +590,18 @@
                                                    </graphic>
                                                 </MenuItem>
                                                 <MenuItem fx:id="munStockRequestUpload" mnemonicParsing="false" onAction="#munStockRequestUpload_Click" text="Stock Request Upload">
+                                                   <graphic>
+                                                      <Button mnemonicParsing="false">
+                                                         <font>
+                                                            <Font size="1.0" />
+                                                         </font>
+                                                         <graphic>
+                                                            <FontAwesomeIconView glyphName="WRENCH" size="12" />
+                                                         </graphic>
+                                                      </Button>
+                                                   </graphic>
+                                                </MenuItem>
+                                                <MenuItem fx:id="munAutoVoidTrans" mnemonicParsing="false" onAction="#munAutoVoidTrans_Click" text="Auto Void Transaction">
                                                    <graphic>
                                                       <Button mnemonicParsing="false">
                                                          <font>
