@@ -579,6 +579,7 @@ public class MDIMainController implements Initializable {
             Logger.getLogger(MDIMainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     @FXML
     private void munAutoVoidTrans_Click(ActionEvent event) throws IOException {
         try {
@@ -635,6 +636,7 @@ public class MDIMainController implements Initializable {
             System.exit(1);
         }
     }
+
     private void loadStockReqUpload() throws SQLException {
         try {
             Stage stage = new Stage();
@@ -799,6 +801,12 @@ public class MDIMainController implements Initializable {
                 loInvTransferRegObj.setGRider(poGRider);
 
                 return loInvTransferRegObj;
+
+            case FoodInventoryFX.pxeInvTransferReturn:
+                InvTransferReturnController loInvTransferReturnObj = new InvTransferReturnController();
+                loInvTransferReturnObj.setGRider(poGRider);
+
+                return loInvTransferReturnObj;
 
             case FoodInventoryFX.pxeInvTransferDiscrepancyReg:
                 InvTransferDiscrepancyRegController loInvTransferDiscrepancyRegObj = new InvTransferDiscrepancyRegController();
@@ -1043,6 +1051,13 @@ public class MDIMainController implements Initializable {
     @FXML
     private void mnu_InvTransDiscrepancyRegClick(ActionEvent event) throws IOException {
         loadScene(FoodInventoryFX.pxeInvTransferDiscrepancyReg);
+    }
+
+    @FXML
+    private void mnu_InventoryTransferReturn_Click(ActionEvent event) throws IOException {
+//         setDataPane(fadeAnimate(FoodInventoryFX.pxeInvTransfer));
+        loadScene(FoodInventoryFX.pxeInvTransferReturn);
+
     }
 
     @FXML
