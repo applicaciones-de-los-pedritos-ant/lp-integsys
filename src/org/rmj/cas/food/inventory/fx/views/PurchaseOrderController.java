@@ -424,25 +424,25 @@ public class PurchaseOrderController implements Initializable {
             case "btnSearch":
                 return;
             case "btnSave":
-                Date utilDate = (Date) poTrans.getMaster("dTransact");
-                LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                Date todayDate = poGRider.getServerDate();
-                LocalDate localToday = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                if (!localDate.isBefore(localToday.minusDays(3)) || localDate.isAfter(localToday.plusDays(3))) {
-
-                    if (poGRider.getUserLevel() <= UserRight.ENCODER) {
-                        JSONObject loJSON = showFXDialog.getApproval(poGRider);
-
-                        if (loJSON == null) {
-                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to save transaction");
-                        }
-
-                        if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
-                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
-                            return;
-                        }
-                    }
-                }
+//                Date utilDate = (Date) poTrans.getMaster("dTransact");
+//                LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//                Date todayDate = poGRider.getServerDate();
+//                LocalDate localToday = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//                if (!localDate.isBefore(localToday.minusDays(3)) || localDate.isAfter(localToday.plusDays(3))) {
+//
+//                    if (poGRider.getUserLevel() <= UserRight.ENCODER) {
+//                        JSONObject loJSON = showFXDialog.getApproval(poGRider);
+//
+//                        if (loJSON == null) {
+//                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to save transaction");
+//                        }
+//
+//                        if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
+//                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
+//                            return;
+//                        }
+//                    }
+//                }
                 if (poTrans.saveTransaction()) {
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
 
@@ -984,6 +984,29 @@ public class PurchaseOrderController implements Initializable {
                     } else {
                         ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
+                    }
+
+                    Date utilDate = (Date) poTrans.getMaster("dTransact");
+                    LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    Date todayDate = poGRider.getServerDate();
+                    LocalDate localToday = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    if (!localDate.isBefore(localToday.minusDays(3)) || localDate.isAfter(localToday.plusDays(3))) {
+
+                        if (poGRider.getUserLevel() <= UserRight.ENCODER) {
+                            JSONObject loJSON = showFXDialog.getApproval(poGRider);
+
+                            if (loJSON == null) {
+                                ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to save transaction");
+                                poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
+                            }
+
+                            if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
+
+                                ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
+                                poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
+                                return;
+                            }
+                        }
                     }
                     return;
                 default:

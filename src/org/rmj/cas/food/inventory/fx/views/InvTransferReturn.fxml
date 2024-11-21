@@ -26,7 +26,7 @@
                <top>
                   <AnchorPane prefHeight="30.0" style="-fx-background-color: #000000;" BorderPane.alignment="CENTER">
                      <children>
-                        <Label layoutX="5.0" layoutY="4.0" text="Inventory Stock Transfer" textFill="WHITE" AnchorPane.leftAnchor="5.0">
+                        <Label layoutX="5.0" layoutY="4.0" text="Inventory Stock Transfer Return" textFill="WHITE" AnchorPane.leftAnchor="5.0">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
@@ -286,11 +286,6 @@
                               <FontAwesomeIconView glyphName="SIGN_OUT" size="30" />
                            </graphic>
                         </Button>
-                        <Button fx:id="btnConfirm" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="180.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Confirm" AnchorPane.topAnchor="240.0">
-                           <graphic>
-                              <FontAwesomeIconView glyphName="CHECK" size="30" />
-                           </graphic>
-                        </Button>
                         <Button fx:id="btnNew" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="56.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="New" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="FILE_ALT" size="30" />
@@ -301,7 +296,7 @@
                               <FontAwesomeIconView glyphName="FLOPPY_ALT" size="30" />
                            </graphic>
                         </Button>
-                        <Button fx:id="btnClose" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="240.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Close" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="300.0">
+                        <Button fx:id="btnClose" alignment="BOTTOM_CENTER" contentDisplay="TOP" layoutY="240.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="Close" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="240.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="POWER_OFF" size="30" />
                            </graphic>
