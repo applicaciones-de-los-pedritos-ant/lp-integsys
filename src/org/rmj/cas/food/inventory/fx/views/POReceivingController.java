@@ -4,6 +4,8 @@ import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.net.URL;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyBooleanPropertyBase;
@@ -522,6 +524,26 @@ public class POReceivingController implements Initializable {
             case "btnSearch":
                 return;
             case "btnSave":
+                
+                Date utilDate = (Date) poTrans.getMaster("dTransact");
+                LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                Date todayDate = poGRider.getServerDate();
+                LocalDate localToday = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                if (!localDate.isBefore(localToday.minusDays(3)) || localDate.isAfter(localToday.plusDays(3))) {
+
+                    if (poGRider.getUserLevel() <= UserRight.ENCODER) {
+                        JSONObject loJSON = showFXDialog.getApproval(poGRider);
+
+                        if (loJSON == null) {
+                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to save transaction");
+                        }
+
+                        if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
+                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
+                            return;
+                        }
+                    }
+                }
                 if (poTrans.saveTransaction()) {
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
 
@@ -1037,6 +1059,13 @@ public class POReceivingController implements Initializable {
                         txtDetail.requestFocus();
                     }
 
+                    if ((Double) lnValue < 0) {
+                        txtDetail.requestFocus();
+                        txtDetail.setText("0.0");
+                        poTrans.setDetail(pnRow, lnIndex, 0.0);
+                        break;
+                    }
+
                     poTrans.setDetail(pnRow, lnIndex, lnValue);
                     break;
                 case 8:
@@ -1053,7 +1082,12 @@ public class POReceivingController implements Initializable {
                             txtDetail.requestFocus();
                         }
                     }
-
+                    if (x < 0) {
+                        txtDetail.requestFocus();
+                        txtDetail.setText("0.0");
+                        poTrans.setDetail(pnRow, lnIndex, 0.0);
+                        break;
+                    }
                     poTrans.setDetail(pnRow, lnIndex, x);
                     break;
                 case 10:

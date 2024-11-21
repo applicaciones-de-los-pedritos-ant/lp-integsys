@@ -758,12 +758,12 @@ public class InvTransferReturnController implements Initializable {
                 LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 Date todayDate = poGRider.getServerDate();
                 LocalDate localToday = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                if (!localDate.isBefore(localToday.minusDays(2))) {
+                if (!localDate.isBefore(localToday.minusDays(3)) || localDate.isAfter(localToday.plusDays(3))) {
                     if (poGRider.getUserLevel() <= UserRight.ENCODER) {
                         JSONObject loJSON = showFXDialog.getApproval(poGRider);
 
                         if (loJSON == null) {
-                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to post transaction");
+                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to save transaction");
                         }
 
                         if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
@@ -1205,7 +1205,12 @@ public class InvTransferReturnController implements Initializable {
                         x = 0;
                         txtDetail.setText("0");
                     }
-
+                    if ((Double) x < 0) {
+                        txtDetail.requestFocus();
+                        txtDetail.setText("0.0");
+                        poTrans.setDetail(pnRow, "nQuantity", 0.0);
+                        break;
+                    }
                     poTrans.setDetail(pnRow, "nQuantity", x);
 
                     if (Double.parseDouble(x.toString()) > 0.00 & !txtDetail03.getText().isEmpty()) {

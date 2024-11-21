@@ -144,7 +144,6 @@ public class InvTransferController implements Initializable {
     @FXML
     private RowConstraints rcGridRow03;
 
-
     TableColumn index01 = new TableColumn("No.");
     TableColumn index02 = new TableColumn("Expiration");
     TableColumn index03 = new TableColumn("OnHnd");
@@ -286,7 +285,6 @@ public class InvTransferController implements Initializable {
         txtDetail10.setDisable(!lbShow);
         txtDetail80.setDisable(!lbShow);
         txtDetail08.setDisable(!lbShow);
-
 
         if (lbShow) {
             txtField03.requestFocus();
@@ -579,7 +577,7 @@ public class InvTransferController implements Initializable {
         String lsValue = txtField.getText();
         if (event.getCode() == F3) {
             switch (lnIndex) {
-              
+
                 case 4:
                     /*sDestinat*/
                     if (poTrans.SearchMaster(lnIndex, txtField.getText(), false)) {
@@ -745,12 +743,13 @@ public class InvTransferController implements Initializable {
                 LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 Date todayDate = poGRider.getServerDate();
                 LocalDate localToday = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                if (!localDate.isBefore(localToday.minusDays(2))) {
+                if (!localDate.isBefore(localToday.minusDays(3)) || localDate.isAfter(localToday.plusDays(3))) {
+
                     if (poGRider.getUserLevel() <= UserRight.ENCODER) {
                         JSONObject loJSON = showFXDialog.getApproval(poGRider);
 
                         if (loJSON == null) {
-                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to post transaction");
+                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to save transaction");
                         }
 
                         if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
@@ -838,7 +837,7 @@ public class InvTransferController implements Initializable {
         txtField01.setText((String) poTrans.getMaster("sTransNox"));
         txtField50.setText((String) poTrans.getMaster("sTransNox"));
         psTransNox = txtField50.getText();
-        
+
         loBranch = poTrans.GetBranch((String) poTrans.getMaster(4), true);
         if (loBranch != null) {
             txtField04.setText((String) loBranch.getMaster("sBranchNm"));
@@ -1188,7 +1187,12 @@ public class InvTransferController implements Initializable {
                         x = 0;
                         txtDetail.setText("0");
                     }
-
+                    if ((Double) x < 0) {
+                        txtDetail.requestFocus();
+                        txtDetail.setText("0.0");
+                        poTrans.setDetail(pnRow, "nQuantity", 0.0);
+                        break;
+                    }
                     poTrans.setDetail(pnRow, "nQuantity", x);
 
                     if (Double.parseDouble(x.toString()) > 0.00 & !txtDetail03.getText().isEmpty()) {
@@ -1504,7 +1508,7 @@ public class InvTransferController implements Initializable {
             case 3:
                 txtField03.setText(SQLUtil.dateFormat((Date) poTrans.getMaster("dTransact"), pxeDateFormat));
                 break;
-            
+
             case 4:
                 loBranch = poTrans.GetBranch((String) poTrans.getMaster(fnIndex), true);
                 if (loBranch != null) {
