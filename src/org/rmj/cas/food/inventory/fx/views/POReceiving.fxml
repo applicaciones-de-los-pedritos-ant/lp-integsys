@@ -129,7 +129,7 @@
                            </columnResizePolicy></TableView>
                         <GridPane layoutX="441.0" layoutY="136.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="40.0">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="110.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="110.0" />

@@ -108,8 +108,8 @@ public class InvTransferReturnController implements Initializable {
     private Button btnNew;
     @FXML
     private Button btnSave;
-    @FXML
-    private Button btnConfirm;
+//    @FXML
+//    private Button btnConfirm;
     @FXML
     private Button btnCancel;
     @FXML
@@ -192,7 +192,7 @@ public class InvTransferReturnController implements Initializable {
         btnDel.setOnAction(this::cmdButton_Click);
         btnNew.setOnAction(this::cmdButton_Click);
         btnPrint.setOnAction(this::cmdButton_Click);
-        btnConfirm.setOnAction(this::cmdButton_Click);
+//        btnConfirm.setOnAction(this::cmdButton_Click);
         btnClose.setOnAction(this::cmdButton_Click);
         btnExit.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
@@ -269,7 +269,7 @@ public class InvTransferReturnController implements Initializable {
         btnBrowse.setVisible(!lbShow);
         btnNew.setVisible(!lbShow);
         btnPrint.setVisible(!lbShow);
-        btnConfirm.setVisible(!lbShow);
+//        btnConfirm.setVisible(!lbShow);
         btnClose.setVisible(!lbShow);
         btnUpdate.setVisible(!lbShow);
 
@@ -695,48 +695,48 @@ public class InvTransferReturnController implements Initializable {
                 }
                 break;
 
-            case "btnConfirm":
-                if (!psOldRec.equals("")) {
-                    if (!poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)) {
-                        ShowMessageFX.Warning("Trasaction may be CANCELLED/CLOSED.", pxeModuleName, "Can't update transactions!!!");
-                        return;
-                    }
-
-                    if (poGRider.getUserLevel() <= UserRight.ENCODER) {
-                        JSONObject loJSON = showFXDialog.getApproval(poGRider);
-
-                        if (loJSON == null) {
-                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to post transaction");
-                        }
-
-                        if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
-                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
-                            return;
-                        }
-                    }
-
-                    if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?") == true) {
-                        if (poTrans.closeTransaction(psOldRec)) {
-                            ShowMessageFX.Information(null, pxeModuleName, "Transaction confirmed successfully.");
-
-                            if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
-                                if (!printTransfer()) {
-                                    return;
-                                }
-                            }
-
-                            clearFields();
-                            initGrid();
-                            pnEditMode = EditMode.UNKNOWN;
-                            initButton(pnEditMode);
-                        } else {
-                            ShowMessageFX.Warning(poTrans.getErrMsg(), pxeModuleName, "Unable to confirm transaction.");
-                        }
-                    }
-                } else {
-                    ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to confirm!");
-                }
-                break;
+//            case "btnConfirm":
+//                if (!psOldRec.equals("")) {
+//                    if (!poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)) {
+//                        ShowMessageFX.Warning("Trasaction may be CANCELLED/CLOSED.", pxeModuleName, "Can't update transactions!!!");
+//                        return;
+//                    }
+//
+//                    if (poGRider.getUserLevel() <= UserRight.ENCODER) {
+//                        JSONObject loJSON = showFXDialog.getApproval(poGRider);
+//
+//                        if (loJSON == null) {
+//                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to post transaction");
+//                        }
+//
+//                        if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
+//                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
+//                            return;
+//                        }
+//                    }
+//
+//                    if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?") == true) {
+//                        if (poTrans.closeTransaction(psOldRec)) {
+//                            ShowMessageFX.Information(null, pxeModuleName, "Transaction confirmed successfully.");
+//
+//                            if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
+//                                if (!printTransfer()) {
+//                                    return;
+//                                }
+//                            }
+//
+//                            clearFields();
+//                            initGrid();
+//                            pnEditMode = EditMode.UNKNOWN;
+//                            initButton(pnEditMode);
+//                        } else {
+//                            ShowMessageFX.Warning(poTrans.getErrMsg(), pxeModuleName, "Unable to confirm transaction.");
+//                        }
+//                    }
+//                } else {
+//                    ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to confirm!");
+//                }
+//                break;
             case "btnExit":
             case "btnClose":
                 unloadForm();
@@ -754,25 +754,7 @@ public class InvTransferReturnController implements Initializable {
             case "btnSearch":
                 return;
             case "btnSave":
-                Date utilDate = (Date) poTrans.getMaster("dTransact");
-                LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                Date todayDate = poGRider.getServerDate();
-                LocalDate localToday = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                if (!localDate.isBefore(localToday.minusDays(3)) || localDate.isAfter(localToday.plusDays(3))) {
-                    if (poGRider.getUserLevel() <= UserRight.ENCODER) {
-                        JSONObject loJSON = showFXDialog.getApproval(poGRider);
-
-                        if (loJSON == null) {
-                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to save transaction");
-                        }
-
-                        if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
-                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
-                            return;
-                        }
-                    }
-                }
-
+                
                 if (poTrans.saveTransaction()) {
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
                     clearFields();
@@ -1101,13 +1083,34 @@ public class InvTransferReturnController implements Initializable {
                     break;
                 case 3:
                     /*dTransact*/
+                   
                     if (CommonUtils.isDate(lsValue, pxeDateFormat)) {
                         poTrans.setMaster("dTransact", SQLUtil.toDate(lsValue, pxeDateFormat));
                     } else {
                         ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
+                    
+                    Date utilDate = (Date) poTrans.getMaster("dTransact");
+                    LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    Date todayDate = poGRider.getServerDate();
+                    LocalDate localToday = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    if (!localDate.isBefore(localToday.minusDays(3)) || localDate.isAfter(localToday.plusDays(3))) {
+                        if (poGRider.getUserLevel() <= UserRight.ENCODER) {
+                            JSONObject loJSON = showFXDialog.getApproval(poGRider);
 
+                            if (loJSON == null) {
+                                poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
+                                ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to save transaction");
+                            }
+
+                            if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
+                                poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
+                                ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
+                                return;
+                            }
+                        }
+                    }
                     return;
                 case 2:/*Origin*/
                 case 4:/*sDestinat*/
