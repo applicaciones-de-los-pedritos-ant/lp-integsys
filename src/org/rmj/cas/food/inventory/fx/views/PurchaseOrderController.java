@@ -990,8 +990,7 @@ public class PurchaseOrderController implements Initializable {
                     LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                     Date todayDate = poGRider.getServerDate();
                     LocalDate localToday = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    if (!localDate.isBefore(localToday.minusDays(3)) || localDate.isAfter(localToday.plusDays(3))) {
-
+                    if (localDate.isBefore(localToday.minusDays(3)) || localDate.isAfter(localToday.plusDays(3))) {
                         if (poGRider.getUserLevel() <= UserRight.ENCODER) {
                             JSONObject loJSON = showFXDialog.getApproval(poGRider);
 
