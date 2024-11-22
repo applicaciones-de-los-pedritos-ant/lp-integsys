@@ -185,7 +185,7 @@ public class InvTransferReturnController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new InvTransfer(poGRider, poGRider.getBranchCode(), false);
         poTrans.setCallBack(poCallBack);
-
+        poTrans.setTranStat(1230);
         btnCancel.setOnAction(this::cmdButton_Click);
         btnSearch.setOnAction(this::cmdButton_Click);
         btnSave.setOnAction(this::cmdButton_Click);
@@ -661,13 +661,13 @@ public class InvTransferReturnController implements Initializable {
         switch (lsButton) {
             case "btnNew":
                 if (poTrans.newTransaction()) {
-                    
+
                     clearFields();
                     if (poTrans.SearchMaster(4, poGRider.getBranchCode(), true)) {
                     } else {
                         txtField04.setText("");
                     }
-                            
+
                     loadRecord();
                     txtField50.setText("");
                     pnEditMode = poTrans.getEditMode();
