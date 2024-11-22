@@ -304,7 +304,7 @@ public class InvTransferController implements Initializable {
         txtField50.setText("");
         txtField51.setText("");
         txtOther02.setText("0");
-        txtField18.setText(SQLUtil.dateFormat((Date) java.sql.Date.valueOf(LocalDate.now()), pxeDateFormat));
+        txtField18.setText("");
 
         pbFound = false;
         txtDetail03.setText("");
