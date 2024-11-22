@@ -69,7 +69,7 @@
                                     <Font size="10.0" />
                                  </font>
                               </TextField>
-                              <Label layoutX="380.0" text="Destination" AnchorPane.topAnchor="9.0">
+                              <Label layoutX="370.0" text="Origin Branch" AnchorPane.topAnchor="9.0">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>

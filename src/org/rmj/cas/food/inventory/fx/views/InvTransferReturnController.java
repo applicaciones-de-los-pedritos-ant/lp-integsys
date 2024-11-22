@@ -185,7 +185,7 @@ public class InvTransferReturnController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new InvTransfer(poGRider, poGRider.getBranchCode(), false);
         poTrans.setCallBack(poCallBack);
-
+        poTrans.setTranStat(1230);
         btnCancel.setOnAction(this::cmdButton_Click);
         btnSearch.setOnAction(this::cmdButton_Click);
         btnSave.setOnAction(this::cmdButton_Click);
@@ -312,7 +312,7 @@ public class InvTransferReturnController implements Initializable {
         txtField50.setText("");
         txtField51.setText("");
         txtOther02.setText("0");
-        txtField18.setText(SQLUtil.dateFormat((Date) java.sql.Date.valueOf(LocalDate.now()), pxeDateFormat));
+        txtField18.setText("");
 
         pbFound = false;
         txtDetail03.setText("");
@@ -588,6 +588,7 @@ public class InvTransferReturnController implements Initializable {
                 case 2:
                     /*Origin*/
                     if (poTrans.SearchMaster(lnIndex, txtField.getText(), false)) {
+
                         CommonUtils.SetNextFocus(txtField);
                     } else {
                         txtField.setText("");
@@ -622,7 +623,7 @@ public class InvTransferReturnController implements Initializable {
                     break;
                 case 50:
                     /*sTransNox*/
-                    if (poTrans.BrowseRecord("%" + lsValue, true) == true) {
+                    if (poTrans.BrowseRecordReturn("%" + lsValue, true) == true) {
                         loadRecord();
                         pnEditMode = poTrans.getEditMode();
                     } else {
@@ -632,7 +633,7 @@ public class InvTransferReturnController implements Initializable {
                     return;
                 case 51:
                     /*psDestina*/
-                    if (poTrans.BrowseRecord(lsValue, false) == true) {
+                    if (poTrans.BrowseRecordReturn(lsValue, false) == true) {
                         loadRecord();
                         pnEditMode = poTrans.getEditMode();
                     } else {
@@ -660,7 +661,13 @@ public class InvTransferReturnController implements Initializable {
         switch (lsButton) {
             case "btnNew":
                 if (poTrans.newTransaction()) {
+
                     clearFields();
+                    if (poTrans.SearchMaster(4, poGRider.getBranchCode(), true)) {
+                    } else {
+                        txtField04.setText("");
+                    }
+
                     loadRecord();
                     txtField50.setText("");
                     pnEditMode = poTrans.getEditMode();
@@ -774,7 +781,7 @@ public class InvTransferReturnController implements Initializable {
                 switch (pnIndex) {
                     case 50:
                         /*sTransNox*/
-                        if (poTrans.BrowseRecord(txtField50.getText(), true) == true) {
+                        if (poTrans.BrowseRecordReturn(txtField50.getText(), true) == true) {
                             loadRecord();
                             pnEditMode = poTrans.getEditMode();
                             break;
@@ -785,7 +792,7 @@ public class InvTransferReturnController implements Initializable {
                         return;
                     case 51:
                         /*sDestination*/
-                        if (poTrans.BrowseRecord(txtField51.getText(), false) == true) {
+                        if (poTrans.BrowseRecordReturn(txtField51.getText(), false) == true) {
                             loadRecord();
                             pnEditMode = poTrans.getEditMode();
                         }
@@ -1527,6 +1534,9 @@ public class InvTransferReturnController implements Initializable {
     private void getMaster(int fnIndex) {
         XMBranch loBranch;
         switch (fnIndex) {
+            case 1:
+                txtField01.setText((String) poTrans.getMaster("sTransNox"));
+                break;
             case 3:
                 txtField03.setText(SQLUtil.dateFormat((Date) poTrans.getMaster("dTransact"), pxeDateFormat));
                 break;
