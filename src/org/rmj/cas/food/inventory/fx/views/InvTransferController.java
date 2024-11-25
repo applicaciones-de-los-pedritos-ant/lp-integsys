@@ -196,7 +196,7 @@ public class InvTransferController implements Initializable {
         btnUpdate.setOnAction(this::cmdButton_Click);
 
         txtField01.focusedProperty().addListener(txtField_Focus);
-        txtField03.focusedProperty().addListener(txtField_Focus);
+//        txtField03.focusedProperty().addListener(txtField_Focus);
         txtField04.focusedProperty().addListener(txtField_Focus);
         txtField05.focusedProperty().addListener(txtArea_Focus);
         txtField06.focusedProperty().addListener(txtField_Focus);
@@ -270,7 +270,8 @@ public class InvTransferController implements Initializable {
 
         txtField01.setDisable(!lbShow);
 //        txtField02.setDisable(!lbShow);
-        txtField03.setDisable(!lbShow);
+//        txtField03.setDisable(!lbShow);
+        txtField03.setDisable(true);
         txtField04.setDisable(!lbShow);
         txtField05.setDisable(!lbShow);
 //        txtField06.setDisable(!lbShow);
