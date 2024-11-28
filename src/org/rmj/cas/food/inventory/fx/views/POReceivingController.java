@@ -709,7 +709,8 @@ public class POReceivingController implements Initializable {
         String lsValue = txtField.getText();
 
         if (event.getCode() == F3) {
-            if (poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
+            if (poTrans.getMaster("cTranStat") != null
+                    && poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
                 return;
             }
             switch (lnIndex) {
@@ -815,7 +816,8 @@ public class POReceivingController implements Initializable {
         JSONObject loJSON;
 
         if (event.getCode() == F3) {
-            if (poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
+            if (poTrans.getMaster("cTranStat") != null
+                    && poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
                 return;
             }
             switch (lnIndex) {
@@ -1016,7 +1018,8 @@ public class POReceivingController implements Initializable {
 
         if (!nv) {
 
-            if (poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
+            if (poTrans.getMaster("cTranStat") != null
+                    && poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
                 if (lnIndex != 8) {
                     return;
                 }
@@ -1123,7 +1126,8 @@ public class POReceivingController implements Initializable {
         if (!pbLoaded) {
             return;
         }
-        if (poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
+        if (poTrans.getMaster("cTranStat") != null
+                && poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
             return;
         }
 

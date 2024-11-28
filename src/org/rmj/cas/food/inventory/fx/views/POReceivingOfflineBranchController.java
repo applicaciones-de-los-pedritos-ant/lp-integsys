@@ -145,7 +145,7 @@ public class POReceivingOfflineBranchController implements Initializable {
         }
 
         if (!pbisEncoder) {
-            poTrans.setTranStat(10);
+            poTrans.setTranStat(1230);
         }
         /*Set action event handler for the buttons*/
         btnCancel.setOnAction(this::cmdButton_Click);
@@ -309,7 +309,7 @@ public class POReceivingOfflineBranchController implements Initializable {
         txtDetail80.setDisable(!lbShow);
 
         if (lbShow) {
-            txtField17.requestFocus();
+            txtField02.requestFocus();
         } else {
             txtField50.requestFocus();
         }
@@ -434,10 +434,9 @@ public class POReceivingOfflineBranchController implements Initializable {
                     loadRecord();
                     txtField50.setText("");
 
-                    if (poTrans.SearchMaster("sBranchCd", poGRider.getBranchCode(), true)) {
-                        txtField17.requestFocus();
-                    }
-
+//                    if (poTrans.SearchMaster("sBranchCd", poGRider.getBranchCode(), true)) {
+//                        txtField17.requestFocus();
+//                    }
                     pnEditMode = poTrans.getEditMode();
                 }
                 break;
@@ -525,26 +524,11 @@ public class POReceivingOfflineBranchController implements Initializable {
             case "btnSearch":
                 return;
             case "btnSave":
-//                
-//                Date utilDate = (Date) poTrans.getMaster("dTransact");
-//                LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//                Date todayDate = poGRider.getServerDate();
-//                LocalDate localToday = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//                if (!localDate.isBefore(localToday.minusDays(3)) || localDate.isAfter(localToday.plusDays(3))) {
-//
-//                    if (poGRider.getUserLevel() <= UserRight.ENCODER) {
-//                        JSONObject loJSON = showFXDialog.getApproval(poGRider);
-//
-//                        if (loJSON == null) {
-//                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to save transaction");
-//                        }
-//
-//                        if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
-//                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
-//                            return;
-//                        }
-//                    }
-//                }
+                if (poTrans.getMaster(2) == null || poTrans.getMaster(2).toString().isEmpty()) {
+                    ShowMessageFX.Warning(null, "Warning", "Originating Branch is Empty.");
+                    txtField02.requestFocus();
+                    return;
+                }
                 if (poTrans.saveTransaction()) {
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
 
@@ -714,10 +698,17 @@ public class POReceivingOfflineBranchController implements Initializable {
         TextField txtField = (TextField) event.getSource();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
         String lsValue = txtField.getText();
-
-        if (event.getCode() == F3) {
-            if (poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
+        if (!"50»51»2»17".contains(String.valueOf(lnIndex))) {
+            if (poTrans.getMaster(2) == null || poTrans.getMaster(2).toString().isEmpty()) {
+                ShowMessageFX.Warning(null, "Warning", "Originating Branch must have a value to search Information.");
                 return;
+            }
+        }
+        if (event.getCode() == F3) {
+
+            if (poTrans.getMaster("cTranStat") != null && poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
+                return;
+
             }
             switch (lnIndex) {
                 case 2:
@@ -762,7 +753,7 @@ public class POReceivingOfflineBranchController implements Initializable {
                     }
                     return;
                 case 50:
-                    /*ReferNox*/
+                    /*TransNox*/
                     if (poTrans.BrowseRecord(lsValue, true) == true) {
                         loadRecord();
                         pnEditMode = poTrans.getEditMode();
@@ -774,7 +765,7 @@ public class POReceivingOfflineBranchController implements Initializable {
 
                     return;
                 case 51:
-                    /*Supplier*/
+                    /*Branh Origin*/
                     if (poTrans.BrowseRecord(lsValue, false) == true) {
                         loadRecord();
                         pnEditMode = poTrans.getEditMode();
@@ -827,10 +818,17 @@ public class POReceivingOfflineBranchController implements Initializable {
             lsValue = "";
         }
 
+//        if (!"3".contains(String.valueOf(lnIndex))) {
+//            if (poTrans.getMaster(2) == null || poTrans.getMaster(2).toString().isEmpty()) {
+//                ShowMessageFX.Warning(null, "Warning", "Originating Branch must have a value to search Information.");
+//                return;
+//            }
+//        }
         JSONObject loJSON;
 
         if (event.getCode() == F3) {
-            if (poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
+            if (poTrans.getMaster("cTranStat") != null
+                    && poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
                 return;
             }
             switch (lnIndex) {
@@ -1031,7 +1029,8 @@ public class POReceivingOfflineBranchController implements Initializable {
 
         if (!nv) {
 
-            if (poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
+            if (poTrans.getMaster("cTranStat") != null
+                    && poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
                 if (lnIndex != 8) {
                     return;
                 }
@@ -1138,10 +1137,9 @@ public class POReceivingOfflineBranchController implements Initializable {
         if (!pbLoaded) {
             return;
         }
-        if (poTrans.getMaster("cTranStat") != null) {
-            if (poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
-                return;
-            }
+        if (poTrans.getMaster("cTranStat") != null
+                && poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
+            return;
         }
         TextField txtField = (TextField) ((ReadOnlyBooleanPropertyBase) o).getBean();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
@@ -1327,6 +1325,16 @@ public class POReceivingOfflineBranchController implements Initializable {
 
     private void getMaster(int fnIndex) {
         switch (fnIndex) {
+            case 1:
+                txtField01.setText((String) poTrans.getMaster(fnIndex));
+                break;
+            case 2:
+                XMBranch loBranch = poTrans.GetBranch((String) poTrans.getMaster(fnIndex), true);
+                if (loBranch != null) {
+                    System.out.println(loBranch.getMaster("sBranchNm"));
+                    txtField02.setText((String) loBranch.getMaster("sBranchNm"));
+                }
+                break;
             case 5:
                 JSONObject loSupplier = poTrans.GetSupplier((String) poTrans.getMaster(fnIndex), true);
                 if (loSupplier != null) {
