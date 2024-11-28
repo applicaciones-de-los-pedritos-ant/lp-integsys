@@ -117,7 +117,7 @@ public class MDIMainController implements Initializable {
     @FXML
     private Label lblCompany;
     @FXML
-    private MenuItem mnuPOReceiving;
+    private MenuItem mnuPOReceiving,mnu_POReceivingOfflineBranch;
     @FXML
     private MenuItem mnuDailyProduction;
     @FXML
@@ -781,6 +781,12 @@ public class MDIMainController implements Initializable {
 
                 return loPOObj;
 
+            case FoodInventoryFX.pxePOReceivingOfflineBranch:
+                POReceivingOfflineBranchController loPOOBObj = new POReceivingOfflineBranchController();
+                loPOOBObj.setGRider(poGRider);
+
+                return loPOOBObj;
+
             case FoodInventoryFX.pxePOReturn:
                 POReturnController loPORet = new POReturnController();
                 loPORet.setGRider(poGRider);
@@ -1035,11 +1041,15 @@ public class MDIMainController implements Initializable {
 //        setDataPane(fadeAnimate(FoodInventoryFX.pxeDailyProd));
         loadScene(FoodInventoryFX.pxeDailyProd);
     }
-
     @FXML
     private void mnu_POReceivingRegClick(ActionEvent event) throws IOException {
 //         setDataPane(fadeAnimate(FoodInventoryFX.pxePOReceivingReg));
         loadScene(FoodInventoryFX.pxePOReceivingReg);
+    }
+    @FXML
+    private void mnu_POReceivingOfflineBranch_Click(ActionEvent event) throws IOException {
+//         setDataPane(fadeAnimate(FoodInventoryFX.pxePOReceivingReg));
+        loadScene(FoodInventoryFX.pxePOReceivingOfflineBranch);
     }
 
     @FXML
