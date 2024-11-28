@@ -3,7 +3,6 @@ package org.rmj.cas.food.inventory.fx.views;
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.net.URL;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -42,22 +41,22 @@ import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.inventory.base.Inventory;
-import org.rmj.lp.parameter.agent.XMBranch;
-import org.rmj.lp.parameter.agent.XMDepartment;
 import org.rmj.lp.parameter.agent.XMTerm;
 import org.rmj.purchasing.agent.POReceiving;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
 import org.rmj.appdriver.agentfx.ui.showFXDialog;
 import org.rmj.appdriver.constants.UserRight;
+import org.rmj.lp.parameter.agent.XMBranch;
+import org.rmj.purchasing.agent.POReceivingOfflineBranch;
 
-public class POReceivingController implements Initializable {
+public class POReceivingOfflineBranchController implements Initializable {
 
     @FXML
     private Button btnExit;
     @FXML
     private AnchorPane anchorField;
     @FXML
-    private TextField txtField01;
+    private TextField txtField01, txtField02;
     @FXML
     private TextField txtField03;
     @FXML
@@ -136,7 +135,7 @@ public class POReceivingController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         /*Initialize class*/
-        poTrans = new POReceiving(poGRider, poGRider.getBranchCode(), false);
+        poTrans = new POReceivingOfflineBranch(poGRider, poGRider.getBranchCode(), false);
         poTrans.setTranStat(0);
         poTrans.setCallBack(poCallBack);
         poTrans.setClientNm(System.getProperty("user.name"));
@@ -146,7 +145,7 @@ public class POReceivingController implements Initializable {
         }
 
         if (!pbisEncoder) {
-            poTrans.setTranStat(10);
+            poTrans.setTranStat(1230);
         }
         /*Set action event handler for the buttons*/
         btnCancel.setOnAction(this::cmdButton_Click);
@@ -161,6 +160,7 @@ public class POReceivingController implements Initializable {
         btnUpdate.setOnAction(this::cmdButton_Click);
 
         /*Add listener to text fields*/
+        txtField02.focusedProperty().addListener(txtField_Focus);
         txtField03.focusedProperty().addListener(txtField_Focus);
         txtField05.focusedProperty().addListener(txtField_Focus);
         txtField06.focusedProperty().addListener(txtField_Focus);
@@ -186,6 +186,7 @@ public class POReceivingController implements Initializable {
         txtDetail80.focusedProperty().addListener(txtDetail_Focus);
 
         /*Add keypress event for field with search*/
+        txtField02.setOnKeyPressed(this::txtField_KeyPressed);
         txtField03.setOnKeyPressed(this::txtField_KeyPressed);
         txtField05.setOnKeyPressed(this::txtField_KeyPressed);
         txtField06.setOnKeyPressed(this::txtField_KeyPressed);
@@ -308,7 +309,7 @@ public class POReceivingController implements Initializable {
         txtDetail80.setDisable(!lbShow);
 
         if (lbShow) {
-            txtField17.requestFocus();
+            txtField02.requestFocus();
         } else {
             txtField50.requestFocus();
         }
@@ -433,10 +434,9 @@ public class POReceivingController implements Initializable {
                     loadRecord();
                     txtField50.setText("");
 
-                    if (poTrans.SearchMaster("sBranchCd", poGRider.getBranchCode(), true)) {
-                        txtField17.requestFocus();
-                    }
-
+//                    if (poTrans.SearchMaster("sBranchCd", poGRider.getBranchCode(), true)) {
+//                        txtField17.requestFocus();
+//                    }
                     pnEditMode = poTrans.getEditMode();
                 }
                 break;
@@ -524,26 +524,11 @@ public class POReceivingController implements Initializable {
             case "btnSearch":
                 return;
             case "btnSave":
-//                
-//                Date utilDate = (Date) poTrans.getMaster("dTransact");
-//                LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//                Date todayDate = poGRider.getServerDate();
-//                LocalDate localToday = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//                if (!localDate.isBefore(localToday.minusDays(3)) || localDate.isAfter(localToday.plusDays(3))) {
-//
-//                    if (poGRider.getUserLevel() <= UserRight.ENCODER) {
-//                        JSONObject loJSON = showFXDialog.getApproval(poGRider);
-//
-//                        if (loJSON == null) {
-//                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to save transaction");
-//                        }
-//
-//                        if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
-//                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
-//                            return;
-//                        }
-//                    }
-//                }
+                if (poTrans.getMaster(2) == null || poTrans.getMaster(2).toString().isEmpty()) {
+                    ShowMessageFX.Warning(null, "Warning", "Originating Branch is Empty.");
+                    txtField02.requestFocus();
+                    return;
+                }
                 if (poTrans.saveTransaction()) {
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
 
@@ -620,6 +605,11 @@ public class POReceivingController implements Initializable {
     private void loadRecord() {
         txtField01.setText((String) poTrans.getMaster(1));
 
+        XMBranch loBranch = poTrans.GetBranch((String) poTrans.getMaster(2), true);
+        if (loBranch != null) {
+            txtField02.setText((String) loBranch.getMaster("sBranchNm"));
+        }
+
         txtField03.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getMaster("dTransact")));
         txtField06.setText((String) poTrans.getMaster(6));
         txtField50.setText((String) poTrans.getMaster(6));
@@ -655,6 +645,7 @@ public class POReceivingController implements Initializable {
 
     private void clearFields() {
         txtField01.setText("");
+        txtField02.setText("");
         txtField03.setText("");
         txtField05.setText("");
         txtField06.setText("");
@@ -707,13 +698,27 @@ public class POReceivingController implements Initializable {
         TextField txtField = (TextField) event.getSource();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
         String lsValue = txtField.getText();
-
-        if (event.getCode() == F3) {
-            if (poTrans.getMaster("cTranStat") != null
-                    && poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
+        if (!"50»51»2»17".contains(String.valueOf(lnIndex))) {
+            if (poTrans.getMaster(2) == null || poTrans.getMaster(2).toString().isEmpty()) {
+                ShowMessageFX.Warning(null, "Warning", "Originating Branch must have a value to search Information.");
                 return;
             }
+        }
+        if (event.getCode() == F3) {
+
+            if (poTrans.getMaster("cTranStat") != null && poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
+                return;
+
+            }
             switch (lnIndex) {
+                case 2:
+                    /*sBranchCd*/
+                    if (poTrans.SearchMaster(lnIndex, lsValue, false)) {
+                        CommonUtils.SetNextFocus(txtField);
+                    } else {
+                        txtField.setText("");
+                    }
+                    return;
                 case 5:
                     /*sSupplier*/
                     if (poTrans.SearchMaster(lnIndex, lsValue, false)) {
@@ -748,7 +753,7 @@ public class POReceivingController implements Initializable {
                     }
                     return;
                 case 50:
-                    /*ReferNox*/
+                    /*TransNox*/
                     if (poTrans.BrowseRecord(lsValue, true) == true) {
                         loadRecord();
                         pnEditMode = poTrans.getEditMode();
@@ -760,7 +765,7 @@ public class POReceivingController implements Initializable {
 
                     return;
                 case 51:
-                    /*Supplier*/
+                    /*Branh Origin*/
                     if (poTrans.BrowseRecord(lsValue, false) == true) {
                         loadRecord();
                         pnEditMode = poTrans.getEditMode();
@@ -813,6 +818,12 @@ public class POReceivingController implements Initializable {
             lsValue = "";
         }
 
+//        if (!"3".contains(String.valueOf(lnIndex))) {
+//            if (poTrans.getMaster(2) == null || poTrans.getMaster(2).toString().isEmpty()) {
+//                ShowMessageFX.Warning(null, "Warning", "Originating Branch must have a value to search Information.");
+//                return;
+//            }
+//        }
         JSONObject loJSON;
 
         if (event.getCode() == F3) {
@@ -938,9 +949,9 @@ public class POReceivingController implements Initializable {
         this.poGRider = foGRider;
     }
 
-    private final String pxeModuleName = "POReceivingController";
+    private final String pxeModuleName = "POReceivingOfflineBranchController";
     private static GRider poGRider;
-    private POReceiving poTrans;
+    private POReceivingOfflineBranch poTrans;
 
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
@@ -1130,7 +1141,6 @@ public class POReceivingController implements Initializable {
                 && poTrans.getMaster("cTranStat").toString().equalsIgnoreCase(TransactionStatus.STATE_CLOSED)) {
             return;
         }
-
         TextField txtField = (TextField) ((ReadOnlyBooleanPropertyBase) o).getBean();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
         String lsValue = txtField.getText();
@@ -1315,6 +1325,16 @@ public class POReceivingController implements Initializable {
 
     private void getMaster(int fnIndex) {
         switch (fnIndex) {
+            case 1:
+                txtField01.setText((String) poTrans.getMaster(fnIndex));
+                break;
+            case 2:
+                XMBranch loBranch = poTrans.GetBranch((String) poTrans.getMaster(fnIndex), true);
+                if (loBranch != null) {
+                    System.out.println(loBranch.getMaster("sBranchNm"));
+                    txtField02.setText((String) loBranch.getMaster("sBranchNm"));
+                }
+                break;
             case 5:
                 JSONObject loSupplier = poTrans.GetSupplier((String) poTrans.getMaster(fnIndex), true);
                 if (loSupplier != null) {
