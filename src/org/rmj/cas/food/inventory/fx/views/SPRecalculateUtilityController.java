@@ -75,7 +75,7 @@ public class SPRecalculateUtilityController implements Initializable, IFXML {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //Initialize Class
-        oTrans = new InvMaster(oApp, oApp.getBranchCode(), true); 
+        oTrans = new InvMaster(oApp, oApp.getBranchCode(), false); 
         
         txtField06.focusedProperty().addListener(txtField_Focus);  
         txtField05.setOnAction(this::getDate); 
@@ -107,11 +107,11 @@ public class SPRecalculateUtilityController implements Initializable, IFXML {
                         }
                     }else{
                         if ((Date) oTrans.getMaster("dBegInvxx") == null){
-                        ShowMessageFX.Warning(null, pxeModuleName, "Beginning Inventory Date cannot be empty.");
-                        txtField05.requestFocus();
-                        return;
+                            ShowMessageFX.Warning(null, pxeModuleName, "Beginning Inventory Date cannot be empty.");
+                            txtField05.requestFocus();
+                            return;
                         }
-                        if (oTrans.recalculate((String) oTrans.getMaster("sStockIDx"))) {
+                        if (oTrans.recalculate((String) oTrans.getMaster("sStockIDx"), false)) {
                             ShowMessageFX.Information(oTrans.getMessage(), pxeModuleName, "Recalculate successful!");
                             oTrans.SearchStock((String) oTrans.getMaster("sStockIDx"),"",false,true);
                             loadDetails();
