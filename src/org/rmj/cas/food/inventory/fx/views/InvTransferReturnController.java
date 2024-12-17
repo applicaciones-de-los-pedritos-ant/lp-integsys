@@ -56,11 +56,11 @@ import org.rmj.appdriver.MiscUtil;
 import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
-import org.rmj.cas.inventory.base.InvTransfer;
 import org.rmj.lp.parameter.agent.XMBranch;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
 import org.rmj.appdriver.agentfx.ui.showFXDialog;
 import org.rmj.appdriver.constants.UserRight;
+import org.rmj.cas.inventory.base.InvTransferReturn;
 
 public class InvTransferReturnController implements Initializable {
 
@@ -157,7 +157,7 @@ public class InvTransferReturnController implements Initializable {
     protected Date pdExpiryDt = null;
     protected Boolean pbEdited = false;
     private static GRider poGRider;
-    private InvTransfer poTrans;
+    private InvTransferReturn poTrans;
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
 
@@ -183,7 +183,7 @@ public class InvTransferReturnController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        poTrans = new InvTransfer(poGRider, poGRider.getBranchCode(), false);
+        poTrans = new InvTransferReturn(poGRider, poGRider.getBranchCode(), false);
         poTrans.setCallBack(poCallBack);
         poTrans.setTranStat(1230);
         btnCancel.setOnAction(this::cmdButton_Click);
