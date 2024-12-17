@@ -848,7 +848,6 @@ public class InvTransferReturnController implements Initializable {
         loBranch = poTrans.GetBranch((String) poTrans.getMaster(4), true);
         if (loBranch != null) {
             txtField04.setText((String) loBranch.getMaster("sBranchNm"));
-            txtField51.setText((String) loBranch.getMaster("sBranchNm"));
         }
 
         //TODO:
