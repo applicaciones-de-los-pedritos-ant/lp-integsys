@@ -42,7 +42,6 @@ import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.inventory.base.Inventory;
 import org.rmj.lp.parameter.agent.XMTerm;
-import org.rmj.purchasing.agent.POReceiving;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
 import org.rmj.appdriver.agentfx.ui.showFXDialog;
 import org.rmj.appdriver.constants.UserRight;
@@ -431,6 +430,7 @@ public class POReceivingOfflineBranchController implements Initializable {
             case "btnNew":
                 if (poTrans.newTransaction()) {
                     clearFields();
+
                     loadRecord();
                     txtField50.setText("");
 
@@ -615,6 +615,9 @@ public class POReceivingOfflineBranchController implements Initializable {
         txtField50.setText((String) poTrans.getMaster(6));
         psReferNox = txtField50.getText();
         txtField07.setText(FoodInventoryFX.xsRequestFormat((Date) (poTrans.getMaster("dRefernce") != null ? poTrans.getMaster("dRefernce") : CommonUtils.toDate(pxeDateDefault))));
+        if (poTrans.getMaster("dRefernce") == null) {
+            poTrans.setMaster(7, CommonUtils.toDate(pxeDateDefault));
+        }
         txtField10.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(10).toString()), "0.00"));
         txtField11.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(11).toString()), "#,##0.00"));
         txtField12.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(12).toString()), "0.00"));

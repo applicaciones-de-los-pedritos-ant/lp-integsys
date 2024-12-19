@@ -625,6 +625,9 @@ public class POReceivingController implements Initializable {
         txtField50.setText((String) poTrans.getMaster(6));
         psReferNox = txtField50.getText();
         txtField07.setText(FoodInventoryFX.xsRequestFormat((Date) (poTrans.getMaster("dRefernce") != null ? poTrans.getMaster("dRefernce") : CommonUtils.toDate(pxeDateDefault))));
+        if (poTrans.getMaster("dRefernce") == null) {
+            poTrans.setMaster(7, CommonUtils.toDate(pxeDateDefault));
+        }
         txtField10.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(10).toString()), "0.00"));
         txtField11.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(11).toString()), "#,##0.00"));
         txtField12.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(12).toString()), "0.00"));
