@@ -1438,7 +1438,7 @@ public class InvTransferReturnController implements Initializable {
             json_arr.add(json_obj);
         }
 
-        String lsSQL = "SELECT sBranchNm FROM Branch WHERE sBranchCD = " + SQLUtil.toSQL((String) poTrans.getMaster("sDestinat"));
+        String lsSQL = "SELECT sBranchNm FROM Branch WHERE sBranchCD = " + SQLUtil.toSQL((String) poTrans.getMaster("sBranchCd"));
         ResultSet loRS = poGRider.executeQuery(lsSQL);
 
         try {
@@ -1451,9 +1451,9 @@ public class InvTransferReturnController implements Initializable {
             //Create the parameter
             Map<String, Object> params = new HashMap<>();
             params.put("sReportNm", "Inventory Transfer");
-            params.put("sBranchNm", poGRider.getBranchName());
-            params.put("sBranchCd", poGRider.getBranchCode());
-            params.put("sDestinat", lsSQL);
+            params.put("sBranchNm", lsSQL);
+            params.put("sBranchCd", poTrans.getMaster(2));
+            params.put("sDestinat", poGRider.getBranchName());
             params.put("sTransNox", poTrans.getMaster("sTransNox").toString().substring(1));
             params.put("sReportDt", CommonUtils.xsDateMedium((Date) poTrans.getMaster("dTransact")));
             params.put("sPrintdBy", System.getProperty("user.name"));
