@@ -583,10 +583,25 @@ public class InvTransferRegController implements Initializable {
                 return;
             case "btnVoid":
                 if (!psOldRec.equals("")) {
-                    /*if(!poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)){
-                        ShowMessageFX.Warning("Trasaction may be CANCELLED/POSTED.", pxeModuleName, "Can't update processed transactions!!!");
-                        return;
-                    }*/
+                     if (!CommonUtils.xsDateShort(poGRider.getServerDate()).equalsIgnoreCase(CommonUtils.xsDateShort((Date)poTrans.getMaster(3))) ) {
+                        if (!poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)) {
+                            ShowMessageFX.Warning("Trasaction may be CANCELLED/POSTED.", pxeModuleName, "Can't update processed transactions!!!");
+                            return;
+                        }
+                    }
+
+                    if (poGRider.getUserLevel() <= UserRight.ENCODER) {
+                        JSONObject loJSON = showFXDialog.getApproval(poGRider);
+
+                        if (loJSON == null) {
+                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to post transaction");
+                        }
+
+                        if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
+                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
+                            return;
+                        }
+                    }
 
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to cancel this transaction?") == true) {
                         if (poTrans.cancelTransaction(psOldRec)) {
