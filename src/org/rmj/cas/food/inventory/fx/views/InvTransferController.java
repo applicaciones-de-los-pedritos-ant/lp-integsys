@@ -1452,7 +1452,7 @@ public class InvTransferController implements Initializable {
             jv.setVisible(true);
             jv.setAlwaysOnTop(true);
         } catch (JRException | UnsupportedEncodingException | SQLException ex) {
-            Logger.getLogger(InvTransferRegController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InvTransferController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return true;

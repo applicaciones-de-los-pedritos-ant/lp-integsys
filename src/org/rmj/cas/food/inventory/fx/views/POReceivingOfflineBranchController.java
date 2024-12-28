@@ -608,6 +608,7 @@ public class POReceivingOfflineBranchController implements Initializable {
         XMBranch loBranch = poTrans.GetBranch((String) poTrans.getMaster(2), true);
         if (loBranch != null) {
             txtField02.setText((String) loBranch.getMaster("sBranchNm"));
+            txtField51.setText((String) loBranch.getMaster("sBranchNm"));
         }
 
         txtField03.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getMaster("dTransact")));
@@ -629,7 +630,7 @@ public class POReceivingOfflineBranchController implements Initializable {
         JSONObject loSupplier = poTrans.GetSupplier((String) poTrans.getMaster(5), true);
         if (loSupplier != null) {
             txtField05.setText((String) loSupplier.get("sClientNm"));
-            txtField51.setText((String) loSupplier.get("sClientNm"));
+            
         }
 
         XMTerm loTerm = poTrans.GetTerm((String) poTrans.getMaster(8), true);
