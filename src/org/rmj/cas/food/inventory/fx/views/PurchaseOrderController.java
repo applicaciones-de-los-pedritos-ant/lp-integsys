@@ -324,13 +324,15 @@ public class PurchaseOrderController implements Initializable {
                 break;
             case "btnConfirm":
                 if (!psOldRec.equals("")) {
-                    if (CommonUtils.getConfiguration(poGRider, "TokenAprvl").equals("1")) {
+                    System.setProperty("tokenized.approval", CommonUtils.getConfiguration(poGRider, "TokenAprvl"));
+                    System.setProperty("tokenized.approval", "1");
+                    if (System.getProperty("tokenized.approval").equals("1")) {
                         if (!"0".equals((String) poTrans.getMaster("cTranStat"))) {
                             return;
                         }
 
                         //token type approval
-                        if (showFXDialog.getTokenApproval(poGRider, "CASys_DBF.PO_Master", psOldRec)) {
+                        if (showFXDialog.getTokenApproval(poGRider, "CASys_DBF_LP.PO_Master", psOldRec)) {
                             if (poTrans.closeTransaction(psOldRec, poGRider.getUserID(), "TOKENAPPROVL")) {
                                 ShowMessageFX.Information("Transaction was approved successfully.", pxeModuleName, "Approval successful!!!");
 
