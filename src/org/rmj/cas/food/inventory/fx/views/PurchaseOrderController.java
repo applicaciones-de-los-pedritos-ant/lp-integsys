@@ -185,8 +185,8 @@ public class PurchaseOrderController implements Initializable {
     }
 
     private void setDetailInfo() {
-        String lsStockIDx = (String) poTrans.getDetail(pnRow, "sStockIDx");
         if (pnRow >= 0) {
+        String lsStockIDx = (String) poTrans.getDetail(pnRow, "sStockIDx");
             if (!lsStockIDx.equals("")) {
                 Inventory loInventory = poTrans.GetInventory(lsStockIDx, true, false);
                 psBarCodex = (String) loInventory.getMaster("sBarCodex");
