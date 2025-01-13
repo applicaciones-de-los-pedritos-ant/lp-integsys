@@ -353,7 +353,7 @@ public class PurchaseOrderController implements Initializable {
                                 poTrans.ShowMessageFX();
                             }
                         } else {
-                            poTrans.ShowMessageFX();
+                            ShowMessageFX.Information("Transaction was not confirmed.", "Notice", null);
                         }
                     } else {
                         //user approval type
