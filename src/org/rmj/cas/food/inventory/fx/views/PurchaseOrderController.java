@@ -324,8 +324,16 @@ public class PurchaseOrderController implements Initializable {
                 break;
             case "btnConfirm":
                 if (!psOldRec.equals("")) {
+                    if (poGRider.getUserLevel() < UserRight.SUPERVISOR){
+                        ShowMessageFX.Information("Only supervisor account or above can use this feature.", "Notice", null);
+                        return;
+                    }
+                                        
                     System.setProperty("tokenized.approval", CommonUtils.getConfiguration(poGRider, "TokenAprvl"));
+                    
+                    //temporary hardcode config for tokenized approval.
                     System.setProperty("tokenized.approval", "1");
+                    
                     if (System.getProperty("tokenized.approval").equals("1")) {
                         if (!"0".equals((String) poTrans.getMaster("cTranStat"))) {
                             return;
@@ -357,11 +365,11 @@ public class PurchaseOrderController implements Initializable {
                         }
                     } else {
                         //user approval type
-                        if (poGRider.getUserLevel() < UserRight.MANAGER) {
+                        if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
                             JSONObject loJSON = showFXDialog.getApproval(poGRider);
 
                             if (loJSON != null) {
-                                if ((int) loJSON.get("nUserLevl") < UserRight.MANAGER) {
+                                if ((int) loJSON.get("nUserLevl") < UserRight.SUPERVISOR) {
                                     ShowMessageFX.Information("Only managerial accounts can approved transactions.", pxeModuleName, "Authentication failed!!!");
                                     return;
                                 }
