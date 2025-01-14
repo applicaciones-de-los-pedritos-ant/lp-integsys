@@ -324,13 +324,23 @@ public class PurchaseOrderController implements Initializable {
                 break;
             case "btnConfirm":
                 if (!psOldRec.equals("")) {
-                    if (CommonUtils.getConfiguration(poGRider, "TokenAprvl").equals("1")) {
+                    if (poGRider.getUserLevel() < UserRight.SUPERVISOR){
+                        ShowMessageFX.Information("Only supervisor account or above can use this feature.", "Notice", null);
+                        return;
+                    }
+                                        
+                    System.setProperty("tokenized.approval", CommonUtils.getConfiguration(poGRider, "TokenAprvl"));
+                    
+                    //temporary hardcode config for tokenized approval.
+                    System.setProperty("tokenized.approval", "1");
+                    
+                    if (System.getProperty("tokenized.approval").equals("1")) {
                         if (!"0".equals((String) poTrans.getMaster("cTranStat"))) {
                             return;
                         }
 
                         //token type approval
-                        if (showFXDialog.getTokenApproval(poGRider, "CASys_DBF.PO_Master", psOldRec)) {
+                        if (showFXDialog.getTokenApproval(poGRider, "CASys_DBF_LP.PO_Master", psOldRec)) {
                             if (poTrans.closeTransaction(psOldRec, poGRider.getUserID(), "TOKENAPPROVL")) {
                                 ShowMessageFX.Information("Transaction was approved successfully.", pxeModuleName, "Approval successful!!!");
 
@@ -351,15 +361,15 @@ public class PurchaseOrderController implements Initializable {
                                 poTrans.ShowMessageFX();
                             }
                         } else {
-                            poTrans.ShowMessageFX();
+                            ShowMessageFX.Information("Transaction was not confirmed.", "Notice", null);
                         }
                     } else {
                         //user approval type
-                        if (poGRider.getUserLevel() < UserRight.MANAGER) {
+                        if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
                             JSONObject loJSON = showFXDialog.getApproval(poGRider);
 
                             if (loJSON != null) {
-                                if ((int) loJSON.get("nUserLevl") < UserRight.MANAGER) {
+                                if ((int) loJSON.get("nUserLevl") < UserRight.SUPERVISOR) {
                                     ShowMessageFX.Information("Only managerial accounts can approved transactions.", pxeModuleName, "Authentication failed!!!");
                                     return;
                                 }
