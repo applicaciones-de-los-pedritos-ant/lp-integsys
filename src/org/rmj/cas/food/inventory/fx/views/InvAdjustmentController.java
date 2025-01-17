@@ -611,9 +611,9 @@ public class InvAdjustmentController implements Initializable {
                 return;
 
             case "btnSave":
-                if (!isEntryOk()) {
-                    return;
-                }
+//                if (!isEntryOk()) {
+//                    return;
+//                }
                 if (poTrans.saveTransaction()) {
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
                     clearFields();
@@ -953,17 +953,17 @@ public class InvAdjustmentController implements Initializable {
             setDetailInfo(pnRow);
         }
     }
-
-    public boolean isEntryOk() {
-        if (pnCrdtTotl != 0 && pnDbtTotl != 0) {
-            if (pnCrdtTotl != pnDbtTotl) {
-                ShowMessageFX.Warning(null, pxeModuleName, "Qty on credit and debit must be equal to QTY on hand!");
-                return false;
-            }
-        }
-
-        return true;
-    }
+// remove validation uneccessary
+//    public boolean isEntryOk() {
+//        if (pnCrdtTotl != 0 && pnDbtTotl != 0) {
+//            if (pnCrdtTotl != pnDbtTotl) {
+//                ShowMessageFX.Warning(null, pxeModuleName, "Qty on credit and debit must be equal to QTY on hand!");
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 
     private void setDetailInfo(int fnRow) {
         if (!poTrans.getDetail(fnRow, "sStockIDx").equals("")) {

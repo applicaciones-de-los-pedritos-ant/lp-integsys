@@ -534,8 +534,14 @@ public class InvTransferRegController implements Initializable {
 
             case "btnPrint":
                 if (!psOldRec.equals("")) {
+                    if (!poTrans.BrowseRecord(psOldRec, true)) {
+                        return;
+                    }
                     if (poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_CANCELLED)) {
                         ShowMessageFX.Warning("Trasaction may be CANCELLED.", pxeModuleName, "Can't print transactions!!!");
+                        return;
+                    } else if (poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)) {
+                        ShowMessageFX.Warning("Trasaction may be OPEN.", pxeModuleName, "Can't print transactions!!!");
                         return;
                     }
 
@@ -583,7 +589,7 @@ public class InvTransferRegController implements Initializable {
                 return;
             case "btnVoid":
                 if (!psOldRec.equals("")) {
-                     if (!CommonUtils.xsDateShort(poGRider.getServerDate()).equalsIgnoreCase(CommonUtils.xsDateShort((Date)poTrans.getMaster(3))) ) {
+                    if (!CommonUtils.xsDateShort(poGRider.getServerDate()).equalsIgnoreCase(CommonUtils.xsDateShort((Date) poTrans.getMaster(3)))) {
                         if (!poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)) {
                             ShowMessageFX.Warning("Trasaction may be CANCELLED/POSTED.", pxeModuleName, "Can't update processed transactions!!!");
                             return;

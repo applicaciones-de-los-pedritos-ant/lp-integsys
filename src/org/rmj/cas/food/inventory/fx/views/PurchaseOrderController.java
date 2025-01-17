@@ -185,8 +185,8 @@ public class PurchaseOrderController implements Initializable {
     }
 
     private void setDetailInfo() {
-        String lsStockIDx = (String) poTrans.getDetail(pnRow, "sStockIDx");
         if (pnRow >= 0) {
+            String lsStockIDx = (String) poTrans.getDetail(pnRow, "sStockIDx");
             if (!lsStockIDx.equals("")) {
                 Inventory loInventory = poTrans.GetInventory(lsStockIDx, true, false);
                 psBarCodex = (String) loInventory.getMaster("sBarCodex");
@@ -324,16 +324,16 @@ public class PurchaseOrderController implements Initializable {
                 break;
             case "btnConfirm":
                 if (!psOldRec.equals("")) {
-                    if (poGRider.getUserLevel() < UserRight.SUPERVISOR){
+                    if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
                         ShowMessageFX.Information("Only supervisor account or above can use this feature.", "Notice", null);
                         return;
                     }
-                                        
+
                     System.setProperty("tokenized.approval", CommonUtils.getConfiguration(poGRider, "TokenAprvl"));
-                    
+
                     //temporary hardcode config for tokenized approval.
                     System.setProperty("tokenized.approval", "1");
-                    
+
                     if (System.getProperty("tokenized.approval").equals("1")) {
                         if (!"0".equals((String) poTrans.getMaster("cTranStat"))) {
                             return;
@@ -922,7 +922,10 @@ public class PurchaseOrderController implements Initializable {
                     break;
                 case 5:
                     /*UnitPrice*/
-                    if (poGRider.getUserLevel() >= 2) {
+                    if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
+                        return;
+
+                    } else {
                         lnValue = 0;
                         try {
                             /*this must be numeric*/
@@ -937,8 +940,6 @@ public class PurchaseOrderController implements Initializable {
                             break;
                         }
                         poTrans.setDetail(pnRow, lnIndex, lnValue);
-                    } else {
-                        poTrans.setDetail(pnRow, lnIndex, 1.00);
                     }
                     break;
             }
@@ -1001,7 +1002,7 @@ public class PurchaseOrderController implements Initializable {
                     Date todayDate = poGRider.getServerDate();
                     LocalDate localToday = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                     if (localDate.isBefore(localToday.minusDays(3)) || localDate.isAfter(localToday.plusDays(3))) {
-                        if (poGRider.getUserLevel() <= UserRight.ENCODER) {
+                        if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
                             JSONObject loJSON = showFXDialog.getApproval(poGRider);
 
                             if (loJSON == null) {
