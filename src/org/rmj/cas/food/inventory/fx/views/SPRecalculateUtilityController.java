@@ -104,6 +104,8 @@ public class SPRecalculateUtilityController implements Initializable, IFXML {
                         
                         if (oTrans.recalculate()) {
                             ShowMessageFX.Information(oTrans.getMessage(), pxeModuleName, "Recalculate successful!");
+                        } else {
+                            ShowMessageFX.Warning(oTrans.getMessage(), pxeModuleName, "Unable to recalculate.");
                         }
                     }else{
                         if ((Date) oTrans.getMaster("dBegInvxx") == null){
