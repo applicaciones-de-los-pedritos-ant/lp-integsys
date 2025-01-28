@@ -172,16 +172,18 @@ public class PurchaseOrderRegController implements Initializable {
             txtDetail03.setText(psBarCodex);
             txtDetail80.setText(psDescript);
 
-            txtDetail04.setText(String.valueOf(poTrans.getDetail(pnRow, 4))); /*Quantity*/
-            
-            if (!pbisEncoder) {
-                txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, 5)));
-            } else {
-                txtDetail05.setText("0.00");
-            }
-            
-            txtDetail06.setText(String.valueOf(poTrans.getDetail(pnRow, 9))); /*Quantity*/
-        } else{
+            txtDetail04.setText(String.valueOf(poTrans.getDetail(pnRow, 4)));
+            /*Quantity*/
+
+//            if (!pbisEncoder) {
+            txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, 5)));
+//            } else {
+//                txtDetail05.setText("0.00");
+//            }
+
+            txtDetail06.setText(String.valueOf(poTrans.getDetail(pnRow, 9)));
+            /*Quantity*/
+        } else {
             txtDetail03.setText("");
             txtDetail80.setText("");
             txtDetail04.setText("0.00");
@@ -240,12 +242,12 @@ public class PurchaseOrderRegController implements Initializable {
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index05"));
         index06.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index06"));
 
-        if (!pbisEncoder) {
-            index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index07"));
+//        if (!pbisEncoder) {
+        index07.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index07"));
 
-        } else {
-            index07.setCellValueFactory(cellData -> new SimpleStringProperty("0.00"));
-        }
+//        } else {
+//            index07.setCellValueFactory(cellData -> new SimpleStringProperty("0.00"));
+//        }
         /*Set data source to table*/
         table.setItems(data);
     }
@@ -336,11 +338,11 @@ public class PurchaseOrderRegController implements Initializable {
 
 //        XMInventoryType loInv = poTrans.GetInventoryType((String)poTrans.getMaster(16), true);
 //        if (loInv != null) txtField16.setText((String) loInv.getMaster("sDescript"));
-        if (!pbisEncoder) {
-            Label09.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(9).toString()), "#,##0.00"));
-        } else {
-            Label09.setText("0.00");
-        }
+//        if (!pbisEncoder) {
+        Label09.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(9).toString()), "#,##0.00"));
+//        } else {
+//            Label09.setText("0.00");
+//        }
 
         loadDetail();
         setTranStat((String) poTrans.getMaster("cTranStat"));
@@ -387,7 +389,7 @@ public class PurchaseOrderRegController implements Initializable {
 
         setTranStat("-1");
         data.clear();
-        
+
         if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
             pbisEncoder = true;
         }
@@ -537,11 +539,11 @@ public class PurchaseOrderRegController implements Initializable {
             //pnRow = table.getSelectionModel().getSelectedIndex();           
             setDetailInfo();
         }
-        if (!pbisEncoder) {
-            Label09.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(9).toString()), "#,##0.00"));
-        } else {
-            Label09.setText("0.00");
-        }
+//        if (!pbisEncoder) {
+        Label09.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster(9).toString()), "#,##0.00"));
+//        } else {
+//            Label09.setText("0.00");
+//        }
     }
 
     public void setGRider(GRider foGRider) {
