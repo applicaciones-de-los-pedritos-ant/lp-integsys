@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="VBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="600.0" style="-fx-background-color: #B3B6B7; -fx-border-color: black;" stylesheets="@../../styles/child.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="VBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="820.0" style="-fx-background-color: #B3B6B7; -fx-border-color: black;" stylesheets="@../../styles/child.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="30.0" prefWidth="600.0" style="-fx-background-color: #000000;">
          <children>
@@ -60,7 +60,7 @@
                   <Font name="Arial" size="12.0" />
                </font>
             </Label>
-            <Separator layoutX="419.0" layoutY="3.0" orientation="VERTICAL" prefHeight="145.0" prefWidth="6.0" AnchorPane.bottomAnchor="9.0" AnchorPane.topAnchor="3.0" />
+            <Separator layoutX="502.0" layoutY="3.0" orientation="VERTICAL" prefHeight="145.0" prefWidth="6.0" AnchorPane.bottomAnchor="9.0" AnchorPane.topAnchor="3.0" />
             <TextField fx:id="txtField03" disable="true" editable="false" layoutX="110.0" layoutY="18.0" prefHeight="25.0" prefWidth="188.0">
                <font>
                   <Font name="Arial Bold" size="12.0" />
@@ -81,7 +81,7 @@
                   <Font name="Arial" size="12.0" />
                </font>
             </TextField>
-            <Pane layoutX="445.0" layoutY="5.0" opacity="0.5" prefHeight="104.0" prefWidth="133.0" style="-fx-border-color: black;">
+            <Pane layoutX="651.0" layoutY="8.0" opacity="0.5" prefHeight="104.0" prefWidth="133.0" style="-fx-border-color: black;">
                <children>
                   <StackPane prefHeight="104.0" prefWidth="133.0">
                      <children>
@@ -93,7 +93,7 @@
                      </children>
                   </StackPane>
                </children></Pane>
-            <Button fx:id="btnOk" layoutX="451.0" layoutY="113.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="122.0" text="OK">
+            <Button fx:id="btnOk" layoutX="651.0" layoutY="117.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="133.0" text="OK">
                <graphic>
                   <FontAwesomeIconView glyphName="CHECK" />
                </graphic>
@@ -101,21 +101,21 @@
                   <Font name="Arial" size="12.0" />
                </font>
             </Button>
-            <Separator layoutY="150.0" prefHeight="3.0" prefWidth="600.0" />
+            <Separator layoutY="150.0" prefHeight="3.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="270.0" prefWidth="600.0">
          <children>
-            <TableView fx:id="table" layoutX="10.0" layoutY="13.0" prefHeight="247.0" prefWidth="580.0">
+            <TableView fx:id="table" layoutX="10.0" layoutY="13.0" prefHeight="247.0" prefWidth="800.0">
               <columns>
                   <TableColumn fx:id="index01" prefWidth="40.0" text="No." />
-                <TableColumn fx:id="index02" editable="false" prefWidth="83.0" resizable="false" sortable="false" text="Date" />
-                  <TableColumn fx:id="index08" editable="false" prefWidth="160.0" resizable="false" sortable="false" text="Destination/Supplier" />
-                <TableColumn fx:id="index03" editable="false" prefWidth="120.0" resizable="false" sortable="false" text="Source" />
-                  <TableColumn fx:id="index04" editable="false" prefWidth="100.0" resizable="false" sortable="false" text="Source No." />
-                  <TableColumn fx:id="index05" editable="false" prefWidth="50.0" resizable="false" sortable="false" text="IN" />
-                  <TableColumn fx:id="index06" editable="false" prefWidth="48.0" resizable="false" sortable="false" text="OUT" />
-                  <TableColumn fx:id="index07" editable="false" prefWidth="49.0" resizable="false" sortable="false" text="QOH" />
+                <TableColumn fx:id="index02" editable="false" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" resizable="false" sortable="false" text="Date" />
+                  <TableColumn fx:id="index08" editable="false" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" resizable="false" sortable="false" text="Destination/Supplier" />
+                <TableColumn fx:id="index03" editable="false" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Source" />
+                  <TableColumn fx:id="index04" editable="false" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Source No." />
+                  <TableColumn fx:id="index05" editable="false" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" resizable="false" sortable="false" text="IN" />
+                  <TableColumn fx:id="index06" editable="false" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" resizable="false" sortable="false" text="OUT" />
+                  <TableColumn fx:id="index07" editable="false" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" resizable="false" sortable="false" text="QOH" />
               </columns>
             </TableView>
          </children>
