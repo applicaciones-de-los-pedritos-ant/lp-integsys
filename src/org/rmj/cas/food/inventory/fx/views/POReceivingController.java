@@ -113,6 +113,8 @@ public class POReceivingController implements Initializable {
     @FXML
     private TextField txtDetail07;
     @FXML
+    private TextField txtDetail11;
+    @FXML
     private FontAwesomeIconView glyphExit;
     @FXML
     private Button btnBrowse;
@@ -183,6 +185,7 @@ public class POReceivingController implements Initializable {
         txtDetail08.focusedProperty().addListener(txtDetail_Focus);
         txtDetail09.focusedProperty().addListener(txtDetail_Focus);
         txtDetail10.focusedProperty().addListener(txtDetail_Focus);
+        txtDetail11.focusedProperty().addListener(txtDetail_Focus);
         txtDetail80.focusedProperty().addListener(txtDetail_Focus);
 
         /*Add keypress event for field with search*/
@@ -208,6 +211,7 @@ public class POReceivingController implements Initializable {
         txtDetail08.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail09.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail10.setOnKeyPressed(this::txtDetail_KeyPressed);
+        txtDetail11.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail80.setOnKeyPressed(this::txtDetail_KeyPressed);
 
         pnEditMode = EditMode.UNKNOWN;
@@ -247,6 +251,8 @@ public class POReceivingController implements Initializable {
             txtDetail04.setText(psBarCodex);
             txtDetail80.setText(psDescript);
             txtDetail07.setText(String.valueOf(poTrans.getDetail(pnRow, "nQuantity")));
+            
+            txtDetail11.setText(String.valueOf(poTrans.getDetail(pnRow, "nOrdrQtyx")));
 
             if (!pbisEncoder) {
                 txtDetail08.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(pnRow, 8).toString()), "0.00"));
@@ -323,9 +329,10 @@ public class POReceivingController implements Initializable {
         TableColumn index06 = new TableColumn("Unit");
         TableColumn index07 = new TableColumn("Superseded");
         TableColumn index08 = new TableColumn("Unit Type");
-        TableColumn index09 = new TableColumn("Qty");
-        TableColumn index10 = new TableColumn("Unit Price");
-        TableColumn index11 = new TableColumn("Freight");
+        TableColumn index09 = new TableColumn("Unit Price");
+        TableColumn index10 = new TableColumn("Order Qty");
+        TableColumn index11 = new TableColumn("Receive Qty");
+//        TableColumn index11 = new TableColumn("Freight");
         TableColumn index12 = new TableColumn("Total");
 
         index01.setPrefWidth(28);
@@ -341,11 +348,11 @@ public class POReceivingController implements Initializable {
         index08.setStyle("-fx-alignment: CENTER;");
         index09.setPrefWidth(60);
         index09.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index10.setPrefWidth(75);
+        index10.setPrefWidth(85);
         index10.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index11.setPrefWidth(60);
+        index11.setPrefWidth(85);
         index11.setStyle("-fx-alignment: CENTER-RIGHT;");
-        index12.setPrefWidth(75);
+        index12.setPrefWidth(85);
         index12.setStyle("-fx-alignment: CENTER-RIGHT;");
 
         index01.setSortable(false);
@@ -826,7 +833,7 @@ public class POReceivingController implements Initializable {
             switch (lnIndex) {
                 case 3:
                     if (event.getCode() == F3) {
-                        if (poTrans.SearchDetail(pnRow, 3, lsValue, false, false));
+                        if (poTrans.SearchDetail(pnRow, 3, lsValue, false, true));
 
                     }
                     break;
@@ -897,9 +904,10 @@ public class POReceivingController implements Initializable {
                         psMeasurNm,
                         lsOldCode,
                         cUnitType.get(Integer.parseInt((String) poTrans.getDetail(lnCtr, "cUnitType"))),
-                        String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
                         CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()), "#,##0.00"),
-                        CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
+                        CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nOrdrQtyx").toString()), "#,##0.00"),
+                        String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
+                        //                        CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
                         CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
                                 * Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()))
                                 + Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00")));
@@ -912,9 +920,10 @@ public class POReceivingController implements Initializable {
                         (String) poTrans.getDetail(lnCtr, 102),
                         "",
                         cUnitType.get(Integer.parseInt((String) poTrans.getDetail(lnCtr, "cUnitType"))),
-                        String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
                         CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()), "#,##0.00"),
-                        CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
+                        CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nOrdrQtyx").toString()), "#,##0.00"),
+                        String.valueOf(poTrans.getDetail(lnCtr, "nQuantity")),
+                        //                        CommonUtils.NumberFormat(Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00"),
                         CommonUtils.NumberFormat(((Double.valueOf(poTrans.getDetail(lnCtr, "nQuantity").toString()))
                                 * Double.valueOf(poTrans.getDetail(lnCtr, "nUnitPrce").toString()))
                                 + Double.valueOf(poTrans.getDetail(lnCtr, "nFreightx").toString()), "#,##0.00")));
