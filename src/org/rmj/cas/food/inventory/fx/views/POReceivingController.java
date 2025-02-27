@@ -251,7 +251,7 @@ public class POReceivingController implements Initializable {
             txtDetail04.setText(psBarCodex);
             txtDetail80.setText(psDescript);
             txtDetail07.setText(String.valueOf(poTrans.getDetail(pnRow, "nQuantity")));
-            
+
             txtDetail11.setText(String.valueOf(poTrans.getDetail(pnRow, "nOrdrQtyx")));
 
             if (!pbisEncoder) {
@@ -590,6 +590,7 @@ public class POReceivingController implements Initializable {
                 }
                 if (ShowMessageFX.OkayCancel(null, pxeModuleName, "Do you want to remove this item?") == true) {
                     poTrans.deleteDetail(lnIndex);
+                    poTrans.addDetail();
                     loadDetail();
                 }
                 break;
