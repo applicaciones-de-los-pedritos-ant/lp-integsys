@@ -838,7 +838,7 @@ public class POReceivingOfflineBranchController implements Initializable {
             switch (lnIndex) {
                 case 3:
                     if (event.getCode() == F3) {
-                        if (poTrans.SearchDetail(pnRow, 3, lsValue, false, false));
+                        if (poTrans.SearchDetail(pnRow, 3, lsValue, false, true));
 
                     }
                     break;
