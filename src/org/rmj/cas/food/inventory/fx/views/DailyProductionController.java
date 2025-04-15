@@ -5,7 +5,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -36,7 +35,6 @@ import static javafx.scene.input.KeyCode.F3;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.StringConverter;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.appdriver.constants.TransactionStatus;
 import org.rmj.appdriver.GRider;
@@ -46,7 +44,6 @@ import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.inventory.production.base.DailyProduction;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
-import org.rmj.cas.inventory.production.base.ProductionRequest;
 
 public class DailyProductionController implements Initializable {
 
