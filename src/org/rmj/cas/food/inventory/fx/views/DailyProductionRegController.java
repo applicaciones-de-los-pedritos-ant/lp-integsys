@@ -9,13 +9,11 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.ResourceBundle;
-import javafx.beans.property.ReadOnlyBooleanPropertyBase;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -100,7 +98,7 @@ public class DailyProductionRegController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new DailyProduction(poGRider, poGRider.getBranchCode(), false);
-        poTrans.setTranStat(1230);
+        poTrans.setTranStat(12340);
 
         btnVoid.setOnAction(this::cmdButton_Click);
         btnPrint.setOnAction(this::cmdButton_Click);
@@ -413,7 +411,7 @@ public class DailyProductionRegController implements Initializable {
         pnRow = -1;
         pnRawdata = -1;
         pnOldRow = -1;
-        pnIndex = 51;
+        pnIndex = 50;
         pnRawdata = -1;
         setTranStat("-1");
         pbFound = false;
