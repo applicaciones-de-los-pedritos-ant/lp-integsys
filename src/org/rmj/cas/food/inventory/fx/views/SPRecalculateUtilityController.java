@@ -108,11 +108,11 @@ public class SPRecalculateUtilityController implements Initializable, IFXML {
                             ShowMessageFX.Warning(oTrans.getMessage(), pxeModuleName, "Unable to recalculate.");
                         }
                     }else{
-                        if ((Date) oTrans.getMaster("dBegInvxx") == null){
-                            ShowMessageFX.Warning(null, pxeModuleName, "Beginning Inventory Date cannot be empty.");
-                            txtField05.requestFocus();
-                            return;
-                        }
+//                        if ((Date) oTrans.getMaster("dBegInvxx") == null){
+//                            ShowMessageFX.Warning(null, pxeModuleName, "Beginning Inventory Date cannot be empty.");
+//                            txtField05.requestFocus();
+//                            return;
+//                        }
                         if (oTrans.recalculate((String) oTrans.getMaster("sStockIDx"), false)) {
                             ShowMessageFX.Information(oTrans.getMessage(), pxeModuleName, "Recalculate successful!");
                             oTrans.SearchStock((String) oTrans.getMaster("sStockIDx"),"",false,true);
