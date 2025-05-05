@@ -660,7 +660,7 @@ public class InvTransferController implements Initializable {
 
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
                         if ("0".equals((String) poTrans.getMaster("cTranStat"))) {
-                            if (poTrans.closeTransaction(psOldRec)) {
+//                            if (poTrans.closeTransaction(psOldRec)) {
                                 if (printTransfer()) {
                                     clearFields();
                                     initGrid();
@@ -669,9 +669,9 @@ public class InvTransferController implements Initializable {
                                 } else {
                                     return;
                                 }
-                            } else {
-                                ShowMessageFX.Warning(null, pxeModuleName, "Unable to confirm transaction.");
-                            }
+//                            } else {
+//                                ShowMessageFX.Warning(null, pxeModuleName, "Unable to confirm transaction.");
+//                            }
                         }
                     }
 

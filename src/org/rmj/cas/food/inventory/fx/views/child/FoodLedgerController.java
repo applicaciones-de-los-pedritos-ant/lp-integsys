@@ -30,8 +30,9 @@ public class FoodLedgerController implements Initializable {
     @FXML private Button btnExit;
     @FXML private TextField txtField03;
     @FXML private TextField txtField80;
-    @FXML private TextField txtField82;
     @FXML private TextField txtField81;
+    @FXML private TextField txtField82;
+    @FXML private TextField txtField83;
     @FXML private Button btnOk;
     @FXML private TableView table;
     @FXML private VBox VBox;
@@ -53,6 +54,7 @@ public class FoodLedgerController implements Initializable {
         txtField80.setText(sDescript);
         txtField81.setText(sBriefDes);
         txtField82.setText(sBrandNme);
+        txtField83.setText(sBegInvDate);
         initGridLedger();
         loadDetail2Grid();
     } 
@@ -129,6 +131,7 @@ private ObservableList<TableModel> data = FXCollections.observableArrayList();
     public void setDescript(String fsDescript){sDescript = fsDescript;}
     public void setBriefDes(String fsBriefDes){sBriefDes = fsBriefDes;}
     public void setBrandNme(String fsBrandNme){sBrandNme = fsBrandNme;}
+    public void setBegInvDate(String fsBegInvDate){sBegInvDate = fsBegInvDate;}
     
     public String getBarCodex(){return sBarCodex;}
     public String getDescript(){return sDescript;}
@@ -145,5 +148,6 @@ private ObservableList<TableModel> data = FXCollections.observableArrayList();
     private static String sBarCodex = "";
     private static String sDescript = "";
     private static String sBrandNme = "";
+    private static String sBegInvDate = "";
     private ResultSet poRS = null;
 }
