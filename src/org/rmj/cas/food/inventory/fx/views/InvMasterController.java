@@ -428,6 +428,7 @@ public class InvMasterController implements Initializable {
                         foodLedger.setBarCodex((String) txtField02.getText());
                         foodLedger.setDescript((String) txtField03.getText());
                         foodLedger.setBriefDes((String) txtField04.getText());
+                        foodLedger.setBegInvDate((String) txtOther06.getText());
                         foodLedger.setBrandNme("");
 
                         parent = fxmlLoader.load();
