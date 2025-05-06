@@ -574,6 +574,10 @@ public class InventoryController implements Initializable {
 //                        txtField12.setText(psColor);
 //                     break;
                     case 13:
+                        psMeasurID = poRecord.SearchMaster(pnIndex, "%", false);
+                        txtField13.setText(psMeasurID);
+                        break;
+                    case 14:
                         psInvType = poRecord.SearchMaster(pnIndex, "%", false);
                         txtField13.setText(psInvType);
                         break;
