@@ -794,7 +794,7 @@ public class InventoryController implements Initializable {
         txtField52.setDisable(true); //!lbShow
         txtField53.setDisable(!lbShow); //!lbShow
 
-        btnAuto.setDisable(!lbShow);
+//        btnAuto.setDisable(!lbShow);
         cbField21.setDisable(!lbShow); //!lbShow
         cbField22.setDisable(!lbShow);
         cbField23.setDisable(!lbShow);
@@ -803,9 +803,10 @@ public class InventoryController implements Initializable {
         cbField30.setDisable(true);
         cbField31.setDisable(!lbShow);
 
-        txtField02.setEditable(txtField02.getText().trim().equals(""));
-        txtField03.setEditable(txtField03.getText().trim().equals(""));
-        txtField05.setEditable(txtField05.getText().trim().equals(""));
+        txtField02.setEditable(fnValue == EditMode.ADDNEW );
+        txtField03.setEditable(fnValue == EditMode.ADDNEW );
+        txtField05.setEditable(fnValue == EditMode.ADDNEW );
+        btnAuto.setDisable(fnValue != EditMode.ADDNEW );
 //        txtField25.setEditable(txtField25.getText().trim().equals(""));
 
         //temporarily disable categ 2 and 3
@@ -1127,7 +1128,7 @@ public class InventoryController implements Initializable {
                         txtField.setText("");
                         poRecord.setMaster(lnIndex, "");
                     } else {
-                        txtField.setText(psInvType);
+                        txtField.setText(psMeasurID);
                     }
                     return;
                 case 14:
@@ -1135,7 +1136,7 @@ public class InventoryController implements Initializable {
                         txtField.setText("");
                         poRecord.setMaster(lnIndex, "");
                     } else {
-                        txtField.setText(psMeasurID);
+                        txtField.setText(psInvType);
                     }
                     return;
                 case 15:
