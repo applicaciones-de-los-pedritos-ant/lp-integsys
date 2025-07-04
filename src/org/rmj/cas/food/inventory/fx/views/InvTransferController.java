@@ -563,6 +563,15 @@ public class InvTransferController implements Initializable {
 
         switch (event.getCode()) {
             case ENTER:
+                if (lnIndex == 3) {
+                    /*Barcode Search*/
+                    if (poTrans.SearchBarcode( 3, lsValue)) {
+                       loadDetail();
+                    }
+                    txtDetail.requestFocus();
+                    return;
+                }
+                
             case DOWN:
                 CommonUtils.SetNextFocus(txtDetail);
                 break;
@@ -661,14 +670,14 @@ public class InvTransferController implements Initializable {
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
                         if ("0".equals((String) poTrans.getMaster("cTranStat"))) {
 //                            if (poTrans.closeTransaction(psOldRec)) {
-                                if (printTransfer()) {
-                                    clearFields();
-                                    initGrid();
-                                    pnEditMode = EditMode.UNKNOWN;
-                                    initButton(pnEditMode);
-                                } else {
-                                    return;
-                                }
+                            if (printTransfer()) {
+                                clearFields();
+                                initGrid();
+                                pnEditMode = EditMode.UNKNOWN;
+                                initButton(pnEditMode);
+                            } else {
+                                return;
+                            }
 //                            } else {
 //                                ShowMessageFX.Warning(null, pxeModuleName, "Unable to confirm transaction.");
 //                            }
