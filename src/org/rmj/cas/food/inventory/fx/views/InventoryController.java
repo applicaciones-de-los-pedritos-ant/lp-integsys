@@ -17,7 +17,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -803,10 +802,10 @@ public class InventoryController implements Initializable {
         cbField30.setDisable(true);
         cbField31.setDisable(!lbShow);
 
-        txtField02.setEditable(fnValue == EditMode.ADDNEW );
-        txtField03.setEditable(fnValue == EditMode.ADDNEW );
-        txtField05.setEditable(fnValue == EditMode.ADDNEW );
-        btnAuto.setDisable(fnValue != EditMode.ADDNEW );
+        txtField02.setEditable(fnValue == EditMode.ADDNEW);
+        txtField03.setEditable(fnValue == EditMode.ADDNEW);
+        txtField05.setEditable(fnValue == EditMode.ADDNEW);
+        btnAuto.setDisable(fnValue != EditMode.ADDNEW);
 //        txtField25.setEditable(txtField25.getText().trim().equals(""));
 
         //temporarily disable categ 2 and 3

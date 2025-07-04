@@ -297,16 +297,16 @@ public class MDIMainController implements Initializable {
             mnuBIRrep.setVisible(false);
             mnuResetPOS.setVisible(false);
 
-            mnuDailyProduction.setVisible(poGRider.getBranchCode().contains("P"));
-            mnu_inventoryCount.setVisible(poGRider.getBranchCode().contains("P"));
-            menu_TransferPosting.setVisible(poGRider.getBranchCode().contains("P"));
-            mnuWasteInventory.setVisible(poGRider.getBranchCode().contains("P"));
-
-            mnu_InvDailyProdReg.setVisible(poGRider.getBranchCode().contains("P"));
-            mnu_InvTransReg.setVisible(poGRider.getBranchCode().contains("P"));
-            mnu_InvTransDiscrepancyReg.setVisible(poGRider.getBranchCode().contains("P"));
-            mnu_InvWasteReg.setVisible(poGRider.getBranchCode().contains("P"));
-            mnu_InvCountReg.setVisible(poGRider.getBranchCode().contains("P"));
+//            mnuDailyProduction.setVisible(poGRider.getBranchCode().contains("P"));
+//            mnu_inventoryCount.setVisible(poGRider.getBranchCode().contains("P"));
+//            menu_TransferPosting.setVisible(poGRider.getBranchCode().contains("P"));
+//            mnuWasteInventory.setVisible(poGRider.getBranchCode().contains("P"));
+//
+//            mnu_InvDailyProdReg.setVisible(poGRider.getBranchCode().contains("P"));
+//            mnu_InvTransReg.setVisible(poGRider.getBranchCode().contains("P"));
+//            mnu_InvTransDiscrepancyReg.setVisible(poGRider.getBranchCode().contains("P"));
+//            mnu_InvWasteReg.setVisible(poGRider.getBranchCode().contains("P"));
+//            mnu_InvCountReg.setVisible(poGRider.getBranchCode().contains("P"));
             menu_TransferDiscrepancyPosting.setVisible(poGRider.getBranchCode().contains("PHO1"));
 
         }
