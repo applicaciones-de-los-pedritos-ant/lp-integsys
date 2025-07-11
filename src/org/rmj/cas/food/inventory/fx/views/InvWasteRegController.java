@@ -323,6 +323,9 @@ public class InvWasteRegController implements Initializable {
                 break;
 
             case "btnBrowse":
+                if (pnIndex < 50) {
+                    pnIndex = 50;
+                }
                 switch (pnIndex) {
                     case 50:
                         /*sTransNox*/
@@ -342,13 +345,21 @@ public class InvWasteRegController implements Initializable {
                     case 51:
                         /*dTransact*/
                         if (CommonUtils.isDate(txtField51.getText(), pxeDateFormat)) {
-                            String lsValue = SQLUtil.dateFormat(SQLUtil.toDate(txtField51.getText(), pxeDateFormat), "yyyy-MM-dd");
-                            if (poTrans.BrowseRecord(lsValue, false) == true) {
+                            String ldValue = SQLUtil.dateFormat(SQLUtil.toDate(txtField51.getText(), pxeDateFormat), "yyyy-MM-dd");
+                            if (poTrans.BrowseRecord(ldValue, false) == true) {
                                 loadRecord();
                                 pnEditMode = poTrans.getEditMode();
                                 break;
                             }
+                        } else {
+                            if (poTrans.BrowseRecord("%", false) == true) {
+                                loadRecord();
+                                pnEditMode = poTrans.getEditMode();
+                                break;
+                            }
+
                         }
+
                         if (!txtField51.getText().equals(psdTransact)) {
                             clearFields();
                             pnEditMode = EditMode.UNKNOWN;

@@ -355,7 +355,7 @@ public class InvWasteController implements Initializable {
                     }
                     break;
                 case 51:
-                    
+
                     if (CommonUtils.isDate(txtField.getText(), pxeDateFormat)) {
                         txtField.setText(SQLUtil.dateFormat(SQLUtil.toDate(txtField.getText(), pxeDateFormat), pxeDateFormat));
                     } else {
@@ -569,6 +569,9 @@ public class InvWasteController implements Initializable {
                     return;
                 }
             case "btnBrowse":
+                if (pnIndex < 50) {
+                    pnIndex = 50;
+                }
                 switch (pnIndex) {
                     case 50:
                         /*sTransNox*/
@@ -594,6 +597,13 @@ public class InvWasteController implements Initializable {
                                 pnEditMode = poTrans.getEditMode();
                                 break;
                             }
+                        } else {
+                            if (poTrans.BrowseRecord("%", false) == true) {
+                                loadRecord();
+                                pnEditMode = poTrans.getEditMode();
+                                break;
+                            }
+
                         }
 
                         if (!txtField51.getText().equals(psdTransact)) {
