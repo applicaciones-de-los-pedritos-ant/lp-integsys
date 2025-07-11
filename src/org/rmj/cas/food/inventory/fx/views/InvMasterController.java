@@ -664,6 +664,11 @@ public class InvMasterController implements Initializable {
 
       lbCheck = poRecord.getInventory("cRecdStat").toString().equals("1");
       Check26.selectedProperty().setValue(lbCheck);
+        if (!lbCheck) {
+            if (poRecord.getEditMode() == EditMode.READY) {
+                ShowMessageFX.Warning("Disabled Inventory.", pxeModuleName, "Please Activate the Inventory to use in Invetory Transaction's ");
+            }
+        }
       
        if (poRecord.getInventory("cNoExpiry") == null) {
            lbCheck=false; 

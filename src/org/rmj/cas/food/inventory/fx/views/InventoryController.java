@@ -952,6 +952,7 @@ public class InventoryController implements Initializable {
             btnActivate.setText("Deactivate");
         } else {
             btnActivate.setText("Activate");
+            ShowMessageFX.Warning("Disabled Inventory.", pxeModuleName, "Please Activate the Inventory to use in Invetory Transaction's ");
         }
 
         loadDetail2Grid();
@@ -1038,7 +1039,7 @@ public class InventoryController implements Initializable {
             switch (lnIndex) {
                 case 2:
                     /*sBarCodex*/
-                    if (lsValue.length() > 17) {
+                    if (lsValue.length() > 20) {
                         ShowMessageFX.Warning(null, pxeModuleName, "Max length for 'Barcode' exceeds the maximum limit.");
                         txtField.requestFocus();
                         return;
