@@ -1079,6 +1079,7 @@ public class DailyProductionController implements Initializable {
                     txtDetailOther.requestFocus();
                     return;
                 }
+                CommonUtils.SetNextFocus(txtDetailOther);
                 return;
             case DOWN:
                 CommonUtils.SetNextFocus(txtDetailOther);

@@ -303,11 +303,6 @@
                                                             <Font name="System Bold" size="12.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtDetailOther04" prefHeight="25.0" prefWidth="149.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
-                                                         <font>
-                                                            <Font size="10.0" />
-                                                         </font>
-                                                      </TextField>
                                                       <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="69.0" text="Description" GridPane.rowIndex="2" />
                                                       <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="69.0" text="Barcode" GridPane.rowIndex="3" />
                                                       <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="103.0" text="Exp. Date" GridPane.columnIndex="3" GridPane.rowIndex="3">
@@ -318,26 +313,6 @@
                                                             <Font name="System Bold" size="12.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="txtDetailOther01" prefHeight="25.0" prefWidth="329.0" promptText="Press F3 to search" stylesheets="@../styles/Tables.css" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
-                                                         <font>
-                                                            <Font size="11.25" />
-                                                         </font>
-                                                      </TextField>
-                                                      <TextField fx:id="txtDetailOther02" prefHeight="25.0" prefWidth="149.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                                         <font>
-                                                            <Font name="Monospaced Regular" size="11.2" />
-                                                         </font>
-                                                      </TextField>
-                                                      <TextField fx:id="txtDetailOther06" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="98.0" GridPane.columnIndex="4" GridPane.rowIndex="5">
-                                                         <font>
-                                                            <Font size="10.0" />
-                                                         </font>
-                                                      </TextField>
-                                                      <TextField fx:id="txtDetailOther05" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="98.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                                                         <font>
-                                                            <Font size="10.0" />
-                                                         </font>
-                                                      </TextField>
                                                       <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="103.0" text="Required Qty." GridPane.columnIndex="3" GridPane.rowIndex="4">
                                                          <padding>
                                                             <Insets right="10.0" />
@@ -355,7 +330,32 @@
                                                          </font>
                                                       </Label>
                                                       <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="69.0" text="Measure" GridPane.rowIndex="4" />
+                                                      <TextField fx:id="txtDetailOther01" prefHeight="25.0" prefWidth="329.0" promptText="Press F3 to search" stylesheets="@../styles/Tables.css" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+                                                         <font>
+                                                            <Font size="11.25" />
+                                                         </font>
+                                                      </TextField>
+                                                      <TextField fx:id="txtDetailOther02" prefHeight="25.0" prefWidth="149.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                         <font>
+                                                            <Font name="Monospaced Regular" size="11.2" />
+                                                         </font>
+                                                      </TextField>
                                                       <TextField fx:id="txtDetailOther03" prefHeight="25.0" prefWidth="98.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                         <font>
+                                                            <Font size="10.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <TextField fx:id="txtDetailOther04" prefHeight="25.0" prefWidth="149.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                                         <font>
+                                                            <Font size="10.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <TextField fx:id="txtDetailOther05" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="98.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                                         <font>
+                                                            <Font size="10.0" />
+                                                         </font>
+                                                      </TextField>
+                                                      <TextField fx:id="txtDetailOther06" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="98.0" GridPane.columnIndex="4" GridPane.rowIndex="5">
                                                          <font>
                                                             <Font size="10.0" />
                                                          </font>

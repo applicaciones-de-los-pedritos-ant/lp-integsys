@@ -565,13 +565,16 @@ public class InvTransferController implements Initializable {
             case ENTER:
                 if (lnIndex == 3) {
                     /*Barcode Search*/
-                    if (poTrans.SearchBarcode( 3, lsValue)) {
-                       loadDetail();
+                    if (poTrans.SearchBarcode(3, lsValue)) {
+                        loadDetail();
                     }
+                    CommonUtils.SetNextFocus(txtDetail);
                     txtDetail.requestFocus();
                     return;
                 }
-                
+                CommonUtils.SetNextFocus(txtDetail);
+                return;
+
             case DOWN:
                 CommonUtils.SetNextFocus(txtDetail);
                 break;
