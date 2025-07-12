@@ -255,7 +255,7 @@
                                                 <Font name="System Bold" size="12.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtDetail08" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="25.0" prefWidth="98.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                          <TextField fx:id="txtDetail08" alignment="CENTER_RIGHT" editable="false" prefHeight="25.0" prefWidth="98.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                              <font>
                                                 <Font size="10.0" />
                                              </font>

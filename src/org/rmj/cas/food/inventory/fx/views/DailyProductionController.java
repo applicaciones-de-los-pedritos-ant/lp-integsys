@@ -536,7 +536,7 @@ public class DailyProductionController implements Initializable {
                     poTrans.setInv(pnRawdata, "nQtyUsedx", x);
                     break;
             }
-            pnRawdata= table1.getSelectionModel().getSelectedIndex();
+            pnRawdata = table1.getSelectionModel().getSelectedIndex();
             pnIndex = lnIndex;
         } else {
             switch (lnIndex) {
@@ -697,7 +697,7 @@ public class DailyProductionController implements Initializable {
                 if (lsSourceNo != null && !lsSourceNo.isEmpty()) {
                     pbwSource = true;
                     btnDel.setDisable(pbwSource);
-                    txtDetail08.setDisable(pbwSource);
+                    txtDetail08.setDisable(!pbwSource);
                 }
                 break;
             case "btnPrint":
@@ -825,8 +825,7 @@ public class DailyProductionController implements Initializable {
         txtDetail05.setText("0.0");
         txtDetail80.setText("");
         txtDetail06.setText(FoodInventoryFX.xsRequestFormat((Date) java.sql.Date.valueOf(LocalDate.now())));
-        
-        
+
         txtDetailOther01.setText("");
         txtDetailOther02.setText("");
         txtDetailOther03.setText("");
@@ -902,7 +901,7 @@ public class DailyProductionController implements Initializable {
         }
 
         btnDel.setDisable(pbwSource);
-        txtDetail08.setDisable(pbwSource);
+        txtDetail08.setDisable(!pbwSource);
     }
 
     private void txtField_KeyPressed(KeyEvent event) {
@@ -954,6 +953,7 @@ public class DailyProductionController implements Initializable {
 
         switch (event.getCode()) {
             case ENTER:
+                CommonUtils.SetNextFocus(txtField);
             case DOWN:
                 CommonUtils.SetNextFocus(txtField);
                 break;
@@ -1020,6 +1020,7 @@ public class DailyProductionController implements Initializable {
                     txtDetail.requestFocus();
                     return;
                 }
+                CommonUtils.SetNextFocus(txtDetail);
                 return;
             case DOWN:
                 CommonUtils.SetNextFocus(txtDetail);
@@ -1033,14 +1034,11 @@ public class DailyProductionController implements Initializable {
         TextField txtDetailOther = (TextField) event.getSource();
         int lnIndex = Integer.parseInt(txtDetailOther.getId().substring(14, 16));
         String lsValue = txtDetailOther.getText();
-        if (pbwSource) {
-            return;
-
-        }
+        
         if (event.getCode() == F3) {
             switch (lnIndex) {
-                case 1:
-                    if (poTrans.SearchInv(pnRawdata, 3, lsValue, false, false)) {
+                case 1://description
+                    if (poTrans.SearchInv(pnRawdata, 3, lsValue, true, false)) {
                         txtDetailOther02.setText(poTrans.getInvOthers(pnRawdata, "sBarCodex").toString());
                         txtDetailOther01.setText(poTrans.getInvOthers(pnRawdata, "sDescript").toString());
                         txtDetailOther03.setText(poTrans.getInvOthers(pnRawdata, "sMeasurNm").toString());
@@ -1053,7 +1051,7 @@ public class DailyProductionController implements Initializable {
 
                     break;
 
-                case 2:
+                case 2://barcode
                     if (poTrans.SearchInv(pnRawdata, 3, lsValue, true, true)) {
                         txtDetailOther02.setText(poTrans.getInvOthers(pnRawdata, "sBarCodex").toString());
                         txtDetailOther01.setText(poTrans.getInvOthers(pnRawdata, "sDescript").toString());
@@ -1143,11 +1141,20 @@ public class DailyProductionController implements Initializable {
 
         /*FOCUS ON FIRST ROW*/
         if (!data.isEmpty()) {
-            table.getSelectionModel().select(lnRow - 1);
-            table.getFocusModel().focus(lnRow - 1);
+            if (Double.parseDouble(data.get(pnRow).getIndex05()) > 0.0
+                    && Double.parseDouble(data.get(pnRow).getIndex07()) > 0.0
+                    || data.size() == 1) {
 
+                table.getSelectionModel().select(lnCtr -1);
+                table.getFocusModel().focus(lnCtr -1 );
+            } else {
+
+                table.getSelectionModel().select(pnRow);
+                table.getFocusModel().focus(pnRow);
+            }
             pnRow = table.getSelectionModel().getSelectedIndex();
             setDetailInfo(pnRow);
+
         }
     }
 
@@ -1174,12 +1181,20 @@ public class DailyProductionController implements Initializable {
 
         /*FOCUS ON FIRST ROW*/
         if (!rawData.isEmpty()) {
-            table1.getSelectionModel().select(lnRow - 1);
-            table1.getFocusModel().focus(lnRow - 1);
-            
-            
+            if (Double.parseDouble(rawData.get(pnRawdata).getIndex06()) > 0.0
+                    && Double.parseDouble(rawData.get(pnRawdata).getIndex07())> 0.0
+                    || rawData.size() == 1) {
+
+                table1.getSelectionModel().select(lnRow - 1);
+                table1.getFocusModel().focus(lnRow - 1);
+            } else {
+
+                table1.getSelectionModel().select(pnRawdata);
+                table1.getFocusModel().focus(pnRawdata);
+            }
             pnRawdata = table1.getSelectionModel().getSelectedIndex();
             setDetailOther(pnRawdata);
+
         }
     }
 
@@ -1203,7 +1218,7 @@ public class DailyProductionController implements Initializable {
             txtDetail80.setText("");
         }
     }
-    
+
     private void setDetailOther(int fnRow) {
         if (fnRow == -1) {
             return;
@@ -1215,7 +1230,7 @@ public class DailyProductionController implements Initializable {
             txtDetailOther04.setText(SQLUtil.dateFormat(poTrans.getInv(pnRawdata, "dExpiryDt"), pxeDateFormat));
             txtDetailOther05.setText(String.valueOf(poTrans.getInv(pnRawdata, "nQtyReqrd")));
             txtDetailOther06.setText(String.valueOf(poTrans.getInv(pnRawdata, "nQtyUsedx")));
-            } else {
+        } else {
             txtDetailOther01.setText("");
             txtDetailOther02.setText("");
             txtDetailOther03.setText("");
@@ -1414,9 +1429,12 @@ public class DailyProductionController implements Initializable {
         public void DetailRetreive(int fnIndex) {
             switch (fnIndex) {
                 case 4:
+                case 5:
                     txtDetailOther05.setText(String.valueOf(poTrans.getInv(pnRawdata, "nQtyReqrd")));
                     txtDetailOther06.setText(String.valueOf(poTrans.getInv(pnRawdata, "nQtyUsedx")));
                     loadRawDetail();
+                    txtDetail05.setText(String.valueOf(poTrans.getDetail(pnRow, "nGoalQtyx")));
+                    loadDetail();
                     break;
                 case 7:
                     txtDetail06.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt")));

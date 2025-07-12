@@ -736,7 +736,8 @@ public class InvMasterController implements Initializable {
         lbCheck = poRecord.getInventory("cSerialze").toString().equals("1");
         Check22.selectedProperty().setValue(lbCheck);
 
-        lbCheck = poRecord.getInventory("cRecdStat").toString().equals("1");
+        lbCheck = poRecord.getInventory("cRecdStat").toString().equals("1") && 
+                poRecord.getMaster("cRecdStat").toString().equals("1");
         Check26.selectedProperty().setValue(lbCheck);
         if (!lbCheck) {
             if (poRecord.getEditMode() == EditMode.READY) {
