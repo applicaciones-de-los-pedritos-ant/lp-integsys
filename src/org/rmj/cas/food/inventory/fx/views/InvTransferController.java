@@ -671,7 +671,6 @@ public class InvTransferController implements Initializable {
                     }
 
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
-
                         if (!printTransfer()) {
                             return;
 
@@ -732,11 +731,8 @@ public class InvTransferController implements Initializable {
                             ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to confirm transaction");
                             return;
                         }
-                        poTrans.setApproveID((String) loJSON.get("sUserIDxx"));
-                    } else {
-                        poTrans.setApproveID(poGRider.getUserID());
-                    }
 
+                    }
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?") == true) {
 
                         if (poTrans.closeTransaction(psOldRec)) {
