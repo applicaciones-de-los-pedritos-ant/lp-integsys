@@ -665,6 +665,7 @@ public class InvTransferController implements Initializable {
                 break;
             case "btnPrint":
                 if (!psOldRec.equals("")) {
+                    poTrans.setApproveID("");
                     if (poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_CANCELLED)) {
                         ShowMessageFX.Warning("Trasaction may be CANCELLED.", pxeModuleName, "Can't print transactions!!!");
                         return;
@@ -672,18 +673,43 @@ public class InvTransferController implements Initializable {
 
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
                         if ("0".equals((String) poTrans.getMaster("cTranStat"))) {
-//                            if (poTrans.closeTransaction(psOldRec)) {
-                            if (printTransfer()) {
-                                clearFields();
-                                initGrid();
-                                pnEditMode = EditMode.UNKNOWN;
-                                initButton(pnEditMode);
-                            } else {
-                                return;
+                            if (poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)) {
+                                if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?") == true) {
+                                    if (poGRider.getUserLevel() <= UserRight.ENCODER) {
+                                        JSONObject loJSON = showFXDialog.getApproval(poGRider);
+
+                                        if (loJSON == null) {
+                                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to post transaction");
+                                        }
+
+                                        if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
+                                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
+                                            return;
+                                        }
+                                        poTrans.setApproveID((String) loJSON.get("sUserIDxx"));
+                                    } else {
+                                        poTrans.setApproveID(poGRider.getUserID());
+                                    }
+
+                                    if (poTrans.closeTransaction(psOldRec)) {
+                                        ShowMessageFX.Information(null, pxeModuleName, "Transaction confirmed successfully.");
+
+                                    } else {
+                                        ShowMessageFX.Warning(null, pxeModuleName, "Unable to confirm transaction.");
+                                    }
+                                }
                             }
-//                            } else {
-//                                ShowMessageFX.Warning(null, pxeModuleName, "Unable to confirm transaction.");
-//                            }
+                            if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
+                                if (!printTransfer()) {
+                                    return;
+                                }
+                            }
+
+                            clearFields();
+                            initGrid();
+                            pnEditMode = EditMode.UNKNOWN;
+                            initButton(pnEditMode);
+
                         }
                     }
 
@@ -694,6 +720,7 @@ public class InvTransferController implements Initializable {
 
             case "btnConfirm":
                 if (!psOldRec.equals("")) {
+                    poTrans.setApproveID("");
                     if (!poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)) {
                         ShowMessageFX.Warning("Trasaction may be CANCELLED/CLOSED.", pxeModuleName, "Can't update transactions!!!");
                         return;
@@ -710,9 +737,13 @@ public class InvTransferController implements Initializable {
                             ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
                             return;
                         }
+                        poTrans.setApproveID((String) loJSON.get("sUserIDxx"));
+                    } else {
+                        poTrans.setApproveID(poGRider.getUserID());
                     }
 
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?") == true) {
+
                         if (poTrans.closeTransaction(psOldRec)) {
                             ShowMessageFX.Information(null, pxeModuleName, "Transaction confirmed successfully.");
 
@@ -1202,15 +1233,15 @@ public class InvTransferController implements Initializable {
                         x = 0;
                         txtDetail.setText("0");
                     }
-                    if ((Double) x < 0) {
-                        txtDetail.requestFocus();
-                        txtDetail.setText("0.0");
-                        poTrans.setDetail(pnRow, "nQuantity", 0.0);
-                        break;
-                    }
+//                    if ((Double) x < 0) {
+//                        txtDetail.requestFocus();
+//                        txtDetail.setText("0.0");
+//                        poTrans.setDetail(pnRow, "nQuantity", 0.0);
+//                        break;
+//                    }
                     poTrans.setDetail(pnRow, "nQuantity", x);
 
-                    if (Double.parseDouble(x.toString()) > 0.00 & !txtDetail03.getText().isEmpty()) {
+                    if (!txtDetail03.getText().isEmpty()) {
                         poTrans.addDetail();
                         pnRow = poTrans.ItemCount() - 1;
 
