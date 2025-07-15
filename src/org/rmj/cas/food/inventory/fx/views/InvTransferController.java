@@ -665,7 +665,6 @@ public class InvTransferController implements Initializable {
                 break;
             case "btnPrint":
                 if (!psOldRec.equals("")) {
-                    poTrans.setApproveID("");
                     if (poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_CANCELLED)) {
                         ShowMessageFX.Warning("Trasaction may be CANCELLED.", pxeModuleName, "Can't print transactions!!!");
                         return;
@@ -675,22 +674,18 @@ public class InvTransferController implements Initializable {
                         if ("0".equals((String) poTrans.getMaster("cTranStat"))) {
                             if (poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)) {
                                 if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?") == true) {
-                                    if (poGRider.getUserLevel() <= UserRight.ENCODER) {
+                                    if (!poTrans.getOfficer(poGRider.getUserID())) {
                                         JSONObject loJSON = showFXDialog.getApproval(poGRider);
 
                                         if (loJSON == null) {
                                             ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to post transaction");
                                         }
 
-                                        if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
+                                         if (!poTrans.getOfficer(poGRider.getUserID())) {
                                             ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
                                             return;
                                         }
-                                        poTrans.setApproveID((String) loJSON.get("sUserIDxx"));
-                                    } else {
-                                        poTrans.setApproveID(poGRider.getUserID());
                                     }
-
                                     if (poTrans.closeTransaction(psOldRec)) {
                                         ShowMessageFX.Information(null, pxeModuleName, "Transaction confirmed successfully.");
 
