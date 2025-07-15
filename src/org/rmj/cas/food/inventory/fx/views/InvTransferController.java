@@ -671,20 +671,40 @@ public class InvTransferController implements Initializable {
                     }
 
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
-                        if ("0".equals((String) poTrans.getMaster("cTranStat"))) {
-//                            if (poTrans.closeTransaction(psOldRec)) {
-                            if (printTransfer()) {
-                                clearFields();
-                                initGrid();
-                                pnEditMode = EditMode.UNKNOWN;
-                                initButton(pnEditMode);
-                            } else {
-                                return;
-                            }
-//                            } else {
-//                                ShowMessageFX.Warning(null, pxeModuleName, "Unable to confirm transaction.");
-//                            }
+                        if (!printTransfer()) {
+                            return;
+
                         }
+                        if ("0".equals((String) poTrans.getMaster("cTranStat"))) {
+                            if (poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)) {
+                                if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?") == true) {
+                                    if (!poTrans.getOfficer(poGRider.getUserID())) {
+                                        JSONObject loJSON = showFXDialog.getApproval(poGRider);
+
+                                        if (loJSON == null) {
+                                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to confirm transaction");
+                                        }
+
+                                        if (!poTrans.getOfficer(poGRider.getUserID())) {
+                                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to confirm transaction");
+                                            return;
+                                        }
+                                    }
+                                    if (poTrans.closeTransaction(psOldRec)) {
+                                        ShowMessageFX.Information(null, pxeModuleName, "Transaction confirmed successfully.");
+
+                                    } else {
+                                        ShowMessageFX.Warning(null, pxeModuleName, "Unable to confirm transaction.");
+                                    }
+                                }
+                            }
+                        }
+
+                        clearFields();
+                        initGrid();
+                        pnEditMode = EditMode.UNKNOWN;
+                        initButton(pnEditMode);
+
                     }
 
                 } else {
@@ -694,25 +714,27 @@ public class InvTransferController implements Initializable {
 
             case "btnConfirm":
                 if (!psOldRec.equals("")) {
+                    poTrans.setApproveID("");
                     if (!poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)) {
                         ShowMessageFX.Warning("Trasaction may be CANCELLED/CLOSED.", pxeModuleName, "Can't update transactions!!!");
                         return;
                     }
 
-                    if (poGRider.getUserLevel() <= UserRight.ENCODER) {
+                    if (!poTrans.getOfficer(poGRider.getUserID())) {
                         JSONObject loJSON = showFXDialog.getApproval(poGRider);
 
                         if (loJSON == null) {
-                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to post transaction");
+                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to confirm transaction");
                         }
 
-                        if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
-                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
+                        if (!poTrans.getOfficer(poGRider.getUserID())) {
+                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to confirm transaction");
                             return;
                         }
-                    }
 
+                    }
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?") == true) {
+
                         if (poTrans.closeTransaction(psOldRec)) {
                             ShowMessageFX.Information(null, pxeModuleName, "Transaction confirmed successfully.");
 
@@ -1202,15 +1224,15 @@ public class InvTransferController implements Initializable {
                         x = 0;
                         txtDetail.setText("0");
                     }
-                    if ((Double) x < 0) {
-                        txtDetail.requestFocus();
-                        txtDetail.setText("0.0");
-                        poTrans.setDetail(pnRow, "nQuantity", 0.0);
-                        break;
-                    }
+//                    if ((Double) x < 0) {
+//                        txtDetail.requestFocus();
+//                        txtDetail.setText("0.0");
+//                        poTrans.setDetail(pnRow, "nQuantity", 0.0);
+//                        break;
+//                    }
                     poTrans.setDetail(pnRow, "nQuantity", x);
 
-                    if (Double.parseDouble(x.toString()) > 0.00 & !txtDetail03.getText().isEmpty()) {
+                    if (!txtDetail03.getText().isEmpty()) {
                         poTrans.addDetail();
                         pnRow = poTrans.ItemCount() - 1;
 
@@ -1463,8 +1485,10 @@ public class InvTransferController implements Initializable {
             JasperViewer jv = new JasperViewer(_jrprint, false);
             jv.setVisible(true);
             jv.setAlwaysOnTop(true);
+
         } catch (JRException | UnsupportedEncodingException | SQLException ex) {
-            Logger.getLogger(InvTransferController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InvTransferController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
         return true;
