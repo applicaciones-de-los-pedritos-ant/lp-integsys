@@ -683,17 +683,21 @@ public class InvTransferReturnController implements Initializable {
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
                         if ("0".equals((String) poTrans.getMaster("cTranStat"))) {
                             if (poTrans.closeTransaction(psOldRec)) {
-                                if (printTransfer()) {
-                                    clearFields();
-                                    initGrid();
-                                    pnEditMode = EditMode.UNKNOWN;
-                                    initButton(pnEditMode);
-                                } else {
+                                if (!printTransfer()) {
                                     return;
                                 }
                             } else {
                                 ShowMessageFX.Warning(null, pxeModuleName, "Unable to confirm transaction.");
+                                return;
                             }
+
+                            poTrans = new InvTransferReturn(poGRider, poGRider.getBranchCode(), false);
+                            poTrans.setCallBack(poCallBack);
+                            poTrans.setTranStat(1230);
+                            clearFields();
+                            initGrid();
+                            pnEditMode = EditMode.UNKNOWN;
+                            initButton(pnEditMode);
                         }
                     }
 
@@ -814,12 +818,16 @@ public class InvTransferReturnController implements Initializable {
 
             case "btnUpdate":
                 if (!psOldRec.equals("")) {
-                    if ("0".equals((String) poTrans.getMaster("cTranStat"))) {
-                        if (poTrans.updateRecord()) {
-                            loadRecord();
-                            pnEditMode = poTrans.getEditMode();
+                    if (poTrans.openTransaction(psOldRec)) {
+                        if ("0".equals((String) poTrans.getMaster("cTranStat"))) {
+
+                            if (poTrans.updateRecord()) {
+                                loadRecord();
+                                pnEditMode = poTrans.getEditMode();
+
+                            }
                         } else {
-                            ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction.");
+                            ShowMessageFX.Warning(null, pxeModuleName, "Unable to update Closed Transaction...");
                         }
                     } else {
                         ShowMessageFX.Warning(null, pxeModuleName, "Unable to update transaction...");
@@ -1476,8 +1484,10 @@ public class InvTransferReturnController implements Initializable {
             JasperViewer jv = new JasperViewer(_jrprint, false);
             jv.setVisible(true);
             jv.setAlwaysOnTop(true);
+
         } catch (JRException | UnsupportedEncodingException | SQLException ex) {
-            Logger.getLogger(InvTransferRegController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InvTransferRegController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
         return true;
