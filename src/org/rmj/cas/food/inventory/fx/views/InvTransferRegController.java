@@ -541,7 +541,12 @@ public class InvTransferRegController implements Initializable {
                         ShowMessageFX.Warning("Trasaction may be CANCELLED.", pxeModuleName, "Can't print transactions!!!");
                         return;
                     } else if (poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)) {
-                        ShowMessageFX.Warning("Trasaction may be OPEN.", pxeModuleName, "Can't print transactions!!!");
+                        ShowMessageFX.Warning("Trasaction may be OPEN. Please confirm transaction.", pxeModuleName, "Can't print transactions!!!");
+                        return;
+                    }
+
+                    if ("0".equals((String) poTrans.getMaster("cTranStat"))) {
+                        ShowMessageFX.Warning("Trasaction may be OPEN. Please confirm transaction.", pxeModuleName, "Can't print transactions!!!");
                         return;
                     }
 

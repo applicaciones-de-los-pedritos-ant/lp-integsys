@@ -669,35 +669,14 @@ public class InvTransferController implements Initializable {
                         ShowMessageFX.Warning("Trasaction may be CANCELLED.", pxeModuleName, "Can't print transactions!!!");
                         return;
                     }
-
+                    if ("0".equals((String) poTrans.getMaster("cTranStat"))) {
+                        ShowMessageFX.Warning("Trasaction may be OPEN. Please confirm transaction", pxeModuleName, "Can't print transactions!!!");
+                        return;
+                    }
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
                         if (!printTransfer()) {
                             return;
 
-                        }
-                        if ("0".equals((String) poTrans.getMaster("cTranStat"))) {
-                            if (poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)) {
-                                if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?") == true) {
-                                    if (!poTrans.getOfficer(poGRider.getUserID())) {
-                                        JSONObject loJSON = showFXDialog.getApproval(poGRider);
-
-                                        if (loJSON == null) {
-                                            ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to confirm transaction");
-                                        }
-
-                                        if (!poTrans.getOfficer(poGRider.getUserID())) {
-                                            ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to confirm transaction");
-                                            return;
-                                        }
-                                    }
-                                    if (poTrans.closeTransaction(psOldRec)) {
-                                        ShowMessageFX.Information(null, pxeModuleName, "Transaction confirmed successfully.");
-
-                                    } else {
-                                        ShowMessageFX.Warning(null, pxeModuleName, "Unable to confirm transaction.");
-                                    }
-                                }
-                            }
                         }
 
                         clearFields();
