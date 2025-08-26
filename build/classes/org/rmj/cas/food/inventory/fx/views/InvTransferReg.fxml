@@ -46,7 +46,7 @@
                <center>
                   <AnchorPane fx:id="anchorField" style="-fx-background-color: #B3B6B7;" BorderPane.alignment="CENTER">
                      <children>
-                        <TableView fx:id="table" layoutX="14.0" layoutY="285.0" onMouseClicked="#table_Clicked" prefHeight="124.0" prefWidth="815.0" stylesheets="@../styles/Tables.css" AnchorPane.leftAnchor="450.0" AnchorPane.topAnchor="285.0">
+                        <TableView fx:id="table" layoutX="14.0" layoutY="285.0" onMouseClicked="#table_Clicked" prefWidth="815.0" stylesheets="@../styles/Tables.css" AnchorPane.leftAnchor="450.0" AnchorPane.topAnchor="285.0">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy></TableView>

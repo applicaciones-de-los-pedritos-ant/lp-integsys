@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
@@ -47,7 +48,6 @@
                <center>
                   <AnchorPane fx:id="anchorField" style="-fx-background-color: #B3B6B7;" BorderPane.alignment="CENTER">
                      <children>
-                        <Separator layoutX="438.0" layoutY="45.0" opacity="0.49" orientation="VERTICAL" prefHeight="345.0" prefWidth="0.0" style="-fx-background-color: black;" />
                         <AnchorPane layoutX="-5.0" layoutY="1.0" prefHeight="35.0" style="-fx-background-color: #686868;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Separator layoutX="-22.0" layoutY="28.0" maxHeight="1.0" minHeight="1.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
@@ -71,220 +71,266 @@
                            <font>
                               <Font size="10.0" />
                            </font></TextField>
-                        <TableView fx:id="tblInvetoryDetail" layoutX="452.0" layoutY="204.0" onMouseClicked="#tblInvetoryDetail_Click" prefHeight="200.0" prefWidth="473.0" stylesheets="@../styles/Tables.css">
-                           <columns>
-                              <TableColumn fx:id="index01" prefWidth="65.0" resizable="false" sortable="false" text="NO." />
-                              <TableColumn fx:id="index02" prefWidth="160.0" resizable="false" sortable="false" text="BARCODE" />
-                              <TableColumn fx:id="index03" prefWidth="160.0" resizable="false" sortable="false" text="DESCRIPTION" />
-                              <TableColumn fx:id="index04" resizable="false" sortable="false" text="QTY" />
-                           </columns>
-                        </TableView>
-                        <GridPane layoutX="12.0" layoutY="1.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="110.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="110.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
+                        <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="35.0">
                            <children>
-                              <Label text="Stock ID">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="txtField01" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="119.0" GridPane.columnIndex="1">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                              </TextField>
-                              <Label text="Barcode*" textFill="RED" GridPane.rowIndex="1" />
-                              <TextField fx:id="txtField02" prefHeight="27.0" prefWidth="119.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Button fx:id="btnAuto" mnemonicParsing="false" prefHeight="25.0" prefWidth="129.0" text="AUTO" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                 <GridPane.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </GridPane.margin>
-                              </Button>
-                              <Label text="Description*" textFill="RED" GridPane.rowIndex="2" />
-                              <TextField fx:id="txtField03" prefHeight="27.0" prefWidth="323.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label text="Brief Desc." GridPane.rowIndex="4" />
-                              <TextField fx:id="txtField04" prefHeight="27.0" prefWidth="116.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="111.0" text="Alt. BCode" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                                 <padding>
-                                    <Insets right="5.0" />
-                                 </padding>
-                              </Label>
-                              <TextField fx:id="txtField05" prefHeight="27.0" prefWidth="116.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label text="Category 1" GridPane.rowIndex="5" />
-                              <TextField fx:id="txtField06" prefHeight="27.0" prefWidth="116.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="123.0" text="Category 3" GridPane.columnIndex="2" GridPane.rowIndex="5">
-                                 <padding>
-                                    <Insets right="5.0" />
-                                 </padding>
-                              </Label>
-                              <TextField fx:id="txtField08" prefHeight="27.0" prefWidth="116.0" promptText="Press F3 to search" GridPane.columnIndex="3" GridPane.rowIndex="5">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label text="Category 2" GridPane.rowIndex="6" />
-                              <TextField fx:id="txtField07" prefHeight="27.0" prefWidth="116.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="168.0" text="Category 4" GridPane.columnIndex="2" GridPane.rowIndex="6">
-                                 <padding>
-                                    <Insets right="5.0" />
-                                 </padding>
-                              </Label>
-                              <TextField fx:id="txtField09" prefHeight="27.0" prefWidth="116.0" promptText="Press F3 to search" GridPane.columnIndex="3" GridPane.rowIndex="6">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label text="Inv. Type*" textFill="RED" GridPane.rowIndex="8" />
-                              <TextField fx:id="txtField13" prefHeight="27.0" prefWidth="119.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.rowIndex="8">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="104.0" text="Supervisor Disc" GridPane.columnIndex="2" GridPane.rowIndex="8">
-                                 <padding>
-                                    <Insets right="5.0" />
-                                 </padding>
-                              </Label>
-                              <TextField fx:id="txtField16" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="116.0" GridPane.columnIndex="3" GridPane.rowIndex="8">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label text="Brand Name:" GridPane.rowIndex="9" />
-                              <TextField fx:id="txtField10" prefHeight="27.0" prefWidth="119.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.rowIndex="9">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="127.0" text="Manager Disc." GridPane.columnIndex="2" GridPane.rowIndex="9">
-                                 <padding>
-                                    <Insets right="5.0" />
-                                 </padding>
-                              </Label>
-                              <TextField fx:id="txtField17" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="116.0" GridPane.columnIndex="3" GridPane.rowIndex="9">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label text="Unit Price" GridPane.rowIndex="11" />
-                              <TextField fx:id="txtField14" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="119.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="111.0" text="Area Disc." GridPane.columnIndex="2" GridPane.rowIndex="10">
-                                 <padding>
-                                    <Insets right="5.0" />
-                                 </padding>
-                              </Label>
-                              <TextField fx:id="txtField18" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="116.0" GridPane.columnIndex="3" GridPane.rowIndex="10">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="155.0" text="Dealer Disc." GridPane.columnIndex="2" GridPane.rowIndex="11">
-                                 <padding>
-                                    <Insets right="5.0" />
-                                 </padding>
-                              </Label>
-                              <TextField fx:id="txtField19" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="116.0" GridPane.columnIndex="3" GridPane.rowIndex="11">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label text="Measurement*" textFill="RED" GridPane.rowIndex="10" />
-                              <TextField fx:id="txtField29" prefHeight="25.0" prefWidth="150.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.rowIndex="10">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font></TextField>
-                              <Label text="Unit Type" GridPane.rowIndex="12" />
-                              <ComboBox fx:id="Combo23" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="12">
-                                 <GridPane.margin>
-                                    <Insets top="3.0" />
-                                 </GridPane.margin></ComboBox>
-                              <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="116.0" text="Inv. Status" GridPane.columnIndex="2" GridPane.rowIndex="12">
-                                 <padding>
-                                    <Insets right="5.0" />
-                                 </padding>
-                              </Label>
-                              <ComboBox fx:id="Combo24" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="12">
-                                 <GridPane.margin>
-                                    <Insets top="3.0" />
-                                 </GridPane.margin></ComboBox>
-                              <CheckBox fx:id="Check22" mnemonicParsing="false" text="Serialized" visible="false" GridPane.rowIndex="13" />
-                              <CheckBox fx:id="Check26" mnemonicParsing="false" text="Active" GridPane.columnIndex="1" GridPane.rowIndex="13">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </CheckBox>
-                              <CheckBox fx:id="Check27" mnemonicParsing="false" text="NO EXPIRY" GridPane.columnIndex="3" GridPane.rowIndex="13">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </CheckBox>
-                              <CheckBox fx:id="Check21" mnemonicParsing="false" text="With Promo" visible="false" GridPane.rowIndex="13" />
-                              <CheckBox fx:id="Check20" mnemonicParsing="false" text="Combo Inventory" visible="false" GridPane.rowIndex="13" />
+                              <AnchorPane fx:id="acMainPane01">
+                                 <children>
+                                    <GridPane AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="5.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="110.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="110.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label text="Stock ID">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="Barcode*" textFill="RED" GridPane.rowIndex="1" />
+                                          <Label text="Description*" textFill="RED" GridPane.rowIndex="2" />
+                                          <Label text="Brief Desc." GridPane.rowIndex="4" />
+                                          <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="111.0" text="Alt. BCode" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                             <padding>
+                                                <Insets right="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label text="Category 1" GridPane.rowIndex="5" />
+                                          <Label text="Category 2" GridPane.rowIndex="6" />
+                                          <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="123.0" text="Category 3" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                             <padding>
+                                                <Insets right="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="168.0" text="Category 4" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                             <padding>
+                                                <Insets right="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label text="Inv. Type*" textFill="RED" GridPane.rowIndex="8" />
+                                          <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="104.0" text="Supervisor Disc" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                                             <padding>
+                                                <Insets right="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label text="Brand Name:" GridPane.rowIndex="9" />
+                                          <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="127.0" text="Manager Disc." GridPane.columnIndex="2" GridPane.rowIndex="9">
+                                             <padding>
+                                                <Insets right="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label text="Measurement*" textFill="RED" GridPane.rowIndex="10" />
+                                          <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="111.0" text="Area Disc." GridPane.columnIndex="2" GridPane.rowIndex="10">
+                                             <padding>
+                                                <Insets right="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label text="Unit Price" GridPane.rowIndex="11" />
+                                          <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="155.0" text="Dealer Disc." GridPane.columnIndex="2" GridPane.rowIndex="11">
+                                             <padding>
+                                                <Insets right="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label text="Unit Type" GridPane.rowIndex="12" />
+                                          <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="116.0" text="Inv. Status" GridPane.columnIndex="2" GridPane.rowIndex="12">
+                                             <padding>
+                                                <Insets right="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <TextField fx:id="txtField01" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="119.0" GridPane.columnIndex="1">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField02" prefHeight="27.0" prefWidth="119.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <Button fx:id="btnAuto" mnemonicParsing="false" prefHeight="25.0" prefWidth="129.0" text="AUTO" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                             <GridPane.margin>
+                                                <Insets left="5.0" right="5.0" />
+                                             </GridPane.margin>
+                                          </Button>
+                                          <TextField fx:id="txtField03" prefHeight="27.0" prefWidth="323.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField04" prefHeight="27.0" prefWidth="116.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField05" prefHeight="27.0" prefWidth="116.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField06" prefHeight="27.0" prefWidth="116.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField07" prefHeight="27.0" prefWidth="116.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField08" prefHeight="27.0" prefWidth="116.0" promptText="Press F3 to search" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField09" prefHeight="27.0" prefWidth="116.0" promptText="Press F3 to search" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField14" prefHeight="27.0" prefWidth="119.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField10" prefHeight="27.0" prefWidth="119.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField13" prefHeight="25.0" prefWidth="150.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField15" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="119.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField17" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="116.0" GridPane.columnIndex="3" GridPane.rowIndex="8">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField18" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="116.0" GridPane.columnIndex="3" GridPane.rowIndex="9">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField19" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="116.0" GridPane.columnIndex="3" GridPane.rowIndex="10">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <TextField fx:id="txtField20" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="116.0" GridPane.columnIndex="3" GridPane.rowIndex="11">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <ComboBox fx:id="cmbField26" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="12">
+                                             <GridPane.margin>
+                                                <Insets top="3.0" />
+                                             </GridPane.margin>
+                                          </ComboBox>
+                                          <ComboBox fx:id="cmbField27" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="12">
+                                             <GridPane.margin>
+                                                <Insets top="3.0" />
+                                             </GridPane.margin>
+                                          </ComboBox>
+                                          <CheckBox fx:id="cbField21" mnemonicParsing="false" text="With Sub-Unit" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </CheckBox>
+                                          <CheckBox fx:id="cbField22" mnemonicParsing="false" text="With BOM" GridPane.columnIndex="3" GridPane.rowIndex="13">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </CheckBox>
+                                          <CheckBox fx:id="cbField23" mnemonicParsing="false" text="Combo Inventory" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="13" />
+                                          <CheckBox fx:id="cbField25" mnemonicParsing="false" text="Serialized" visible="false" GridPane.rowIndex="13" />
+                                          <CheckBox fx:id="cbField30" mnemonicParsing="false" text="NO EXPIRY" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </CheckBox>
+                                          <CheckBox fx:id="cbField24" mnemonicParsing="false" text="With Promo" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="14" />
+                                          <CheckBox fx:id="cbField31" mnemonicParsing="false" text="Active" GridPane.columnIndex="3" GridPane.rowIndex="14">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </CheckBox>
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
+                              <Separator opacity="0.49" orientation="VERTICAL" prefHeight="345.0" prefWidth="0.0" style="-fx-background-color: black;">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </Separator>
+                              <AnchorPane fx:id="acMainPane02">
+                                 <children>
+                                    <GridPane prefHeight="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label prefHeight="17.0" prefWidth="219.0" text="Sub Items (Item Breakdown)" GridPane.columnSpan="2">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="Barcode" GridPane.rowIndex="1" />
+                                          <TextField fx:id="txtField50" prefHeight="27.0" prefWidth="226.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                                          <Label text="Description" GridPane.rowIndex="2" />
+                                          <TextField fx:id="txtField51" prefHeight="27.0" prefWidth="382.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
+                                          <Label text="Measurement" GridPane.rowIndex="3" />
+                                          <TextField fx:id="txtField52" editable="false" prefHeight="27.0" prefWidth="226.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                                          <Label text="Quantity" GridPane.rowIndex="4" />
+                                          <TextField fx:id="txtField53" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="87.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                       </children>
+                                    </GridPane>
+                                    <TableView fx:id="tblInvetoryDetail" onMouseClicked="#tblInvetoryDetail_Click" prefHeight="200.0" prefWidth="473.0" stylesheets="@../styles/Tables.css" AnchorPane.topAnchor="165.0">
+                                       <columns>
+                                          <TableColumn fx:id="index01" prefWidth="65.0" resizable="false" sortable="false" text="NO." />
+                                          <TableColumn fx:id="index02" prefWidth="160.0" resizable="false" sortable="false" text="BARCODE" />
+                                          <TableColumn fx:id="index03" prefWidth="160.0" resizable="false" sortable="false" text="DESCRIPTION" />
+                                          <TableColumn fx:id="index04" resizable="false" sortable="false" text="QTY" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
                            </children>
-                        </GridPane>
-                        <GridPane layoutX="452.0" layoutY="50.0" AnchorPane.topAnchor="50.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <Label prefHeight="17.0" prefWidth="219.0" text="Sub Items (Item Breakdown)" GridPane.columnSpan="2">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Barcode" GridPane.rowIndex="1" />
-                              <TextField fx:id="txtField50" prefHeight="27.0" prefWidth="226.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-                              <Label text="Description" GridPane.rowIndex="2" />
-                              <TextField fx:id="txtField51" prefHeight="27.0" prefWidth="382.0" promptText="Press F3 to search" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
-                              <Label text="Measurement" GridPane.rowIndex="3" />
-                              <TextField fx:id="txtField53" editable="false" prefHeight="27.0" prefWidth="226.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                              <Label text="Quantity" GridPane.rowIndex="4" />
-                              <TextField fx:id="txtField52" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="87.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                           </children>
-                        </GridPane>
+                        </HBox>
                      </children>
                   </AnchorPane>
                </center>
