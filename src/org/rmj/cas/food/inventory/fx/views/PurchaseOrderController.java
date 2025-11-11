@@ -88,7 +88,7 @@ public class PurchaseOrderController implements Initializable {
     @FXML
     private Button btnSearch;
     @FXML
-    private Button btnConfirm;
+    private Button btnConfirm, btnApprove;
     @FXML
     private Button btnDel;
     @FXML
@@ -130,6 +130,7 @@ public class PurchaseOrderController implements Initializable {
         btnNew.setOnAction(this::cmdButton_Click);
         btnUpdate.setOnAction(this::cmdButton_Click);
         btnConfirm.setOnAction(this::cmdButton_Click);
+        btnApprove.setOnAction(this::cmdButton_Click);
         btnClose.setOnAction(this::cmdButton_Click);
         btnExit.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
@@ -227,6 +228,7 @@ public class PurchaseOrderController implements Initializable {
         btnNew.setVisible(!lbShow);
         btnUpdate.setVisible(!lbShow);
         btnConfirm.setVisible(!lbShow);
+        btnApprove.setVisible(!lbShow);
         btnClose.setVisible(!lbShow);
         btnPrint.setVisible(!lbShow);
 
@@ -423,6 +425,31 @@ public class PurchaseOrderController implements Initializable {
                     return;
                 }
                 break;
+
+            case "btnApprove":
+                if (!psOldRec.equals("")) {
+                    if (poTrans.closeTransactionByPass(psOldRec)) {
+                        ShowMessageFX.Information("Transaction was approved successfully.", pxeModuleName, "Approval successful!!!");
+
+                        if (poTrans.openTransaction(psOldRec)) {
+                            loadRecord();
+                            psOldRec = (String) poTrans.getMaster("sTransNox");
+
+                            poTrans.printRecord();
+
+                            pnEditMode = poTrans.getEditMode();
+                        } else {
+                            clearFields();
+                            initGrid();
+                            pnEditMode = EditMode.UNKNOWN;
+                        }
+                    } else {
+                        poTrans.ShowMessageFX();
+                    }
+                }
+
+                break;
+
             case "btnClose":
             case "btnExit":
                 unloadForm();
