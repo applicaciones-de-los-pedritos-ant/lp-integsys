@@ -47,15 +47,21 @@ public class LetMeIn {
         GProperty loProp = new GProperty("GhostRiderXP");
 
         if (!poGRider.loadEnv(lsProdctID)) {
+            System.err.println(
+                    poGRider.HostName());
             System.err.println(poGRider.getErrMsg());
             System.exit(1);
         }
 
         if (!poGRider.logUser(lsProdctID, lsUserIDxx)) {
+            System.err.println(
+                    poGRider.HostName());
             System.err.println(poGRider.getErrMsg());
             System.exit(1);
         }
 
+        System.err.println(
+                poGRider.HostName());
         FoodInventoryFX foodInventory = new FoodInventoryFX();
         foodInventory.setGRider(poGRider);
 

@@ -62,7 +62,7 @@ import org.rmj.appdriver.agentfx.ui.showFXDialog;
 import org.rmj.appdriver.constants.UserRight;
 
 public class InvTransferController implements Initializable {
-    
+
     @FXML
     private Button btnExit;
     @FXML
@@ -139,16 +139,16 @@ public class InvTransferController implements Initializable {
     private AnchorPane dataPane;
     @FXML
     private Button btnUpdate;
-    
+
     @FXML
     private RowConstraints rcGridRow03;
-    
+
     TableColumn index01 = new TableColumn("No.");
     TableColumn index02 = new TableColumn("Expiration");
     TableColumn index03 = new TableColumn("OnHnd");
     TableColumn index04 = new TableColumn("Out");
     TableColumn index05 = new TableColumn("Rem");
-    
+
     private final String pxeModuleName = "InvTransferController";
     protected Date pdExpiryDt = null;
     protected Boolean pbEdited = false;
@@ -156,18 +156,18 @@ public class InvTransferController implements Initializable {
     private InvTransfer poTrans;
     private int pnEditMode = -1;
     private boolean pbLoaded = false;
-    
+
     private final String pxeDateFormat = "MM/dd/yyyy";
     private final String pxeDateFormatMsg = "Date format must be MM/dd/yyyy (e.g. 12/25/1945)";
     private final String pxeDateDefault = java.time.LocalDate.now().toString();
-    
+
     private TableModel model;
     private ObservableList<TableModel> data = FXCollections.observableArrayList();
-    
+
     private int pnIndex = -1;
     private int pnRow = -1;
     private int pnOldRow = -1;
-    
+
     private String psDestina = "";
     private String psTrukNme = "";
     private String psOrderNm = "";
@@ -176,12 +176,12 @@ public class InvTransferController implements Initializable {
     private String psOrderNox = "";
     private boolean pbFound;
     private int pnlRow = 0;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new InvTransfer(poGRider, poGRider.getBranchCode(), false);
         poTrans.setCallBack(poCallBack);
-        
+
         btnCancel.setOnAction(this::cmdButton_Click);
         btnSearch.setOnAction(this::cmdButton_Click);
         btnSave.setOnAction(this::cmdButton_Click);
@@ -193,7 +193,7 @@ public class InvTransferController implements Initializable {
         btnExit.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
         btnUpdate.setOnAction(this::cmdButton_Click);
-        
+
         txtField01.focusedProperty().addListener(txtField_Focus);
 //        txtField03.focusedProperty().addListener(txtField_Focus);
         txtField04.focusedProperty().addListener(txtField_Focus);
@@ -204,7 +204,7 @@ public class InvTransferController implements Initializable {
         txtField18.focusedProperty().addListener(txtField_Focus);
         txtField50.focusedProperty().addListener(txtField_Focus);
         txtField51.focusedProperty().addListener(txtField_Focus);
-        
+
         txtDetail03.focusedProperty().addListener(txtDetail_Focus);
         txtDetail04.focusedProperty().addListener(txtDetail_Focus);
         txtDetail05.focusedProperty().addListener(txtDetail_Focus);
@@ -225,7 +225,7 @@ public class InvTransferController implements Initializable {
         txtField05.setOnKeyPressed(this::txtFieldArea_KeyPressed);
         txtField50.setOnKeyPressed(this::txtField_KeyPressed);
         txtField51.setOnKeyPressed(this::txtField_KeyPressed);
-        
+
         txtDetail03.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail04.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail05.setOnKeyPressed(this::txtDetail_KeyPressed);
@@ -234,39 +234,39 @@ public class InvTransferController implements Initializable {
         txtDetail08.setOnKeyPressed(this::txtDetail_KeyPressed);
         txtDetail10.setOnKeyPressed(this::txtDetailArea_KeyPressed);
         txtDetail80.setOnKeyPressed(this::txtDetail_KeyPressed);
-        
+
         pnEditMode = EditMode.UNKNOWN;
         clearFields();
         initGrid();
         initButton(pnEditMode);
         initLisView();
-        
+
         pbLoaded = true;
     }
-    
+
     public void setGRider(GRider foGRider) {
         this.poGRider = foGRider;
     }
-    
+
     private void initButton(int fnValue) {
         boolean lbShow = (fnValue == EditMode.ADDNEW || fnValue == EditMode.UPDATE);
-        
+
         btnCancel.setVisible(lbShow);
         btnSearch.setVisible(lbShow);
         btnSave.setVisible(lbShow);
         btnDel.setVisible(lbShow);
         lblHeader.setVisible(lbShow);
-        
+
         txtField50.setDisable(lbShow);
         txtField51.setDisable(lbShow);
-        
+
         btnBrowse.setVisible(!lbShow);
         btnNew.setVisible(!lbShow);
         btnPrint.setVisible(!lbShow);
         btnConfirm.setVisible(!lbShow);
         btnClose.setVisible(!lbShow);
         btnUpdate.setVisible(!lbShow);
-        
+
         txtField01.setDisable(!lbShow);
 //        txtField02.setDisable(!lbShow);
 //        txtField03.setDisable(!lbShow);
@@ -277,7 +277,7 @@ public class InvTransferController implements Initializable {
         txtField07.setDisable(!lbShow);
         txtField13.setDisable(!lbShow);
         txtField18.setDisable(!lbShow);
-        
+
         txtDetail03.setDisable(!lbShow);
         txtDetail04.setDisable(!lbShow);
         txtDetail05.setDisable(!lbShow);
@@ -285,14 +285,14 @@ public class InvTransferController implements Initializable {
         txtDetail10.setDisable(!lbShow);
         txtDetail80.setDisable(!lbShow);
         txtDetail08.setDisable(!lbShow);
-        
+
         if (lbShow) {
             txtField03.requestFocus();
         } else {
             txtField51.requestFocus();
         }
     }
-    
+
     private void clearFields() {
         txtField01.setText("");
         txtField03.setText("");
@@ -305,7 +305,7 @@ public class InvTransferController implements Initializable {
         txtField51.setText("");
         txtOther02.setText("0");
         txtField18.setText("");
-        
+
         pbFound = false;
         txtDetail03.setText("");
         txtDetail04.setText("");
@@ -315,13 +315,13 @@ public class InvTransferController implements Initializable {
         txtDetail06.setText("0");
         txtDetail80.setText("");
         Label12.setText("0.00");
-        
+
         pnlRow = 0;
         pnRow = -1;
         pnOldRow = -1;
         pnIndex = 51;
         setTranStat("-1");
-        
+
         psOldRec = "";
         psDestina = "";
         psTrukNme = "";
@@ -329,11 +329,11 @@ public class InvTransferController implements Initializable {
         psOrderNox = "";
         psTransNox = "";
         pbEdited = false;
-        
+
         tableDetail.setItems(loadEmptyData());
         data.clear();
     }
-    
+
     private void initGrid() {
         TableColumn index01 = new TableColumn("No.");
         TableColumn index02 = new TableColumn("Order No.");
@@ -343,7 +343,7 @@ public class InvTransferController implements Initializable {
         TableColumn index06 = new TableColumn("Measure");
         TableColumn index07 = new TableColumn("Unit Price");
         TableColumn index08 = new TableColumn("Qty");
-        
+
         index01.setPrefWidth(30);
         index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(120);
@@ -355,7 +355,7 @@ public class InvTransferController implements Initializable {
         index07.setStyle("-fx-alignment: CENTER;");
         index08.setPrefWidth(40);
         index08.setStyle("-fx-alignment: CENTER-RIGHT;");
-        
+
         index01.setSortable(false);
         index01.setResizable(false);
         index02.setSortable(false);
@@ -370,7 +370,7 @@ public class InvTransferController implements Initializable {
         index06.setResizable(false);
         index07.setSortable(false);
         index06.setResizable(false);
-        
+
         table.getColumns().clear();
         table.getColumns().add(index01);
         table.getColumns().add(index02);
@@ -380,7 +380,7 @@ public class InvTransferController implements Initializable {
         table.getColumns().add(index06);
         table.getColumns().add(index07);
         table.getColumns().add(index08);
-        
+
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index02"));
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index03"));
@@ -406,9 +406,9 @@ public class InvTransferController implements Initializable {
         /*Set data source to table*/
         table.setItems(data);
     }
-    
+
     private void initLisView() {
-        
+
         index01.setPrefWidth(30);
         index01.setStyle("-fx-alignment: CENTER;");
         index02.setPrefWidth(110);
@@ -419,7 +419,7 @@ public class InvTransferController implements Initializable {
         index04.setStyle("-fx-alignment: CENTER;");
         index05.setPrefWidth(65);
         index05.setStyle("-fx-alignment: CENTER;");
-        
+
         index01.setSortable(false);
         index01.setResizable(false);
         index02.setSortable(true);
@@ -430,29 +430,29 @@ public class InvTransferController implements Initializable {
         index04.setResizable(false);
         index05.setSortable(false);
         index05.setResizable(false);
-        
+
         tableDetail.getColumns().clear();
         tableDetail.getColumns().add(index01);
         tableDetail.getColumns().add(index02);
         tableDetail.getColumns().add(index03);
         tableDetail.getColumns().add(index04);
         tableDetail.getColumns().add(index05);
-        
+
         index01.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index01"));
         index02.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index02"));
         index03.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index03"));
         index04.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index04"));
         index05.setCellValueFactory(new PropertyValueFactory<org.rmj.cas.food.inventory.fx.views.TableModel, String>("index05"));
-        
+
     }
-    
+
     private void unloadForm() {
 //        VBox myBox = (VBox) VBoxForm.getParent();
 //        myBox.getChildren().clear();
         dataPane.getChildren().clear();
         dataPane.setStyle("-fx-border-color: transparent");
     }
-    
+
     private void txtFieldArea_KeyPressed(KeyEvent event) {
         if (event.getCode() == DOWN) {
             event.consume();
@@ -462,7 +462,7 @@ public class InvTransferController implements Initializable {
             CommonUtils.SetPreviousFocus((TextArea) event.getSource());
         }
     }
-    
+
     private void txtDetailArea_KeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.DOWN) {
             event.consume();
@@ -472,13 +472,13 @@ public class InvTransferController implements Initializable {
             CommonUtils.SetPreviousFocus((TextArea) event.getSource());
         }
     }
-    
+
     private void txtDetail_KeyPressed(KeyEvent event) {
         TextField txtDetail = (TextField) event.getSource();
         int lnIndex = Integer.parseInt(txtDetail.getId().substring(9, 11));
         String lsValue = txtDetail.getText();
         JSONObject loJSON;
-        
+
         if (event.getCode() == F3) {
             switch (lnIndex) {
                 case 3:
@@ -501,7 +501,7 @@ public class InvTransferController implements Initializable {
                         txtOther02.setText("0");
                         tableDetail.setItems(loadEmptyData());
                     }
-                    
+
                     if (!txtDetail03.getText().isEmpty()) {
                         txtDetail06.requestFocus();
                         txtDetail06.selectAll();
@@ -509,7 +509,7 @@ public class InvTransferController implements Initializable {
                         txtDetail05.requestFocus();
                         txtDetail05.selectAll();
                     }
-                    
+
                     break;
                 case 80:
                     /*Description Search*/
@@ -531,7 +531,7 @@ public class InvTransferController implements Initializable {
                         txtDetail08.setText("");
                         tableDetail.setItems(loadEmptyData());
                     }
-                    
+
                     if (!txtDetail03.getText().isEmpty()) {
                         txtDetail06.requestFocus();
                         txtDetail06.selectAll();
@@ -539,7 +539,7 @@ public class InvTransferController implements Initializable {
                         txtDetail05.requestFocus();
                         txtDetail05.selectAll();
                     }
-                    
+
                     break;
                 case 4:
                     if (poTrans.SearchDetail(pnRow, 4, lsValue, false, false)) {
@@ -548,7 +548,7 @@ public class InvTransferController implements Initializable {
                     } else {
                         txtDetail.setText("");
                     }
-                    
+
                     break;
                 case 5:
                     if (poTrans.SearchDetail(pnRow, 5, lsValue, false, false)) {
@@ -560,7 +560,7 @@ public class InvTransferController implements Initializable {
                     break;
             }
         }
-        
+
         switch (event.getCode()) {
             case ENTER:
                 if (lnIndex == 3) {
@@ -574,7 +574,7 @@ public class InvTransferController implements Initializable {
                 }
                 CommonUtils.SetNextFocus(txtDetail);
                 return;
-            
+
             case DOWN:
                 CommonUtils.SetNextFocus(txtDetail);
                 break;
@@ -582,14 +582,14 @@ public class InvTransferController implements Initializable {
                 CommonUtils.SetPreviousFocus(txtDetail);
         }
     }
-    
+
     private void txtField_KeyPressed(KeyEvent event) {
         TextField txtField = (TextField) event.getSource();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
         String lsValue = txtField.getText();
         if (event.getCode() == F3) {
             switch (lnIndex) {
-                
+
                 case 4:
                     /*sDestinat*/
                     if (poTrans.SearchMaster(lnIndex, txtField.getText(), false)) {
@@ -611,7 +611,7 @@ public class InvTransferController implements Initializable {
                     if (poTrans.SearchMaster(lnIndex, txtField.getText(), false)) {
                         txtField.setText(poTrans.getMaster(18).toString());
                         loadDetail();
-                        
+
                         CommonUtils.SetNextFocus(txtField);
                     } else {
                         txtField.setText(poTrans.getMaster(18).toString());
@@ -636,11 +636,11 @@ public class InvTransferController implements Initializable {
                         clearFields();
                         pnEditMode = EditMode.UNKNOWN;
                     }
-                    
+
                     return;
             }
         }
-        
+
         switch (event.getCode()) {
             case ENTER:
             case DOWN:
@@ -650,10 +650,10 @@ public class InvTransferController implements Initializable {
                 CommonUtils.SetPreviousFocus(txtField);
         }
     }
-    
+
     private void cmdButton_Click(ActionEvent event) {
         String lsButton = ((Button) event.getSource()).getId();
-        
+
         switch (lsButton) {
             case "btnNew":
                 if (poTrans.newTransaction()) {
@@ -676,21 +676,21 @@ public class InvTransferController implements Initializable {
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
                         if (!printTransfer()) {
                             return;
-                            
+
                         }
-                        
+
                         clearFields();
                         initGrid();
                         pnEditMode = EditMode.UNKNOWN;
                         initButton(pnEditMode);
-                        
+
                     }
-                    
+
                 } else {
                     ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to print!");
                 }
                 break;
-            
+
             case "btnConfirm":
                 if (!psOldRec.equals("")) {
                     poTrans.setApproveID("");
@@ -702,53 +702,53 @@ public class InvTransferController implements Initializable {
                         //system user level
                         if (poGRider.getUserLevel() <= UserRight.ENCODER) {
                             JSONObject loJSON = showFXDialog.getApproval(poGRider);
-                            
+
                             if (loJSON == null) {
                                 ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to confirm transaction");
                                 return;
                             }
-                            
+
                             if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
                                 ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to confirm transaction");
                                 return;
                             }
-                            
+
                             poTrans.setApproveID(loJSON.get("sUserIDxx") != null ? (String) loJSON.get("sUserIDxx") : poGRider.getUserID());
-                        }else{
-                            poTrans.setApproveID( poGRider.getUserID());
-                        
+                        } else {
+                            poTrans.setApproveID(poGRider.getUserID());
+
                         }
                     } else {
 
                         //employee rank matrix
                         if (!poTrans.getOfficer(poGRider.getUserID())) {
                             JSONObject loJSON = showFXDialog.getApproval(poGRider);
-                            
+
                             if (loJSON == null) {
                                 ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to confirm transaction");
                                 return;
                             }
-                            
-                            if (!poTrans.getOfficer(poGRider.getUserID())) {
+
+                            if (!poTrans.getOfficer(loJSON.get("sUserIDxx") != null ? (String) loJSON.get("sUserIDxx") : poGRider.getUserID())) {
                                 ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to confirm transaction");
                                 return;
                             }
-                            
+
                         }
-                        
+
                     }
-                    
+
                     if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to confirm this transaction?") == true) {
-                        
+
                         if (poTrans.closeTransaction(psOldRec)) {
                             ShowMessageFX.Information(null, pxeModuleName, "Transaction confirmed successfully.");
-                            
+
                             if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to print this transaction?") == true) {
                                 if (!printTransfer()) {
                                     return;
                                 }
                             }
-                            
+
                             clearFields();
                             initGrid();
                             pnEditMode = EditMode.UNKNOWN;
@@ -765,7 +765,7 @@ public class InvTransferController implements Initializable {
             case "btnClose":
                 unloadForm();
                 return;
-            
+
             case "btnCancel":
                 if (ShowMessageFX.OkayCancel(null, pxeModuleName, "Do you want to disregard changes?") == true) {
                     clearFields();
@@ -774,11 +774,11 @@ public class InvTransferController implements Initializable {
                 } else {
                     return;
                 }
-            
+
             case "btnSearch":
                 return;
             case "btnSave":
-                
+
                 if (poTrans.saveTransaction()) {
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
                     clearFields();
@@ -828,7 +828,7 @@ public class InvTransferController implements Initializable {
                     loadDetail();
                 }
                 break;
-            
+
             case "btnUpdate":
                 if (!psOldRec.equals("")) {
                     if ("0".equals((String) poTrans.getMaster("cTranStat"))) {
@@ -843,21 +843,21 @@ public class InvTransferController implements Initializable {
                     }
                 }
                 break;
-            
+
             default:
                 ShowMessageFX.Warning(null, pxeModuleName, "Button with name " + lsButton + " not registered.");
                 return;
         }
-        
+
         initButton(pnEditMode);
     }
-    
+
     private void loadRecord() {
         XMBranch loBranch;
         txtField01.setText((String) poTrans.getMaster("sTransNox"));
         txtField50.setText((String) poTrans.getMaster("sTransNox"));
         psTransNox = txtField50.getText();
-        
+
         loBranch = poTrans.GetBranch((String) poTrans.getMaster(4), true);
         if (loBranch != null) {
             txtField04.setText((String) loBranch.getMaster("sBranchNm"));
@@ -868,16 +868,16 @@ public class InvTransferController implements Initializable {
         // Order No. and Truck
 //        txtField18.setText("");
         txtField06.setText("");
-        
+
         txtField03.setText(SQLUtil.dateFormat((Date) poTrans.getMaster("dTransact"), pxeDateFormat));
         psDestina = txtField51.getText();
         txtField05.setText((String) poTrans.getMaster("sRemarksx"));
-        
+
         txtField07.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster("nFreightx").toString()), "0.00"));
         txtField13.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster("nDiscount").toString()), "0.00"));
         txtField18.setText(poTrans.getMaster(18).toString());
         Label12.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster("nTranTotl").toString()), "#,##0.00"));
-        
+
         pnRow = 0;
         pnOldRow = 0;
         loadDetail();
@@ -885,7 +885,7 @@ public class InvTransferController implements Initializable {
         tableDetail.setItems(loadEmptyData());
         psOldRec = txtField01.getText();
     }
-    
+
     private void setTranStat(String fsValue) {
         switch (fsValue) {
             case "0":
@@ -907,7 +907,7 @@ public class InvTransferController implements Initializable {
                 imgTranStat.setImage(new Image("org/rmj/cas/food/inventory/fx/images/unknown.png"));
         }
     }
-    
+
     private ObservableList loadInitData(int fnRow) {
         ObservableList dataDetail = FXCollections.observableArrayList();
         ResultSet loRS = null;
@@ -917,7 +917,7 @@ public class InvTransferController implements Initializable {
         pbEdited = true;
         try {
             dataDetail.clear();
-            
+
             if (MiscUtil.RecordCount(loRS) == 0) {
                 dataDetail.add(new TableModel(String.valueOf(rowCount + 1),
                         SQLUtil.dateFormat(poGRider.getSysDate(), pxeDateFormat),
@@ -930,7 +930,7 @@ public class InvTransferController implements Initializable {
                         "",
                         ""
                 ));
-                
+
                 poTrans.setDetail(fnRow, "dExpiryDt", poGRider.getSysDate());
                 pdExpiryDt = (Date) poTrans.getDetail(fnRow, "dExpiryDt");
             } else {
@@ -954,7 +954,7 @@ public class InvTransferController implements Initializable {
                                 "",
                                 ""
                         ));
-                        
+
                         lnQtyOut = 0;
                     } else {
                         dataDetail.add(new TableModel(String.valueOf(rowCount + 1),
@@ -968,11 +968,11 @@ public class InvTransferController implements Initializable {
                                 "",
                                 ""
                         ));
-                        
+
                         lnQtyOut = (double) Math.round((lnQtyOut - loRS.getDouble("nQtyOnHnd")) * 100) / 100;
                     }
                     rowCount++;
-                    
+
                     loRS.next();
                 }
             }
@@ -981,7 +981,7 @@ public class InvTransferController implements Initializable {
         }
         return dataDetail;
     }
-    
+
     private ObservableList loadDetailData(int fnRow) {
         ObservableList dataDetail = FXCollections.observableArrayList();
         ResultSet loRS = null;
@@ -989,7 +989,7 @@ public class InvTransferController implements Initializable {
         double lnQuantity = 0;
         pnlRow = 0;
         pbFound = false;
-        
+
         try {
             dataDetail.clear();
             loRS.first();
@@ -1002,7 +1002,7 @@ public class InvTransferController implements Initializable {
                 } else {
                     lnQuantity = 0;
                 }
-                
+
                 dataDetail.add(new TableModel(String.valueOf(rowCount + 1),
                         SQLUtil.dateFormat(loRS.getDate("dExpiryDt"), pxeDateFormat),
                         String.valueOf(loRS.getDouble("nQtyOnHnd")),
@@ -1022,11 +1022,11 @@ public class InvTransferController implements Initializable {
         }
         return dataDetail;
     }
-    
+
     private void loadDetail() {
         int lnCtr;
         int lnRow = poTrans.ItemCount();
-        
+
         data.clear();
         /*ADD THE DETAIL*/
         for (lnCtr = 0; lnCtr <= lnRow - 1; lnCtr++) {
@@ -1048,15 +1048,15 @@ public class InvTransferController implements Initializable {
         if (!data.isEmpty()) {
             table.getSelectionModel().select(lnRow - 1);
             table.getFocusModel().focus(lnRow - 1);
-            
+
             pnRow = table.getSelectionModel().getSelectedIndex();
-            
+
             setDetailInfo(pnRow);
         }
         tableDetail.setItems(loadInitData(pnRow));
         Label12.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster("nTranTotl").toString()), "#,##0.00"));
     }
-    
+
     private void setDetailInfo(int fnRow) {
         if (fnRow >= 0) {
             txtDetail05.setText(String.valueOf(poTrans.getDetail(fnRow, "sOrderNox")));
@@ -1081,20 +1081,20 @@ public class InvTransferController implements Initializable {
             txtOther02.setText("0");
         }
     }
-    
+
     final ChangeListener<? super Boolean> txtField_Focus = (o, ov, nv) -> {
         if (!pbLoaded) {
             return;
         }
-        
+
         TextField txtField = (TextField) ((ReadOnlyBooleanPropertyBase) o).getBean();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
         String lsValue = txtField.getText();
-        
+
         if (lsValue == null) {
             return;
         }
-        
+
         if (!nv) {
             /*Lost Focus*/
             switch (lnIndex) {
@@ -1103,14 +1103,14 @@ public class InvTransferController implements Initializable {
                     break;
                 case 3:
                     /*dTransact*/
-                    
+
                     if (CommonUtils.isDate(lsValue, pxeDateFormat)) {
                         poTrans.setMaster("dTransact", SQLUtil.toDate(lsValue, pxeDateFormat));
                     } else {
                         ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                     }
-                    
+
                     Date utilDate = (Date) poTrans.getMaster("dTransact");
                     LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                     Date todayDate = poGRider.getServerDate();
@@ -1118,12 +1118,12 @@ public class InvTransferController implements Initializable {
                     if (localDate.isBefore(localToday.minusDays(3)) || localDate.isAfter(localToday.plusDays(3))) {
                         if (poGRider.getUserLevel() <= UserRight.ENCODER) {
                             JSONObject loJSON = showFXDialog.getApproval(poGRider);
-                            
+
                             if (loJSON == null) {
                                 ShowMessageFX.Warning("Approval failed.", pxeModuleName, "Unable to save transaction");
                                 poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                             }
-                            
+
                             if ((int) loJSON.get("nUserLevl") <= UserRight.ENCODER) {
                                 poTrans.setMaster(lnIndex, CommonUtils.toDate(pxeDateDefault));
                                 ShowMessageFX.Warning("User account has no right to approve.", pxeModuleName, "Unable to post transaction");
@@ -1131,7 +1131,7 @@ public class InvTransferController implements Initializable {
                             }
                         }
                     }
-                    
+
                     return;
                 case 2:/*Origin*/
                 case 4:/*sDestinat*/
@@ -1192,23 +1192,23 @@ public class InvTransferController implements Initializable {
             txtField.selectAll();
         }
     };
-    
+
     final ChangeListener<? super Boolean> txtDetail_Focus = (o, ov, nv) -> {
         if (!pbLoaded) {
             return;
         }
-        
+
         TextField txtDetail = (TextField) ((ReadOnlyBooleanPropertyBase) o).getBean();
         int lnIndex = Integer.parseInt(txtDetail.getId().substring(9, 11));
         String lsValue = txtDetail.getText();
-        
+
         if (pnRow < 0) {
             return;
         }
         if (lsValue == null) {
             return;
         }
-        
+
         if (!nv) {
             /*Lost Focus*/
             switch (lnIndex) {
@@ -1236,11 +1236,11 @@ public class InvTransferController implements Initializable {
 //                        break;
 //                    }
                     poTrans.setDetail(pnRow, "nQuantity", x);
-                    
+
                     if (!txtDetail03.getText().isEmpty()) {
                         poTrans.addDetail();
                         pnRow = poTrans.ItemCount() - 1;
-                        
+
                         loadDetail();
                         tableDetail.setItems(loadEmptyData());
                     } else {
@@ -1248,7 +1248,7 @@ public class InvTransferController implements Initializable {
                             tableDetail.setItems(loadEmptyData());
                         }
                     }
-                    
+
                     txtDetail05.requestFocus();
                     txtDetail05.selectAll();
                     break;
@@ -1274,7 +1274,7 @@ public class InvTransferController implements Initializable {
                         ShowMessageFX.Warning("Invalid date entry.", pxeModuleName, pxeDateFormatMsg);
                         poTrans.setDetail(pnRow, "dExpiryDt", CommonUtils.toDate(pxeDateDefault));
                     }
-                    
+
                     txtDetail.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
                     return;
             }
@@ -1293,20 +1293,20 @@ public class InvTransferController implements Initializable {
             txtDetail.selectAll();
         }
     };
-    
+
     final ChangeListener<? super Boolean> txtDetailArea_Focus = (o, ov, nv) -> {
         if (!pbLoaded) {
             return;
         }
-        
+
         TextArea txtDetail = (TextArea) ((ReadOnlyBooleanPropertyBase) o).getBean();
         int lnIndex = Integer.parseInt(txtDetail.getId().substring(9, 11));
         String lsValue = txtDetail.getText();
-        
+
         if (lsValue == null) {
             return;
         }
-        
+
         if (!nv) {
             /*Lost Focus*/
             switch (lnIndex) {
@@ -1315,7 +1315,7 @@ public class InvTransferController implements Initializable {
                     if (lsValue.length() > 256) {
                         lsValue = lsValue.substring(0, 256);
                     }
-                    
+
                     poTrans.setDetail(pnRow, "sNotesxxx", CommonUtils.TitleCase(lsValue));
             }
         } else {
@@ -1323,20 +1323,20 @@ public class InvTransferController implements Initializable {
             txtDetail.selectAll();
         }
     };
-    
+
     final ChangeListener<? super Boolean> txtArea_Focus = (o, ov, nv) -> {
         if (!pbLoaded) {
             return;
         }
-        
+
         TextArea txtField = (TextArea) ((ReadOnlyBooleanPropertyBase) o).getBean();
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
         String lsValue = txtField.getText();
-        
+
         if (lsValue == null) {
             return;
         }
-        
+
         if (!nv) {
             /*Lost Focus*/
             switch (lnIndex) {
@@ -1345,7 +1345,7 @@ public class InvTransferController implements Initializable {
                     if (lsValue.length() > 256) {
                         lsValue = lsValue.substring(0, 256);
                     }
-                    
+
                     poTrans.setMaster("sRemarksx", CommonUtils.TitleCase(lsValue));
                     txtField.setText((String) poTrans.getMaster("sRemarksx"));
                     break;
@@ -1355,20 +1355,20 @@ public class InvTransferController implements Initializable {
             txtField.selectAll();
         }
     };
-    
+
     @FXML
     private void table_Clicked(MouseEvent event) {
         pnRow = table.getSelectionModel().getSelectedIndex();
         if (pnRow < 0) {
             return;
         }
-        
+
         setDetailInfo(pnRow);
         if (poTrans.getDetail(pnRow, "sStockIDx").equals("")) {
             tableDetail.setItems(loadEmptyData());
             return;
         }
-        
+
         if (pbEdited == false) {
             tableDetail.setItems(loadInitData(pnRow));
         } else {
@@ -1381,10 +1381,10 @@ public class InvTransferController implements Initializable {
                 tableDetail.setItems(loadInitData(pnRow));
             }
         }
-        
+
         txtDetail03.requestFocus();
         txtDetail03.selectAll();
-        
+
     }
 
     /**
@@ -1397,7 +1397,7 @@ public class InvTransferController implements Initializable {
         if (poTrans.getDetail(pnRow, "sStockIDx").equals("")) {
             return;
         }
-        
+
         TableModel newData = new TableModel();
         newData.setIndex01(String.valueOf(fnRow + 1));
         newData.setIndex02(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
@@ -1410,7 +1410,7 @@ public class InvTransferController implements Initializable {
         newData.setIndex09("");
         newData.setIndex10("");
         tableDetail.getItems().add(newData);
-        
+
         index02.setSortType(TableColumn.SortType.ASCENDING);
         tableDetail.getSortOrder().add(index02);
         tableDetail.sort();
@@ -1422,7 +1422,7 @@ public class InvTransferController implements Initializable {
      */
     private ObservableList loadEmptyData() {
         ObservableList dataDetail = FXCollections.observableArrayList();
-        
+
         dataDetail.clear();
         dataDetail.add(new TableModel(String.valueOf(1),
                 "",
@@ -1437,11 +1437,11 @@ public class InvTransferController implements Initializable {
         ));
         return dataDetail;
     }
-    
+
     private boolean printTransfer() {
         JSONArray json_arr = new JSONArray();
         json_arr.clear();
-        
+
         for (int lnCtr = 0; lnCtr <= poTrans.ItemCount() - 1; lnCtr++) {
             JSONObject json_obj = new JSONObject();
             json_obj.put("sField01", (String) poTrans.getDetailOthers(lnCtr, "sBarCodex"));
@@ -1451,10 +1451,10 @@ public class InvTransferController implements Initializable {
             json_obj.put("lField01", (Double) poTrans.getDetail(lnCtr, "nQuantity"));
             json_arr.add(json_obj);
         }
-        
+
         String lsSQL = "SELECT sBranchNm FROM Branch WHERE sBranchCD = " + SQLUtil.toSQL((String) poTrans.getMaster("sDestinat"));
         ResultSet loRS = poGRider.executeQuery(lsSQL);
-        
+
         try {
             if (loRS.next()) {
                 lsSQL = loRS.getString("sBranchNm");
@@ -1472,43 +1472,43 @@ public class InvTransferController implements Initializable {
             params.put("sReportDt", CommonUtils.xsDateMedium((Date) poTrans.getMaster("dTransact")));
             params.put("sPrintdBy", System.getProperty("user.name"));
             params.put("xRemarksx", poTrans.getMaster("sRemarksx"));
-            
+
             lsSQL = "SELECT sClientNm FROM Client_Master WHERE sClientID IN ("
                     + "SELECT sEmployNo FROM xxxSysUser WHERE sUserIDxx = " + SQLUtil.toSQL(poGRider.getUserID()) + ")";
             loRS = poGRider.executeQuery(lsSQL);
-            
+
             if (loRS.next()) {
                 params.put("sPrepared", loRS.getString("sClientNm"));
             } else {
                 params.put("sPrepared", "");
             }
-            
+
             InputStream stream = new ByteArrayInputStream(json_arr.toJSONString().getBytes("UTF-8"));
             JsonDataSource jrjson = new JsonDataSource(stream);
-            
+
             JasperPrint _jrprint = JasperFillManager.fillReport("d:/GGC_Java_Systems/reports/InvTransferPrint.jasper", params, jrjson);
             JasperViewer jv = new JasperViewer(_jrprint, false);
             jv.setVisible(true);
             jv.setAlwaysOnTop(true);
-            
+
         } catch (JRException | UnsupportedEncodingException | SQLException ex) {
             Logger.getLogger(InvTransferController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return true;
     }
-    
+
     IMasterDetail poCallBack = new IMasterDetail() {
         @Override
         public void MasterRetreive(int fnIndex) {
             getMaster(fnIndex);
         }
-        
+
         @Override
         public void DetailRetreive(int fnIndex) {
             switch (fnIndex) {
-                
+
                 case 10:
                     txtDetail10.setText((String) poTrans.getDetail(pnRow, "sNotesxxx"));
 //                    loadDetail();
@@ -1541,18 +1541,18 @@ public class InvTransferController implements Initializable {
                 case 8:
                     txtDetail08.setText(SQLUtil.dateFormat((Date) poTrans.getDetail(pnRow, "dExpiryDt"), pxeDateFormat));
                     break;
-                
+
             }
         }
     };
-    
+
     private void getMaster(int fnIndex) {
         XMBranch loBranch;
         switch (fnIndex) {
             case 3:
                 txtField03.setText(SQLUtil.dateFormat((Date) poTrans.getMaster("dTransact"), pxeDateFormat));
                 break;
-            
+
             case 4:
                 loBranch = poTrans.GetBranch((String) poTrans.getMaster(fnIndex), true);
                 if (loBranch != null) {
@@ -1564,7 +1564,7 @@ public class InvTransferController implements Initializable {
                 break;
             case 13:
                 txtField13.setText(CommonUtils.NumberFormat(Double.valueOf(poTrans.getMaster("nDiscount").toString()), "0.00"));
-            
+
         }
     }
 }
