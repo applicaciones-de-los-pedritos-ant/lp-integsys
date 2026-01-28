@@ -31,6 +31,7 @@ import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
+import org.rmj.appdriver.constants.UserRight;
 import org.rmj.cas.inventory.base.Inventory;
 
 public class InventoryController implements Initializable {
@@ -513,6 +514,16 @@ public class InventoryController implements Initializable {
                 return;
 
             case "btnNew":
+               if ( poGRider.getEmployeeNo() == null || poGRider.getEmployeeNo().isEmpty() 
+                        || (poGRider.getUserLevel() < UserRight.SYSADMIN
+                        && !("M00110017110»P00119000033").contains(poGRider.getEmployeeNo()))) {
+
+                    ShowMessageFX.Information("New item creation is not allowed. "
+                            + "Please inform the system administrator", pxeModuleName, "");
+                    return;
+
+                }
+
                 if (poRecord.NewRecord()) {
                     loadRecord();
                 }
@@ -594,6 +605,16 @@ public class InventoryController implements Initializable {
                 return;
 
             case "btnUpdate":
+                if ( poGRider.getEmployeeNo() == null || poGRider.getEmployeeNo().isEmpty() 
+                        || !("M00110017110»P00119000033").contains(poGRider.getEmployeeNo())
+                        || (poGRider.getUserLevel() < UserRight.SYSADMIN
+                        && !("M00110017110»P00119000033").contains(poGRider.getEmployeeNo()))) {
+
+                    ShowMessageFX.Information("Update item is not allowed. "
+                            + "Please inform the system administrator", pxeModuleName, "");
+                    return;
+
+                }
                 if (poRecord.getMaster(1) != null && !txtField01.getText().equals("")) {
                     txtField02.setEditable(false);
                     txtField05.setEditable(false);
