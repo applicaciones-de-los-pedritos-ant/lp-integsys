@@ -514,6 +514,7 @@ public class InventoryController implements Initializable {
                 return;
 
             case "btnNew":
+                //this is system request update pedritos 01/27/2026
                if ( poGRider.getEmployeeNo() == null || poGRider.getEmployeeNo().isEmpty() 
                         || (poGRider.getUserLevel() < UserRight.SYSADMIN
                         && !("M00110017110»P00119000033").contains(poGRider.getEmployeeNo()))) {
@@ -531,6 +532,7 @@ public class InventoryController implements Initializable {
                 break;
 
             case "btnSave":
+                
                 if (sendOtherDetail()) {
                     if (poRecord.SaveRecord()) {
                         if (poRecord.OpenRecord(psOldRec)) {
@@ -605,6 +607,7 @@ public class InventoryController implements Initializable {
                 return;
 
             case "btnUpdate":
+                //this is system request update pedritos 01/27/2026
                 if ( poGRider.getEmployeeNo() == null || poGRider.getEmployeeNo().isEmpty() 
                         || !("M00110017110»P00119000033").contains(poGRider.getEmployeeNo())
                         || (poGRider.getUserLevel() < UserRight.SYSADMIN
@@ -629,6 +632,16 @@ public class InventoryController implements Initializable {
                 break;
 
             case "btnActivate":
+                //this is system request update pedritos 01/27/2026
+               if ( poGRider.getEmployeeNo() == null || poGRider.getEmployeeNo().isEmpty() 
+                        || (poGRider.getUserLevel() < UserRight.SYSADMIN
+                        && !("M00110017110»P00119000033").contains(poGRider.getEmployeeNo()))) {
+
+                    ShowMessageFX.Information("Unable to Active/Inactived Item. "
+                            + "Please inform the system administrator", pxeModuleName, "");
+                    return;
+
+                }
                 if (poRecord.getMaster(1) != null && !txtField01.getText().equals("")) {
                     if (poRecord.getMaster(1) != null && !poRecord.getMaster(1).toString().equals("")) {
                         if (btnActivate.getText().equals("Activate")) {
