@@ -5,7 +5,9 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyBooleanPropertyBase;
@@ -33,6 +35,7 @@ import static javafx.scene.input.KeyCode.UP;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import org.json.simple.JSONObject;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.appdriver.constants.TransactionStatus;
 import org.rmj.appdriver.GRider;
@@ -42,6 +45,8 @@ import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.cas.inventory.production.base.DailyProduction;
 import org.rmj.appdriver.agentfx.callback.IMasterDetail;
+import org.rmj.appdriver.agentfx.ui.showFXDialog;
+import org.rmj.appdriver.constants.UserRight;
 
 public class DailyProductionController implements Initializable {
 
@@ -113,6 +118,8 @@ public class DailyProductionController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new DailyProduction(poGRider, poGRider.getBranchCode(), false);
+        poTrans.setTranStat(10);
+
         poTrans.setCallBack(poCallBack);
 
         btnCancel.setOnAction(this::cmdButton_Click);
@@ -623,11 +630,69 @@ public class DailyProductionController implements Initializable {
                 break;
             case "btnVoid":
                 if (!psOldRec.equals("")) {
-                    if (!poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_OPEN)) {
+                    if (poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_CANCELLED)
+                            || poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_POSTED)
+                            || poTrans.getMaster("cTranStat").equals(TransactionStatus.STATE_VOID)) {
                         ShowMessageFX.Warning("Trasaction may be CANCELLED/POSTED.", pxeModuleName, "Can't update processed transactions!!!");
                         return;
                     }
-                    if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to void this transaction?") == true) {
+
+                    Date transDate = (Date) poTrans.getMaster("dTransact");
+                    Date serverDate = poGRider.getServerDate();
+
+                    LocalDate transLocalDate = Instant.ofEpochMilli(transDate.getTime())
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate();
+
+                    LocalDate serverLocalDate = Instant.ofEpochMilli(serverDate.getTime())
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate();
+
+                    if (!transLocalDate.equals(serverLocalDate)) {
+                        ShowMessageFX.Warning(
+                                "Transaction may already be CANCELLED, POSTED, or CONFIRMED.\nOnly transactions within the day can be modified.",
+                                pxeModuleName,
+                                "Can't update processed transactions!!!"
+                        );
+                        return;
+                    }
+                    if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
+                        JSONObject loJSON = showFXDialog.getApproval(poGRider);
+
+                        if (loJSON != null) {
+                            if ((int) loJSON.get("nUserLevl") < UserRight.SUPERVISOR) {
+                                ShowMessageFX.Information("Only managerial accounts can approved transactions.", pxeModuleName, "Authentication failed!!!");
+                                return;
+                            }
+                            if (poTrans.voidTransaction(psOldRec)) {
+                                ShowMessageFX.Information(null, pxeModuleName, "Transaction VOIDED successfully.");
+                                clearFields();
+                                initGrid();
+                                pnEditMode = EditMode.UNKNOWN;
+                                initButton(pnEditMode);
+                            } else {
+                                if (poTrans.voidTransaction(psOldRec)) {
+                                    ShowMessageFX.Information(null, pxeModuleName, "Transaction VOIDED successfully.");
+                                    clearFields();
+                                    initGrid();
+                                    pnEditMode = EditMode.UNKNOWN;
+                                    initButton(pnEditMode);
+                                } else {
+                                    ShowMessageFX.Information(null, pxeModuleName, poTrans.getMessage());
+
+                                }
+                            }
+                            if (ShowMessageFX.YesNo(null, pxeModuleName, "Do you want to void this transaction?") == true) {
+                                if (poTrans.voidTransaction(psOldRec)) {
+                                    ShowMessageFX.Information(null, pxeModuleName, "Transaction VOIDED successfully.");
+                                    clearFields();
+                                    initGrid();
+                                    pnEditMode = EditMode.UNKNOWN;
+                                    initButton(pnEditMode);
+                                }
+                            }
+                        }
+                    } else {
                         if (poTrans.voidTransaction(psOldRec)) {
                             ShowMessageFX.Information(null, pxeModuleName, "Transaction VOIDED successfully.");
                             clearFields();
@@ -636,7 +701,6 @@ public class DailyProductionController implements Initializable {
                             initButton(pnEditMode);
                         }
                     }
-
                 } else {
                     ShowMessageFX.Warning(null, pxeModuleName, "Please select a record to void!");
                 }
@@ -1034,7 +1098,7 @@ public class DailyProductionController implements Initializable {
         TextField txtDetailOther = (TextField) event.getSource();
         int lnIndex = Integer.parseInt(txtDetailOther.getId().substring(14, 16));
         String lsValue = txtDetailOther.getText();
-        
+
         if (event.getCode() == F3) {
             switch (lnIndex) {
                 case 1://description
@@ -1145,8 +1209,8 @@ public class DailyProductionController implements Initializable {
                     && Double.parseDouble(data.get(pnRow).getIndex07()) > 0.0
                     || data.size() == 1) {
 
-                table.getSelectionModel().select(lnCtr -1);
-                table.getFocusModel().focus(lnCtr -1 );
+                table.getSelectionModel().select(lnCtr - 1);
+                table.getFocusModel().focus(lnCtr - 1);
             } else {
 
                 table.getSelectionModel().select(pnRow);
@@ -1182,7 +1246,7 @@ public class DailyProductionController implements Initializable {
         /*FOCUS ON FIRST ROW*/
         if (!rawData.isEmpty()) {
             if (Double.parseDouble(rawData.get(pnRawdata).getIndex06()) > 0.0
-                    && Double.parseDouble(rawData.get(pnRawdata).getIndex07())> 0.0
+                    && Double.parseDouble(rawData.get(pnRawdata).getIndex07()) > 0.0
                     || rawData.size() == 1) {
 
                 table1.getSelectionModel().select(lnRow - 1);
