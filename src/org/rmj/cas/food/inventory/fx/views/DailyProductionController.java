@@ -118,7 +118,7 @@ public class DailyProductionController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         poTrans = new DailyProduction(poGRider, poGRider.getBranchCode(), false);
-        poTrans.setTranStat(10);
+//        poTrans.setTranStat(10);
 
         poTrans.setCallBack(poCallBack);
 
