@@ -31,6 +31,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.json.simple.JSONObject;
 import org.rmj.appdriver.constants.EditMode;
+import org.rmj.appdriver.constants.RecordStatus;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
@@ -42,6 +43,12 @@ import org.rmj.appdriver.agentfx.callback.IMasterDetail;
 import org.rmj.appdriver.agentfx.ui.showFXDialog;
 import org.rmj.appdriver.constants.UserRight;
 import org.rmj.purchasing.agent.PurchaseOrders;
+import javafx.stage.FileChooser;
+
+import java.io.IOException;
+
+import java.io.File;
+import org.rmj.appdriver.constants.EditMode;
 
 public class PurchaseOrderController implements Initializable {
 
@@ -96,6 +103,8 @@ public class PurchaseOrderController implements Initializable {
     @FXML
     private Button btnBrowse;
     @FXML
+    private Button btnImport;
+    @FXML
     private Button btnPrint;
     @FXML
     private ImageView imgTranStat;
@@ -135,6 +144,7 @@ public class PurchaseOrderController implements Initializable {
         btnExit.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
         btnPrint.setOnAction(this::cmdButton_Click);
+        btnImport.setOnAction(this::cmdButton_Click);
 
         /*Add listener to text fields*/
         txtField02.focusedProperty().addListener(txtField_Focus);
@@ -316,6 +326,7 @@ public class PurchaseOrderController implements Initializable {
             case "btnNew":
                 if (poTrans.newTransaction()) {
                     clearFields();
+                    refreshReferenceNumber();
                     loadRecord();
                     pnEditMode = poTrans.getEditMode();
 
@@ -325,6 +336,202 @@ public class PurchaseOrderController implements Initializable {
                 }
                 break;
             case "btnConfirm":
+                if (!psOldRec.equals("")) {
+
+                    if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
+                        ShowMessageFX.Information(
+                                "Only supervisor account or above can use this feature.",
+                                "Notice",
+                                null
+                        );
+                        return;
+                    }
+
+                    System.setProperty(
+                            "tokenized.approval",
+                            CommonUtils.getConfiguration(poGRider, "TokenAprvl")
+                    );
+
+                    // Temporary hardcode config for tokenized approval.
+                    System.setProperty(
+                            "tokenized.approval",
+                            CommonUtils.getConfiguration(poGRider, "TokenAprvl")
+                    );
+
+                    System.out.println(
+                            "CONFIRM: tokenized.approval = "
+                            + System.getProperty("tokenized.approval")
+                    );
+
+                    if (System.getProperty("tokenized.approval").equals("1")) {
+
+                        if (!"0".equals((String) poTrans.getMaster("cTranStat"))) {
+                            return;
+                        }
+
+                        System.out.println("CONFIRM: Before getTokenApproval");
+
+                        if (showFXDialog.getTokenApproval(
+                                poGRider,
+                                "CASys_DBF_LP.PO_Master",
+                                psOldRec)) {
+
+                            System.out.println("CONFIRM: getTokenApproval returned TRUE");
+
+                            System.out.println("CONFIRM: Before closeTransaction");
+
+                            if (poTrans.closeTransaction(
+                                    psOldRec,
+                                    poGRider.getUserID(),
+                                    "TOKENAPPROVL")) {
+
+                                System.out.println("CONFIRM: closeTransaction returned TRUE");
+
+                                ShowMessageFX.Information(
+                                        "Transaction was approved successfully.",
+                                        pxeModuleName,
+                                        "Approval successful!!!"
+                                );
+
+                                if (poTrans.openTransaction(psOldRec)) {
+
+                                    System.out.println("CONFIRM: openTransaction returned TRUE");
+
+                                    clearFields();
+                                    loadRecord();
+                                    psOldRec = (String) poTrans.getMaster("sTransNox");
+
+                                    if (ShowMessageFX.YesNo(
+                                            null,
+                                            pxeModuleName,
+                                            "Do you want to print this transaction?"
+                                    )) {
+                                        poTrans.printRecord();
+                                    }
+
+                                    clearFields();
+                                    initGrid();
+                                    pnEditMode = EditMode.UNKNOWN;
+
+                                } else {
+                                    System.out.println("CONFIRM: openTransaction returned FALSE");
+                                }
+
+                            } else {
+                                System.out.println("CONFIRM: closeTransaction returned FALSE");
+                                poTrans.ShowMessageFX();
+                            }
+
+                        } else {
+                            System.out.println("CONFIRM: getTokenApproval returned FALSE");
+
+                            ShowMessageFX.Information(
+                                    "Transaction was not confirmed.",
+                                    "Notice",
+                                    null
+                            );
+                        }
+
+                    } else {
+
+                        // User approval type
+                        if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
+
+                            JSONObject loJSON = showFXDialog.getApproval(poGRider);
+
+                            if (loJSON != null) {
+
+                                if ((int) loJSON.get("nUserLevl") < UserRight.SUPERVISOR) {
+                                    ShowMessageFX.Information(
+                                            "Only managerial accounts can approved transactions.",
+                                            pxeModuleName,
+                                            "Authentication failed!!!"
+                                    );
+                                    return;
+                                }
+
+                                if (poTrans.closeTransaction(
+                                        psOldRec,
+                                        (String) loJSON.get("sUserIDxx"),
+                                        "USERAPPROVAL")) {
+
+                                    ShowMessageFX.Information(
+                                            "Transaction was approved successfully.",
+                                            pxeModuleName,
+                                            "Approval successful!!!"
+                                    );
+
+                                    if (poTrans.openTransaction(psOldRec)) {
+                                        loadRecord();
+                                        psOldRec = (String) poTrans.getMaster("sTransNox");
+
+                                        if (ShowMessageFX.YesNo(
+                                                null,
+                                                pxeModuleName,
+                                                "Do you want to print this transaction?"
+                                        )) {
+                                            poTrans.printRecord();
+                                        }
+
+                                        pnEditMode = poTrans.getEditMode();
+                                    }
+
+                                    clearFields();
+                                    initGrid();
+                                    pnEditMode = EditMode.UNKNOWN;
+
+                                } else {
+                                    poTrans.ShowMessageFX();
+                                }
+
+                            } else {
+                                poTrans.ShowMessageFX();
+                            }
+
+                        } else {
+
+                            if (poTrans.closeTransaction(
+                                    psOldRec,
+                                    poGRider.getUserID(),
+                                    "USERAPPROVAL")) {
+
+                                ShowMessageFX.Information(
+                                        "Transaction was approved successfully.",
+                                        pxeModuleName,
+                                        "Approval successful!!!"
+                                );
+
+                                if (poTrans.openTransaction(psOldRec)) {
+                                    loadRecord();
+                                    psOldRec = (String) poTrans.getMaster("sTransNox");
+
+                                    poTrans.printRecord();
+
+                                    pnEditMode = poTrans.getEditMode();
+
+                                } else {
+                                    clearFields();
+                                    initGrid();
+                                    pnEditMode = EditMode.UNKNOWN;
+                                }
+
+                            } else {
+                                poTrans.ShowMessageFX();
+                            }
+                        }
+                    }
+
+                } else {
+                    ShowMessageFX.Information(
+                            "Please load transaction to approve.",
+                            pxeModuleName,
+                            "No transaction loaded."
+                    );
+                    return;
+                }
+
+                break;    
+            case "btnConfirm1":
                 if (!psOldRec.equals("")) {
                     if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
                         ShowMessageFX.Information("Only supervisor account or above can use this feature.", "Notice", null);
@@ -480,6 +687,8 @@ public class PurchaseOrderController implements Initializable {
 //                        }
 //                    }
 //                }
+                
+                
                 if (poTrans.saveTransaction()) {
                     ShowMessageFX.Information(null, pxeModuleName, "Transaction saved successfuly.");
 
@@ -497,10 +706,15 @@ public class PurchaseOrderController implements Initializable {
                 } else {
                     poTrans.ShowMessageFX();
                 }
+                
                 return;
             case "btnDel":
                 deleteDetail();
                 return;
+            case "btnImport":
+                System.out.println("IMPORT BUTTON CLICKED");
+                importExcel();
+                break;
             case "btnBrowse":
                 if (pnIndex == 50) {
                     if (poTrans.BrowseRecord(txtField50.getText(), true)) {
@@ -551,10 +765,697 @@ public class PurchaseOrderController implements Initializable {
         initButton(pnEditMode);
     }
 
+    private void refreshReferenceNumber() {
+//        txtField01.setText((String) poTrans.getMaster(1));
+        String value1 = (poTrans.getMaster(1).toString());
+
+        if (value1.length() > 8) {
+            value1 = value1.substring(value1.length() - 8);
+        }
+
+        txtField07.setText(value1);
+        if (txtField07.getText().length() > 8) {
+                        ShowMessageFX.Warning("Max characters for `Reference No.` exceeds the limit.", pxeModuleName, "Please verify your entry.");
+                        txtField07.requestFocus();
+                        return;
+                    }
+        poTrans.setMaster(7, txtField07.getText());
+    }
+    
+    private void importExcel() {
+        FileChooser loChooser = new FileChooser();
+
+        loChooser.setTitle("Select Purchase Order Excel File");
+
+        loChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(
+                        "Excel Files (*.xlsx)",
+                        "*.xlsx"
+                )
+        );
+
+        File loFile = loChooser.showOpenDialog(
+                btnImport.getScene().getWindow()
+        );
+
+        if (loFile == null) {
+            return;
+        }
+
+        System.out.println(
+                "Selected Excel File: " + loFile.getAbsolutePath()
+        );
+
+        java.util.zip.ZipFile loZip = null;
+
+        try {
+            /*
+             * XLSX is a ZIP archive.
+             *
+             * We intentionally use java.util.zip.ZipFile here instead
+             * of Apache POI's XSSFWorkbook because this project uses
+             * commons-compress-1.9.
+             */
+            loZip = new java.util.zip.ZipFile(loFile);
+
+            /*
+             * Read the first worksheet.
+             */
+            java.util.zip.ZipEntry loSheetEntry =
+                    loZip.getEntry("xl/worksheets/sheet1.xml");
+
+            if (loSheetEntry == null) {
+                ShowMessageFX.Error(
+                        "Unable to find the first worksheet in the Excel file.",
+                        pxeModuleName,
+                        "Invalid Excel File"
+                );
+                return;
+            }
+
+            /*
+             * Read Shared Strings.
+             */
+            java.util.List<String> laSharedStrings =
+                    new java.util.ArrayList<String>();
+
+            java.util.zip.ZipEntry loSharedEntry =
+                    loZip.getEntry("xl/sharedStrings.xml");
+
+            if (loSharedEntry != null) {
+
+                javax.xml.parsers.DocumentBuilderFactory loFactory =
+                        javax.xml.parsers.DocumentBuilderFactory.newInstance();
+
+                /*
+                 * Prevent XML external entity processing.
+                 */
+                loFactory.setFeature(
+                        "http://apache.org/xml/features/disallow-doctype-decl",
+                        true
+                );
+
+                loFactory.setFeature(
+                        "http://xml.org/sax/features/external-general-entities",
+                        false
+                );
+
+                loFactory.setFeature(
+                        "http://xml.org/sax/features/external-parameter-entities",
+                        false
+                );
+
+                loFactory.setXIncludeAware(false);
+                loFactory.setExpandEntityReferences(false);
+
+                javax.xml.parsers.DocumentBuilder loBuilder =
+                        loFactory.newDocumentBuilder();
+
+                org.w3c.dom.Document loSharedDoc =
+                        loBuilder.parse(
+                                loZip.getInputStream(loSharedEntry)
+                        );
+
+                org.w3c.dom.NodeList loSI =
+                        loSharedDoc.getElementsByTagName("si");
+
+                for (int lnCtr = 0;
+                        lnCtr < loSI.getLength();
+                        lnCtr++) {
+
+                    org.w3c.dom.Element loSIElement =
+                            (org.w3c.dom.Element) loSI.item(lnCtr);
+
+                    org.w3c.dom.NodeList loTextNodes =
+                            loSIElement.getElementsByTagName("t");
+
+                    StringBuilder loText =
+                            new StringBuilder();
+
+                    for (int lnText = 0;
+                            lnText < loTextNodes.getLength();
+                            lnText++) {
+
+                        loText.append(
+                                loTextNodes.item(lnText).getTextContent()
+                        );
+                    }
+
+                    laSharedStrings.add(loText.toString());
+                }
+            }
+
+            /*
+             * Read the worksheet XML.
+             */
+            javax.xml.parsers.DocumentBuilderFactory loFactory =
+                    javax.xml.parsers.DocumentBuilderFactory.newInstance();
+
+            /*
+             * Prevent XML external entity processing.
+             */
+            loFactory.setFeature(
+                    "http://apache.org/xml/features/disallow-doctype-decl",
+                    true
+            );
+
+            loFactory.setFeature(
+                    "http://xml.org/sax/features/external-general-entities",
+                    false
+            );
+
+            loFactory.setFeature(
+                    "http://xml.org/sax/features/external-parameter-entities",
+                    false
+            );
+
+            loFactory.setXIncludeAware(false);
+            loFactory.setExpandEntityReferences(false);
+
+            javax.xml.parsers.DocumentBuilder loBuilder =
+                    loFactory.newDocumentBuilder();
+
+            org.w3c.dom.Document loSheetDoc =
+                    loBuilder.parse(
+                            loZip.getInputStream(loSheetEntry)
+                    );
+
+            org.w3c.dom.NodeList loRows =
+                    loSheetDoc.getElementsByTagName("row");
+
+            System.out.println("Excel Sheet: Sheet1");
+
+            /*
+             * First row = Header.
+             */
+            org.w3c.dom.Element loHeaderRow = null;
+
+            if (loRows.getLength() > 0) {
+                loHeaderRow =
+                        (org.w3c.dom.Element) loRows.item(0);
+            }
+
+            if (loHeaderRow == null) {
+                ShowMessageFX.Error(
+                        "The Excel file does not contain a header row.",
+                        pxeModuleName,
+                        "Invalid Excel File"
+                );
+                return;
+            }
+
+            /*
+             * Locate the Barcode column.
+             */
+            int lnBarcodeColumn = -1;
+
+            org.w3c.dom.NodeList loHeaderCells =
+                    loHeaderRow.getElementsByTagName("c");
+
+            for (int lnCtr = 0;
+                    lnCtr < loHeaderCells.getLength();
+                    lnCtr++) {
+
+                org.w3c.dom.Element loCell =
+                        (org.w3c.dom.Element) loHeaderCells.item(lnCtr);
+
+                String lsReference =
+                        loCell.getAttribute("r");
+
+                String lsValue =
+                        getExcelCellValue(
+                                loCell,
+                                laSharedStrings
+                        );
+
+                if ("Barcode".equalsIgnoreCase(lsValue.trim())) {
+
+                    StringBuilder lsColumn =
+                            new StringBuilder();
+
+                    for (int lnChar = 0;
+                            lnChar < lsReference.length();
+                            lnChar++) {
+
+                        char lcChar =
+                                lsReference.charAt(lnChar);
+
+                        if (Character.isLetter(lcChar)) {
+                            lsColumn.append(lcChar);
+                        } else {
+                            break;
+                        }
+                    }
+
+                    lnBarcodeColumn =
+                            excelColumnToNumber(
+                                    lsColumn.toString()
+                            );
+
+                    break;
+                }
+            }
+
+            /*
+             * Barcode column was not found.
+             */
+            if (lnBarcodeColumn < 0) {
+                ShowMessageFX.Error(
+                        "The Excel file does not contain a 'Barcode' column.",
+                        pxeModuleName,
+                        "Invalid Excel File"
+                );
+                return;
+            }
+
+            System.out.println(
+                    "Barcode column found at Excel column: "
+                    + (lnBarcodeColumn + 1)
+            );
+
+            /*
+             * Counters for import result.
+             */
+            int lnImported = 0;
+            int lnSkipped = 0;
+
+            /*
+             * Process every Excel row after the header.
+             */
+            for (int lnRow = 1;
+                    lnRow < loRows.getLength();
+                    lnRow++) {
+
+                org.w3c.dom.Element loRow =
+                        (org.w3c.dom.Element) loRows.item(lnRow);
+
+                org.w3c.dom.NodeList loCells =
+                        loRow.getElementsByTagName("c");
+
+                String lsBarcode = "";
+
+                /*
+                 * Find the Barcode cell.
+                 */
+                for (int lnCell = 0;
+                        lnCell < loCells.getLength();
+                        lnCell++) {
+
+                    org.w3c.dom.Element loCell =
+                            (org.w3c.dom.Element) loCells.item(lnCell);
+
+                    String lsReference =
+                            loCell.getAttribute("r");
+
+                    StringBuilder lsColumn =
+                            new StringBuilder();
+
+                    for (int lnChar = 0;
+                            lnChar < lsReference.length();
+                            lnChar++) {
+
+                        char lcChar =
+                                lsReference.charAt(lnChar);
+
+                        if (Character.isLetter(lcChar)) {
+                            lsColumn.append(lcChar);
+                        } else {
+                            break;
+                        }
+                    }
+
+                    int lnColumn =
+                            excelColumnToNumber(
+                                    lsColumn.toString()
+                            );
+
+                    if (lnColumn == lnBarcodeColumn) {
+
+                        lsBarcode =
+                                getExcelCellValue(
+                                        loCell,
+                                        laSharedStrings
+                                ).trim();
+
+                        break;
+                    }
+                }
+
+                /*
+                 * No Barcode = completely ignore this row.
+                 */
+                if (lsBarcode.isEmpty()) {
+                    System.out.println(
+                            "Excel Row " + (lnRow + 1)
+                            + " - No Barcode. Skipping."
+                    );
+
+                    lnSkipped++;
+                    continue;
+                }
+
+                System.out.println(
+                        "Excel Row " + (lnRow + 1)
+                        + " - Barcode: " + lsBarcode
+                );
+
+                /*
+                 * =====================================================
+                 * STEP 4
+                 * =====================================================
+                 *
+                 * Search Inventory using ONLY the barcode.
+                 *
+                 * No Description search.
+                 * No Quick Search dialog.
+                 * No F3 simulation.
+                 */
+                String lsSQL =
+                        "SELECT"
+                        + " a.sStockIDx"
+                        + ", a.sBarCodex"
+                        + ", a.sDescript"
+                        + ", a.nUnitPrce"
+                        + ", a.sBrandCde"
+                        + ", b.sDescript AS xBrandNme"
+                        + ", IFNULL(e.nQtyOnHnd, 0) AS nQtyOnHnd"
+                        + " FROM Inventory a"
+                        + " LEFT JOIN Brand b"
+                        + " ON a.sBrandCde = b.sBrandCde"
+                        + " , Inv_Master e"
+                        + " WHERE a.sStockIDx = e.sStockIDx"
+                        + " AND e.sBranchCd = "
+                        + SQLUtil.toSQL(poGRider.getBranchCode())
+                        + " AND a.sBarCodex = "
+                        + SQLUtil.toSQL(lsBarcode)
+                        + " AND a.cRecdStat = "
+                        + SQLUtil.toSQL(RecordStatus.ACTIVE)
+                        + " LIMIT 1";
+
+                ResultSet loRS = null;
+
+                try {
+
+                    loRS = poGRider.executeQuery(lsSQL);
+
+                    /*
+                     * Barcode does not exist in Inventory.
+                     *
+                     * IMPORTANT:
+                     * We do NOT create a blank/custom detail.
+                     */
+                    if (loRS == null || !loRS.next()) {
+
+                        System.out.println(
+                                "Barcode NOT FOUND in Inventory: "
+                                + lsBarcode
+                        );
+
+                        lnSkipped++;
+                        continue;
+                    }
+
+                    /*
+                     * Get Inventory information.
+                     */
+                    String lsStockIDx =
+                            loRS.getString("sStockIDx");
+
+                    double lnUnitPrice =
+                            loRS.getDouble("nUnitPrce");
+
+                    double lnQtyOnHand =
+                            loRS.getDouble("nQtyOnHnd");
+
+                    String lsBrand =
+                            loRS.getString("xBrandNme");
+
+                    if (lsBrand == null) {
+                        lsBrand = "";
+                    }
+
+                    /*
+                     * =================================================
+                     * Add the item to the current PO detail row.
+                     * =================================================
+                     *
+                     * addDetail() ensures that there is a detail row
+                     * available.
+                     */
+                    poTrans.addDetail();
+
+                    /*
+                     * Current row is always the last row.
+                     */
+                    pnRow = poTrans.ItemCount() - 1;
+
+                    /*
+                     * Set the Inventory information.
+                     */
+                    poTrans.setDetail(
+                            pnRow,
+                            "sStockIDx",
+                            lsStockIDx
+                    );
+
+                    poTrans.setDetail(
+                            pnRow,
+                            "nUnitPrce",
+                            lnUnitPrice
+                    );
+
+                    poTrans.setDetail(
+                            pnRow,
+                            "nQtyOnHnd",
+                            lnQtyOnHand
+                    );
+
+                    poTrans.setDetail(
+                            pnRow,
+                            "sBrandNme",
+                            lsBrand
+                    );
+
+                    /*
+                     * Since the Excel file currently contains
+                     * BARCODE ONLY, each imported row represents
+                     * one unit.
+                     *
+                     * Setting nQuantity also causes PurchaseOrders
+                     * to automatically create the next blank row.
+                     */
+                    poTrans.setDetail(
+                            pnRow,
+                            "nQuantity",
+                            1.0
+                    );
+
+                    /*
+                     * setDetail(nQuantity) automatically adds another
+                     * blank row and the callback may update pnRow.
+                     *
+                     * Therefore, explicitly point pnRow back to the
+                     * newly created blank row.
+                     */
+                    pnRow = poTrans.ItemCount() - 1;
+
+                    System.out.println(
+                            "Imported successfully:"
+                            + " Barcode=" + lsBarcode
+                            + ", StockID=" + lsStockIDx
+                            + ", UnitPrice=" + lnUnitPrice
+                            + ", QtyOnHand=" + lnQtyOnHand
+                            + ", Qty=1.0"
+                    );
+
+                    lnImported++;
+
+                } catch (SQLException ex) {
+
+                    System.out.println(
+                            "Unable to search Inventory for Barcode: "
+                            + lsBarcode
+                    );
+
+                    ex.printStackTrace();
+
+                    lnSkipped++;
+
+                } finally {
+
+                    if (loRS != null) {
+                        try {
+                            loRS.close();
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            /*
+             * Refresh the table after all imported details
+             * have been added.
+             */
+            loadDetail();
+
+            /*
+             * Select the last actual imported item rather than
+             * the final blank row.
+             */
+            if (lnImported > 0) {
+
+                int lnLastItem =
+                        poTrans.ItemCount() - 2;
+
+                if (lnLastItem >= 0) {
+
+                    table.getSelectionModel().select(
+                            lnLastItem
+                    );
+
+                    table.getFocusModel().focus(
+                            lnLastItem
+                    );
+
+                    pnRow = lnLastItem;
+
+                    setDetailInfo();
+                }
+            }
+
+            System.out.println(
+                    "Excel Import Complete."
+            );
+
+            System.out.println(
+                    "Imported: " + lnImported
+            );
+
+            System.out.println(
+                    "Skipped: " + lnSkipped
+            );
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+
+            ShowMessageFX.Error(
+                    ex.getMessage(),
+                    pxeModuleName,
+                    "Unable to read the Excel file."
+            );
+
+        } finally {
+
+            if (loZip != null) {
+                try {
+                    loZip.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    private String getExcelCellValue(
+            org.w3c.dom.Element foCell,
+            java.util.List<String> faSharedStrings) {
+
+        String lsType = foCell.getAttribute("t");
+
+        org.w3c.dom.NodeList loValues =
+                foCell.getElementsByTagName("v");
+
+        /*
+         * Inline string.
+         */
+        if ("inlineStr".equals(lsType)) {
+
+            org.w3c.dom.NodeList loText =
+                    foCell.getElementsByTagName("t");
+
+            if (loText.getLength() > 0) {
+                return loText.item(0).getTextContent();
+            }
+
+            return "";
+        }
+
+        /*
+         * No value.
+         */
+        if (loValues.getLength() == 0) {
+            return "";
+        }
+
+        String lsValue =
+                loValues.item(0).getTextContent();
+
+        /*
+         * Shared string.
+         */
+        if ("s".equals(lsType)) {
+
+            try {
+                int lnIndex =
+                        Integer.parseInt(lsValue);
+
+                if (lnIndex >= 0
+                        && lnIndex < faSharedStrings.size()) {
+
+                    return faSharedStrings.get(lnIndex);
+                }
+
+            } catch (NumberFormatException ex) {
+                return "";
+            }
+
+            return "";
+        }
+
+        /*
+         * Normal string or numeric value.
+         */
+        return lsValue;
+    }
+    private int excelColumnToNumber(String fsColumn) {
+
+        if (fsColumn == null
+                || fsColumn.isEmpty()) {
+
+            return -1;
+        }
+
+        int lnResult = 0;
+
+        for (int lnCtr = 0;
+                lnCtr < fsColumn.length();
+                lnCtr++) {
+
+            char lcChar =
+                    Character.toUpperCase(
+                            fsColumn.charAt(lnCtr)
+                    );
+
+            if (lcChar < 'A'
+                    || lcChar > 'Z') {
+
+                return -1;
+            }
+
+            lnResult =
+                    (lnResult * 26)
+                    + (lcChar - 'A' + 1);
+        }
+
+        return lnResult - 1;
+    }
     private void loadRecord() {
         txtField01.setText((String) poTrans.getMaster(1));
         txtField03.setText(FoodInventoryFX.xsRequestFormat((Date) poTrans.getMaster(3)));
-        txtField07.setText((String) poTrans.getMaster(7));
+        refreshReferenceNumber();
+//        txtField07.setText( txtField01.getText());
         txtField50.setText((String) poTrans.getMaster(7));
         txtField10.setText((String) poTrans.getMaster(10));
 
