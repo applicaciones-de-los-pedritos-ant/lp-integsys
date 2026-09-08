@@ -337,202 +337,6 @@ public class PurchaseOrderController implements Initializable {
                 break;
             case "btnConfirm":
                 if (!psOldRec.equals("")) {
-
-                    if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
-                        ShowMessageFX.Information(
-                                "Only supervisor account or above can use this feature.",
-                                "Notice",
-                                null
-                        );
-                        return;
-                    }
-
-                    System.setProperty(
-                            "tokenized.approval",
-                            CommonUtils.getConfiguration(poGRider, "TokenAprvl")
-                    );
-
-                    // Temporary hardcode config for tokenized approval.
-                    System.setProperty(
-                            "tokenized.approval",
-                            CommonUtils.getConfiguration(poGRider, "TokenAprvl")
-                    );
-
-                    System.out.println(
-                            "CONFIRM: tokenized.approval = "
-                            + System.getProperty("tokenized.approval")
-                    );
-
-                    if (System.getProperty("tokenized.approval").equals("1")) {
-
-                        if (!"0".equals((String) poTrans.getMaster("cTranStat"))) {
-                            return;
-                        }
-
-                        System.out.println("CONFIRM: Before getTokenApproval");
-
-                        if (showFXDialog.getTokenApproval(
-                                poGRider,
-                                "CASys_DBF_LP.PO_Master",
-                                psOldRec)) {
-
-                            System.out.println("CONFIRM: getTokenApproval returned TRUE");
-
-                            System.out.println("CONFIRM: Before closeTransaction");
-
-                            if (poTrans.closeTransaction(
-                                    psOldRec,
-                                    poGRider.getUserID(),
-                                    "TOKENAPPROVL")) {
-
-                                System.out.println("CONFIRM: closeTransaction returned TRUE");
-
-                                ShowMessageFX.Information(
-                                        "Transaction was approved successfully.",
-                                        pxeModuleName,
-                                        "Approval successful!!!"
-                                );
-
-                                if (poTrans.openTransaction(psOldRec)) {
-
-                                    System.out.println("CONFIRM: openTransaction returned TRUE");
-
-                                    clearFields();
-                                    loadRecord();
-                                    psOldRec = (String) poTrans.getMaster("sTransNox");
-
-                                    if (ShowMessageFX.YesNo(
-                                            null,
-                                            pxeModuleName,
-                                            "Do you want to print this transaction?"
-                                    )) {
-                                        poTrans.printRecord();
-                                    }
-
-                                    clearFields();
-                                    initGrid();
-                                    pnEditMode = EditMode.UNKNOWN;
-
-                                } else {
-                                    System.out.println("CONFIRM: openTransaction returned FALSE");
-                                }
-
-                            } else {
-                                System.out.println("CONFIRM: closeTransaction returned FALSE");
-                                poTrans.ShowMessageFX();
-                            }
-
-                        } else {
-                            System.out.println("CONFIRM: getTokenApproval returned FALSE");
-
-                            ShowMessageFX.Information(
-                                    "Transaction was not confirmed.",
-                                    "Notice",
-                                    null
-                            );
-                        }
-
-                    } else {
-
-                        // User approval type
-                        if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
-
-                            JSONObject loJSON = showFXDialog.getApproval(poGRider);
-
-                            if (loJSON != null) {
-
-                                if ((int) loJSON.get("nUserLevl") < UserRight.SUPERVISOR) {
-                                    ShowMessageFX.Information(
-                                            "Only managerial accounts can approved transactions.",
-                                            pxeModuleName,
-                                            "Authentication failed!!!"
-                                    );
-                                    return;
-                                }
-
-                                if (poTrans.closeTransaction(
-                                        psOldRec,
-                                        (String) loJSON.get("sUserIDxx"),
-                                        "USERAPPROVAL")) {
-
-                                    ShowMessageFX.Information(
-                                            "Transaction was approved successfully.",
-                                            pxeModuleName,
-                                            "Approval successful!!!"
-                                    );
-
-                                    if (poTrans.openTransaction(psOldRec)) {
-                                        loadRecord();
-                                        psOldRec = (String) poTrans.getMaster("sTransNox");
-
-                                        if (ShowMessageFX.YesNo(
-                                                null,
-                                                pxeModuleName,
-                                                "Do you want to print this transaction?"
-                                        )) {
-                                            poTrans.printRecord();
-                                        }
-
-                                        pnEditMode = poTrans.getEditMode();
-                                    }
-
-                                    clearFields();
-                                    initGrid();
-                                    pnEditMode = EditMode.UNKNOWN;
-
-                                } else {
-                                    poTrans.ShowMessageFX();
-                                }
-
-                            } else {
-                                poTrans.ShowMessageFX();
-                            }
-
-                        } else {
-
-                            if (poTrans.closeTransaction(
-                                    psOldRec,
-                                    poGRider.getUserID(),
-                                    "USERAPPROVAL")) {
-
-                                ShowMessageFX.Information(
-                                        "Transaction was approved successfully.",
-                                        pxeModuleName,
-                                        "Approval successful!!!"
-                                );
-
-                                if (poTrans.openTransaction(psOldRec)) {
-                                    loadRecord();
-                                    psOldRec = (String) poTrans.getMaster("sTransNox");
-
-                                    poTrans.printRecord();
-
-                                    pnEditMode = poTrans.getEditMode();
-
-                                } else {
-                                    clearFields();
-                                    initGrid();
-                                    pnEditMode = EditMode.UNKNOWN;
-                                }
-
-                            } else {
-                                poTrans.ShowMessageFX();
-                            }
-                        }
-                    }
-
-                } else {
-                    ShowMessageFX.Information(
-                            "Please load transaction to approve.",
-                            pxeModuleName,
-                            "No transaction loaded."
-                    );
-                    return;
-                }
-
-                break;    
-            case "btnConfirm1":
-                if (!psOldRec.equals("")) {
                     if (poGRider.getUserLevel() < UserRight.SUPERVISOR) {
                         ShowMessageFX.Information("Only supervisor account or above can use this feature.", "Notice", null);
                         return;
@@ -549,6 +353,7 @@ public class PurchaseOrderController implements Initializable {
                         }
 
                         //token type approval
+                        System.out.println (psOldRec); 
                         if (showFXDialog.getTokenApproval(poGRider, "CASys_DBF_LP.PO_Master", psOldRec)) {
                             if (poTrans.closeTransaction(psOldRec, poGRider.getUserID(), "TOKENAPPROVL")) {
                                 ShowMessageFX.Information("Transaction was approved successfully.", pxeModuleName, "Approval successful!!!");
@@ -968,11 +773,13 @@ public class PurchaseOrderController implements Initializable {
              * Locate the Barcode column.
              */
             int lnBarcodeColumn = -1;
+            int lnQuantityColumn = -1;
 
             org.w3c.dom.NodeList loHeaderCells =
                     loHeaderRow.getElementsByTagName("c");
-
+            System.out.println("Here " + loHeaderCells.getLength());
             for (int lnCtr = 0;
+                    
                     lnCtr < loHeaderCells.getLength();
                     lnCtr++) {
 
@@ -988,7 +795,8 @@ public class PurchaseOrderController implements Initializable {
                                 laSharedStrings
                         );
 
-                if ("Barcode".equalsIgnoreCase(lsValue.trim())) {
+                if ("Barcode".equalsIgnoreCase(lsValue.trim())
+                        || "Total for Order".equalsIgnoreCase(lsValue.trim())) {
 
                     StringBuilder lsColumn =
                             new StringBuilder();
@@ -1007,12 +815,18 @@ public class PurchaseOrderController implements Initializable {
                         }
                     }
 
-                    lnBarcodeColumn =
+                    int lnColumn =
                             excelColumnToNumber(
                                     lsColumn.toString()
                             );
 
-                    break;
+                    if ("Barcode".equalsIgnoreCase(lsValue.trim())) {
+                        lnBarcodeColumn = lnColumn;
+                    }
+
+                    if ("Total for Order".equalsIgnoreCase(lsValue.trim())) {
+                        lnQuantityColumn = lnColumn;
+                    }
                 }
             }
 
@@ -1027,6 +841,28 @@ public class PurchaseOrderController implements Initializable {
                 );
                 return;
             }
+
+            /*
+             * Quantity column was not found.
+             */
+            if (lnQuantityColumn < 0) {
+                ShowMessageFX.Error(
+                        "The Excel file does not contain a 'Total for Order' column.",
+                        pxeModuleName,
+                        "Invalid Excel File"
+                );
+                return;
+            }
+
+            System.out.println(
+                    "Barcode column found at Excel column: "
+                    + (lnBarcodeColumn + 1)
+            );
+
+            System.out.println(
+                    "Quantity column found at Excel column: "
+                    + (lnQuantityColumn + 1)
+            );
 
             System.out.println(
                     "Barcode column found at Excel column: "
@@ -1053,9 +889,10 @@ public class PurchaseOrderController implements Initializable {
                         loRow.getElementsByTagName("c");
 
                 String lsBarcode = "";
+                String lsQuantity = "";
 
                 /*
-                 * Find the Barcode cell.
+                 * Find the Barcode and Quantity cells.
                  */
                 for (int lnCell = 0;
                         lnCell < loCells.getLength();
@@ -1089,6 +926,9 @@ public class PurchaseOrderController implements Initializable {
                                     lsColumn.toString()
                             );
 
+                    /*
+                     * Barcode
+                     */
                     if (lnColumn == lnBarcodeColumn) {
 
                         lsBarcode =
@@ -1096,8 +936,18 @@ public class PurchaseOrderController implements Initializable {
                                         loCell,
                                         laSharedStrings
                                 ).trim();
+                    }
 
-                        break;
+                    /*
+                     * Total for Order / Quantity
+                     */
+                    if (lnColumn == lnQuantityColumn) {
+
+                        lsQuantity =
+                                getExcelCellValue(
+                                        loCell,
+                                        laSharedStrings
+                                ).trim();
                     }
                 }
 
@@ -1113,10 +963,61 @@ public class PurchaseOrderController implements Initializable {
                     lnSkipped++;
                     continue;
                 }
+                
+                /*
+                 * No Quantity = ignore this row.
+                 */
+                if (lsQuantity.isEmpty()) {
+
+                    System.out.println(
+                            "Excel Row " + (lnRow + 1)
+                            + " - No Total for Order. Skipping."
+                    );
+
+                    lnSkipped++;
+                    continue;
+                }
+
+                double lnExcelQuantity;
+
+                try {
+
+                    lnExcelQuantity =
+                            Double.parseDouble(lsQuantity);
+
+                } catch (NumberFormatException ex) {
+
+                    System.out.println(
+                            "Excel Row " + (lnRow + 1)
+                            + " - Invalid Total for Order: "
+                            + lsQuantity
+                            + ". Skipping."
+                    );
+
+                    lnSkipped++;
+                    continue;
+                }
+
+                /*
+                 * Quantity must be greater than zero.
+                 */
+                if (lnExcelQuantity <= 0.0) {
+
+                    System.out.println(
+                            "Excel Row " + (lnRow + 1)
+                            + " - Invalid Quantity: "
+                            + lnExcelQuantity
+                            + ". Skipping."
+                    );
+
+                    lnSkipped++;
+                    continue;
+                }
 
                 System.out.println(
                         "Excel Row " + (lnRow + 1)
                         + " - Barcode: " + lsBarcode
+                        + " - Qty: " + lnExcelQuantity
                 );
 
                 /*
@@ -1165,7 +1066,7 @@ public class PurchaseOrderController implements Initializable {
                      * We do NOT create a blank/custom detail.
                      */
                     if (loRS == null || !loRS.next()) {
-
+                        System.out.println("CURRENT BRANCH: " + poGRider.getBranchCode());
                         System.out.println(
                                 "Barcode NOT FOUND in Inventory: "
                                 + lsBarcode
@@ -1237,9 +1138,8 @@ public class PurchaseOrderController implements Initializable {
                     );
 
                     /*
-                     * Since the Excel file currently contains
-                     * BARCODE ONLY, each imported row represents
-                     * one unit.
+                     * Use the quantity from Excel's
+                     * "Total for Order" column.
                      *
                      * Setting nQuantity also causes PurchaseOrders
                      * to automatically create the next blank row.
@@ -1247,7 +1147,7 @@ public class PurchaseOrderController implements Initializable {
                     poTrans.setDetail(
                             pnRow,
                             "nQuantity",
-                            1.0
+                            lnExcelQuantity
                     );
 
                     /*
@@ -1265,7 +1165,7 @@ public class PurchaseOrderController implements Initializable {
                             + ", StockID=" + lsStockIDx
                             + ", UnitPrice=" + lnUnitPrice
                             + ", QtyOnHand=" + lnQtyOnHand
-                            + ", Qty=1.0"
+                            + ", Qty= " + lnExcelQuantity
                     );
 
                     lnImported++;
